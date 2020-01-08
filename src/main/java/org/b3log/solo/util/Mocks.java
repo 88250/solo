@@ -18,9 +18,14 @@
 package org.b3log.solo.util;
 
 import io.netty.handler.codec.http.*;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.Response;
+import org.b3log.latke.util.URLs;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Mock utilities.
@@ -37,6 +42,18 @@ public final class Mocks {
     public static String mockRequest(final String uri) {
         final Mocks.MockRequest request = Mocks.mockRequest();
         request.setRequestURI(uri);
+
+        if (StringUtils.contains(uri, "?")) {
+            final Map<String, String> params = new LinkedHashMap<>();
+            final String query = StringUtils.substringAfter(uri, "?");
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                params.put(URLs.decode(pair.substring(0, idx)), URLs.decode(pair.substring(idx + 1)));
+            }
+            request.setParams(params);
+        }
+
         final Mocks.MockResponse response = Mocks.mockResponse();
         Mocks.mockDispatcher(request, response);
 
