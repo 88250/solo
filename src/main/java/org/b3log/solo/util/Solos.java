@@ -48,7 +48,7 @@ import java.util.Set;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.5, Jan 2, 2020
+ * @version 1.9.0.6, Jan 8, 2020
  * @since 2.8.0
  */
 public final class Solos {
@@ -82,6 +82,11 @@ public final class Solos {
      * Cookie secret.
      */
     public static final String COOKIE_SECRET;
+
+    /**
+     * Indicates generating a static site.
+     */
+    public static boolean GEN_STATIC_SITE = false;
 
     static {
         ResourceBundle solo;

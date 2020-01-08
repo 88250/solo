@@ -48,7 +48,7 @@ import java.util.List;
  * Static site processor. HTML 静态站点生成 https://github.com/88250/solo/issues/19
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 7, 2020
+ * @version 1.0.0.1, Jan 8, 2020
  * @since 3.9.0
  */
 @RequestProcessor
@@ -85,22 +85,19 @@ public class StaticSiteProcessor {
         try {
             FileUtils.forceMkdir(new File(staticSitePath + "/skins/"));
 
+            // 切换至静态站点生成模式
             Latkes.setServerScheme("https");
             // TODO: 前端传入生成站点域名
 //            Latkes.setServerHost("88250.github.io");
             Latkes.setServerHost("dl88250.gitee.io");
             Latkes.setServerPort("");
+            Solos.GEN_STATIC_SITE = true;
 
             genURI("/index.html");
             genURI("/blog/info");
             genURI("/manifest.json");
 
             genArticles();
-
-            Latkes.setServerScheme("http");
-            Latkes.setServerHost("localhost");
-            Latkes.setServerPort("8080");
-
             genSkins();
             genJS();
             genImages();
@@ -108,8 +105,13 @@ public class StaticSiteProcessor {
             genFile("robots.txt");
             genFile("CHANGE_LOGS.md");
 
-            LOGGER.log(Level.INFO, "Static site generated [dir=" + staticSitePath + "]");
+            // 恢复之前的动态运行模式
+            Latkes.setServerScheme("http");
+            Latkes.setServerHost("localhost");
+            Latkes.setServerPort("8080");
+            Solos.GEN_STATIC_SITE = false;
 
+            LOGGER.log(Level.INFO, "Static site generated [dir=" + staticSitePath + "]");
             context.renderJSON(0);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates static site failed", e);
@@ -156,9 +158,8 @@ public class StaticSiteProcessor {
         String filePath = uri;
         filePath = StringUtils.replace(filePath, "?", "/");
         filePath = StringUtils.replace(filePath, "=", "/");
-        filePath += ".html";
-        FileUtils.forceMkdirParent(new File(staticSitePath + filePath));
-        final OutputStream outputStream = new FileOutputStream(staticSitePath + filePath);
+        FileUtils.forceMkdir(new File(staticSitePath + filePath));
+        final OutputStream outputStream = new FileOutputStream(staticSitePath + filePath + "/index.html");
         String html = Mocks.mockRequest(uri);
         IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
         outputStream.close();

@@ -66,7 +66,7 @@
 <#if 0 != paginationPageCount>
     <nav class="fn__flex pagination">
         <#if 1 != paginationPageNums?first>
-            <a href="${servePath}${path}?p=${paginationPreviousPageNum}" class="pagination__item fn__flex-center">&laquo; Prev</a>
+            <a href="${servePath}${path}${pagingSep}${paginationPreviousPageNum}" class="pagination__item fn__flex-center">&laquo; Prev</a>
         </#if>
 
         <div class="fn__flex-1 ft__center">
@@ -79,18 +79,18 @@
             <span class="pagination__item pagination__item--current">${paginationPageNum}</span>
             <#else>
             <a class="pagination__item"
-               href="${servePath}${path}?p=${paginationPageNum}">${paginationPageNum}</a>
+               href="${servePath}${path}${pagingSep}${paginationPageNum}">${paginationPageNum}</a>
             </#if>
         </#list>
         <#if paginationPageNums?last != paginationPageCount>
             <span class="pagination__item">...</span>
-            <a href="${servePath}${path}?p=${paginationPageCount}"
+            <a href="${servePath}${path}${pagingSep}${paginationPageCount}"
                class="pagination__item">${paginationPageCount}</a>
         </#if>
         </div>
 
         <#if paginationPageNums?last != paginationPageCount>
-            <a href="${servePath}${path}?p=${paginationNextPageNum}" class="pagination__item fn__flex-center">Next &raquo;</a>
+            <a href="${servePath}${path}${pagingSep}${paginationNextPageNum}" class="pagination__item fn__flex-center">Next &raquo;</a>
         </#if>
     </nav>
 </#if>

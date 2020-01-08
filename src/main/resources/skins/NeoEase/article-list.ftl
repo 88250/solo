@@ -83,18 +83,18 @@
 <div class="pagination">
     <#if 1 != paginationPageNums?first>
     <a href="${servePath}${path}" title="${firstPageLabel}"><<</a>
-    <a href="${servePath}${path}?p=${paginationPreviousPageNum}" title="${previousPageLabel}"><</a>
+    <a href="${servePath}${path}${pagingSep}${paginationPreviousPageNum}" title="${previousPageLabel}"><</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
     <#if paginationPageNum == paginationCurrentPageNum>
-    <a href="${servePath}${path}?p=${paginationPageNum}" class="current">${paginationPageNum}</a>
+    <a href="${servePath}${path}${pagingSep}${paginationPageNum}" class="current">${paginationPageNum}</a>
     <#else>
-    <a href="${servePath}${path}?p=${paginationPageNum}">${paginationPageNum}</a>
+    <a href="${servePath}${path}${pagingSep}${paginationPageNum}">${paginationPageNum}</a>
     </#if>
     </#list>
     <#if paginationPageNums?last != paginationPageCount>
-    <a href="${servePath}${path}?p=${paginationNextPageNum}" title="${nextPagePabel}">></a>
-    <a href="${servePath}${path}?p=${paginationPageCount}" title="${lastPageLabel}">>></a>
+    <a href="${servePath}${path}${pagingSep}${paginationNextPageNum}" title="${nextPagePabel}">></a>
+    <a href="${servePath}${path}${pagingSep}${paginationPageCount}" title="${lastPageLabel}">>></a>
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
