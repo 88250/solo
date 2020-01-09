@@ -19,7 +19,6 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
@@ -30,12 +29,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * KanBanNiang processor. https://github.com/b3log/solo/issues/12472
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Mar 4, 2019
+ * @version 1.0.0.3, Jan 9, 2020
  * @since 2.9.2
  */
 @RequestProcessor
@@ -51,7 +51,7 @@ public class KanBanNiangProcessor {
      *
      * @param context the specified request context
      */
-    @RequestProcessing(value = "/plugins/kanbanniang/assets/model", method = HttpMethod.GET)
+    @RequestProcessing(value = "/plugins/kanbanniang/assets/model.json")
     public void randomModel(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -59,17 +59,17 @@ public class KanBanNiangProcessor {
             final String assets = "/plugins/kanbanniang/assets";
             String model;
             try (final InputStream inputStream = KanBanNiangProcessor.class.getResourceAsStream(assets + "/model-list.json")) {
-                final JSONArray models = new JSONArray(IOUtils.toString(inputStream, "UTF-8"));
+                final JSONArray models = new JSONArray(IOUtils.toString(inputStream, StandardCharsets.UTF_8));
                 final int i = RandomUtils.nextInt(models.length());
                 model = models.getString(i);
             }
 
             try (final InputStream modelResource = KanBanNiangProcessor.class.getResourceAsStream(assets + "/model/" + model + "/index.json")) {
-                final JSONObject index = new JSONObject(IOUtils.toString(modelResource, "UTF-8"));
+                final JSONObject index = new JSONObject(IOUtils.toString(modelResource, StandardCharsets.UTF_8));
                 final JSONArray textures = index.optJSONArray("textures");
                 if (textures.isEmpty()) {
                     try (final InputStream texturesRes = KanBanNiangProcessor.class.getResourceAsStream(assets + "/model/" + model + "/textures.json")) {
-                        final JSONArray texturesArray = new JSONArray(IOUtils.toString(texturesRes, "UTF-8"));
+                        final JSONArray texturesArray = new JSONArray(IOUtils.toString(texturesRes, StandardCharsets.UTF_8));
                         final Object element = texturesArray.opt(RandomUtils.nextInt(texturesArray.length()));
                         if (element instanceof JSONArray) {
                             index.put("textures", element);

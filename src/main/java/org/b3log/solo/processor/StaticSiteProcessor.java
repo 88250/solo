@@ -88,8 +88,8 @@ public class StaticSiteProcessor {
             // 切换至静态站点生成模式
             Latkes.setServerScheme("https");
             // TODO: 前端传入生成站点域名
-//            Latkes.setServerHost("88250.github.io");
-            Latkes.setServerHost("dl88250.gitee.io");
+            Latkes.setServerHost("88250.github.io");
+//            Latkes.setServerHost("dl88250.gitee.io");
             Latkes.setServerPort("");
             Solos.GEN_STATIC_SITE = true;
 
@@ -109,6 +109,7 @@ public class StaticSiteProcessor {
             genSkins();
             genJS();
             genImages();
+            genPlugins();
             genFile("sw.js");
             genFile("robots.txt");
             genFile("CHANGE_LOGS.md");
@@ -265,6 +266,15 @@ public class StaticSiteProcessor {
         FileUtils.forceMkdir(new File(staticSitePath + "/images"));
         FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/images").toURI()), new File(staticSitePath + "/images"));
         LOGGER.log(Level.INFO, "Generated images");
+    }
+
+    private static void genPlugins() throws Exception {
+        FileUtils.deleteDirectory(new File(staticSitePath + "/plugins"));
+        FileUtils.forceMkdir(new File(staticSitePath + "/plugins"));
+        FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/plugins").toURI()), new File(staticSitePath + "/plugins"));
+        genURI("/plugins/kanbanniang/assets/model.json");
+        LOGGER.log(Level.INFO, "Generated plugins");
+
     }
 
     private static void genFile(final String file) throws Exception {
