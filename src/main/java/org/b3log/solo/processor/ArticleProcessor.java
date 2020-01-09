@@ -960,6 +960,9 @@ public class ArticleProcessor {
         if (!Solos.GEN_STATIC_SITE) {
             dataModel.put(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT));
             dataModel.put(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT));
+        } else {
+            dataModel.put(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT, 0);
+            dataModel.put(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT, 0);
         }
     }
 }
