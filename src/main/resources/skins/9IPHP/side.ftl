@@ -75,7 +75,7 @@
                         ${statistic.statisticPublishedBlogCommentCount}
                         <span class="ft-gray">${commentLabel}</span></a><br/>
                     </#if>
-                    <span data-uvstaturl="${servePath}">0</span> <span class="ft-gray">${viewLabel}</span><br/>
+                    <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> <span class="ft-gray">${viewLabel}</span><br/>
                     ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
                 </div>
             </main>

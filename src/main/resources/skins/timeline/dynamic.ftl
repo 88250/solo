@@ -77,7 +77,7 @@
                             <ul class="list">
                                 <#list mostCommentArticles as article>
                                 <li class="fn-clear">
-                                    <a class="left" rel="nofollow" title="${article.articleTitle}" 
+                                    <a class="left" rel="nofollow" title="${article.articleTitle}"
                                        href="${servePath}${article.articlePermalink}">
                                         ${article.articleTitle}
                                     </a>
@@ -106,7 +106,7 @@
                                     </a>
                                     <span class="ico ico-view right" title="${viewLabel}">
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}">
-                                            <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
+                                            <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
                                         </a>
                                     </span>
                                 </li>
@@ -118,7 +118,7 @@
                         <div class="module tags">
                             <h3 class="title">${popTagsLabel}</h3>
                             <#list mostUsedTags as tag>
-                            <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
+                            <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
                                title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
                                 ${tag.tagTitle}
                             </a>&nbsp; &nbsp;

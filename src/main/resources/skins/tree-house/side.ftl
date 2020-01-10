@@ -22,7 +22,7 @@
         <div>
             ${viewCount1Label}
             <span class='error-msg'>
-                <span data-uvstaturl="${servePath}">0</span>
+                <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
             </span>
         </div>
         <div>
@@ -96,7 +96,7 @@
             <#list mostViewCountArticles as article>
             <li>
                 <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
-                    <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>]</sup>${article.articleTitle}
+                    <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>]</sup>${article.articleTitle}
                 </a>
             </li>
             </#list>
@@ -148,7 +148,7 @@
                     ${link.linkTitle}
                 </a>
                 <img onclick="window.location='${link.linkAddress}'"
-                     alt="${link.linkTitle}" 
+                     alt="${link.linkTitle}"
                      src="${faviconAPI}<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" width="16" height="16" />
             </li>
             </#list>

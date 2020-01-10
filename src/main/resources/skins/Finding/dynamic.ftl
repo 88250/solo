@@ -49,7 +49,7 @@
                                     <#else>
                                     <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                                     </#if>
-                                    <time>${comment.commentDate?string("yy-MM-dd HH")}</time> 
+                                    <time>${comment.commentDate?string("yy-MM-dd HH")}</time>
                                 </span>
                                 <a class="fn-right" href="${servePath}${comment.commentSharpURL}">${viewLabel}»</a>
                             </div>
@@ -96,7 +96,7 @@
                                     ${article.articleTitle}
                                 </a>
                                 <span data-ico="&#xe185;">
-                                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
+                                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
                                 </span>
                             </li>
                             </#list>

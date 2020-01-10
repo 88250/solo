@@ -38,7 +38,7 @@
                 </li>
                 <li>
                     <a rel="nofollow" href="${servePath}${article.articlePermalink}" title="${viewLabel}">
-                        ${viewLabel} (<span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>)
+                        ${viewLabel} (<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>)
                     </a>
                 </li>
                 <#if commentable>

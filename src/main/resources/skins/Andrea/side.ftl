@@ -28,7 +28,7 @@
                 <li>
                 ${viewCount1Label}
                     <span class='error-msg'>
-                    <span data-uvstaturl="${servePath}">0</span>
+                    <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
                     </span>
                 </li>
                 <li>
@@ -112,7 +112,7 @@
                         <li>
                             <a rel="nofollow" title="${article.articleTitle}"
                                href="${servePath}${article.articlePermalink}">
-                                <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>]</sup>
+                                <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>]</sup>
                                 ${article.articleTitle}
                             </a>
                         </li>

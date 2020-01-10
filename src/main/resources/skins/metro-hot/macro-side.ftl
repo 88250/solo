@@ -41,7 +41,7 @@
                     <span data-ico="&#xe037;"></span>
                     <div class="text">
                         ${viewCount1Label}
-                        <span data-uvstaturl="${servePath}">0</span><br/>
+                        <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span><br/>
                         ${articleCount1Label}
                         ${statistic.statisticPublishedBlogArticleCount}<br/>
                         <#if commentable>

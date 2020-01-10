@@ -50,7 +50,7 @@
                 <#list mostViewCountArticles as article>
                 <li>
                     <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
-                        <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>]</sup>${article.articleTitle}
+                        <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>]</sup>${article.articleTitle}
                     </a>
                 </li>
                 </#list>
@@ -141,8 +141,8 @@
                     <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         ${link.linkTitle}
                     </a>
-                    <img onclick="window.location='${link.linkAddress}'" 
-                         alt="${link.linkTitle}" 
+                    <img onclick="window.location='${link.linkAddress}'"
+                         alt="${link.linkTitle}"
                          src="${faviconAPI}<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" width="16" height="16" />
                 </li>
                 </#list>

@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="site-state-item site-state-categories">
-                    <span class="site-state-item-count"><span data-uvstaturl="${servePath}">0</span></span>
+                    <span class="site-state-item-count"><span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span></span>
                     <span class="site-state-item-name">${viewLabel}</span>
                 </div>
 

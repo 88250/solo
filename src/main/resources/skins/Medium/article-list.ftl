@@ -61,7 +61,7 @@
                 </a> &nbsp;•&nbsp;
                 </#if>
                 <a href="${servePath}${article.articlePermalink}" class="ft-gray">
-                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
                 </a>
             </div>
         </header>

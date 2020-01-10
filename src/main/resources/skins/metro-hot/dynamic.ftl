@@ -97,7 +97,7 @@
                             <span data-ico="&#xe037;"></span>
                             <div class="text">
                                 ${viewCount1Label}
-                                <span data-uvstaturl="${servePath}">0</span><br/>
+                                <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span><br/>
                                 ${articleCount1Label}
                                 ${statistic.statisticPublishedBlogArticleCount}<br/>
                                 ${commentCount1Label}
@@ -153,7 +153,7 @@
                                     ${article.articleTitle}
                                 </a>
                                 <span data-ico="&#xe185;">
-                                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
+                                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
                                 </span>
                             </li>
                             </#list>
@@ -192,7 +192,7 @@
                     </div>
                     <div class="text fn-right">
                         <#list mostUsedTags as tag>
-                        <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
+                        <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
                            title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
                             ${tag.tagTitle}
                         </a>

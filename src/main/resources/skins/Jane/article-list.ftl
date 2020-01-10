@@ -52,7 +52,7 @@
                 <a class="ft__red" href="${servePath}${article.articlePermalink}#comments"><#if article.articleCommentCount gt 0>${article.articleCommentCount} </#if>${commentLabel}</a>
                 •
             </#if>
-                <a class="ft__red" href="${servePath}${article.articlePermalink}"><span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}</a>
+                <a class="ft__red" href="${servePath}${article.articlePermalink}"><span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}</a>
             </div>
         </div>
         <div class="vditor-reset article__content">

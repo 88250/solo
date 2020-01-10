@@ -32,7 +32,7 @@
         <div class="fn-clear">
         ${statistic.statisticPublishedBlogArticleCount} ${articleLabel} &nbsp;
         <#if commentable>${statistic.statisticPublishedBlogCommentCount} ${commentLabel} &nbsp;</#if>
-        <span data-uvstaturl="${servePath}">0</span> ${viewLabel} &nbsp;
+        <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> ${viewLabel} &nbsp;
         ${onlineVisitorCnt} ${onlineVisitorLabel}
             <div class="fn-right">
                 Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a> •

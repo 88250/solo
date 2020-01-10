@@ -32,7 +32,7 @@
         <div class="right">
             ${viewCount1Label}
             <span class='error-msg'>
-                <span data-uvstaturl="${servePath}">0</span>
+                <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
             </span>
             &nbsp;&nbsp;
             ${articleCount1Label}

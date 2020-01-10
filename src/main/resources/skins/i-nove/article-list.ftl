@@ -64,7 +64,7 @@
     <div class="article-footer">
         <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">
             <span class="left article-browserIcon" title="${viewLabel}"></span>
-            <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
+            <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
         </a>
         <div class="left">
             <span class="tagsIcon" title="${tagLabel}"></span>

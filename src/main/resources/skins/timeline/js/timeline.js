@@ -309,7 +309,8 @@ var timeline = {
                             + Label.commentLabel + '"><a rel="nofollow" href="' + Label.servePath + article.articlePermalink
                             + '#comments">' + (article.articleCommentCount === 0 ? Label.noCommentLabel : article.articleCommentCount)
                             + '</a></span>&nbsp;<span class="ico-view ico" title="' + Label.viewLabel + '">'
-                            + '<a rel="nofollow" href="${servePath}${article.articlePermalink}"><span data-uvstaturl="' + Label.servePath + article.articlePermalink + '">0</span>'
+                            + '<a rel="nofollow" href="${servePath}${article.articlePermalink}">'
+                            + '<span data-uvstaturl="' + Label.servePath + article.articlePermalink + '">' +  article.articleViewCount + '</span>'
                             + '</a></span></div></article>';
                 }
 

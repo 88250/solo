@@ -140,7 +140,7 @@
             <br/>
             <div class="fn__flex">
                 <div class="fn__flex-1 ft__center">
-                    <span data-uvstaturl="${servePath}">0</span> <span class="ft-gray">${viewLabel}</span>
+                    <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> <span class="ft-gray">${viewLabel}</span>
                 </div>
                 <div class="fn__flex-1 ft__center">
                     ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>

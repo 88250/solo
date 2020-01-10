@@ -22,7 +22,7 @@
     <span class="fn-right">
         <#if isLoggedIn>
             <a href="${servePath}/admin-index.do#main" title="${adminLabel}" class="icon-setting"></a>
-        &nbsp; 
+        &nbsp;
         <a title="${logoutLabel}" class="icon-logout" href="${logoutURL}"></a>
         <#else>
             <a href="${servePath}/start" title="${startToUseLabel}" class="icon-login"></a>
@@ -74,7 +74,7 @@
     </div>
     <span>
         ${viewCount1Label}
-        <span data-uvstaturl="${servePath}">0</span>
+        <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
     </span> &nbsp; &nbsp;
     <span>
         ${articleCount1Label}

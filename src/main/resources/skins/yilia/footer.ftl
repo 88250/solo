@@ -25,7 +25,7 @@
             <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
         </div>
         <span class="fn-right">
-            ${viewCount1Label}<span data-uvstaturl="${servePath}">0</span>
+            ${viewCount1Label}<span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
             &nbsp;
             ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
             <#if commentable>
