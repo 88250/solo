@@ -186,8 +186,6 @@ public class StaticSiteProcessor {
         final int maxPage = 10240;
         while (count++ < maxPage) {
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(String.valueOf(currentPageNum) + '/' + pageSize + '/' + windowSize);
-            requestJSONObject.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
-            requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, false);
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
             if (articles.isEmpty()) {

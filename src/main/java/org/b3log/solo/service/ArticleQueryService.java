@@ -483,8 +483,8 @@ public class ArticleQueryService {
      *                          "keyword": "", // Optional search keyword
      *                          "excludes": ["", ....], // Optional
      *                          "enableArticleUpdateHint": bool // Optional
-     *                          see {@link Pagination} for more details
-     * @return for example,      <pre>
+     * @return for example,
+     * <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -524,15 +524,21 @@ public class ArticleQueryService {
             }
             final String keyword = requestJSONObject.optString(Common.KEYWORD);
             if (StringUtils.isBlank(keyword)) {
-                query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus));
+                if (Solos.GEN_STATIC_SITE) {
+                    // 生成静态站点时不包括加密文章
+                    query.setFilter(CompositeFilterOperator.and(
+                            new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""),
+                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus)));
+                } else {
+                    query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus));
+                }
             } else {
                 query.setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus),
                         CompositeFilterOperator.or(
                                 new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
                                 new PropertyFilter(Article.ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%"),
-                                new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%"))
-                ));
+                                new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%"))));
             }
 
             final JSONObject result = articleRepository.get(query);
