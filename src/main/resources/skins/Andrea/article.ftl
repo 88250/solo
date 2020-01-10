@@ -87,9 +87,7 @@
                                 </span>
                                 </#list>
                                 &nbsp;&nbsp;${viewCount1Label}
-                                <a rel="nofollow" href="${servePath}${article.articlePermalink}" data-uvstaturl="${servePath}${article.articlePermalink}">
-                                    0
-                                </a>
+                                <a rel="nofollow" href="${servePath}${article.articlePermalink}" data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </div>
                             <div class="clear"></div>
                             <div class="marginTop12">

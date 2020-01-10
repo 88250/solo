@@ -77,7 +77,7 @@
                     ${article.articleUpdateDate?string("yyyy-MM-dd")} •
                     </time>
                     <a class="post__view" href="${servePath}${article.articlePermalink}">
-                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}</a>
+                        <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}</a>
                     <div class="fn-right">
                     <span class="vditor-tooltipped vditor-tooltipped__n post__share-icon ft-green"
                           onclick="$('#comment').focus()"
@@ -125,7 +125,7 @@
         <div class="article__toolbar">
             <div class="wrapper">
                 <a class="post__view" href="${servePath}${article.articlePermalink}">
-                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
                 </a>
                 <div class="fn-right">
                 <span class="vditor-tooltipped vditor-tooltipped__n post__share-icon ft-green"

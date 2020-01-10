@@ -66,7 +66,7 @@
                 <a class="ft__red" href="${servePath}${article.articlePermalink}#comments"><#if article.articleCommentCount gt 0>${article.articleCommentCount} </#if>${commentLabel}</a>
                 •
                 </#if>
-                <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
+                <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
             </div>
         </div>
 

@@ -33,8 +33,8 @@ var Util = {
    * 初始化浏览数
    */
   initViewCnt: function () {
-    Util.uvstat = new Uvstat({loading:'<span>0</span>'})
-    Util.uvstat.setStat()
+    Util.uvstat = new Uvstat()
+    Util.uvstat.addStat()
     Util.uvstat.renderStat()
   },
   /**

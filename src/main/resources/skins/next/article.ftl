@@ -68,7 +68,7 @@
                         </span>
                         </#if>
                         &nbsp; | &nbsp; ${viewsLabel}
-                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>°C
+                        <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>°C
                     </div>
                 </header>
 
