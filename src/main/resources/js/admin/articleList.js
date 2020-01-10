@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.1, Jan 5, 2020
+ * @version 1.3.0.2, Jan 10, 2020
  */
 
 /* article-list 相关操作 */
@@ -66,7 +66,7 @@ admin.articleList = {
     $('#articleListBtn').click(function () {
       that.getList(page)
     })
-    $('#articleListInput').keypress(function(event) {
+    $('#articleListInput').keypress(function (event) {
       if (event.keyCode === 13) {
         that.getList(page)
       }
@@ -119,7 +119,9 @@ admin.articleList = {
             articles[i].articleTags + '</span>'
           articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime)
           articleData[i].comments = articles[i].articleCommentCount
-          articleData[i].articleViewCount = '<span data-uvstaturl="' + Label.servePath + articles[i].articlePermalink + '">0</span>'
+          articleData[i].articleViewCount = '<span data-uvstaturl="' +
+            Label.servePath + articles[i].articlePermalink + '">' +
+            articles[i].articleViewCount + '</span>'
           articleData[i].author = articles[i].authorName
 
           var topClass = articles[i].articlePutTop

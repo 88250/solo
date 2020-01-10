@@ -61,7 +61,7 @@
                     &nbsp;
                 ${article.articleCommentCount} ${commentLabel}
                     &nbsp;
-                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
                 </div>
             </header>
             <div class="vditor-reset">
