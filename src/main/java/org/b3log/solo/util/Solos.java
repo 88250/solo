@@ -125,7 +125,7 @@ public final class Solos {
      * Reloads blacklist IPs.
      */
     public static void reloadBlacklistIPs() {
-        final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/blacklist/ip").trustAllCerts(true).
+        final HttpResponse res = HttpRequest.get("https://hacpai.com/apis/blacklist/ip").trustAllCerts(true).
                 connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
         if (200 != res.statusCode()) {
             return;

@@ -36,7 +36,7 @@ public class BeforeRequestHandler implements Handler {
     public void handle(final RequestContext context) {
         final String remoteAddr = Requests.getRemoteAddr(context.getRequest());
         if (Solos.BLACKLIST_IPS.contains(remoteAddr)) {
-            context.sendStatus(200);
+            context.sendStatus(429);
             context.abort();
 
             return;

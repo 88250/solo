@@ -103,7 +103,7 @@ public class CronMgmtService {
             } finally {
                 Stopwatchs.release();
             }
-        }, delay, 30, TimeUnit.MINUTES);
+        }, delay, 1000 * 60 * 30, TimeUnit.MILLISECONDS);
         delay += 2000;
 
         SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
