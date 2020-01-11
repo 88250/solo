@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Jan 5, 2020
+ * @version 2.0.1.0, Jan 12, 2020
  */
 
 /**
@@ -107,6 +107,7 @@ var Util = {
         callback: function () {
           Util.parseMarkdown()
           Util.parseLanguage()
+          Util.uvstat.addStat()
           Util.uvstat.renderStat()
           cb && cb()
         },
