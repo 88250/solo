@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Dec 28, 2019
+ * @version 1.2.0.4, Jan 11, 2020
  * @since 0.4.0
  */
 @Singleton
@@ -181,6 +181,16 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         try {
             final String articleId = context.pathVar("id");
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
+                final JSONObject ret = new JSONObject();
+                renderer.setJSONObject(ret);
+                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+
+                return;
+            }
+
             final JSONObject result = articleQueryService.getArticle(articleId);
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
