@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Jan 2, 2020
+ * @version 1.1.1.6, Jan 12, 2020
  * @since 2.5.0
  */
 @Service
@@ -262,7 +262,6 @@ public class ExportService {
      * Exports public articles to admin's HacPai account.
      */
     public void exportHacPai() {
-        LOGGER.log(Level.INFO, "Backup public articles to HacPai....");
         try {
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
@@ -273,19 +272,12 @@ public class ExportService {
                 return;
             }
 
-            if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode()) {
-                return;
-            }
-
-            if (Solos.isLocalServer()) {
-                LOGGER.log(Level.INFO, "Solo is running on the local server [servePath=" + Latkes.getServePath() +
-                        ", serverHost=" + Latkes.getServerHost() + ", serverPort=" + Latkes.getServerPort() + "], ignored backup articles to HacPai");
-
-                return;
-            }
+            LOGGER.log(Level.INFO, "Backup all articles to HacPai....");
 
             final JSONObject mds = exportHexoMDs();
             final List<JSONObject> posts = (List<JSONObject>) mds.opt("posts");
+            final List<JSONObject> passwords = (List<JSONObject>) mds.opt("passwords");
+            final List<JSONObject> drafts = (List<JSONObject>) mds.opt("drafts");
 
             final String tmpDir = System.getProperty("java.io.tmpdir");
             final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
@@ -294,6 +286,10 @@ public class ExportService {
 
             final File postDir = new File(localFilePath + File.separator + "posts");
             exportHexoMd(posts, postDir.getPath());
+            final File passwordDir = new File(localFilePath + File.separator + "passwords");
+            exportHexoMd(passwords, passwordDir.getPath());
+            final File draftDir = new File(localFilePath + File.separator + "drafts");
+            exportHexoMd(drafts, draftDir.getPath());
 
             final File zipFile = ZipUtil.zip(localFile);
             byte[] zipData;

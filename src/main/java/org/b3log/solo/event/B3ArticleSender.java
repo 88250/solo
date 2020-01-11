@@ -47,7 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.24, Jan 5, 2020
+ * @version 1.0.2.25, Jan 12, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -90,13 +90,6 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
 
             if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)) {
                 LOGGER.log(Level.INFO, "Article [title={0}] push flag [postToCommunity] is [false], ignored push to Rhy", title);
-
-                return;
-            }
-
-            if (Solos.isLocalServer()) {
-                LOGGER.log(Level.INFO, "Solo is running on the local server [servePath=" + Latkes.getServePath() +
-                        ", serverHost=" + Latkes.getServerHost() + ", serverPort=" + Latkes.getServerPort() + "], ignored push article [title=" + title + "] to Rhy");
 
                 return;
             }
