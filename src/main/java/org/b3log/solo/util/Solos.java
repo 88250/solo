@@ -125,20 +125,24 @@ public final class Solos {
      * Reloads blacklist IPs.
      */
     public static void reloadBlacklistIPs() {
-        final HttpResponse res = HttpRequest.get("https://hacpai.com/apis/blacklist/ip").trustAllCerts(true).
-                connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
-        if (200 != res.statusCode()) {
-            return;
-        }
-        res.charset("UTF-8");
-        final JSONObject result = new JSONObject(res.bodyText());
-        if (0 != result.optInt(Keys.CODE)) {
-            return;
-        }
+        try {
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/apis/blacklist/ip").trustAllCerts(true).
+                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+            if (200 != res.statusCode()) {
+                return;
+            }
+            res.charset("UTF-8");
+            final JSONObject result = new JSONObject(res.bodyText());
+            if (0 != result.optInt(Keys.CODE)) {
+                return;
+            }
 
-        final JSONArray ips = result.optJSONArray(Common.DATA);
-        BLACKLIST_IPS.clear();
-        BLACKLIST_IPS.addAll(CollectionUtils.jsonArrayToList(ips));
+            final JSONArray ips = result.optJSONArray(Common.DATA);
+            BLACKLIST_IPS.clear();
+            BLACKLIST_IPS.addAll(CollectionUtils.jsonArrayToList(ips));
+        } catch (final Exception e) {
+            // ignored
+        }
     }
 
     /**
