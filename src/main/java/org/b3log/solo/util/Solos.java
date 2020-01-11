@@ -38,17 +38,20 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.6, Jan 8, 2020
+ * @version 1.10.0.0, Jan 11, 2020
  * @since 2.8.0
  */
 public final class Solos {
@@ -111,6 +114,31 @@ public final class Solos {
             cookieSecret = RandomStringUtils.randomAlphanumeric(8);
         }
         COOKIE_SECRET = cookieSecret;
+    }
+
+    /**
+     * Blacklist IPs.
+     */
+    public static final List<String> BLACKLIST_IPS = new CopyOnWriteArrayList<>();
+
+    /**
+     * Reloads blacklist IPs.
+     */
+    public static void reloadBlacklistIPs() {
+        final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/blacklist/ip").trustAllCerts(true).
+                connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+        if (200 != res.statusCode()) {
+            return;
+        }
+        res.charset("UTF-8");
+        final JSONObject result = new JSONObject(res.bodyText());
+        if (0 != result.optInt(Keys.CODE)) {
+            return;
+        }
+
+        final JSONArray ips = result.optJSONArray(Common.DATA);
+        BLACKLIST_IPS.clear();
+        BLACKLIST_IPS.addAll(CollectionUtils.jsonArrayToList(ips));
     }
 
     /**

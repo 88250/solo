@@ -22,6 +22,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.solo.util.Solos;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -96,8 +97,20 @@ public class CronMgmtService {
 
         SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
             try {
+                Solos.reloadBlacklistIPs();
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Executes cron failed", e);
+            } finally {
+                Stopwatchs.release();
+            }
+        }, delay, 30, TimeUnit.MINUTES);
+        delay += 2000;
+
+        SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
+            try {
                 articleMgmtService.refreshGitHub();
                 userMgmtService.refreshUSite();
+                exportService.exportHacPai();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Executes cron failed", e);
             } finally {
@@ -105,18 +118,6 @@ public class CronMgmtService {
             }
         }, delay, 1000 * 60 * 60 * 24, TimeUnit.MILLISECONDS);
         delay += 2000;
-
-        SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
-            try {
-                exportService.exportHacPai();
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Executes cron failed", e);
-            } finally {
-                Stopwatchs.release();
-            }
-        }, delay + 1000 * 60 * 10, 1000 * 60 * 60 * 24, TimeUnit.MILLISECONDS);
-        delay += 2000;
-
     }
 
     /**

@@ -19,19 +19,29 @@ package org.b3log.solo.processor;
 
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.solo.util.Solos;
 
 /**
  * Before request handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 3, 2019
+ * @version 1.0.0.1, Jan 11, 2020
  * @since 3.6.7
  */
 public class BeforeRequestHandler implements Handler {
 
     @Override
     public void handle(final RequestContext context) {
+        final String remoteAddr = Requests.getRemoteAddr(context.getRequest());
+        if (Solos.BLACKLIST_IPS.contains(remoteAddr)) {
+            context.sendStatus(200);
+            context.abort();
+
+            return;
+        }
+
         Stopwatchs.start("Request Initialized [requestURI=" + context.requestURI() + "]");
     }
 }
