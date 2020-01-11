@@ -121,7 +121,7 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
                     contentTypeJson().header("User-Agent", Solos.USER_AGENT).send();
             response.charset("UTF-8");
             final JSONObject result = new JSONObject(response.bodyText());
-            LOGGER.log(Level.INFO, "Pushed an article [title=" + title + "] to Rhy, result [" + result.toString() + "]");
+            LOGGER.log(Level.INFO, "Pushed an article [title=" + title + "] to Rhy, result [" + result.optString(Keys.MSG) + "]");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Pushes an article to Rhy failed: " + e.getMessage());
         }
