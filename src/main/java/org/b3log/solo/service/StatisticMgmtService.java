@@ -25,14 +25,12 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.cache.StatisticCache;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.util.Solos;
@@ -211,6 +209,8 @@ public class StatisticMgmtService {
      * @throws ServiceException service exception
      */
     public void incBlogViewCount(final RequestContext context, final Response response) throws ServiceException {
+        // v3.7.0 后开始使用社区浏览计数服务 https://github.com/Vanessa219/uvstat
+
 //        if (Solos.isBot(context.getRequest())) {
 //            return;
 //        }

@@ -323,7 +323,7 @@ public class ArticleMgmtService {
             final JSONObject data = new JSONObject().put(ARTICLE, article);
             B3ArticleSender.pushArticleToRhy(data);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Pushes an article [id=" + articleId + "] to community failed", e);
+            LOGGER.log(Level.ERROR, "Pushes an article [id=" + articleId + "] to HacPai failed", e);
         }
     }
 
@@ -649,6 +649,8 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void incViewCount(final String articleId) throws ServiceException {
+        // v3.7.0 后开始使用社区浏览计数服务 https://github.com/Vanessa219/uvstat
+
 //        JSONObject article;
 //
 //        try {
