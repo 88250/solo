@@ -383,7 +383,7 @@ public class ExportService {
                             "file", zipData).send();
             response.close();
             response.charset("UTF-8");
-            LOGGER.info("Backup public articles to HacPai completed: " + response.bodyText());
+            LOGGER.info("Backup all articles to HacPai completed: " + response.bodyText());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Exports articles to HacPai failed:" + e.getMessage());
         }
