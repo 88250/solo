@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Article permalink  handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 3, 2019
+ * @version 1.0.0.4, Jan 12, 2020
  * @since 3.2.0
  */
 public class PermalinkHandler implements Handler {
@@ -124,7 +124,6 @@ public class PermalinkHandler implements Handler {
      *
      * @param context the specified request context
      * @param article the specified article
-     * @see Dispatcher#rendTODO(RequestContext)
      */
     private void dispatchToArticleProcessor(final RequestContext context, final JSONObject article) {
         context.attr(Article.ARTICLE, article);
