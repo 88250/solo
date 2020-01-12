@@ -27,7 +27,7 @@ import org.b3log.solo.util.Solos;
  * Before request handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 11, 2020
+ * @version 1.0.0.1, Jan 12, 2020
  * @since 3.6.7
  */
 public class BeforeRequestHandler implements Handler {
@@ -36,7 +36,9 @@ public class BeforeRequestHandler implements Handler {
     public void handle(final RequestContext context) {
         final String remoteAddr = Requests.getRemoteAddr(context.getRequest());
         if (Solos.BLACKLIST_IPS.contains(remoteAddr)) {
-            context.sendStatus(429);
+            context.setStatus(429);
+            context.setHeader("Retry-After", "600");
+            context.sendString("Too Many Requests");
             context.abort();
 
             return;
