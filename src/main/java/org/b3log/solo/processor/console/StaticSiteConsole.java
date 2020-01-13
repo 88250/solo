@@ -141,14 +141,22 @@ public class StaticSiteConsole {
     private static final String STATIC_SITE = "static-site";
 
     /**
-     * Path of generate directory.
-     */
-    private static final String staticSitePath = StaticSiteConsole.class.getResource("/" + STATIC_SITE).getPath();
-
-    /**
      * Source directory path.
      */
-    private static final String sourcePath = StaticSiteConsole.class.getResource("/").getPath();
+    private static String sourcePath;
+
+    static {
+        sourcePath = StaticSiteConsole.class.getResource("/repository.json").getPath();
+        sourcePath = StringUtils.substringBeforeLast(sourcePath, "repository.json");
+        if (StringUtils.contains(sourcePath, "/target/classes/")) {
+            sourcePath = StringUtils.replace(sourcePath, "classes", "solo");
+        }
+    }
+
+    /**
+     * Path of generate directory.
+     */
+    private static final String staticSitePath = StaticSiteConsole.class.getResource("/").getPath() + STATIC_SITE;
 
     private static void genCategories() throws Exception {
         final BeanManager beanManager = BeanManager.getInstance();
@@ -270,28 +278,28 @@ public class StaticSiteConsole {
     private static void genSkins() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/skins"));
         FileUtils.forceMkdir(new File(staticSitePath + "/skins"));
-        FileUtils.copyDirectory(new File(StaticSiteConsole.class.getResource("/skins").toURI()), new File(staticSitePath + "/skins"));
+        FileUtils.copyDirectory(new File(sourcePath + "skins"), new File(staticSitePath + "/skins"));
         LOGGER.log(Level.INFO, "Generated skins");
     }
 
     private static void genJS() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/js"));
         FileUtils.forceMkdir(new File(staticSitePath + "/js"));
-        FileUtils.copyDirectory(new File(StaticSiteConsole.class.getResource("/js").toURI()), new File(staticSitePath + "/js"));
+        FileUtils.copyDirectory(new File(sourcePath + "js"), new File(staticSitePath + "/js"));
         LOGGER.log(Level.INFO, "Generated js");
     }
 
     private static void genImages() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/images"));
         FileUtils.forceMkdir(new File(staticSitePath + "/images"));
-        FileUtils.copyDirectory(new File(StaticSiteConsole.class.getResource("/images").toURI()), new File(staticSitePath + "/images"));
+        FileUtils.copyDirectory(new File(sourcePath + "images"), new File(staticSitePath + "/images"));
         LOGGER.log(Level.INFO, "Generated images");
     }
 
     private static void genPlugins() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/plugins"));
         FileUtils.forceMkdir(new File(staticSitePath + "/plugins"));
-        FileUtils.copyDirectory(new File(StaticSiteConsole.class.getResource("/plugins").toURI()), new File(staticSitePath + "/plugins"));
+        FileUtils.copyDirectory(new File(sourcePath + "plugins"), new File(staticSitePath + "/plugins"));
         genURI("/plugins/kanbanniang/assets/model.json");
         LOGGER.log(Level.INFO, "Generated plugins");
 
