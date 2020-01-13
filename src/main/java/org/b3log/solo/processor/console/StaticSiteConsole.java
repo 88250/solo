@@ -43,6 +43,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -88,10 +89,20 @@ public class StaticSiteConsole {
             FileUtils.deleteDirectory(new File(staticSitePath));
             FileUtils.forceMkdir(new File(staticSitePath));
 
+            final URL u = new URL(url);
+
+            final String curScheme = Latkes.getServerScheme();
+            final String curHost = Latkes.getServerHost();
+            final String curPort = Latkes.getServerPort();
+
             // 切换至静态站点生成模式
-            Latkes.setServerScheme("https");
-            Latkes.setServerHost(url);
-            Latkes.setServerPort("");
+            Latkes.setServerScheme(u.getProtocol());
+            Latkes.setServerHost(u.getHost());
+            if (-1 != u.getPort()) {
+                Latkes.setServerPort(String.valueOf(u.getPort()));
+            } else {
+                Latkes.setServerPort("");
+            }
             Solos.GEN_STATIC_SITE = true;
 
             genURI("/tags.html");
@@ -116,9 +127,9 @@ public class StaticSiteConsole {
             genFile("CHANGE_LOGS.md");
 
             // 恢复之前的动态运行模式
-            Latkes.setServerScheme("http");
-            Latkes.setServerHost("localhost");
-            Latkes.setServerPort("8080");
+            Latkes.setServerScheme(curScheme);
+            Latkes.setServerHost(curHost);
+            Latkes.setServerPort(curPort);
             Solos.GEN_STATIC_SITE = false;
 
             LOGGER.log(Level.INFO, "Static site generated [dir=" + staticSitePath + "]");
