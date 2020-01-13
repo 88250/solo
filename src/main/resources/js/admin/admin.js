@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Apr 22, 2019
+ * @version 1.4.0.1, Jan 13, 2020
  */
 
 Util.htmlDecode = function (code) {
@@ -34,11 +34,7 @@ var Admin = function () {
   // 工具栏下的工具
   this.tools = [
     '#page-list', '#theme-list', '#link-list', '#preference',
-    '#user-list', '#plugin-list', '#others', '#category-list']
-  // 多用户时，一般用户不能使用的功能
-  this.adTools = [
-    'link-list', 'preference', 'theme-list', 'page-list',
-    'user-list', 'plugin-list', 'others', 'category-list']
+    '#user-list', '#plugin-list', '#others', '#category-list', "#staticsite"]
 }
 
 $.extend(Admin.prototype, {
@@ -264,9 +260,7 @@ $.extend(Admin.prototype, {
   inited: function () {
     // Removes functions with the current user role
     if (Label.userRole !== 'adminRole') {
-      for (var i = 0; i < this.adTools.length; i++) {
-        $('#tabs').tabs('remove', this.adTools[i])
-      }
+      $('#tools').remove();
     } else {
       // 当前 tab 属于 Tools 时，设其展开
       for (var j = 0; j < this.tools.length; j++) {

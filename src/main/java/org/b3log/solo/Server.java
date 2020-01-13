@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.6, Jan 3, 2020
+ * @version 2.0.0.7, Jan 13, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -373,6 +373,7 @@ public final class Server extends BaseServer {
                 "/admin-category-list.do",
                 "/admin-theme-list.do",
                 "/admin-plugin-list.do",
+                "/admin-staticsite.do",
                 "/admin-main.do",
                 "/admin-about.do"}, adminConsole::showAdminFunctions);
         Dispatcher.get("/console/export/sql", adminConsole::exportSQL);
@@ -425,6 +426,8 @@ public final class Server extends BaseServer {
         Dispatcher.get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins);
         Dispatcher.post("/console/plugin/toSetting", pluginConsole::toSetting);
         Dispatcher.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
+
+
 
         final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
         Dispatcher.get("/console/signs/", preferenceConsole::getSigns);

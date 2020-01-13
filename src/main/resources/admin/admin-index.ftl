@@ -84,7 +84,7 @@
                             </a>
                         </div>
                     </li>
-                    <li>
+                    <li id="tools">
                         <div id="tabToolsTitle" onclick="admin.collapseNav(this)">
                             <span class="icon-setting"></span>
                             ${ToolLabel}
@@ -127,6 +127,11 @@
                                 </div>
                             </li>
                             <li>
+                                <div id="tabs_staticsite">
+                                    <a href="#tools/staticsite">${staticsiteMgmtLabel}</a>
+                                </div>
+                            </li>
+                            <li>
                                 <div id="tabs_others">
                                     <a href="#tools/others/tag">${othersLabel}</a>
                                 </div>
@@ -157,6 +162,7 @@
                 <div id="tabsPanel_user-list" class="fn__none"></div>
                 <div id="tabsPanel_comment-list" class="fn__none"></div>
                 <div id="tabsPanel_plugin-list" class="fn__none"></div>
+                <div id="tabsPanel_staticsite" class="fn__none"></div>
                 <div id="tabsPanel_about" class="fn__none"></div>
             </div>
             <div class="fn__clear"></div>
@@ -184,6 +190,7 @@
         <script src="${staticServePath}/js/admin/categoryList.js"></script>
         <script src="${staticServePath}/js/admin/commentList.js"></script>
         <script src="${staticServePath}/js/admin/plugin.js"></script>
+        <script src="${staticServePath}/js/admin/staticsite.js"></script>
         <script src="${staticServePath}/js/admin/main.js"></script>
         <script src="${staticServePath}/js/admin/about.js"></script>
         <script src="${staticServePath}/js/admin/themeList.js"></script>
