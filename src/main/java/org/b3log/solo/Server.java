@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.7, Jan 13, 2020
+ * @version 2.0.0.8, Jan 13, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -59,7 +59,7 @@ public final class Server extends BaseServer {
     /**
      * Solo version.
      */
-    public static final String VERSION = "3.6.8";
+    public static final String VERSION = "3.7.0";
 
     /**
      * Main.

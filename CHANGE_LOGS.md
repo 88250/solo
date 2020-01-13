@@ -1,3 +1,21 @@
+## v3.7.0 / 2020-01-13
+
+### 引入特性
+
+* [浏览计数插件化](https://github.com/88250/solo/issues/17)
+* [加入社区 IP 黑名单防护](https://github.com/88250/solo/issues/36)
+
+### 改进功能
+
+* [看板娘资源移至社区](https://github.com/88250/solo/issues/34)
+* [密码文章后台不允许其他用户查看](https://github.com/88250/solo/issues/35)
+* [社区备份全部文章](https://github.com/88250/solo/issues/37)
+
+### 修复缺陷
+
+* [pjax 到文章页面，访问数不会 +1](https://github.com/88250/solo/issues/38)
+* [在未开启“允许通过链接访问草稿”时访问草稿报错](https://github.com/88250/solo/issues/40)
+
 ## v3.6.8 / 2020-01-03
 
 ### 引入特性
