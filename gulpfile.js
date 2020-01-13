@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.0, Nov 5, 2019
+ * @version 1.8.0.1, Jan 13, 2020
  */
 
 'use strict'
@@ -90,6 +90,7 @@ function miniAdmin () {
     './src/main/resources/js/admin/others.js',
     './src/main/resources/js/admin/linkList.js',
     './src/main/resources/js/admin/preference.js',
+    './src/main/resources/js/admin/staticsite.js',
     './src/main/resources/js/admin/themeList.js',
     './src/main/resources/js/admin/pluginList.js',
     './src/main/resources/js/admin/userList.js',
