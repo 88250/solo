@@ -50,7 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Dec 14, 2019
+ * @version 1.0.1.3, Jan 13, 2020
  * @since 2.9.5
  */
 @RequestProcessor
@@ -151,7 +151,7 @@ public class OAuthProcessor {
                 final JSONObject initReq = new JSONObject();
                 initReq.put(User.USER_NAME, userName);
                 initReq.put(UserExt.USER_AVATAR, userAvatar);
-                initReq.put(UserExt.USER_B3_KEY, openId);
+                initReq.put(UserExt.USER_B3_KEY, userName);
                 initReq.put(UserExt.USER_GITHUB_ID, openId);
                 initService.init(initReq);
             } else {
@@ -162,7 +162,7 @@ public class OAuthProcessor {
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);
                     addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
                     addUserReq.put(UserExt.USER_GITHUB_ID, openId);
-                    addUserReq.put(UserExt.USER_B3_KEY, openId);
+                    addUserReq.put(UserExt.USER_B3_KEY, userName);
                     try {
                         userMgmtService.addUser(addUserReq);
                     } catch (final Exception e) {
