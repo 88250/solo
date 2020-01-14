@@ -110,10 +110,10 @@
                 </footer>
                 <#if commentable>
                 <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                </#if>
                 <div id="soloComments" class="fn__none">
                     <@comments commentList=articleComments article=article></@comments>
                 </div>
+                </#if>
                 <br>
                 <div id="externalRelevantArticles" class="list"></div>
                 <div id="relevantArticles" class="list"></div>
