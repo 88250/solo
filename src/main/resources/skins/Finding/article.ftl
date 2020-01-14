@@ -101,7 +101,10 @@
                 <#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
                 <div id="externalRelevantArticles" class="fn-wrap"></div>
                 </#if>
-                <@comments commentList=articleComments article=article></@comments>
+                <div id="vcomment" class="fn-wrap" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                <div id="soloComments" style="display: none;">
+                    <@comments commentList=articleComments article=article></@comments>
+                </div>
             </main>
             <#if nextArticlePermalink?? || previousArticlePermalink??>
             <aside class="read-next">
