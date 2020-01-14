@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 3.3.0.0, Nov 12, 2019
+* @version 3.3.0.1, Jan 14, 2020
 */
 @import "reset";
 @import "function";
@@ -613,10 +613,10 @@ button#submitArticle:hover {
 
 /* start common list */
 .small-head {
-  float: left;
-  height: 35px;
-  margin: 3px 9px 0 3px;
-  width: 35px;
+  height: 25px;
+  width: 25px;
+  border-radius: 20px;
+  margin-right: 5px;
 }
 
 #commentTable .table-main td {
@@ -840,6 +840,7 @@ button#submitArticle:hover {
 .table-main table {
   word-break: break-all;
   word-wrap: break-word;
+  table-layout: fixed;
 }
 
 .table-header {

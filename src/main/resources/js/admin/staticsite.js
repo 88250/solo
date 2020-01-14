@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 13, 2020
+ * @version 1.0.0.1, Jan 14, 2020
  */
 
 /* staticsite 相关操作 */
@@ -56,12 +56,10 @@ admin.staticsite = {
 }
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register['staticsite'] = {
   'obj': admin.staticsite,
   'init': admin.staticsite.init,
-  'refresh': function () {
-    admin.clearTip()
-  },
+  'refresh': admin.clearTip,
 }
