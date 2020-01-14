@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 17, 2019
+ * @version 1.1.0.1, Jan 14, 2020
  */
 
 /* comment-list 相关操作 */
@@ -102,7 +102,6 @@ admin.commentList = {
               comments[i].commentName +
               '</a>'
           }
-          commentsData[i].title += '<br/>'
 
           commentsData[i].date = $.bowknot.getDate(comments[i].commentTime)
         }
@@ -148,7 +147,7 @@ admin.commentList = {
 }
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register['comment-list'] = {
   'obj': admin.commentList,
