@@ -18,7 +18,6 @@
 
 -->
 <#macro comments commentList article>
-<#if commentable>
 <div class="share">
     <a class="share-comment" href="#commentForm">
         ${commentList?size}&nbsp;&nbsp;${commentLabel}
@@ -35,6 +34,5 @@
     <h4>${postCommentsLabel}</h4>
     <textarea rows="3" placeholder="${postCommentsLabel}" id="comment"></textarea>
 </div>
-</#if>
 </#if>
 </#macro>

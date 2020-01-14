@@ -108,10 +108,10 @@
                     </div>
                     <#if commentable>
                     <div id="vcomment" style="padding: 10px 0;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                    </#if>
                     <div id="soloComments" style="display: none;">
                         <@comments commentList=articleComments article=article></@comments>
                     </div>
+                    </#if>
                 </div>
                 <#include "side.ftl">
                 <div class="clear"></div>

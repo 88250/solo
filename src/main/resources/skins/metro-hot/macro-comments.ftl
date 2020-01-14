@@ -18,7 +18,6 @@
 
 -->
 <#macro comments commentList article>
-<#if commentable>
 <#if article.commentable>
 <div class="comment-disabled">
     <h3>${postCommentsLabel}</h3>
@@ -47,5 +46,4 @@
 </#if>
 <span id="goTop" onclick="Util.goTop();" data-ico="&#xe042;" class="side-tile"></span>
 <span id="goCmt" onclick="MetroHot.goCmt();" data-ico="&#x005b;" class="side-tile"></span>
-</#if>
 </#macro>

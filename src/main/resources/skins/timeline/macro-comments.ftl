@@ -18,7 +18,6 @@
 
 -->
 <#macro comments commentList article>
-<#if commentable>
 <ul id="comments" class="comments list">
     <#list commentList as comment>
     <#include "common-comment.ftl"/>
@@ -31,7 +30,6 @@
 </div>
 <#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
 <div id="externalRelevantArticles"></div>
-</#if>
 </#if>
 </#if>
 </#macro>

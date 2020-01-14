@@ -86,10 +86,10 @@
     <div class="wrapper">
         <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
     </div>
-    </#if>
     <div id="soloComments" style="display: none;">
         <@comments commentList=articleComments article=article></@comments>
     </div>
+    </#if>
     <div class="article__bottom">
         <div class="wrapper">
             <div class="fn__flex">

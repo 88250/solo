@@ -105,10 +105,10 @@ ${topBarReplacement}
             <div id="externalRelevantArticles"></div>
             <#if commentable>
             <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-            </#if>
             <div id="soloComments" style="display: none;">
                 <@comments commentList=articleComments article=article></@comments>
             </div>
+            </#if>
         </article>
         <#include "side.ftl">
         <div class="clear"></div>

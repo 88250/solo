@@ -18,7 +18,6 @@
 
 -->
 <#macro comments commentList article>
-<#if commentable>
 <div class="comment">
     <div class="wrapper">
         <div class="comment__title">
@@ -35,5 +34,4 @@
         </ul>
     </div>
 </div>
-</#if>
 </#macro>

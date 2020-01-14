@@ -18,7 +18,6 @@
 
 -->
 <#macro comments commentList article>
-<#if commentable>
 <ul class="comments fn-wrap" id="comments">
     <#list commentList as comment>
     <#include "common-comment.ftl"/>
@@ -28,6 +27,5 @@
 <div class="comment-body fn-wrap form">
     <textarea rows="3" placeholder="${postCommentsLabel}" id="comment"></textarea>
 </div>
-</#if>
 </#if>
 </#macro>
