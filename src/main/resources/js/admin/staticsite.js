@@ -47,7 +47,7 @@ admin.staticsite = {
       type: 'PUT',
       cache: false,
       data: JSON.stringify(requestJSONObject),
-      success: function (result, textStatus) {
+      success: function (result) {
         $('#tipMsg').text(result.msg)
         $('#loadMsg').text('')
       },

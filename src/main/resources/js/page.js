@@ -28,6 +28,35 @@ var Page = function (tips) {
 }
 
 $.extend(Page.prototype, {
+  /**
+   * 第三方评论
+   */
+  vcomment: function ( ) {
+    const $vcomment = $('#vcomment')
+    if ($vcomment.length === 0) {
+      return
+    }
+    const vcomment = new Vcomment({
+      id: 'vcomment',
+      postId: $vcomment.data('postid'),
+      url: 'https://hacpai.com',
+      userName: $vcomment.data('name'),
+      currentPage: 1,
+      vditor: {
+        hljsEnable: !Label.luteAvailable,
+        hljsStyle: Label.hljsStyle,
+      },
+      error () {
+        $vcomment.remove()
+        $vcomment.next().show()
+      },
+    })
+
+    vcomment.render()
+  },
+  /**
+   * 分享
+   */
   share: function () {
     var $this = $('.article__share')
     if ($this.length === 0) {
@@ -92,6 +121,7 @@ $.extend(Page.prototype, {
     $('#soloEditorAdd').click(function () {
       that.submitComment()
     })
+    that.vcomment()
   },
   toggleEditor: function (commentId, name) {
     var $editor = $('#soloEditor')

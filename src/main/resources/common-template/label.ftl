@@ -18,6 +18,7 @@
 
 -->
 <script src="https://cdn.jsdelivr.net/npm/uvstat@v1.0.4/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vcmt@v1.0.2/dist/index.min.js"></script>
 <script>
     var Label = {
         servePath: "${servePath}",
