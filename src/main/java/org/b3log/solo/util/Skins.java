@@ -48,7 +48,7 @@ import java.util.stream.Stream;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.9, Nov 22, 2019
+ * @version 1.1.7.0, Jan 14, 2020
  * @since 0.3.1
  */
 public final class Skins {
@@ -220,7 +220,8 @@ public final class Skins {
             final Stream<Path> walk = Files.walk(resourcePath, 1);
             for (final Iterator<Path> it = walk.iterator(); it.hasNext(); ) {
                 final Path file = it.next().getFileName();
-                final String fileName = file.toString();
+                String fileName = file.toString();
+                fileName = StringUtils.replace(fileName, "/", "");
                 if (fileName.startsWith(".") || fileName.endsWith(".md") || "skins".equals(fileName)) {
                     continue;
                 }

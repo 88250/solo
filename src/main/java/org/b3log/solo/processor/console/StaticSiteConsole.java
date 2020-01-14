@@ -86,6 +86,13 @@ public class StaticSiteConsole {
                 return;
             }
 
+            if (Latkes.isInJar()) {
+                context.renderJSON(-1);
+                context.renderMsg("Do not support this feature while running in Jar");
+
+                return;
+            }
+
             FileUtils.deleteDirectory(new File(staticSitePath));
             FileUtils.forceMkdir(new File(staticSitePath));
 
@@ -151,15 +158,21 @@ public class StaticSiteConsole {
      */
     private static String rootPath;
 
-    static {
-        rootPath = StaticSiteConsole.class.getResource("/repository.json").getPath();
-        rootPath = StringUtils.substringBeforeLast(rootPath, "/repository.json");
-    }
-
     /**
      * Path of generate directory.
      */
-    private static final String staticSitePath = StaticSiteConsole.class.getResource("/").getPath() + "static-site";
+    private static String staticSitePath;
+
+
+    static {
+        if (!Latkes.isInJar()) {
+            rootPath = StaticSiteConsole.class.getResource("/repository.json").getPath();
+            rootPath = StringUtils.substringBeforeLast(rootPath, "/repository.json");
+            staticSitePath = StaticSiteConsole.class.getResource("/").getPath() + "static-site";
+        } else {
+            LOGGER.log(Level.INFO, "Do not support export static site when running in jar");
+        }
+    }
 
     private static void genCategories() throws Exception {
         final BeanManager beanManager = BeanManager.getInstance();
