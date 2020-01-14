@@ -133,7 +133,9 @@
         </#if>
         <br>
     </article>
+    <#if commentable>
     <div id="vcomment" style="padding: 30px 60px 30px 50px;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+    </#if>
     <div id="soloComments" style="display: none;">
         <@comments commentList=articleComments article=article></@comments>
     </div>

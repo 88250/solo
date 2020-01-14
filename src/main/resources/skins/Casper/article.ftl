@@ -85,7 +85,9 @@
             <#include "../../common-template/toc.ftl"/>
         </div>
     </#if>
+    <#if commentable>
     <div id="vcomment" class="wrapper" style="padding: 40px 0" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+    </#if>
     <div id="soloComments" style="display: none;">
         <@comments commentList=articleComments article=article></@comments>
     </div>

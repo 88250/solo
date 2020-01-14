@@ -121,7 +121,9 @@
                     <div id="externalRelevantArticles" class="article-relative"></div>
                 </div>
             </div>
+            <#if commentable>
             <div id="vcomment" style="background-color: #ffffff; padding: 10px; margin-bottom: 40px" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+            </#if>
             <div id="soloComments" style="display: none;">
                 <@comments commentList=articleComments article=article></@comments>
             </div>

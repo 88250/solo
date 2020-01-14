@@ -92,7 +92,9 @@
     </div>
     <div class="body--gray post__gray">
         <div class="wrapper comment">
+            <#if commentable>
             <div id="vcomment" style="padding: 30px 0;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+            </#if>
             <div id="soloComments" style="display: none;">
                 <@comments commentList=articleComments article=article></@comments>
             </div>
