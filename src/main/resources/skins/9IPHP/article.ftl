@@ -90,16 +90,6 @@
                             ${articleTag}</a>
                     </#list>
 
-                    <#-- div class="copyright">
-                        ${articleCP1Label}
-                        <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                            ${article.articleTitle}
-                        </a> -
-                        <a href="${servePath}">
-                            ${blogTitle}
-                        </a>
-                    </div -->
-
                     <div class="rel fn-clear ft__center">
                         <#if previousArticlePermalink??>
                             <a href="${servePath}${previousArticlePermalink}" rel="prev"
@@ -118,7 +108,10 @@
                         </#if>
                     </div>
                 </footer>
-                <@comments commentList=articleComments article=article></@comments>
+                <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                <div id="soloComments" class="fn__none">
+                    <@comments commentList=articleComments article=article></@comments>
+                </div>
                 <br>
                 <div id="externalRelevantArticles" class="list"></div>
                 <div id="relevantArticles" class="list"></div>

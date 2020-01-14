@@ -104,7 +104,10 @@
                             <div class="clear"></div>
                             <div id="externalRelevantArticles" class="article-relative"></div>
                         </div>
-                        <@comments commentList=articleComments article=article></@comments>
+                        <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                        <div id="soloComments" style="display: none;">
+                            <@comments commentList=articleComments article=article></@comments>
+                        </div>
                     </div>
                     <div class="main-footer"></div>
                 </div>
