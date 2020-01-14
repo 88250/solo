@@ -51,7 +51,7 @@ import java.util.List;
  * Static site console request processing. HTML 静态站点生成 https://github.com/88250/solo/issues/19
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 13, 2020
+ * @version 1.0.0.1, Jan 14, 2020
  * @since 3.9.0
  */
 @RequestProcessor
@@ -147,27 +147,19 @@ public class StaticSiteConsole {
     }
 
     /**
-     * Name of generate directory.
+     * Source root directory path.
      */
-    private static final String STATIC_SITE = "static-site";
-
-    /**
-     * Source directory path.
-     */
-    private static String sourcePath;
+    private static String rootPath;
 
     static {
-        sourcePath = StaticSiteConsole.class.getResource("/repository.json").getPath();
-        sourcePath = StringUtils.substringBeforeLast(sourcePath, "repository.json");
-        if (StringUtils.contains(sourcePath, "/target/classes/")) {
-            sourcePath = StringUtils.replace(sourcePath, "classes", "solo");
-        }
+        rootPath = StaticSiteConsole.class.getResource("/repository.json").getPath();
+        rootPath = StringUtils.substringBeforeLast(rootPath, "/repository.json");
     }
 
     /**
      * Path of generate directory.
      */
-    private static final String staticSitePath = StaticSiteConsole.class.getResource("/").getPath() + STATIC_SITE;
+    private static final String staticSitePath = StaticSiteConsole.class.getResource("/").getPath() + "static-site";
 
     private static void genCategories() throws Exception {
         final BeanManager beanManager = BeanManager.getInstance();
@@ -289,28 +281,28 @@ public class StaticSiteConsole {
     private static void genSkins() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/skins"));
         FileUtils.forceMkdir(new File(staticSitePath + "/skins"));
-        FileUtils.copyDirectory(new File(sourcePath + "skins"), new File(staticSitePath + "/skins"));
+        FileUtils.copyDirectory(new File(rootPath + "/skins"), new File(staticSitePath + "/skins"));
         LOGGER.log(Level.INFO, "Generated skins");
     }
 
     private static void genJS() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/js"));
         FileUtils.forceMkdir(new File(staticSitePath + "/js"));
-        FileUtils.copyDirectory(new File(sourcePath + "js"), new File(staticSitePath + "/js"));
+        FileUtils.copyDirectory(new File(rootPath + "/js"), new File(staticSitePath + "/js"));
         LOGGER.log(Level.INFO, "Generated js");
     }
 
     private static void genImages() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/images"));
         FileUtils.forceMkdir(new File(staticSitePath + "/images"));
-        FileUtils.copyDirectory(new File(sourcePath + "images"), new File(staticSitePath + "/images"));
+        FileUtils.copyDirectory(new File(rootPath + "/images"), new File(staticSitePath + "/images"));
         LOGGER.log(Level.INFO, "Generated images");
     }
 
     private static void genPlugins() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/plugins"));
         FileUtils.forceMkdir(new File(staticSitePath + "/plugins"));
-        FileUtils.copyDirectory(new File(sourcePath + "plugins"), new File(staticSitePath + "/plugins"));
+        FileUtils.copyDirectory(new File(rootPath + "/plugins"), new File(staticSitePath + "/plugins"));
         genURI("/plugins/kanbanniang/assets/model.json");
         LOGGER.log(Level.INFO, "Generated plugins");
 
@@ -318,8 +310,7 @@ public class StaticSiteConsole {
 
     private static void genFile(final String file) throws Exception {
         FileUtils.forceMkdirParent(new File(staticSitePath + "/" + file));
-        final String staticSitePath = StaticSiteConsole.class.getResource("/" + STATIC_SITE).toURI().getPath();
-        FileUtils.copyFile(new File(sourcePath + "/" + file), new File(staticSitePath + "/" + file));
+        FileUtils.copyFile(new File(rootPath + "/" + file), new File(staticSitePath + "/" + file));
         LOGGER.log(Level.INFO, "Generated a file [" + file + "]");
     }
 
