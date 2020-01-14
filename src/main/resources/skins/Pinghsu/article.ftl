@@ -92,7 +92,10 @@
     </div>
     <div class="body--gray post__gray">
         <div class="wrapper comment">
-            <@comments commentList=articleComments article=article></@comments>
+            <div id="vcomment" style="padding: 30px 0;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+            <div id="soloComments" style="display: none;">
+                <@comments commentList=articleComments article=article></@comments>
+            </div>
 
             <div class="post__list fn__flex">
                 <div class="fn__flex-1">

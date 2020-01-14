@@ -121,7 +121,10 @@ ${topBarReplacement}
                     <#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
                     <div id="externalRelevantArticles"></div>
                     </#if>
-                    <@comments commentList=articleComments article=article></@comments>
+                    <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                    <div id="soloComments" style="display: none;">
+                        <@comments commentList=articleComments article=article></@comments>
+                    </div>
                 </div>
             </div>
             <#if article?? && article.articleToC?? && article.articleToC?size &gt; 0>

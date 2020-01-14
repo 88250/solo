@@ -133,7 +133,10 @@
         </#if>
         <br>
     </article>
-    <@comments commentList=articleComments article=article></@comments>
+    <div id="vcomment" style="padding: 30px 60px 30px 50px;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+    <div id="soloComments" style="display: none;">
+        <@comments commentList=articleComments article=article></@comments>
+    </div>
 
     <#include "footer.ftl">
 
