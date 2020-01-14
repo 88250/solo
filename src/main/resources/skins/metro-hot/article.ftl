@@ -81,7 +81,10 @@
                         ${article.articleSign.signHTML}
                         </#if>
                     </div>
-                    <@comments commentList=articleComments article=article></@comments>
+                    <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                    <div id="soloComments" style="display: none;">
+                        <@comments commentList=articleComments article=article></@comments>
+                    </div>
                     <#include "copyright.ftl"/>
                 </div>
                 <@side isArticle=true />
