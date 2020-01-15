@@ -19,6 +19,7 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -50,7 +51,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.5.0, Oct 14, 2019
+ * @version 1.3.6.0, Jan 15, 2020
  * @since 0.3.5
  */
 @Service
@@ -641,12 +642,13 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getArticlesByArchiveDate(final String archiveDateId, final int currentPageNum, final int pageSize) throws ServiceException {
         try {
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
             final List<JSONObject> ret = new ArrayList<>();
             final String query = "SELECT\n" +
                     "\t*\n" +
                     "FROM\n" +
-                    "\tb3_solo_article AS a,\n" +
-                    "\tb3_solo_archivedate_article aa\n" +
+                    "\t" + tablePrefix + "article AS a,\n" +
+                    "\t" + tablePrefix + "archivedate_article aa\n" +
                     "WHERE\n" +
                     "\taa.archiveDate_oId = ?\n" +
                     "AND a.oId = aa.article_oId\n" +
