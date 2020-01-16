@@ -98,24 +98,6 @@ public class CommentRepository extends AbstractRepository {
     }
 
     /**
-     * Gets post comments recently with the specified fetch.
-     *
-     * @param fetchSize the specified fetch size
-     * @return a list of comments recently, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     */
-    public List<JSONObject> getRecentComments(final int fetchSize) throws RepositoryException {
-        final Query query = new Query().
-                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPage(1, fetchSize).setPageCount(1);
-        final List<JSONObject> ret = getList(query);
-        // Removes unpublished article related comments
-        removeForUnpublishedArticles(ret);
-
-        return ret;
-    }
-
-    /**
      * Gets comments with the specified on id, current page number and
      * page size.
      *

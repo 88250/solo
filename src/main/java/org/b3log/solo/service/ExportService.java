@@ -365,7 +365,6 @@ public class ExportService {
             stat.put("recentArticleTime", articleQueryService.getRecentArticleTime());
             final JSONObject statistic = statisticQueryService.getStatistic();
             stat.put("articleCount", statistic.getLong(Option.ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT));
-            stat.put("commentCount", statistic.getLong(Option.ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
             stat.put("tagCount", tagQueryService.getTagCount());
             stat.put("skin", optionQueryService.getOptionById(Option.ID_C_SKIN_DIR_NAME).optString(Option.OPTION_VALUE));
             stat.put("mobileSkin", optionQueryService.getOptionById(Option.ID_C_MOBILE_SKIN_DIR_NAME).optString(Option.OPTION_VALUE));

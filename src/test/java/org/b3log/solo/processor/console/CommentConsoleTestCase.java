@@ -19,6 +19,7 @@ package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockRequest;
 import org.b3log.solo.MockResponse;
@@ -95,7 +96,7 @@ public class CommentConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void removeArticleComment() throws Exception {
-        final List<JSONObject> recentComments = getCommentRepository().getRecentComments(1);
+        final List<JSONObject> recentComments = getCommentRepository().getList(new Query());
         final JSONObject comment = recentComments.get(0);
         final String commentId = comment.optString(Keys.OBJECT_ID);
 
