@@ -123,9 +123,11 @@
             </div>
             <#if commentable>
             <div id="vcomment" style="background-color: #ffffff; padding: 10px; margin-bottom: 40px" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-            <div id="soloComments" style="display: none;">
-                <@comments commentList=articleComments article=article></@comments>
-            </div>
+                <#if !staticSite>
+                    <div id="soloComments" style="display: none;">
+                        <@comments commentList=articleComments article=article></@comments>
+                    </div>
+                </#if>
             </#if>
         </div>
         <div>

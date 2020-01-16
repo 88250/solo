@@ -103,9 +103,11 @@
                 </#if>
                 <#if commentable>
                 <div id="vcomment" class="fn-wrap" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                <div id="soloComments" style="display: none;">
-                    <@comments commentList=articleComments article=article></@comments>
-                </div>
+                    <#if !staticSite>
+                        <div id="soloComments" style="display: none;">
+                            <@comments commentList=articleComments article=article></@comments>
+                        </div>
+                    </#if>
                 </#if>
             </main>
             <#if nextArticlePermalink?? || previousArticlePermalink??>

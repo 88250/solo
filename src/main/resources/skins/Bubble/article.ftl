@@ -86,9 +86,11 @@
     <div class="wrapper">
         <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
     </div>
-    <div id="soloComments" style="display: none;">
-        <@comments commentList=articleComments article=article></@comments>
-    </div>
+        <#if !staticSite>
+        <div id="soloComments" style="display: none;">
+            <@comments commentList=articleComments article=article></@comments>
+        </div>
+        </#if>
     </#if>
     <div class="article__bottom">
         <div class="wrapper">

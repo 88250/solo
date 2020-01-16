@@ -110,9 +110,11 @@
                 </footer>
                 <#if commentable>
                 <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                <div id="soloComments" class="fn__none">
-                    <@comments commentList=articleComments article=article></@comments>
-                </div>
+                    <#if !staticSite>
+                    <div id="soloComments" class="fn__none">
+                        <@comments commentList=articleComments article=article></@comments>
+                    </div>
+                    </#if>
                 </#if>
                 <br>
                 <div id="externalRelevantArticles" class="list"></div>

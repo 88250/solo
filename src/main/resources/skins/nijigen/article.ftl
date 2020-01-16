@@ -136,9 +136,11 @@
             <div id="vcomment" class="module__content"
                  style="border-radius: 5px;margin-bottom: 30px;box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.2);transition: all .3s;"
                  data-name="${article.authorName}" data-postId="${article.oId}"></div>
-            <div id="soloComments" class="fn__none">
-                <@comments commentList=articleComments article=article></@comments>
-            </div>
+                <#if !staticSite>
+                    <div id="soloComments" class="fn__none">
+                        <@comments commentList=articleComments article=article></@comments>
+                    </div>
+                </#if>
             </#if>
 
             <div class="fn__flex article__relevant">

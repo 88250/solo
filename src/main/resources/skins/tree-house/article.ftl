@@ -106,9 +106,11 @@
                             <div id="vcomment"
                                  style="margin: 88px 100px 0 99px"
                                  data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                            <div id="soloComments" style="display: none;">
-                                <@comments commentList=articleComments article=article></@comments>
-                            </div>
+                                <#if !staticSite>
+                                    <div id="soloComments" style="display: none;">
+                                        <@comments commentList=articleComments article=article></@comments>
+                                    </div>
+                                </#if>
                             </#if>
                         </div>
                         <div class="left side">
