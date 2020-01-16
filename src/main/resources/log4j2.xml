@@ -27,7 +27,7 @@
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout>
-                <pattern>[%highlight{%-5p}]-[%d{yyyy-MM-dd HH:mm:ss}]-[%c:%L]: %m%n</pattern>
+                <pattern>[%-5p]-[%d{yyyy-MM-dd HH:mm:ss}]-[%c:%L]: %m%n</pattern>
             </PatternLayout>
         </Console>
     </Appenders>
