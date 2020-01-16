@@ -60,7 +60,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.13, Jan 9, 2020
+ * @version 1.7.0.14, Jan 16, 2020
  * @since 0.3.1
  */
 @Service
@@ -432,60 +432,6 @@ public class DataModelService {
     }
 
     /**
-     * Fills most view count articles.
-     *
-     * @param dataModel  data model
-     * @param preference the specified preference
-     * @throws ServiceException service exception
-     */
-    public void fillMostViewCountArticles(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
-        Stopwatchs.start("Fill Most View Articles");
-        try {
-            LOGGER.debug("Filling the most view count articles....");
-            final int mostCommentArticleDisplayCnt = preference.getInt(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-            final List<JSONObject> mostViewCountArticles = articleRepository.getMostViewCountArticles(mostCommentArticleDisplayCnt);
-
-            dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
-
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Fills most view count articles failed", e);
-            throw new ServiceException(e);
-        } finally {
-            Stopwatchs.end();
-        }
-    }
-
-    /**
-     * Fills most comments articles.
-     *
-     * @param dataModel  data model
-     * @param preference the specified preference
-     * @throws ServiceException service exception
-     */
-    public void fillMostCommentArticles(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
-        if (!preference.optBoolean(Option.ID_C_COMMENTABLE)) {
-            dataModel.put(Common.MOST_COMMENT_ARTICLES, Collections.emptyList());
-
-            return;
-        }
-
-        Stopwatchs.start("Fill Most CMMTs Articles");
-
-        try {
-            LOGGER.debug("Filling most comment articles....");
-            final int mostCommentArticleDisplayCnt = preference.getInt(Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-            final List<JSONObject> mostCommentArticles = articleRepository.getMostCommentArticles(mostCommentArticleDisplayCnt);
-
-            dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Fills most comment articles failed", e);
-            throw new ServiceException(e);
-        } finally {
-            Stopwatchs.end();
-        }
-    }
-
-    /**
      * Fills post articles recently.
      *
      * @param dataModel  data model
@@ -800,14 +746,6 @@ public class DataModelService {
             if (Templates.hasExpression(template, "<#list recentComments as comment>")) {
                 fillRecentComments(dataModel, preference);
             }
-
-            if (Templates.hasExpression(template, "<#list mostCommentArticles as article>")) {
-                fillMostCommentArticles(dataModel, preference);
-            }
-
-            if (Templates.hasExpression(template, "<#list mostViewCountArticles as article>")) {
-                fillMostViewCountArticles(dataModel, preference);
-            }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Fills side failed", e);
             throw new ServiceException(e);
@@ -845,14 +783,6 @@ public class DataModelService {
 
             if (Templates.hasExpression(template, "<#list recentComments as comment>")) {
                 fillRecentComments(dataModel, preference);
-            }
-
-            if (Templates.hasExpression(template, "<#list mostCommentArticles as article>")) {
-                fillMostCommentArticles(dataModel, preference);
-            }
-
-            if (Templates.hasExpression(template, "<#list mostViewCountArticles as article>")) {
-                fillMostViewCountArticles(dataModel, preference);
             }
 
             if (Templates.hasExpression(template, "<#include \"side.ftl\"/>")) {

@@ -37,7 +37,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.13, Jun 6, 2019
+ * @version 1.1.1.14, Jan 16, 2020
  * @since 0.3.1
  */
 @Repository
@@ -208,40 +208,6 @@ public class ArticleRepository extends AbstractRepository {
                 setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED)).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
                 setPage(1, fetchSize).setPageCount(1);
-
-        return getList(query);
-    }
-
-    /**
-     * Gets most commented and published articles with the specified number.
-     *
-     * @param num the specified number
-     * @return a list of most comment articles, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     */
-    public List<JSONObject> getMostCommentArticles(final int num) throws RepositoryException {
-        final Query query = new Query().
-                addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).
-                addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
-                setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED)).
-                setPage(1, num).setPageCount(1);
-
-        return getList(query);
-    }
-
-    /**
-     * Gets most view count and published articles with the specified number.
-     *
-     * @param num the specified number
-     * @return a list of most view count articles, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     */
-    public List<JSONObject> getMostViewCountArticles(final int num) throws RepositoryException {
-        final Query query = new Query().
-                addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).
-                addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
-                setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED)).
-                setPage(1, num).setPageCount(1);
 
         return getList(query);
     }

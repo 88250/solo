@@ -34,7 +34,7 @@ import java.util.List;
  * {@link ArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Feb 25, 2019
+ * @version 1.0.0.6, Jan 16, 2020
  */
 @Test(suiteName = "repository")
 public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -142,99 +142,6 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject nextArticle = articleRepository.getNextArticle(previousArticle.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(previousArticle);
         Assert.assertEquals(nextArticle.getString(Article.ARTICLE_TITLE), "article title2");
-    }
-
-    /**
-     * Get Most Comment Articles.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = {"add", "previousAndNext"})
-    public void getMostCommentArticles() throws Exception {
-        final ArticleRepository articleRepository = getArticleRepository();
-
-        final JSONObject article = new JSONObject();
-
-        article.put(Article.ARTICLE_TITLE, "article title3");
-        article.put(Article.ARTICLE_ABSTRACT, "article abstract");
-        article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
-        article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-        article.put(Article.ARTICLE_AUTHOR_ID, "1");
-        article.put(Article.ARTICLE_COMMENT_COUNT, 2);
-        article.put(Article.ARTICLE_VIEW_COUNT, 2);
-        article.put(Article.ARTICLE_CONTENT, "article content");
-        article.put(Article.ARTICLE_PERMALINK, "article permalink3");
-        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
-        article.put(Article.ARTICLE_PUT_TOP, false);
-        article.put(Article.ARTICLE_CREATED, new Date().getTime());
-        article.put(Article.ARTICLE_UPDATED, new Date().getTime());
-        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
-        article.put(Article.ARTICLE_VIEW_PWD, "");
-        article.put(Article.ARTICLE_IMG1_URL, Article.getArticleImg1URL(article));
-
-        final Transaction transaction = articleRepository.beginTransaction();
-        articleRepository.add(article);
-        transaction.commit();
-
-        List<JSONObject> mostCommentArticles = articleRepository.getMostCommentArticles(2);
-        Assert.assertNotNull(mostCommentArticles);
-        Assert.assertEquals(mostCommentArticles.size(), 2);
-        Assert.assertEquals(mostCommentArticles.get(0).getInt(Article.ARTICLE_COMMENT_COUNT), 2);
-        Assert.assertEquals(mostCommentArticles.get(1).getInt(Article.ARTICLE_COMMENT_COUNT), 1);
-
-        mostCommentArticles = articleRepository.getMostCommentArticles(1);
-        Assert.assertNotNull(mostCommentArticles);
-        Assert.assertEquals(mostCommentArticles.size(), 1);
-        Assert.assertEquals(mostCommentArticles.get(0).getInt(Article.ARTICLE_COMMENT_COUNT), 2);
-    }
-
-    /**
-     * Get Most View Count Articles
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = {"add", "previousAndNext", "getMostCommentArticles"})
-    public void getMostViewCountArticles() throws Exception {
-        final ArticleRepository articleRepository = getArticleRepository();
-
-        final JSONObject article = new JSONObject();
-
-        article.put(Article.ARTICLE_TITLE, "article title4");
-        article.put(Article.ARTICLE_ABSTRACT, "article abstract");
-        article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
-        article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-        article.put(Article.ARTICLE_AUTHOR_ID, "1");
-        article.put(Article.ARTICLE_COMMENT_COUNT, 3);
-        article.put(Article.ARTICLE_VIEW_COUNT, 3);
-        article.put(Article.ARTICLE_CONTENT, "article content");
-        article.put(Article.ARTICLE_PERMALINK, "article permalink4");
-        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_DRAFT);
-        article.put(Article.ARTICLE_PUT_TOP, false);
-        article.put(Article.ARTICLE_CREATED, new Date().getTime());
-        article.put(Article.ARTICLE_UPDATED, new Date().getTime());
-        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
-        article.put(Article.ARTICLE_VIEW_PWD, "");
-        article.put(Article.ARTICLE_IMG1_URL, Article.getArticleImg1URL(article));
-
-        final Transaction transaction = articleRepository.beginTransaction();
-        articleRepository.add(article);
-        transaction.commit();
-
-        List<JSONObject> mostViewCountArticles = articleRepository.getMostViewCountArticles(2);
-        Assert.assertNotNull(mostViewCountArticles);
-        Assert.assertEquals(mostViewCountArticles.size(), 2);
-        Assert.assertEquals(mostViewCountArticles.get(0).getInt(Article.ARTICLE_VIEW_COUNT), 2);
-        Assert.assertEquals(mostViewCountArticles.get(1).getInt(Article.ARTICLE_VIEW_COUNT), 1);
-
-        mostViewCountArticles = articleRepository.getMostViewCountArticles(1);
-        Assert.assertNotNull(mostViewCountArticles);
-        Assert.assertEquals(mostViewCountArticles.size(), 1);
-        Assert.assertEquals(mostViewCountArticles.get(0).getInt(Article.ARTICLE_VIEW_COUNT), 2);
-
     }
 
     /**
