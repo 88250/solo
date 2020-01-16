@@ -18,14 +18,15 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.handler.Handler;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
@@ -48,7 +49,7 @@ public class PermalinkHandler implements Handler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PermalinkHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(PermalinkHandler.class);
 
     /**
      * Whether initialization info reported.
@@ -72,7 +73,7 @@ public class PermalinkHandler implements Handler {
             final String contextPath = Latkes.getContextPath();
             final String permalink = StringUtils.substringAfter(requestURI, contextPath);
             if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
-                LOGGER.log(Level.DEBUG, "Skip permalink handling request [URI={0}]", permalink);
+                LOGGER.log(Level.DEBUG, "Skip permalink handling request [URI={}]", permalink);
                 context.handle();
 
                 return;
@@ -81,7 +82,7 @@ public class PermalinkHandler implements Handler {
             final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
             article = articleRepository.getByPermalink(permalink);
             if (null == article) {
-                LOGGER.log(Level.DEBUG, "Not found article with permalink [{0}]", permalink);
+                LOGGER.log(Level.DEBUG, "Not found article with permalink [{}]", permalink);
                 context.handle();
 
                 return;

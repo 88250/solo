@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
@@ -45,7 +46,7 @@ public class CategoryMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CategoryMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CategoryMgmtService.class);
 
     /**
      * Category repository.
@@ -87,7 +88,7 @@ public class CategoryMgmtService {
                     transaction.rollback();
                 }
 
-                LOGGER.log(Level.WARN, "Cant not find the target category of source category [order={0}]", srcCategoryOrder);
+                LOGGER.log(Level.WARN, "Cant not find the target category of source category [order={}]", srcCategoryOrder);
 
                 return;
             }

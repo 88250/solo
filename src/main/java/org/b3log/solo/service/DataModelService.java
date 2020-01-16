@@ -20,6 +20,9 @@ package org.b3log.solo.service;
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
@@ -27,8 +30,6 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.Role;
@@ -68,7 +69,7 @@ public class DataModelService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(DataModelService.class);
+    private static final Logger LOGGER = LogManager.getLogger(DataModelService.class);
 
     /**
      * Article repository.
@@ -395,7 +396,7 @@ public class DataModelService {
                     if (!dateString.equals(lastDateString)) {
                         archiveDates2.add(archiveDate);
                     } else {
-                        LOGGER.log(Level.DEBUG, "Found a duplicated archive date [{0}]", dateString);
+                        LOGGER.log(Level.DEBUG, "Found a duplicated archive date [{}]", dateString);
                     }
                 }
             }
@@ -828,7 +829,7 @@ public class DataModelService {
                                  final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
         try {
-            LOGGER.log(Level.DEBUG, "Filling user template[name{0}]", template.getName());
+            LOGGER.log(Level.DEBUG, "Filling user template[name{}]", template.getName());
 
             if (Templates.hasExpression(template, "<#list links as link>")) {
                 fillLinks(dataModel);

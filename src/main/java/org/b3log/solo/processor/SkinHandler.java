@@ -20,13 +20,14 @@ package org.b3log.solo.processor;
 import eu.bitwalker.useragentutils.BrowserType;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.handler.Handler;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
@@ -46,7 +47,7 @@ public class SkinHandler implements Handler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SkinHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(SkinHandler.class);
 
     @Override
     public void handle(final RequestContext context) {

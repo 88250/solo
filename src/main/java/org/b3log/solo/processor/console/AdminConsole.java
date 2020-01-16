@@ -21,6 +21,9 @@ import jodd.io.ZipUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
@@ -31,8 +34,6 @@ import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
@@ -53,6 +54,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -69,7 +71,7 @@ public class AdminConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AdminConsole.class);
+    private static final Logger LOGGER = LogManager.getLogger(AdminConsole.class);
 
     /**
      * Language service.
@@ -280,7 +282,7 @@ public class AdminConsole {
 
         try {
             final JSONObject json = exportService.getJSONs();
-            final byte[] data = json.toString(4).getBytes("UTF-8");
+            final byte[] data = json.toString(4).getBytes(StandardCharsets.UTF_8);
 
             try (final OutputStream output = new FileOutputStream(localFile)) {
                 IOUtils.write(data, output);

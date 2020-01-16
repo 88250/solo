@@ -19,9 +19,10 @@ package org.b3log.solo.util;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.solo.model.Common;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public final class GitHubs {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(GitHubs.class);
+    private static final Logger LOGGER = LogManager.getLogger(GitHubs.class);
 
     /**
      * Gets GitHub repos.

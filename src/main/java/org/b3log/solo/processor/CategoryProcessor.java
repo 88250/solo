@@ -17,6 +17,9 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
@@ -26,8 +29,6 @@ import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -59,7 +60,7 @@ public class CategoryProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CategoryProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(CategoryProcessor.class);
 
     /**
      * DataModelService.
@@ -167,7 +168,7 @@ public class CategoryProcessor {
             String categoryURI = context.pathVar("categoryURI");
             categoryURI = URLs.encode(categoryURI);
             final int currentPageNum = Paginator.getPage(context);
-            LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
+            LOGGER.log(Level.DEBUG, "Category [URI={}, currentPageNum={}]", categoryURI, currentPageNum);
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {
                 context.sendError(404);

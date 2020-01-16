@@ -17,6 +17,9 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
@@ -24,8 +27,6 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Paginator;
@@ -54,7 +55,7 @@ public class TagProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(TagProcessor.class);
 
     /**
      * DataModelService.
@@ -111,7 +112,7 @@ public class TagProcessor {
         try {
             String tagTitle = context.pathVar("tagTitle");
             final int currentPageNum = Paginator.getPage(context);
-            LOGGER.log(Level.DEBUG, "Tag [title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
+            LOGGER.log(Level.DEBUG, "Tag [title={}, currentPageNum={}]", tagTitle, currentPageNum);
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
             if (null == result) {
                 context.sendError(404);

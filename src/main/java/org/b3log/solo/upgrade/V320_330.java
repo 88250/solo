@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.upgrade;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
@@ -38,7 +39,7 @@ public final class V320_330 {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(V320_330.class);
+    private static final Logger LOGGER = LogManager.getLogger(V320_330.class);
 
     /**
      * Performs upgrade from v3.2.0 to v3.3.0.

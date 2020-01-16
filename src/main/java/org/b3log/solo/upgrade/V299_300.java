@@ -17,11 +17,12 @@
  */
 package org.b3log.solo.upgrade;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.util.CollectionUtils;
@@ -48,7 +49,7 @@ public final class V299_300 {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(V299_300.class);
+    private static final Logger LOGGER = LogManager.getLogger(V299_300.class);
 
     /**
      * Performs upgrade from v2.9.9 to v3.0.0.

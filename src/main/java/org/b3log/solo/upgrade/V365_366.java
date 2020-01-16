@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.upgrade;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.solo.model.Option;
@@ -42,7 +43,7 @@ public final class V365_366 {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(V365_366.class);
+    private static final Logger LOGGER = LogManager.getLogger(V365_366.class);
 
     /**
      * Performs upgrade from v3.6.5 to v3.6.6.

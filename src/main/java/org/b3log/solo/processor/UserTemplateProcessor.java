@@ -19,6 +19,9 @@ package org.b3log.solo.processor;
 
 import freemarker.template.Template;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
@@ -29,8 +32,6 @@ import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.TextHtmlRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Option;
@@ -62,7 +63,7 @@ public class UserTemplateProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleProcessor.class);
 
     /**
      * DataModelService.
@@ -112,7 +113,7 @@ public class UserTemplateProcessor {
             return;
         }
 
-        LOGGER.log(Level.DEBUG, "Shows page [requestURI={0}, templateName={1}]", requestURI, templateName);
+        LOGGER.log(Level.DEBUG, "Shows page [requestURI={}, templateName={}]", requestURI, templateName);
 
         final Request request = context.getRequest();
         final Response response = context.getResponse();

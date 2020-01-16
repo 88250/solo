@@ -20,11 +20,12 @@ package org.b3log.solo.service;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
@@ -49,7 +50,7 @@ public class ImportService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ImportService.class);
+    private static final Logger LOGGER = LogManager.getLogger(ImportService.class);
 
     /**
      * Default tag.

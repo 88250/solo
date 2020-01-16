@@ -17,9 +17,10 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.util.Solos;
@@ -41,7 +42,7 @@ public class CronMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CronMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CronMgmtService.class);
 
     /**
      * Cron thread pool.

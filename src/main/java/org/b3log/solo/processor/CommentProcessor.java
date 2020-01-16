@@ -18,6 +18,9 @@
 package org.b3log.solo.processor;
 
 import freemarker.template.Template;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
@@ -25,8 +28,6 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Article;
@@ -59,7 +60,7 @@ public class CommentProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(CommentProcessor.class);
 
     /**
      * Language service.
@@ -137,7 +138,7 @@ public class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+            LOGGER.log(Level.WARN, "Can't add comment[msg={}]", jsonObject.optString(Keys.MSG));
             return;
         }
 

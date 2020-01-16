@@ -19,12 +19,13 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -56,7 +57,7 @@ public class CommentMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CommentMgmtService.class);
 
     /**
      * Minimum length of comment name.
@@ -179,7 +180,7 @@ public class CommentMgmtService {
 
             String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
-                LOGGER.log(Level.WARN, "Comment name is too long [{0}]", commentName);
+                LOGGER.log(Level.WARN, "Comment name is too long [{}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
 
                 return ret;
@@ -202,7 +203,7 @@ public class CommentMgmtService {
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
 
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
-                LOGGER.log(Level.WARN, "Comment conent length is invalid[{0}]", commentContent.length());
+                LOGGER.log(Level.WARN, "Comment conent length is invalid[{}]", commentContent.length());
                 ret.put(Keys.MSG, langPropsService.get("commentContentCannotEmptyLabel"));
 
                 return ret;
@@ -300,7 +301,7 @@ public class CommentMgmtService {
 
                     ret.put(Common.IS_REPLY, true);
                 } else {
-                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                    LOGGER.log(Level.WARN, "Not found orginal comment[id={}] of reply[name={}, content={}]",
                             originalCommentId, commentName, commentContent);
                 }
             }

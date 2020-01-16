@@ -17,17 +17,14 @@
  */
 package org.b3log.solo.upgrade;
 
-import org.b3log.latke.Latkes;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Upgrade script from v3.6.7 to v3.6.8.
@@ -41,7 +38,7 @@ public final class V367_368 {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(V367_368.class);
+    private static final Logger LOGGER = LogManager.getLogger(V367_368.class);
 
     /**
      * Performs upgrade from v3.6.7 to v3.6.8.

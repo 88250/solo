@@ -18,14 +18,15 @@
 package org.b3log.solo.event;
 
 import jodd.http.HttpRequest;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.Article;
@@ -51,7 +52,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(B3CommentSender.class);
+    private static final Logger LOGGER = LogManager.getLogger(B3CommentSender.class);
 
     /**
      * Option query service.
@@ -75,7 +76,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
 
-        LOGGER.log(Level.DEBUG, "Processing an event [type={0}, data={1}] in listener [className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event [type={}, data={}] in listener [className={}]",
                 event.getType(), data, B3ArticleSender.class.getName());
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);

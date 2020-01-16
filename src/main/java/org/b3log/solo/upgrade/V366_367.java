@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.upgrade;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
@@ -41,7 +42,7 @@ public final class V366_367 {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(V366_367.class);
+    private static final Logger LOGGER = LogManager.getLogger(V366_367.class);
 
     /**
      * Performs upgrade from v3.6.6 to v3.6.7.

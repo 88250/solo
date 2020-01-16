@@ -19,9 +19,7 @@ package org.b3log.solo.model.atom;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.XMLs;
-import org.b3log.solo.processor.FeedProcessor;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,11 +44,6 @@ public final class Feed {
      * Time zone id.
      */
     public static final String TIME_ZONE_ID = "Asia/Shanghai";
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class);
 
     /**
      * Link variable.

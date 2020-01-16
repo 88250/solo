@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
@@ -47,7 +48,7 @@ public class LinkQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(LinkQueryService.class);
 
     /**
      * Link repository.

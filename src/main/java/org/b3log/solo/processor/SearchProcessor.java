@@ -19,6 +19,9 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
@@ -28,8 +31,6 @@ import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.TextXmlRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Paginator;
@@ -46,6 +47,7 @@ import org.jsoup.safety.Whitelist;
 import org.owasp.encoder.Encode;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +66,7 @@ public class SearchProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SearchProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(SearchProcessor.class);
 
     /**
      * Article query service.
@@ -108,7 +110,7 @@ public class SearchProcessor {
 
         try {
             final InputStream resourceAsStream = SearchProcessor.class.getResourceAsStream("/opensearch.xml");
-            String content = IOUtils.toString(resourceAsStream, "UTF-8");
+            String content = IOUtils.toString(resourceAsStream, StandardCharsets.UTF_8);
             final JSONObject preference = optionQueryService.getPreference();
             content = StringUtils.replace(content, "${blogTitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_TITLE), Whitelist.none()));
             content = StringUtils.replace(content, "${blogSubtitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_SUBTITLE), Whitelist.none()));
