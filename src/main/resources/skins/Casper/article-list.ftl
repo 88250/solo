@@ -70,7 +70,7 @@
                 </a>
                 <#if article.articleCommentCount != 0 && commentable>
                 <a class="item__meta" href="${servePath}${article.articlePermalink}#comments">
-                    ${article.articleCommentCount} ${commentLabel}
+                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                 </a>
                 <#else>
                     <a class="item__meta" href="${servePath}${article.articlePermalink}">

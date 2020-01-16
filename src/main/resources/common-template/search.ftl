@@ -59,7 +59,7 @@
                     ${article.articleCreateDate?string("yyyy-MM-dd")}
                     </time>
                     &nbsp;
-                ${article.articleCommentCount} ${commentLabel}
+                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                     &nbsp;
                     <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
                 </div>

@@ -118,7 +118,7 @@ admin.articleList = {
             + articles[i].articleTitle + '</a><span class=\'table-tag\'>' +
             articles[i].articleTags + '</span>'
           articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime)
-          articleData[i].comments = articles[i].articleCommentCount
+          articleData[i].comments = `<span data-uvstatcmt="${articles[i].oId}">${articles[i].articleCommentCount}</span>`
           articleData[i].articleViewCount = '<span data-uvstaturl="' +
             Label.servePath + articles[i].articlePermalink + '">' +
             articles[i].articleViewCount + '</span>'
@@ -145,6 +145,7 @@ admin.articleList = {
           result.pagination)
 
         Util.uvstat.renderStat()
+        Util.uvstat.renderCmtStat()
 
         $('#loadMsg').text('')
       },

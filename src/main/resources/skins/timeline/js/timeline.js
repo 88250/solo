@@ -328,6 +328,7 @@ var timeline = {
                 });
 
                 Util.uvstat.renderStat()
+                Util.uvstat.renderCmtStat()
             }
         });
     },

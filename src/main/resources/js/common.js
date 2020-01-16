@@ -36,6 +36,7 @@ var Util = {
     Util.uvstat = new Uvstat()
     Util.uvstat.addStat()
     Util.uvstat.renderStat()
+    Util.uvstat.renderCmtStat()
   },
   /**
    * 是否为文章页面
@@ -109,6 +110,7 @@ var Util = {
           Util.parseLanguage()
           Util.uvstat.addStat()
           Util.uvstat.renderStat()
+          Util.uvstat.renderCmtStat()
           cb && cb()
         },
       })
