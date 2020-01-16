@@ -17,9 +17,10 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
@@ -48,7 +49,7 @@ public class PluginQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(PluginQueryService.class);
 
     /**
      * Plugin repository.

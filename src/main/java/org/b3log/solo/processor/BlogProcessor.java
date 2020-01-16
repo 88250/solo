@@ -19,6 +19,9 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
@@ -27,8 +30,6 @@ import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.solo.Server;
@@ -39,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Blog processor.
@@ -53,7 +55,7 @@ public class BlogProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(BlogProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(BlogProcessor.class);
 
     /**
      * Article query service.
@@ -92,7 +94,7 @@ public class BlogProcessor {
 
     static {
         try (final InputStream tplStream = BlogProcessor.class.getResourceAsStream("/manifest.json.tpl")) {
-            PWA_MANIFESTO_JSON = IOUtils.toString(tplStream, "UTF-8");
+            PWA_MANIFESTO_JSON = IOUtils.toString(tplStream, StandardCharsets.UTF_8);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Loads PWA manifest.json template failed", e);
         }

@@ -19,6 +19,9 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
@@ -27,8 +30,6 @@ import org.b3log.latke.http.Response;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -59,7 +60,7 @@ public class OAuthProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(OAuthProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(OAuthProcessor.class);
 
     /**
      * OAuth parameters - state.
@@ -207,6 +208,6 @@ public class OAuthProcessor {
 
         Solos.login(user, response);
         context.sendRedirect(referer);
-        LOGGER.log(Level.INFO, "Logged in [name={0}, remoteAddr={1}] with oauth", userName, Requests.getRemoteAddr(request));
+        LOGGER.log(Level.INFO, "Logged in [name={}, remoteAddr={}] with oauth", userName, Requests.getRemoteAddr(request));
     }
 }

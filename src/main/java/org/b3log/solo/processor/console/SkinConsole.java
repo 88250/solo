@@ -17,6 +17,9 @@
  */
 package org.b3log.solo.processor.console;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Cookie;
@@ -26,8 +29,6 @@ import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Common;
@@ -54,7 +55,7 @@ public class SkinConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SkinConsole.class);
+    private static final Logger LOGGER = LogManager.getLogger(SkinConsole.class);
 
     /**
      * Skin management service.
@@ -112,7 +113,7 @@ public class SkinConsole {
                 final JSONObject s = new JSONObject();
                 final String name = Latkes.getSkinName(dirName);
                 if (null == name) {
-                    LOGGER.log(Level.WARN, "The directory [{0}] does not contain any skin, ignored it", dirName);
+                    LOGGER.log(Level.WARN, "The directory [{}] does not contain any skin, ignored it", dirName);
 
                     continue;
                 }

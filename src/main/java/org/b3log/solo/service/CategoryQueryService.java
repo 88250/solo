@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
@@ -53,7 +54,7 @@ public class CategoryQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CategoryQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CategoryQueryService.class);
 
     /**
      * Category repository.
@@ -138,9 +139,6 @@ public class CategoryQueryService {
     public JSONObject getByURI(final String categoryURI) throws ServiceException {
         try {
             final JSONObject ret = categoryRepository.getByURI(categoryURI);
-            if (null == ret) {
-                return null;
-            }
 
             return ret;
         } catch (final RepositoryException e) {

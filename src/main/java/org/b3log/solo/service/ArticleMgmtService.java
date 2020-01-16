@@ -20,12 +20,13 @@ package org.b3log.solo.service;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -61,7 +62,7 @@ public class ArticleMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleMgmtService.class);
 
     /**
      * Article query service.
@@ -390,7 +391,7 @@ public class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.ERROR, "Can't put the article[oId{0}] to top", articleId);
+            LOGGER.log(Level.ERROR, "Can't put the article[oId{}] to top", articleId);
             throw new ServiceException(e);
         }
     }
@@ -774,7 +775,7 @@ public class ArticleMgmtService {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(newTagTitle, oldTags)) {
-                LOGGER.log(Level.DEBUG, "Tag need to add[title={0}]", newTagTitle);
+                LOGGER.log(Level.DEBUG, "Tag need to add[title={}]", newTagTitle);
                 tagsNeedToAdd.add(newTag);
             } else {
                 tagsUnchanged.add(newTag);
@@ -784,14 +785,14 @@ public class ArticleMgmtService {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(oldTagTitle, newTags)) {
-                LOGGER.log(Level.DEBUG, "Tag dropped[title={0}]", oldTag);
+                LOGGER.log(Level.DEBUG, "Tag dropped[title={}]", oldTag);
                 tagsDropped.add(oldTag);
             } else {
                 tagsUnchanged.remove(oldTag);
             }
         }
 
-        LOGGER.log(Level.DEBUG, "Tags unchanged [{0}]", tagsUnchanged);
+        LOGGER.log(Level.DEBUG, "Tags unchanged [{}]", tagsUnchanged);
 
         final String[] tagIdsDropped = new String[tagsDropped.size()];
         for (int i = 0; i < tagIdsDropped.length; i++) {
@@ -886,7 +887,7 @@ public class ArticleMgmtService {
             String tagId;
 
             if (null == tag) {
-                LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
+                LOGGER.log(Level.TRACE, "Found a new tag[title={}] in article[title={}]",
                         tagTitle, article.optString(Article.ARTICLE_TITLE));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -894,7 +895,7 @@ public class ArticleMgmtService {
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
+                LOGGER.log(Level.TRACE, "Found a existing tag[title={}, id={}] in article[title={}]",
                         tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE));
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);

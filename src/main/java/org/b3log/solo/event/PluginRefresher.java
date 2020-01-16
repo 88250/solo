@@ -17,12 +17,13 @@
  */
 package org.b3log.solo.event;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
@@ -44,13 +45,13 @@ public class PluginRefresher extends AbstractEventListener<List<AbstractPlugin>>
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginRefresher.class);
+    private static final Logger LOGGER = LogManager.getLogger(PluginRefresher.class);
 
     @Override
     public void action(final Event<List<AbstractPlugin>> event) {
         final List<AbstractPlugin> plugins = event.getData();
 
-        LOGGER.log(Level.DEBUG, "Processing an event [type={0}, data={1}] in listener [className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event [type={}, data={}] in listener [className={}]",
                 event.getType(), plugins, PluginRefresher.class.getName());
 
         final BeanManager beanManager = BeanManager.getInstance();

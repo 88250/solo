@@ -21,14 +21,15 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Cookie;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
@@ -56,7 +57,7 @@ public final class Skins {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Skins.class);
+    private static final Logger LOGGER = LogManager.getLogger(Skins.class);
 
     /**
      * FreeMarker configuration.
@@ -162,7 +163,7 @@ public final class Skins {
                 final String country = Locales.getCountry(localeString);
                 final InputStream inputStream = Skins.class.getResourceAsStream("/skins/" + currentSkinDirName + "/lang/lang_" + language + '_' + country + ".properties");
                 if (null != inputStream) {
-                    LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
+                    LOGGER.log(Level.DEBUG, "Loading skin [dirName={}, locale={}]", currentSkinDirName, localeString);
                     final Properties props = new Properties();
                     props.load(inputStream);
                     inputStream.close();
@@ -174,7 +175,7 @@ public final class Skins {
                     }
 
                     LANG_MAP.put(langName, langs);
-                    LOGGER.log(Level.DEBUG, "Loaded skin [dirName={0}, locale={1}, keyCount={2}]", currentSkinDirName, localeString, langs.size());
+                    LOGGER.log(Level.DEBUG, "Loaded skin [dirName={}, locale={}, keyCount={}]", currentSkinDirName, localeString, langs.size());
                 }
             }
 

@@ -17,13 +17,14 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.Cookie;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -63,7 +64,7 @@ public class StatisticMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(StatisticMgmtService.class);
 
     /**
      * Online visitor expiration in 5 minutes.
@@ -112,11 +113,11 @@ public class StatisticMgmtService {
 
             if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
                 iterator.remove();
-                LOGGER.log(Level.TRACE, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
+                LOGGER.log(Level.TRACE, "Removed online visitor[ip={}]", onlineVisitor.getKey());
             }
         }
 
-        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.DEBUG, "Current online visitor count [{}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -227,7 +228,7 @@ public class StatisticMgmtService {
 //                return;
 //            }
 //
-//            LOGGER.log(Level.TRACE, "Before inc blog view count is [{0}]", statistic);
+//            LOGGER.log(Level.TRACE, "Before inc blog view count is [{}]", statistic);
 //
 //            statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
 //
@@ -244,7 +245,7 @@ public class StatisticMgmtService {
 //            return;
 //        }
 //
-//        LOGGER.log(Level.TRACE, "Inced blog view count[statistic={0}]", statistic);
+//        LOGGER.log(Level.TRACE, "Inced blog view count[statistic={}]", statistic);
     }
 
     /**
@@ -258,9 +259,9 @@ public class StatisticMgmtService {
         }
 
         final String remoteAddr = Requests.getRemoteAddr(request);
-        LOGGER.log(Level.DEBUG, "Current request [IP={0}]", remoteAddr);
+        LOGGER.log(Level.DEBUG, "Current request [IP={}]", remoteAddr);
         ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
-        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.DEBUG, "Current online visitor count [{}]", ONLINE_VISITORS.size());
     }
 
     /**

@@ -21,12 +21,13 @@ import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.*;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
@@ -59,7 +60,7 @@ public final class Solos {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Solos.class);
+    private static final Logger LOGGER = LogManager.getLogger(Solos.class);
 
     /**
      * Favicon API.

@@ -19,6 +19,9 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
@@ -30,8 +33,6 @@ import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.http.renderer.TextHtmlRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -64,7 +65,7 @@ public class ArticleProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleProcessor.class);
 
     /**
      * Article query service.
@@ -585,7 +586,7 @@ public class ArticleProcessor {
         try {
             final String authorId = context.pathVar("author");
             final int currentPageNum = Paginator.getPage(request);
-            LOGGER.log(Level.DEBUG, "Request author articles [authorId={0}, currentPageNum={1}]", authorId, currentPageNum);
+            LOGGER.log(Level.DEBUG, "Request author articles [authorId={}, currentPageNum={}]", authorId, currentPageNum);
 
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
@@ -646,10 +647,10 @@ public class ArticleProcessor {
         try {
             final int currentPageNum = Paginator.getPage(request);
             final String archiveDateString = context.pathVar("yyyy") + "/" + context.pathVar("MM");
-            LOGGER.log(Level.DEBUG, "Request archive date [string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
+            LOGGER.log(Level.DEBUG, "Request archive date [string={}, currentPageNum={}]", archiveDateString, currentPageNum);
             final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
             if (null == result) {
-                LOGGER.log(Level.DEBUG, "Can not find articles for the specified archive date[string={0}]", archiveDateString);
+                LOGGER.log(Level.DEBUG, "Can not find articles for the specified archive date[string={}]", archiveDateString);
                 context.sendError(404);
 
                 return;
@@ -704,12 +705,12 @@ public class ArticleProcessor {
         }
 
         final String articleId = article.optString(Keys.OBJECT_ID);
-        LOGGER.log(Level.DEBUG, "Article [id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Article [id={}]", articleId);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "article.ftl");
 
         try {
-            LOGGER.log(Level.TRACE, "Article [title={0}]", article.getString(Article.ARTICLE_TITLE));
+            LOGGER.log(Level.TRACE, "Article [title={}]", article.getString(Article.ARTICLE_TITLE));
             articleQueryService.markdown(article);
 
             article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));

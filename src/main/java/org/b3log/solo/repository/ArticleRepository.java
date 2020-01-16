@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.repository;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.cache.ArticleCache;
@@ -45,7 +46,7 @@ public class ArticleRepository extends AbstractRepository {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleRepository.class);
+    private static final Logger LOGGER = LogManager.getLogger(ArticleRepository.class);
 
     /**
      * Random range.
@@ -107,7 +108,7 @@ public class ArticleRepository extends AbstractRepository {
 
         final double mid = Math.random() + RANDOM_RANGE;
 
-        LOGGER.log(Level.TRACE, "Random mid[{0}]", mid);
+        LOGGER.log(Level.TRACE, "Random mid[{}]", mid);
 
         Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),

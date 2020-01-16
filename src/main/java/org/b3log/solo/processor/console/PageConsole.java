@@ -18,6 +18,9 @@
 package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
@@ -25,8 +28,6 @@ import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Common;
@@ -52,7 +53,7 @@ public class PageConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageConsole.class);
+    private static final Logger LOGGER = LogManager.getLogger(PageConsole.class);
 
     /**
      * User query service.

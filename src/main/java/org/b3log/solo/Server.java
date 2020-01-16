@@ -19,13 +19,14 @@ package org.b3log.solo;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.BaseServer;
 import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.Transaction;
@@ -54,7 +55,7 @@ public final class Server extends BaseServer {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Server.class);
+    private static final Logger LOGGER = LogManager.getLogger(Server.class);
 
     /**
      * Solo version.
@@ -271,7 +272,7 @@ public final class Server extends BaseServer {
         }));
 
         Stopwatchs.end();
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+        LOGGER.log(Level.DEBUG, "Stopwatch: {}{}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
         Stopwatchs.release();
 
         server.start(Integer.parseInt(portArg));
@@ -426,7 +427,6 @@ public final class Server extends BaseServer {
         Dispatcher.get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins);
         Dispatcher.post("/console/plugin/toSetting", pluginConsole::toSetting);
         Dispatcher.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
-
 
 
         final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);

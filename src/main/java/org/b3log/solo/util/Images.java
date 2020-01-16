@@ -20,8 +20,9 @@ package org.b3log.solo.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public final class Images {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Images.class);
+    private static final Logger LOGGER = LogManager.getLogger(Images.class);
 
     /**
      * Community file service URL.

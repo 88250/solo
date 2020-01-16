@@ -19,11 +19,12 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.PluginManager;
@@ -61,7 +62,7 @@ public class InitService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InitService.class);
+    private static final Logger LOGGER = LogManager.getLogger(InitService.class);
 
     /**
      * Option repository.
@@ -199,7 +200,7 @@ public class InitService {
 
         final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
         for (final CreateTableResult createTableResult : createTableResults) {
-            LOGGER.log(Level.DEBUG, "Creates table result [tableName={0}, isSuccess={1}]",
+            LOGGER.log(Level.DEBUG, "Creates table result [tableName={}, isSuccess={}]",
                     createTableResult.getName(), createTableResult.isSuccess());
         }
     }
@@ -388,7 +389,7 @@ public class InitService {
             final String tagTitle = tagTitle1.trim();
             final JSONObject tag = new JSONObject();
 
-            LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]", tagTitle, article.optString(Article.ARTICLE_TITLE));
+            LOGGER.log(Level.TRACE, "Found a new tag[title={}] in article[title={}]", tagTitle, article.optString(Article.ARTICLE_TITLE));
             tag.put(Tag.TAG_TITLE, tagTitle);
             final String tagId = tagRepository.add(tag);
             tag.put(Keys.OBJECT_ID, tagId);

@@ -17,9 +17,10 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -43,7 +44,7 @@ public class StatisticQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(StatisticQueryService.class);
 
     /**
      * Option query service.

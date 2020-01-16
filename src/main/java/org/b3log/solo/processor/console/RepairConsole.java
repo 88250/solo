@@ -17,14 +17,15 @@
  */
 package org.b3log.solo.processor.console;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.TextHtmlRenderer;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
@@ -53,7 +54,7 @@ public class RepairConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RepairConsole.class);
+    private static final Logger LOGGER = LogManager.getLogger(RepairConsole.class);
 
     /**
      * Option query service.

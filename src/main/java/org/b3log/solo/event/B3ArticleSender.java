@@ -20,14 +20,15 @@ package org.b3log.solo.event;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.Article;
@@ -56,12 +57,12 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(B3ArticleSender.class);
+    private static final Logger LOGGER = LogManager.getLogger(B3ArticleSender.class);
 
     @Override
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.DEBUG, "Processing an event [type={0}, data={1}] in listener [className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event [type={}, data={}] in listener [className={}]",
                 event.getType(), data, B3ArticleSender.class.getName());
 
         pushArticleToRhy(data);
@@ -77,19 +78,19 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final String title = originalArticle.getString(Article.ARTICLE_TITLE);
             if (Article.ARTICLE_STATUS_C_PUBLISHED != originalArticle.optInt(Article.ARTICLE_STATUS)) {
-                LOGGER.log(Level.INFO, "Ignored push a draft [title={0}] to Rhy", title);
+                LOGGER.log(Level.INFO, "Ignored push a draft [title={}] to Rhy", title);
 
                 return;
             }
 
             if (StringUtils.isNotBlank(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
-                LOGGER.log(Level.INFO, "Article [title={0}] is a password article, ignored push to Rhy", title);
+                LOGGER.log(Level.INFO, "Article [title={}] is a password article, ignored push to Rhy", title);
 
                 return;
             }
 
             if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)) {
-                LOGGER.log(Level.INFO, "Article [title={0}] push flag [postToCommunity] is [false], ignored push to Rhy", title);
+                LOGGER.log(Level.INFO, "Article [title={}] push flag [postToCommunity] is [false], ignored push to Rhy", title);
 
                 return;
             }

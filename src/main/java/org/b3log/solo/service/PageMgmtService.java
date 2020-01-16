@@ -17,10 +17,11 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -46,7 +47,7 @@ public class PageMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageMgmtService.class);
+    private static final Logger LOGGER = LogManager.getLogger(PageMgmtService.class);
 
     /**
      * Page repository.
@@ -133,7 +134,7 @@ public class PageMgmtService {
             pageRepository.update(pageId, newPage);
             transaction.commit();
 
-            LOGGER.log(Level.DEBUG, "Updated a page[id={0}]", pageId);
+            LOGGER.log(Level.DEBUG, "Updated a page[id={}]", pageId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             if (transaction.isActive()) {
@@ -247,7 +248,7 @@ public class PageMgmtService {
                     transaction.rollback();
                 }
 
-                LOGGER.log(Level.WARN, "Cant not find the target page of source page[order={0}]", srcPageOrder);
+                LOGGER.log(Level.WARN, "Cant not find the target page of source page[order={}]", srcPageOrder);
                 return;
             }
 
