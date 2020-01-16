@@ -104,7 +104,7 @@
                             <div class="line right"></div>
                             <#if commentable>
                             <div id="vcomment"
-                                 style="margin: 88px 100px 0 99px"
+                                 style="margin: 88px 100px 0 99px;background-color: #effdff;border-radius: 10px;padding: 10px;"
                                  data-name="${article.authorName}" data-postId="${article.oId}"></div>
                                 <#if !staticSite>
                                     <div id="soloComments" style="display: none;">

@@ -122,7 +122,9 @@
                 </div>
             </div>
             <#if commentable>
-            <div id="vcomment" style="background-color: #ffffff; padding: 10px; margin-bottom: 40px" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+            <div id="vcomment" style="margin-bottom: 40px;
+    border-top: 1px solid #dcdcdc;
+    padding-top: 30px;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                 <#if !staticSite>
                     <div id="soloComments" style="display: none;">
                         <@comments commentList=articleComments article=article></@comments>

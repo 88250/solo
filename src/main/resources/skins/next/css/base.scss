@@ -767,6 +767,11 @@ img {
 /* end article */
 
 /* start comments */
+
+.vcomment__avatarlink {
+  border-bottom: 0;
+}
+
 ul.comments {
   padding: 0;
   list-style: none;
