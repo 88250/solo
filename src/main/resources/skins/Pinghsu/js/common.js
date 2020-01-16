@@ -43,6 +43,22 @@ var Skin = {
     })
     header.init()
 
+
+    $('.header__nav a').each(function () {
+      if (this.href === location.href) {
+        this.className = 'current'
+      }
+    }).click(function () {
+      $('.header__nav a').removeClass('current')
+      if (this.href === location.href) {
+        this.className = 'current'
+      }
+    })
+
+    if (Label.staticSite) {
+      return
+    }
+
     Util.initPjax(function () {
       if ($('.post__fix').length === 0) {
         $('body').addClass('body--gray')
@@ -57,17 +73,6 @@ var Skin = {
       })
 
       Skin._initToc()
-    })
-
-    $('.header__nav a').each(function () {
-      if (this.href === location.href) {
-        this.className = 'current'
-      }
-    }).click(function () {
-      $('.header__nav a').removeClass('current')
-      if (this.href === location.href) {
-        this.className = 'current'
-      }
     })
   },
   _initToc: function () {

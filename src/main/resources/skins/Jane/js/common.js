@@ -44,6 +44,19 @@ var Skin = {
   },
   init: function () {
     Skin.initToc()
+
+    $('.header a').each(function () {
+      if (this.href === location.href) {
+        this.className = 'current vditor-tooltipped vditor-tooltipped__w'
+      }
+    }).click(function () {
+      $('.header a').removeClass('current')
+      this.className = 'current vditor-tooltipped vditor-tooltipped__w'
+    })
+
+    if (Label.staticSite) {
+      return
+    }
     Util.initPjax(function () {
       $('.header a').each(function () {
         if (this.href === location.href) {
@@ -54,15 +67,6 @@ var Skin = {
       })
 
       Skin.initToc()
-    })
-
-    $('.header a').each(function () {
-      if (this.href === location.href) {
-        this.className = 'current vditor-tooltipped vditor-tooltipped__w'
-      }
-    }).click(function () {
-      $('.header a').removeClass('current')
-      this.className = 'current vditor-tooltipped vditor-tooltipped__w'
     })
   },
 }

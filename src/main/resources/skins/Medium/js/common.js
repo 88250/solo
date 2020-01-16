@@ -51,6 +51,12 @@ var Skin = {
     });
     $(window).scroll();
 
+    Skin.initToc()
+
+    if (Label.staticSite) {
+      return
+    }
+
     Util.initPjax(function () {
       Util.parseMarkdown();
       if (Util.isArticlePage(location.href)) {
@@ -65,7 +71,6 @@ var Skin = {
       }
       Skin.initToc()
     })
-    Skin.initToc()
   },
   initTags: function () {
     var $tags = $('#tags');

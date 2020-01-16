@@ -28,6 +28,9 @@
  */
 var Skin = {
   init: function () {
+    if (Label.staticSite) {
+      return
+    }
     Util.initPjax()
   },
   _positionToc: function ($articleToc) {

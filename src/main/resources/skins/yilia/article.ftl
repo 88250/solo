@@ -132,10 +132,13 @@
         <br>
     </article>
     <#if commentable>
-    <div id="vcomment" style="padding: 30px 60px 30px 50px;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-    <div id="soloComments" style="display: none;">
-        <@comments commentList=articleComments article=article></@comments>
-    </div>
+        <div id="vcomment" style="padding: 30px 60px 30px 50px;" data-name="${article.authorName}"
+             data-postId="${article.oId}"></div>
+        <#if staticSite>
+            <div id="soloComments" style="display: none;">
+                <@comments commentList=articleComments article=article></@comments>
+            </div>
+        </#if>
     </#if>
 
     <#include "footer.ftl">

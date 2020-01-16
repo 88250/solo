@@ -78,9 +78,6 @@ var Skin = {
     }
   },
   init: function () {
-    Util.initPjax(function () {
-      Skin._initAnimation()
-    })
 
     Skin._initAnimation()
 
@@ -98,6 +95,13 @@ var Skin = {
 
     $('.header__logo').click(function () {
       $('.header__nav a, .header__m a').removeClass('current')
+    })
+
+    if (Label.staticSite) {
+      return
+    }
+    Util.initPjax(function () {
+      Skin._initAnimation()
     })
   },
   _initArticleCommon: function () {
