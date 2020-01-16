@@ -1,3 +1,22 @@
+## v3.8.0 / 2020-01-16
+
+### 引入特性
+
+* [评论社区组件化](https://github.com/88250/solo/issues/18)
+
+### 改进皮肤
+
+* [皮肤 Casper 标签页标题显示异常](https://github.com/88250/solo/issues/43)
+
+### 改进功能
+
+* [移除计数相关数据填充和功能](https://github.com/88250/solo/issues/45)
+
+### 修复缺陷
+
+* [Jar 包运行时皮肤目录名问题](https://github.com/88250/solo/issues/41)
+* [自定义表前缀后存档 404](https://github.com/88250/solo/issues/42)
+
 ## v3.7.0 / 2020-01-13
 
 ### 引入特性
