@@ -877,14 +877,13 @@ pre.prettyprint {
   transition: all 0.3s ease-out 0s;
 }
 
-.most-comment,
-.most-view,
 .links-tile,
 .tags-tile {
   position: static;
   background-color: #F09609;
-  width: 535px;
-  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
 
 .most-view {
@@ -893,7 +892,6 @@ pre.prettyprint {
 }
 
 .tags-tile {
-  margin-left: 20px;
   background-color: #339933;
 }
 
@@ -903,14 +901,12 @@ pre.prettyprint {
 
 .tags-tile span,
 .links-tile span,
-.most-comment span,
 .most-view span {
   font-size: 60px;
 }
 
 .tags-tile .text,
 .links-tile .text,
-.most-comment .text,
 .most-view .text {
   position: static;
   width: 430px;
@@ -935,18 +931,15 @@ pre.prettyprint {
   color: #EA4040;
 }
 
-.most-comment .text,
 .most-view .text {
   margin-right: 20px;
   line-height: 24px;
 }
 
-.most-comment .text a:hover,
 .most-view .text a:hover {
   text-decoration: underline;
 }
 
-.most-comment .text span,
 .most-view .text span {
   color: #D1D2D1;
   font-size: 13px;
@@ -990,7 +983,6 @@ pre.prettyprint {
   .tags-tile,
   .links-tile,
   .archives-tile,
-  .most-comment,
   .most-view {
     width: 670px;
   }
@@ -998,14 +990,12 @@ pre.prettyprint {
   .tags-tile .text,
   .links-tile .text,
   .archives-tile .text,
-  .most-comment .text,
   .most-view .text {
     width: 580px;
   }
 
   .links-tile,
-  .tags-tile,
-  .most-view {
+  .tags-tile {
     margin-left: 0;
   }
 }
@@ -1106,27 +1096,11 @@ pre.prettyprint {
   }
 
   .tags-tile .title,
-  .links-tile .title,
-  .most-comment .title,
-  .most-view .title {
+  .links-tile .title {
     float: right;
     font-size: 15px;
     font-weight: bold;
     margin: 20px 0 0 40px;
-  }
-
-  .most-comment,
-  .most-view {
-    width: 249px;
-    margin-left: 0;
-  }
-
-  .most-comment .text,
-  .most-view .text {
-    margin-right: 0;
-    width: 274px;
-    font-size: 12px;
-    font-weight: normal;
   }
 
   .tags-tile,

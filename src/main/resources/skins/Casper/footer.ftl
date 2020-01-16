@@ -43,7 +43,6 @@
             </a>
             <br>
             ${statistic.statisticPublishedBlogArticleCount} ${articleLabel} &nbsp;
-            <#if commentable>${statistic.statisticPublishedBlogCommentCount} ${commentLabel} &nbsp;</#if>
             <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> ${viewLabel} &nbsp;
             <#if !staticSite>${onlineVisitorCnt} ${onlineVisitorLabel}</#if>
         </div>

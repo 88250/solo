@@ -39,13 +39,6 @@
             <span class='error-msg'>
                 ${statistic.statisticPublishedBlogArticleCount}
             </span>
-            <#if commentable>
-            &nbsp;&nbsp;
-            ${commentCount1Label}
-            <span class='error-msg'>
-                ${statistic.statisticPublishedBlogCommentCount}
-            </span>
-            </#if>
         </div>
     </div>
     <div class="clear"></div>
@@ -55,7 +48,7 @@
 <#include "../../common-template/label.ftl">
 <script type="text/javascript">
 
-    maxLength = parseInt("${mostCommentArticles?size}");
+    maxLength =10;
 
     $(document).ready(function () {
         // article header: user list.

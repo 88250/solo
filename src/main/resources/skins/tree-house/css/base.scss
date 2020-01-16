@@ -438,21 +438,15 @@ img.comment-picture {
   background-image: url("../images/bg-heading-about-us.png");
 }
 
-#sideNavi #recentComments img {
-  height: 16px;
-  vertical-align: middle;
-  width: 16px;
-}
-
-#sideNavi #recentCommentsLabel {
+#sideNavi .most-category {
   background-image: url("../images/bg-heading-portfolio.png");
 }
 
-#sideNavi .mostCommentArticles h3 {
+#sideNavi .most-tag {
   background-image: url("../images/bg-heading-categories.png");
 }
 
-#sideNavi .mostViewCountArticles h3 {
+#sideNavi .links {
   background-image: url("../images/bg-heading-resources.png");
   margin-bottom: 6px;
 }

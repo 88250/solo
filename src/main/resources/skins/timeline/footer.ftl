@@ -42,12 +42,6 @@
                     ${statistic.statisticPublishedBlogArticleCount}
                     &nbsp;&nbsp;
                 </span>
-                <#if commentable>
-                <span>
-                    ${commentCount1Label}
-                    ${statistic.statisticPublishedBlogCommentCount}
-                </span>
-                </#if>
             </span>
             <span class="ico-translate" onclick="timeline.translate()"></span>
         </div>

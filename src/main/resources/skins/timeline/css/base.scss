@@ -590,14 +590,10 @@ article .article-title a {
 
 /* end article list */
 
-/* start dynamic */
 .dynamic-l {
   float: left;
-  width: 70%;
-}
-
-.dynamic-l > div {
-  margin-right: 30px;
+  width: 65%;
+  margin-right: 5%;
 }
 
 .dynamic-r {
@@ -605,12 +601,6 @@ article .article-title a {
   width: 30%;
 }
 
-.dynamic-r .tags a,
-.links a {
-  line-height: 24px;
-}
-
-/* end dynamic */
 
 /* start comments */
 #comments {
@@ -760,6 +750,15 @@ article .article-title a {
     min-width: 200px;
   }
 
+  .dynamic-l {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .dynamic-r {
+    display: none;
+  }
+
   #top > .left {
     display: block;
     float: none;
@@ -900,16 +899,6 @@ article .article-title a {
     padding-left: 0;
   }
 
-  .dynamic-l,
-  .dynamic-r {
-    float: none;
-    width: auto;
-  }
-
-  .dynamic-l > div {
-    margin-right: 0;
-  }
-
   .articles .arrow,
   .articles .dot,
   #admin > span,
@@ -938,6 +927,10 @@ article .article-title a {
   .articles > div.fn-clear > h2 {
     margin-bottom: 40px;
   }
+
+  .module {
+    margin: 0 10px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -945,10 +938,6 @@ article .article-title a {
     display: block;
     float: none;
     line-height: 19px;
-  }
-
-  .dynamic-r .ico {
-    float: right;
   }
 
   #commentForm label,

@@ -45,11 +45,6 @@
                             class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
                 </li>
             </#list>
-            <#if commentable && !staticSite>
-                <li>
-                    <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
-                </li>
-            </#if>
             <li>
                 <a href="${servePath}/tags.html">${allTagsLabel}</a>
             </li>

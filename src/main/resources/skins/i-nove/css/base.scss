@@ -494,53 +494,12 @@ h5 {
   color: #555;
 }
 
-.side-navi .navi-comments li > img {
-  border: 1px solid #999999;
-  height: 32px;
-  margin-right: 7px;
-  padding: 1px;
-  width: 32px;
-}
-
-.side-navi .navi-comments a {
-  font-weight: bold;
-}
-
-.side-navi .navi-comments .side-comment {
-  color: #555555;
-  font-weight: normal;
-  height: 18px;
-}
-
-.side-navi .navi-comments div.left > div > div {
-  display: none;
-}
-
-.side-navi .navi-comments .side-comment img {
-  border: 0px;
-  height: 16px;
-  margin-right: 0px;
-  padding: 0px;
-  width: 16px;
-}
-
-.side-navi .navi-comments li {
-  padding: 2px 0;
-}
-
-.side-navi .navi-comments li div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  width: 227px;
-}
-
 .side-navi a.selected {
   color: #555555;
   text-decoration: none;
 }
 
-.side-navi ul.navi-tags li, .side-navi .navi-comments li {
+.side-navi ul.navi-tags li {
   background-image: none;
   padding-left: 0px;
 }

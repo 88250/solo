@@ -37,67 +37,6 @@
         <#include "../../common-template/toc.ftl"/>
     </div>
     <#else>
-    <#if 0 != recentComments?size>
-        <div class="item navi-comments">
-            <h4>${recentCommentsLabel}</h4>
-            <ul>
-                <#list recentComments as comment>
-                <li>
-                    <img class='left' title='${comment.commentName}'
-                         alt='${comment.commentName}'
-                         src='${comment.commentThumbnailURL}'/>
-                    <div class='left'>
-                        <div>
-                            <a target="_blank" href="${comment.commentURL}">
-                                ${comment.commentName}
-                            </a>
-                        </div>
-                        <div>
-                            <a rel="nofollow" class='side-comment' href="${servePath}${comment.commentSharpURL}">
-                                ${comment.commentContent}
-                            </a>
-                        </div>
-                    </div>
-                    <div class='clear'></div>
-                </li>
-                </#list>
-            </ul>
-        </div>
-        <div class="line"></div>
-        </#if>
-        <#if 0 != mostCommentArticles?size>
-        <div class="item">
-            <h4>${mostCommentArticlesLabel}</h4>
-            <ul id="mostCommentArticles">
-                <#list mostCommentArticles as article>
-                <li>
-                    <a rel="nofollow" title="${article.articleTitle}"
-                       href="${servePath}${article.articlePermalink}">
-                        <sup>[<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>]</sup>
-                        ${article.articleTitle}
-                    </a>
-                </li>
-                </#list>
-            </ul>
-        </div>
-        <div class="line"></div>
-        </#if>
-        <#if 0 != mostViewCountArticles?size>
-        <div class="item"><h4>${mostViewCountArticlesLabel}</h4>
-            <ul id="mostViewCountArticles">
-                <#list mostViewCountArticles as article>
-                <li>
-                    <a rel="nofollow" title="${article.articleTitle}"
-                       href="${servePath}${article.articlePermalink}">
-                        <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>]</sup>
-                        ${article.articleTitle}
-                    </a>
-                </li>
-                </#list>
-            </ul>
-        </div>
-        <div class="line"></div>
-        </#if>
 
         <#if 0 != mostUsedCategories?size>
             <div class="item">

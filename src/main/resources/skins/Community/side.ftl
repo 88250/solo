@@ -42,61 +42,6 @@
         <div class="clear"></div>
         <div class="hr"></div>
         </#if>
-        <#if 0 != mostViewCountArticles?size>
-        <h4>${mostViewCountArticlesLabel}</h4>
-        <div class="arrow-right"></div>
-        <div class="most-view-count-articles article-footer">
-            <ul>
-                <#list mostViewCountArticles as article>
-                <li>
-                    <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
-                        <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>]</sup>${article.articleTitle}
-                    </a>
-                </li>
-                </#list>
-            </ul>
-        </div>
-        <#if 0 != mostCommentArticles?size>
-        <div class="clear"></div>
-        <div class="hr"></div>
-        <h4>${mostCommentArticlesLabel}</h4>
-        <div class="arrow-right"></div>
-        <div class="most-view-count-articles article-footer">
-            <ul>
-                <#list mostCommentArticles as article>
-                    <li>
-                        <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
-                            <sup>[<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>]</sup>${article.articleTitle}
-                        </a>
-                    </li>
-                </#list>
-            </ul>
-        </div>
-        </#if>
-        <div class="clear"></div>
-        <#if 0 != recentComments?size>
-        <div class="hr"></div>
-        </#if>
-        </#if>
-        <#if 0 != recentComments?size>
-        <h4>${recentCommentsLabel}</h4>
-        <div class="arrow-right"></div>
-        <div class="recent-comments">
-            <#list recentComments as comment>
-            <div>
-                <a rel="nofollow" href="${servePath}${comment.commentSharpURL}">
-                    <img class='left'
-                         alt='${comment.commentName}'
-                         src='${comment.commentThumbnailURL}'/>
-                </a>
-                <a title="${comment.commentName}" class="comment-author" target="_blank" href="${comment.commentURL}">
-                    ${comment.commentName}
-                </a>
-            </div>
-            </#list>
-        </div>
-        <div class="clear"></div>
-        </#if>
     </div>
 </div>
 <div class="footer-widgets">

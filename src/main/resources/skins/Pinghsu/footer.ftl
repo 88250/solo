@@ -65,10 +65,8 @@
             <a class="ft__link" href="${servePath}/archives.html">
                 ${statistic.statisticPublishedBlogArticleCount}
                 ${articleLabel}
-            </a> &nbsp; &nbsp;
-            <#if commentable>
-                ${statistic.statisticPublishedBlogCommentCount}
-                ${commentLabel}</#if> <br>
+            </a>
+           <br>
             <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> <span class="ft-gray">${viewLabel}</span>
             <#if !staticSite>
             &nbsp; &nbsp; ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>

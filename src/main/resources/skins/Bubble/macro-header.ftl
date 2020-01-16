@@ -54,9 +54,6 @@
 
                 <div class="side__meta">
                     ${statistic.statisticPublishedBlogArticleCount} ${articleLabel} <br>
-                    <#if commentable>
-                        ${statistic.statisticPublishedBlogCommentCount} ${commentLabel} <br>
-                    </#if>
                     <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> ${viewLabel}
                     <#if !staticSite><br>${onlineVisitorCnt} ${onlineVisitorLabel}</#if>
                 </div>

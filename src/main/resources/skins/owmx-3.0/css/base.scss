@@ -361,58 +361,6 @@ aside {
   white-space: normal;
 }
 
-aside ul.aside-comments img {
-  border-radius: 4px;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #999999;
-  padding: 1px;
-  margin-top: 5px;
-  margin-right: 5px;
-}
-
-aside ul.aside-comments a {
-  font-weight: bold;
-}
-
-aside ul.aside-comments .side-comment {
-  color: #555555;
-  font-weight: normal;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 158px;
-  height: 18px;
-}
-
-aside ul.aside-comments div.left > div > div {
-  display: none;
-}
-
-aside ul.aside-comments .side-comment img {
-  border: 0px;
-  height: 16px;
-  width: 16px;
-  padding: 0px;
-  margin-right: 0px;
-  margin-top: 0;
-}
-
-aside ul.aside-comments li {
-  padding: 2px 0;
-}
-
-aside ul.aside-comments li div {
-  width: 158px;
-}
-
-aside ul.aside-comments li div.left div {
-  height: 18px;
-  line-height: 18px;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
-}
-
 aside ul.navi-tags li {
   padding-left: 0px;
   background-image: none;
@@ -423,16 +371,6 @@ aside ul.navi-tags li img {
   padding-right: 6px;
   height: 16px;
   width: 16px;
-}
-
-#mostViewCountArticles li, #mostCommentArticles li {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-}
-
-#mostViewCountArticles a, #mostCommentArticles a {
-  white-space: nowrap;
 }
 
 /* Search Box */

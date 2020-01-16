@@ -28,10 +28,6 @@
             ${viewCount1Label}<span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
             &nbsp;
             ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
-            <#if commentable>
-            &nbsp;
-            ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
-            </#if>
             <#if !staticSite>
             &nbsp; ${onlineVisitor1Label}${onlineVisitorCnt}
             </#if>

@@ -87,42 +87,6 @@
         </div>
     </#if>
 
-    <#if 0 != mostCommentArticles?size>
-        <div class="module item">
-            <header class="module__header">${mostCommentArticlesLabel}</header>
-            <main class="module__list">
-                <ul>
-                    <#list mostCommentArticles as article>
-                        <li>
-                            <a rel="nofollow"
-                               href="${servePath}${article.articlePermalink}">
-                                ${article.articleTitle}
-                            </a>
-                        </li>
-                    </#list>
-                </ul>
-            </main>
-        </div>
-    </#if>
-
-    <#if 0 != mostViewCountArticles?size>
-        <div class="module item">
-            <header class="module__header">${mostViewCountArticlesLabel}</header>
-            <main class="module__list">
-                <ul>
-                    <#list mostViewCountArticles as article>
-                        <li>
-                            <a rel="nofollow"
-                               href="${servePath}${article.articlePermalink}">
-                                ${article.articleTitle}
-                            </a>
-                        </li>
-                    </#list>
-                </ul>
-            </main>
-        </div>
-    </#if>
-
     <div class="module item">
         <div class="module__header">
             <div class="fn__flex">
@@ -130,12 +94,6 @@
                     ${statistic.statisticPublishedBlogArticleCount}
                     ${articleLabel}
                 </a>
-                <#if commentable && !staticSite>
-                    <a href="${servePath}/dynamic.html" class="fn__flex-1 ft__center">
-                        ${statistic.statisticPublishedBlogCommentCount}
-                        ${commentLabel}
-                    </a>
-                </#if>
             </div>
             <br/>
             <div class="fn__flex">

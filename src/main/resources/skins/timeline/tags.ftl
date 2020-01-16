@@ -30,6 +30,28 @@
         <#include "header.ftl">
         <div class="wrapper">
             <div class="container">
+                <#if "" != noticeBoard>
+                    <div class="module">
+                        ${noticeBoard}
+                    </div>
+                </#if>
+
+                <#if 0 != links?size>
+                    <h2 class="title">${linkLabel}</h2>
+                    <div class="module links">
+                        <#list links as link>
+                            <span>
+                        <a rel="friend" href="${link.linkAddress}" alt="${link.linkTitle}" target="_blank">
+                            <img alt="${link.linkTitle}"
+                                 src="${faviconAPI}<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" width="16" height="16" /></a>
+                        <a rel="friend" href="${link.linkAddress}" title="${link.linkDescription}" target="_blank">
+                            ${link.linkTitle}
+                        </a>
+                    </span> &nbsp; &nbsp;
+                        </#list>
+                    </div>
+                </#if>
+
                 <#if 0 != mostUsedCategories?size>
                     <h2>${categoryLabel}</h2>
                     <ul class="module fn-clear tags">

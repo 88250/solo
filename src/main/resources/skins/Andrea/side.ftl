@@ -37,14 +37,6 @@
                     ${statistic.statisticPublishedBlogArticleCount}
                     </span>
                 </li>
-                <#if commentable>
-                <li>
-                ${commentCount1Label}
-                    <span class='error-msg'>
-                    ${statistic.statisticPublishedBlogCommentCount}
-                    </span>
-                </li>
-                </#if>
             </ul>
         </dd>
     </dl>
@@ -68,62 +60,6 @@
 </div>
 
 <#else>
-    <#if 0 != recentComments?size || 0 != mostCommentArticles?size || 0 != mostViewCountArticles?size>
-    <div class="item">
-        <dl>
-            <#if 0 != mostCommentArticles?size>
-            <dd>
-                <h4>${mostCommentArticlesLabel}</h4>
-                <ul>
-                    <#list mostCommentArticles as article>
-                        <li>
-                            <a rel="nofollow" title="${article.articleTitle}"
-                               href="${servePath}${article.articlePermalink}">
-                                <sup>[<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>]</sup>
-                                ${article.articleTitle}
-                            </a>
-                        </li>
-                    </#list>
-                </ul>
-            </dd>
-            </#if>
-            <#if 0 != recentComments?size>
-            <dd>
-                <h4>${recentCommentsLabel}</h4>
-                <ul id="naviComments">
-                    <#list recentComments as comment>
-                        <li>
-                            <a class="author" title="${comment.commentName}" target="_blank" href="${comment.commentURL}">
-                                ${comment.commentName}
-                            </a>:
-                            <a rel="nofollow" class='side-comment' href="${servePath}${comment.commentSharpURL}">
-                                ${comment.commentContent}
-                            </a>
-                        </li>
-                    </#list>
-                </ul>
-            </dd>
-            </#if>
-            <#if 0 != mostViewCountArticles?size>
-            <dd>
-                <h4>${mostViewCountArticlesLabel}</h4>
-                <ul>
-                    <#list mostViewCountArticles as article>
-                        <li>
-                            <a rel="nofollow" title="${article.articleTitle}"
-                               href="${servePath}${article.articlePermalink}">
-                                <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>]</sup>
-                                ${article.articleTitle}
-                            </a>
-                        </li>
-                    </#list>
-                </ul>
-            </dd>
-            </#if>
-        </dl>
-    </div>
-    </#if>
-
     <#if 0 != mostUsedCategories?size || 0 != mostUsedTags?size>
         <div class="item">
             <dl>

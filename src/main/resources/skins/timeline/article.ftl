@@ -120,7 +120,7 @@ ${topBarReplacement}
                     <#if commentable>
                     <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                         <#if !staticSite>
-                        <div id="soloComments" style="display: none;">
+                        <div id="soloComments" style="display: none;" class="module">
                             <@comments commentList=articleComments article=article></@comments>
                         </div>
                         </#if>
