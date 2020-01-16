@@ -70,7 +70,7 @@
                     <a href="${servePath}/archives.html">
                         ${statistic.statisticPublishedBlogArticleCount}
                         <span class="ft-gray">${articleLabel}</span></a><br/>
-                    <#if commentable>
+                    <#if commentable && !staticSite>
                     <a href="${servePath}/dynamic.html">
                         ${statistic.statisticPublishedBlogCommentCount}
                         <span class="ft-gray">${commentLabel}</span></a><br/>

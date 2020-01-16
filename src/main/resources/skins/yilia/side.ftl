@@ -46,7 +46,7 @@
                     </li>
                 </#list>
                 <li>
-                    <#if commentable>
+                    <#if commentable && !staticSite>
                         <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
                         &nbsp; &nbsp;
                     </#if>

@@ -130,7 +130,7 @@
                     ${statistic.statisticPublishedBlogArticleCount}
                     ${articleLabel}
                 </a>
-                <#if commentable>
+                <#if commentable && !staticSite>
                     <a href="${servePath}/dynamic.html" class="fn__flex-1 ft__center">
                         ${statistic.statisticPublishedBlogCommentCount}
                         ${commentLabel}

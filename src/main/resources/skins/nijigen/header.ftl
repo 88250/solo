@@ -35,7 +35,7 @@
                     <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}
                 </a>
             </#list>
-            <#if commentable>
+            <#if commentable && !staticSite>
                 <a href="${servePath}/dynamic.html" rel="section">
                     <i class="icon__refresh"></i> ${dynamicLabel}
                 </a>
@@ -105,7 +105,7 @@
                     </a>
                 </li>
             </#list>
-            <#if commentable>
+            <#if commentable && !staticSite>
                 <li>
                     <a href="${servePath}/dynamic.html" rel="section">
                         <i class="icon__refresh"></i> ${dynamicLabel}
