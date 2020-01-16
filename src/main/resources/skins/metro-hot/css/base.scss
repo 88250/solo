@@ -763,6 +763,32 @@ pre.prettyprint {
 /* end article */
 
 /* start comment */
+#vcomment {
+  .vcomment {
+
+    &__item {
+      border-bottom: 0;
+    }
+
+    .vditor-reset {
+      margin-bottom: 0;
+    }
+
+    &__meta {
+      color: #BDBEBD;
+    }
+
+    &__pointer,
+    &__text {
+      color: #BDBEBD;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+}
+
 #comments {
   position: relative;
 }

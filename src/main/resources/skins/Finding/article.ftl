@@ -102,7 +102,7 @@
                 <div id="externalRelevantArticles" class="fn-wrap"></div>
                 </#if>
                 <#if commentable>
-                <div id="vcomment" class="fn-wrap" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                <div id="vcomment" style="margin-top: 100px" class="fn-wrap" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                     <#if !staticSite>
                         <div id="soloComments" style="display: none;">
                             <@comments commentList=articleComments article=article></@comments>

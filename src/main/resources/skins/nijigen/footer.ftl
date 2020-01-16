@@ -21,7 +21,7 @@
 <footer class="footer">
     &copy; ${year}
     <a href="${servePath}">${blogTitle}</a>
-    ${footerContent}  <span class="fn__none--m">&nbsp; • &nbsp;</span>
+    ${footerContent}
     <div class="fn__none"></div>
     <br/>
 
