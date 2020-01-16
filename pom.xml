@@ -272,6 +272,7 @@
                         <include>**/src/*/resources/plugins/*/*.properties</include>
                         <include>**/src/*/resources/js/admin/*.js</include>
                         <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/resources/*.xml</include>
                         <include>**/src/test/resources/**/*</include>
                         <include>**/src/*/resources/docker/*</include>
                     </includes>
