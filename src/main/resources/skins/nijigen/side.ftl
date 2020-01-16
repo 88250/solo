@@ -142,9 +142,11 @@
                 <div class="fn__flex-1 ft__center">
                     <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> <span class="ft-gray">${viewLabel}</span>
                 </div>
+                <#if !staticSite>
                 <div class="fn__flex-1 ft__center">
                     ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
                 </div>
+                </#if>
             </div>
         </div>
     </div>

@@ -20,8 +20,8 @@
 <footer class="footer">
     <div class="wrapper">
         <div class="fn-clear">
-            <a href="${servePath}">${blogTitle}</a> •
-        ${onlineVisitor1Label}${onlineVisitorCnt}
+            <a href="${servePath}">${blogTitle}</a>
+            <#if !staticSite> • ${onlineVisitor1Label}${onlineVisitorCnt}</#if>
             <div class="fn-right">
             <#include "../../common-template/macro-user_site.ftl"/>
             <@userSite dir="n"/>

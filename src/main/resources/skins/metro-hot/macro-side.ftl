@@ -48,6 +48,9 @@
                             ${commentCount1Label}
                             ${statistic.statisticPublishedBlogCommentCount}<br/>
                         </#if>
+                        <#if !staticSite>
+                        ${onlineVisitor1Label}${onlineVisitorCnt}
+                        </#if>
                     </div>
                 </div>
             </#if>

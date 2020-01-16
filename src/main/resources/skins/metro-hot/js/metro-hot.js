@@ -48,10 +48,6 @@ var MetroHot = {
             window.location.href = Label.servePath;
         });
 
-        // 当先用户在线数目
-        var onlineVisitorCnt = $("#top > span").first().text();
-        $(".online-count .text").append(onlineVisitorCnt.substr(1, onlineVisitorCnt.length));
-
         if ($("#dynamic").length === 1) {
             // 滚动处理
             $(window).scroll(function() {

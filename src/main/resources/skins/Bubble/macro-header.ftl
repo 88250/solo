@@ -57,8 +57,8 @@
                     <#if commentable>
                         ${statistic.statisticPublishedBlogCommentCount} ${commentLabel} <br>
                     </#if>
-                    <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> ${viewLabel} <br>
-                    ${onlineVisitorCnt} ${onlineVisitorLabel}
+                    <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> ${viewLabel}
+                    <#if !staticSite><br>${onlineVisitorCnt} ${onlineVisitorLabel}</#if>
                 </div>
             </div>
 

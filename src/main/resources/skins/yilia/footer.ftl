@@ -32,8 +32,9 @@
             &nbsp;
             ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
             </#if>
-            &nbsp;
-            ${onlineVisitor1Label}${onlineVisitorCnt}
+            <#if !staticSite>
+            &nbsp; ${onlineVisitor1Label}${onlineVisitorCnt}
+            </#if>
         </span>
     </div>
     <div class="fn-clear">

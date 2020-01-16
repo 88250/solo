@@ -27,7 +27,6 @@
          </@head>
     </head>
     <body>
-        ${topBarReplacement}
         <div class="wrapper">
             <div id="header">
                 <#include "header.ftl" />
@@ -59,7 +58,7 @@
                     </div>
                     </#if>
                 </div>
-            </div> 
+            </div>
             <div class="fn-clear">
                 <div class="main">
                     <#include "article-list.ftl"/>

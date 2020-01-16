@@ -36,7 +36,6 @@
         </@head>
     </head>
     <body>
-        ${topBarReplacement}
         <div class="wrapper">
             <div id="header">
                 <#include "header.ftl">

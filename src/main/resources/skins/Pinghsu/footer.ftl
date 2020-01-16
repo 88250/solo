@@ -69,8 +69,10 @@
             <#if commentable>
                 ${statistic.statisticPublishedBlogCommentCount}
                 ${commentLabel}</#if> <br>
-            <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> <span class="ft-gray">${viewLabel}</span> &nbsp; &nbsp;
-            ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span> <br>
+            <span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span> <span class="ft-gray">${viewLabel}</span>
+            <#if !staticSite>
+            &nbsp; &nbsp; ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
+            </#if> <br>
             &copy; ${year}
             <a class="ft__link" href="${servePath}">${blogTitle}</a>
             ${footerContent}
