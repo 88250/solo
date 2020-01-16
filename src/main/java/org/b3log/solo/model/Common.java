@@ -103,11 +103,6 @@ public final class Common {
     public static final String RECENT_ARTICLES = "recentArticles";
 
     /**
-     * Recent comments.
-     */
-    public static final String RECENT_COMMENTS = "recentComments";
-
-    /**
      * Previous article permalink.
      */
     public static final String PREVIOUS_ARTICLE_PERMALINK = "previousArticlePermalink";

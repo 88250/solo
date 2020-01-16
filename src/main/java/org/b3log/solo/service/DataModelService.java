@@ -47,8 +47,6 @@ import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import java.io.StringWriter;
 import java.util.*;
@@ -455,47 +453,6 @@ public class DataModelService {
     }
 
     /**
-     * Fills post comments recently.
-     *
-     * @param dataModel  data model
-     * @param preference the specified preference
-     * @throws ServiceException service exception
-     */
-    public void fillRecentComments(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
-        if (!preference.optBoolean(Option.ID_C_COMMENTABLE)) {
-            dataModel.put(Common.RECENT_COMMENTS, Collections.emptyList());
-
-            return;
-        }
-
-        Stopwatchs.start("Fill Recent Comments");
-        try {
-            LOGGER.debug("Filling recent comments....");
-            final int recentCommentDisplayCnt = preference.getInt(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-            final List<JSONObject> recentComments = commentRepository.getRecentComments(recentCommentDisplayCnt);
-            for (final JSONObject comment : recentComments) {
-                String commentContent = comment.optString(Comment.COMMENT_CONTENT);
-                commentContent = Markdowns.toHTML(commentContent);
-                commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
-                comment.put(Comment.COMMENT_CONTENT, commentContent);
-                comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
-                comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));
-                comment.put(Common.IS_REPLY, false);
-                comment.put(Comment.COMMENT_T_DATE, new Date(comment.optLong(Comment.COMMENT_CREATED)));
-                comment.put("commentDate2", new Date(comment.optLong(Comment.COMMENT_CREATED)));
-            }
-
-            dataModel.put(Common.RECENT_COMMENTS, recentComments);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Fills recent comments failed", e);
-
-            throw new ServiceException(e);
-        } finally {
-            Stopwatchs.end();
-        }
-    }
-
-    /**
      * Fills favicon URL. 可配置 favicon 图标路径 https://github.com/b3log/solo/issues/12706
      *
      * @param dataModel  the specified data model
@@ -742,10 +699,6 @@ public class DataModelService {
             if (Templates.hasExpression(template, "<#list links as link>")) {
                 fillLinks(dataModel);
             }
-
-            if (Templates.hasExpression(template, "<#list recentComments as comment>")) {
-                fillRecentComments(dataModel, preference);
-            }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Fills side failed", e);
             throw new ServiceException(e);
@@ -779,10 +732,6 @@ public class DataModelService {
 
             if (Templates.hasExpression(template, "<#list categories as category>")) {
                 fillCategories(dataModel);
-            }
-
-            if (Templates.hasExpression(template, "<#list recentComments as comment>")) {
-                fillRecentComments(dataModel, preference);
             }
 
             if (Templates.hasExpression(template, "<#include \"side.ftl\"/>")) {

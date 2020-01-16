@@ -149,7 +149,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = {"add", "previousAndNext", "getMostCommentArticles", "getMostViewCountArticles"})
+    @Test(dependsOnMethods = {"add", "previousAndNext"})
     public void getRandomly() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
@@ -162,19 +162,18 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = {"add", "previousAndNext", "getMostCommentArticles", "getMostViewCountArticles"})
+    @Test(dependsOnMethods = {"add", "previousAndNext"})
     public void getRecentArticles() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
-        Assert.assertEquals(articleRepository.count(), 4);
+        Assert.assertEquals(articleRepository.count(), 2);
 
         List<JSONObject> recentArticles = articleRepository.getRecentArticles(3);
         Assert.assertNotNull(recentArticles);
-        Assert.assertEquals(recentArticles.size(), 3);
+        Assert.assertEquals(recentArticles.size(), 2);
 
-        Assert.assertEquals(recentArticles.get(0).getString(Article.ARTICLE_TITLE), "article title3");
-        Assert.assertEquals(recentArticles.get(1).getString(Article.ARTICLE_TITLE), "article title2");
-        Assert.assertEquals(recentArticles.get(2).getString(Article.ARTICLE_TITLE), "article title1");
+        Assert.assertEquals(recentArticles.get(0).getString(Article.ARTICLE_TITLE), "article title2");
+        Assert.assertEquals(recentArticles.get(1).getString(Article.ARTICLE_TITLE), "article title1");
     }
 
     /**
@@ -182,7 +181,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = {"add", "getMostViewCountArticles"})
+    @Test(dependsOnMethods = {"add"})
     public void isPublished() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
@@ -192,9 +191,9 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject article = all.getJSONObject(0);
         Assert.assertTrue(articleRepository.isPublished(article.getString(Keys.OBJECT_ID)));
 
-        final JSONObject notPublished = articleRepository.getByPermalink("article permalink4");
-        Assert.assertNotNull(notPublished);
-        Assert.assertEquals(Article.ARTICLE_STATUS_C_DRAFT, notPublished.optInt(Article.ARTICLE_STATUS));
+        final JSONObject published = articleRepository.getByPermalink("article permalink1");
+        Assert.assertNotNull(published);
+        Assert.assertEquals(Article.ARTICLE_STATUS_C_PUBLISHED, published.optInt(Article.ARTICLE_STATUS));
 
         Assert.assertFalse(articleRepository.isPublished("not found"));
     }
