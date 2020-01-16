@@ -153,7 +153,6 @@ public class BlogProcessor {
         jsonObject.put("recentArticleTime", articleQueryService.getRecentArticleTime());
         final JSONObject statistic = statisticQueryService.getStatistic();
         jsonObject.put("articleCount", statistic.getLong(Option.ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT));
-        jsonObject.put("commentCount", statistic.getLong(Option.ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
         jsonObject.put("tagCount", tagQueryService.getTagCount());
         jsonObject.put("servePath", Latkes.getServePath());
         jsonObject.put("staticServePath", Latkes.getStaticServePath());
