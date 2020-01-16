@@ -88,9 +88,7 @@
                 <ul>
                     <#list mostCommentArticles as article>
                         <li>
-                            <a rel="nofollow" aria-label="${article.articleCommentCount} ${commentLabel}"
-                               class="vditor-tooltipped vditor-tooltipped__e"
-                               href="${servePath}${article.articlePermalink}">
+                            <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                                 ${article.articleTitle}
                             </a>
                         </li>
@@ -107,9 +105,7 @@
                 <ul>
                     <#list mostViewCountArticles as article>
                         <li>
-                            <a rel="nofollow" aria-label="${article.articleCommentCount} ${commentLabel}"
-                               class="vditor-tooltipped vditor-tooltipped__e"
-                               href="${servePath}${article.articlePermalink}">
+                            <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                                 ${article.articleTitle}
                             </a>
                         </li>

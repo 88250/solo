@@ -73,7 +73,7 @@
         <ul class="side-li">
             <#list mostCommentArticles as article>
                 <li>
-                    <sup>[${article.articleCommentCount}]</sup>
+                    <sup>[<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>]</sup>
                     <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                         ${article.articleTitle}
                     </a>

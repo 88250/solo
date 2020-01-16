@@ -76,7 +76,7 @@
                                 <a href="${servePath}${article.articlePermalink}" title="${article.articleTitle}" rel="nofollow">
                                     ${article.articleTitle}
                                 </a>
-                                <span data-ico="&#xe14e;">
+                                <span data-ico="&#xe14e;" data-uvstatcmt="${article.oId}">
                                     ${article.articleCommentCount}
                                 </span>
                             </li>

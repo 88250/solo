@@ -698,7 +698,7 @@ pre code, pre tt {
 }
 
 .nav li a {
-  display: block;
+  display: flex;
   padding: 0.6rem 4%;
   overflow: hidden;
   white-space: nowrap;

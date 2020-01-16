@@ -64,9 +64,7 @@
             </#if>
             with <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> views
             <#if commentable>
-            <#if article.articleCommentCount != 0>
-                and <a href="#comments">${article.articleCommentCount} comments</a>
-            </#if>
+                and <a href="#comments"><span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> comments</a>
             </#if>
         </div>
         <div class="item__tags">

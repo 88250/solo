@@ -58,11 +58,7 @@
                 </span>
                 <span class="ico-comment ico" title="${commentLabel}">
                     <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
-                        <#if article.articleCommentCount == 0>
-                        ${noCommentLabel}
-                        <#else>
-                        ${article.articleCommentCount}
-                        </#if>
+                        <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                     </a>
                 </span>
                 <span class="ico-view ico" title="${viewLabel}">

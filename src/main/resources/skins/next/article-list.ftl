@@ -54,7 +54,7 @@
                 <span>
                     &nbsp; | &nbsp;
                     <a href="${servePath}${article.articlePermalink}#comments">
-                        ${article.articleCommentCount} ${cmtLabel}</a>
+                       <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${cmtLabel}</a>
                 </span>
                 </#if>
                     &nbsp; | &nbsp;${viewsLabel} <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>°C

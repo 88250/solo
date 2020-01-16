@@ -54,10 +54,10 @@
                         ${articleTag}
                     </a> &nbsp;
                 </#list>
-                <#if article.articleCommentCount != 0 && commentable>
+                <#if commentable>
                     &nbsp;·&nbsp;
                     <a class="item__tag" href="${servePath}${article.articlePermalink}#comments">
-                        ${article.articleCommentCount} ${commentLabel}
+                        <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                     </a>
                 </#if>
                 &nbsp;·&nbsp;

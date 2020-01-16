@@ -307,7 +307,7 @@ var timeline = {
                             + '<a rel="author" href="' + Label.servePath + '/authors/' + article.authorId + '">'
                             + article.authorName + '</a></span>&nbsp;<span class="ico-comment ico" title="'
                             + Label.commentLabel + '"><a rel="nofollow" href="' + Label.servePath + article.articlePermalink
-                            + '#comments">' + (article.articleCommentCount === 0 ? Label.noCommentLabel : article.articleCommentCount)
+                            + '#comments" data-uvstatcmt="' + article.oId + '">' + article.articleCommentCount
                             + '</a></span>&nbsp;<span class="ico-view ico" title="' + Label.viewLabel + '">'
                             + '<a rel="nofollow" href="${servePath}${article.articlePermalink}">'
                             + '<span data-uvstaturl="' + Label.servePath + article.articlePermalink + '">' +  article.articleViewCount + '</span>'

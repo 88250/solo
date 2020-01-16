@@ -88,7 +88,7 @@
                                     <div class="right">
                                         <#if commentable>
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
-                                            &nbsp;${article.articleCommentCount} ${commentLabel}&nbsp;&nbsp;
+                                            &nbsp;<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}&nbsp;&nbsp;
                                         </a>
                                         </#if>
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">

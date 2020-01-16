@@ -52,7 +52,7 @@
                 <span class="vditor-tooltipped vditor-tooltipped__n" aria-label="${commentCountLabel}">
                     <i class="icon-comments"></i>
                     <a href="${servePath}${article.articlePermalink}#comments">
-                        ${article.articleCommentCount} ${commentLabel}</a>
+                        <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}</a>
                 </span>
                 </#if>
                 &nbsp; | &nbsp;

@@ -61,7 +61,7 @@
                     <div class="article-info">
                         <#if commentable>
                         <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${article.articlePermalink}#comments">
-                            ${article.articleCommentCount}
+                            <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                         </a>
                         </#if>
                         <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">

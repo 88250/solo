@@ -57,7 +57,7 @@
                 </time> &nbsp;•&nbsp;
                 <#if commentable>
                 <a href="${servePath}${article.articlePermalink}#comments" class="ft-gray">
-                    ${article.articleCommentCount} ${commentLabel}
+                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                 </a> &nbsp;•&nbsp;
                 </#if>
                 <a href="${servePath}${article.articlePermalink}" class="ft-gray">

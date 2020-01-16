@@ -59,14 +59,12 @@
             </div>
             <span>&nbsp;&nbsp;&nbsp;</span>
             <#if commentable>
-            <#if article.articleCommentCount != 0>
                 <a href="${servePath}${article.articlePermalink}#comments"
                    class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                    aria-label="${commentLabel}">
-                    ${article.articleCommentCount}
+                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                     <span class="icon-chat"></span>
                 </a>
-            </#if>
             </#if>
             <a class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                href="${servePath}${article.articlePermalink}"

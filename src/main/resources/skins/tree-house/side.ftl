@@ -80,7 +80,7 @@
             <#list mostCommentArticles as article>
             <li>
                 <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
-                    <sup>[${article.articleCommentCount}]</sup>${article.articleTitle}
+                    <sup>[<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>]</sup>${article.articleTitle}
                 </a>
             </li>
             </#list>

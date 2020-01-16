@@ -58,7 +58,7 @@
             </span>
             <#if commentable>
             <a class="tag" href="${servePath}${article.articlePermalink}#comments">
-                <i class="icon__comments"></i> ${article.articleCommentCount} ${commentLabel}
+                <i class="icon__comments"></i> <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
             </a>
             </#if>
             <span class="tag">

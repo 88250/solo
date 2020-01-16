@@ -85,7 +85,7 @@
                         <svg>
                             <use xlink:href="#icon-comment"></use>
                         </svg>
-                    ${article.articleCommentCount}  &nbsp; &nbsp;
+                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>  &nbsp; &nbsp;
                     </span>
 
                         <span id="articleShare">
@@ -139,7 +139,7 @@
                     <svg>
                         <use xlink:href="#icon-comment"></use>
                     </svg>
-                ${article.articleCommentCount}  &nbsp; &nbsp;
+                <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>  &nbsp; &nbsp;
                 </span>
                     <span id="articleBottomShare">
                     <span class="post__share-icon" data-type="wechat">
@@ -175,7 +175,7 @@
         <span class="vditor-tooltipped vditor-tooltipped__e post__share-icon ft-green"
               onclick="$('#comment').focus()"
               aria-label="${commentLabel}">
-            <span class="ft-gray">${article.articleCommentCount}</span>
+            <span class="ft-gray" data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
             <svg>
                 <use xlink:href="#icon-comment"></use>
             </svg>

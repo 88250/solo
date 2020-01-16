@@ -43,7 +43,7 @@
         <#if commentable>
         <div class="article-comment">
             <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
-                ${commentLabel}(${article.articleCommentCount})
+                ${commentLabel}(<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>)
             </a>
         </div>
         </#if>

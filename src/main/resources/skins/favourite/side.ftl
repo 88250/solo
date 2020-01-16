@@ -84,7 +84,7 @@
                 <li>
                     <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                         ${article.articleTitle}
-                    </a>(${article.articleCommentCount})
+                    </a>(<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>)
                 </li>
                 </#list>
             </ul>

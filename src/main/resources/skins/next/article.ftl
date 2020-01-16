@@ -64,7 +64,7 @@
                         <span class="post-comments-count">
                                 &nbsp; | &nbsp;
                                 <a href="${servePath}${article.articlePermalink}#comments">
-                                    ${article.articleCommentCount} ${cmtLabel}</a>
+                                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${cmtLabel}</a>
                         </span>
                         </#if>
                         &nbsp; | &nbsp; ${viewsLabel}
