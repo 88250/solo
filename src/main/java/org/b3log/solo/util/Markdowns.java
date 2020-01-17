@@ -60,7 +60,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.10, Sep 23, 2019
+ * @version 2.3.1.11, Jan 17, 2020
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -164,10 +164,6 @@ public final class Markdowns {
 
             if (StringUtils.isBlank(html)) {
                 html = toHtmlByFlexmark(markdownText);
-            }
-
-            if (!StringUtils.startsWith(html, "<p>")) {
-                html = "<p>" + html + "</p>";
             }
 
             final Document doc = Jsoup.parse(html);
