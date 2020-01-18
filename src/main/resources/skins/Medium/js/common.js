@@ -206,7 +206,7 @@ window.Skin = {
             padding: 0,
             element: $qrCode[0],
             value: shareURL,
-            size: 128,
+            size: 99,
           })
           $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`)
         }

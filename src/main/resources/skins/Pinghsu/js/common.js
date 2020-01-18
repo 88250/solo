@@ -129,6 +129,9 @@ window.Skin = {
   },
   _initShare: function () {
     var $this = $('.post__share')
+    if ($this.length === 0) {
+      return
+    }
     var $qrCode = $this.find('.post__code')
     var shareURL = $qrCode.data('url')
     var avatarURL = $qrCode.data('avatar')
@@ -156,11 +159,13 @@ window.Skin = {
         if (typeof QRious === 'undefined') {
           Util.addScript(Label.staticServePath + '/js/lib/qrious.min.js',
             'qriousScript')
+        }
+        if ($qrImg.css('background-image') === 'none') {
           const qr = new QRious({
             padding: 0,
             element: $qrCode[0],
             value: shareURL,
-            size: 128,
+            size: 99,
           })
           $qrImg.css('background-image', `url(${qr.toDataURL('image/jpeg')})`)
         } else {

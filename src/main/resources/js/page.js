@@ -90,12 +90,16 @@ $.extend(Page.prototype, {
 
       if (key === 'wechat') {
         if (typeof QRious === 'undefined') {
-          Util.addScript(Label.staticServePath + '/js/lib/qrious.min.js', 'qriousScript')
+          Util.addScript(Label.staticServePath + '/js/lib/qrious.min.js',
+            'qriousScript')
+        }
+
+        if ($qrCode.css('background-image') === "none") {
           const qr = new QRious({
             padding: 0,
             element: $qrCode[0],
             value: shareURL,
-            size:128,
+            size: 99,
           })
           $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`)
         } else {
