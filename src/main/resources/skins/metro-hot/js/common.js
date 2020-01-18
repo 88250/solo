@@ -19,8 +19,10 @@
  * @fileoverview metro-hot js.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.0, Feb 27, 2019
+ * @version 1.0.0.0, Jan 18, 2019
  */
+
+import '../../../js/common'
 
 window.MetroHot = {
   headerH: $("#header").height() + 30 + ($("#header > div").get(1) ? 30 : 0),

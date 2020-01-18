@@ -28,7 +28,7 @@
         <div class="clear"></div>
     </div>
 </div>
-<div id="goTop" onclick="goTop()">TOP</div>
+<div id="goTop" onclick="Util.goTop()">TOP</div>
 <#include "../../common-template/label.ftl">
 <script src="${staticServePath}/skins/${skinDirName}/js/common.min.js?${staticResourceVersion}"></script>
 ${plugins}

@@ -19,14 +19,15 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.0, Feb 27, 2019
+ * @version 1.0.0.0, Jan 18, 2019
  */
 
+import '../../../js/common'
 /**
  * @description yilia 皮肤脚本
  * @static
  */
-var Yilia = {
+window.Yilia = {
   /**
    * @description 页面初始化
    */

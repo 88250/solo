@@ -19,8 +19,11 @@
  * @fileoverview timeline js.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.0, Aug 2, 2019
+ * @version 1.0.0.0, Jan 18, 2019
  */
+
+import '../../../js/common'
+
 window.timeline = {
   _COLHA: 0,
   _COLHB: 20,
@@ -485,7 +488,7 @@ window.timeline = {
     return deferred ? deferred.promise($this) : $this;
   };
 
-})(jQuery);
+})($);
 
 (function() {
   Util.setTopBar()
