@@ -99,5 +99,4 @@
     Label.categoryTooLongLabel = "${categoryTooLongLabel}"
     Label.descriptionLabel = "${descriptionLabel}"
     Label.previewLabel = '${previewLabel}'
-    admin.init()
 </script>

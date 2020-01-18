@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { TablePaginate } from './tablePaginate'
 /**
  * comment list for admin
  *
@@ -110,7 +111,6 @@ admin.commentList = {
           result.pagination)
 
         Util.parseMarkdown()
-        Util.parseLanguage()
         $('#loadMsg').text('')
       },
     })

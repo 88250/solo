@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { TablePaginate } from './tablePaginate'
 /**
  * page list for admin
  *
@@ -60,7 +61,7 @@ admin.pageList = {
         this.tablePagination.initPagination();
         this.getList(page);
     },
-    /* 
+    /*
      * 根据当前页码获取列表
      * @pagNum 当前页码
      */
@@ -154,13 +155,13 @@ admin.pageList = {
             }
         });
     },
-    /* 
+    /*
      * 删除自定义页面
      * @id 自定义页面 id
      * @title 自定义页面标题
      */
     del: function (id, title) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.navLabel + '"' + Util.htmlDecode(title) + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.navLabel + '"' + htmlDecode(title) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -345,7 +346,7 @@ admin.pageList = {
 };
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register["page-list"] = {
     "obj": admin.pageList,

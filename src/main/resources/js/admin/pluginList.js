@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { TablePaginate } from './tablePaginate'
 /**
  * plugin list for admin
  *
@@ -31,7 +32,7 @@ admin.pluginList = {
         pageCount: 1,
         currentPage: 1
     },
-    /* 
+    /*
      * 初始化 table, pagination
      */
     init: function(page) {
@@ -66,7 +67,7 @@ admin.pluginList = {
         });
         this.getList(page);
     },
-    /* 
+    /*
      * 根据当前页码获取列表
      * @pagNum 当前页码
      */
@@ -167,7 +168,7 @@ admin.pluginList = {
 };
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register["plugin-list"] = {
     "obj": admin.pluginList,

@@ -19,9 +19,8 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.1, Aug 6, 2019
+ * @version 1.4.0.0, Jan 18, 2020
  */
-
 admin.editors = {}
 
 /*
@@ -31,7 +30,7 @@ admin.editors = {}
  * @param conf.id 编辑器渲染元素 id
  * @param conf.height 编辑器种类
  */
-var SoloEditor = function (conf) {
+window.SoloEditor = function (conf) {
   this.conf = conf
   this.init()
 }
@@ -57,7 +56,7 @@ $.extend(SoloEditor.prototype, {
           if (element.style.display === 'none') {
             return
           }
-          Util.parseLanguage()
+          Util.parseMarkdown()
         },
       },
       upload: {

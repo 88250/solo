@@ -15,14 +15,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 /**
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.0.0, Jan 15, 2020
+ * @version 2.6.0.0, Jan 18, 2020
  */
-var Page = function (tips) {
+window.Page = function (tips) {
   this.currentCommentId = ''
   this.tips = tips
 }
@@ -43,7 +44,6 @@ $.extend(Page.prototype, {
       userName: $vcomment.data('name'),
       currentPage: 1,
       vditor: {
-        scriptPath: 'https://cdn.jsdelivr.net/npm/vditor@2.1.1/dist/index.min.js',
         hljsEnable: !Label.luteAvailable,
         hljsStyle: Label.hljsStyle,
       },
@@ -89,14 +89,15 @@ $.extend(Page.prototype, {
       }
 
       if (key === 'wechat') {
-        if ($qrCode.find('canvas').length === 0) {
-          Util.addScript(Label.staticServePath +
-            '/js/lib/jquery.qrcode.min.js', 'qrcodeScript')
-          $qrCode.qrcode({
-            width: 128,
-            height: 128,
-            text: shareURL,
+        if (typeof QRious === 'undefined') {
+          Util.addScript(Label.staticServePath + '/js/lib/qrious.min.js', 'qriousScript')
+          const qr = new QRious({
+            padding: 0,
+            element: $qrCode[0],
+            value: shareURL,
+            size:128,
           })
+          $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`)
         } else {
           $qrCode.slideToggle()
         }
@@ -133,9 +134,6 @@ $.extend(Page.prototype, {
 
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
-      Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@2.1.1/dist/index.min.js',
-        'vditorScript')
       var toolbar = [
         'emoji',
         'headings',
@@ -205,7 +203,7 @@ $.extend(Page.prototype, {
             if (element.style.display === 'none') {
               return
             }
-            Util.parseLanguage()
+            Util.parseMarkdown()
           },
         },
         counter: 500,
@@ -397,15 +395,6 @@ $.extend(Page.prototype, {
     }
   },
   /*
-   * @description 添加回复评论表单
-   * @param {String} id 被回复的评论 id
-   */
-  addReplyForm: function (id, name) {
-    var that = this
-    that.currentCommentId = id
-    this.toggleEditor(id, name)
-  },
-  /*
    * @description 隐藏回复评论的浮出层
    * @parma {String} id 被回复的评论 id
    */
@@ -446,7 +435,6 @@ $.extend(Page.prototype, {
       $('#comments').html(commentHTML)
     }
     Util.parseMarkdown()
-    Util.parseLanguage()
     window.location.hash = '#comments'
   },
 })

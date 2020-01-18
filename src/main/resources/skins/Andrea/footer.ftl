@@ -22,9 +22,8 @@
     Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a><br/>
     Theme ${skinDirName} by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <#include "../../common-template/label.ftl">
+<script src="${staticServePath}/skin/${skinDirName}/js/common.min.js?${staticResourceVersion}"></script>
 <script type="text/javascript">
     // init brush
     var buildBrush = function () {

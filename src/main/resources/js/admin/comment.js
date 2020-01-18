@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 17, 2019
+ * @version 1.2.0.0, Jan 18, 2020
  */
 
 admin.comment = {
@@ -95,7 +95,6 @@ admin.comment = {
         $('#' + fromId + 'Comments').html(commentsHTML)
 
         Util.parseMarkdown()
-        Util.parseLanguage()
         $('#loadMsg').text('')
       },
     })

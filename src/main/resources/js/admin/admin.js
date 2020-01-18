@@ -15,6 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import $ from 'jquery'
+import '../common'
+import '../lib/jquery/jquery.bowknot.min'
 /**
  * @description index for admin
  *
@@ -23,7 +27,9 @@
  * @version 1.4.0.1, Jan 13, 2020
  */
 
-Util.htmlDecode = function (code) {
+window.$ = $
+Util.init()
+window.htmlDecode = function (code) {
   var div = document.createElement('div')
   div.innerHTML = decodeURIComponent(code)
   return div.innerText
@@ -274,4 +280,4 @@ $.extend(Admin.prototype, {
   },
 })
 
-var admin = new Admin()
+window.admin = new Admin()

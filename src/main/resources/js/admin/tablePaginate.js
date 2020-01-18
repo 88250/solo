@@ -22,7 +22,7 @@
  * @version 1.0.0.8, Jun 11, 2012
  */
 
-var TablePaginate = function (id) {
+export const TablePaginate = function (id) {
     this.id = id;
     this.currentPage = 1;
 };

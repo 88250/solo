@@ -37,7 +37,7 @@
     </div>
 </#if>
 <script type="text/javascript">
-    Util.addScript('${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}', 'soloPageScript')
+    Util.addScript('${staticServePath}/js/page.min.js?${staticResourceVersion}', 'soloPageScript')
     var page = new Page({
         "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
         "oId": "${oId}",

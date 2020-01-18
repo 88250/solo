@@ -22,11 +22,13 @@
  * @version 0.1.0.0, Feb 17, 2017
  */
 
+import '../../../js/common'
+
 /**
  * @description 皮肤脚本
  * @static
  */
-var Skin = {
+window.Skin = {
   _initCommon: function ($goTop) {
     var $banner = $('header .banner'),
       $navbar = $('header .navbar')
@@ -95,5 +97,6 @@ var Skin = {
 }
 
 $(document).ready(function () {
+  Util.init()
   Skin.init()
 })

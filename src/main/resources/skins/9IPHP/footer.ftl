@@ -29,8 +29,6 @@
     by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
 </footer>
 <div class="icon-up" onclick="Util.goTop()"></div>
-<script src="${staticServePath}/js/lib/compress/pjax.min.js"></script>
-<script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
-<script src="${staticServePath}/skins/${skinDirName}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <#include "../../common-template/label.ftl">
+<script src="${staticServePath}/skins/${skinDirName}/js/common.min.js?${staticResourceVersion}"></script>
 ${plugins}
