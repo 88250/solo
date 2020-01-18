@@ -171,6 +171,7 @@ window.Util = {
   parseMarkdown: function () {
     Vcomment.parseMarkdown({
       lang: Label.langLabel,
+      lineNumber: Label.showCodeBlockLn,
       hljsEnable: !Label.luteAvailable,
       hljsStyle: Label.hljsStyle,
     })

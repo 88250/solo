@@ -26,5 +26,6 @@
     langLabel: "${langLabel}",
     version: "${version}",
     staticSite: ${staticSite?c},
+    showCodeBlockLn: ${showCodeBlockLn},
   }
 </script>

@@ -44,6 +44,7 @@ $.extend(Page.prototype, {
       userName: $vcomment.data('name'),
       currentPage: 1,
       vditor: {
+        lineNumber: Label.showCodeBlockLn,
         hljsEnable: !Label.luteAvailable,
         hljsStyle: Label.hljsStyle,
       },
