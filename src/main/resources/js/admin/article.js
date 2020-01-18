@@ -105,7 +105,7 @@ admin.article = {
    */
   del: function (id, fromId, title) {
     var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' +
-      Util.htmlDecode(title) + '"?')
+      htmlDecode(title) + '"?')
     if (isDelete) {
       $('#loadMsg').text(Label.loadingLabel)
       $('#tipMsg').text('')

@@ -15,6 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import $ from 'jquery'
+import NProgress from 'nprogress'
+import pjax from './pjax'
+
 /**
  * @fileoverview util and every page should be used.
  *
@@ -27,7 +31,8 @@
  * @description Util
  * @static
  */
-var Util = {
+window.$ = $
+window.Util = {
   uvstat: undefined,
   /**
    * 初始化浏览数
@@ -77,7 +82,7 @@ var Util = {
    */
   initPjax: function (cb) {
     if ($('#pjax').length === 1) {
-      $.pjax({
+      pjax({
         selector: 'a',
         container: '#pjax',
         show: '',

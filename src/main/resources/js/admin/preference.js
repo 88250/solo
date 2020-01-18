@@ -254,7 +254,7 @@ admin.preference = {
 }
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register['preference'] = {
   'obj': admin.preference,

@@ -22,6 +22,8 @@
  * @version 0.1.0.0, Feb 17, 2017
  */
 
+import '../../../js/common'
+
 /**
  * @description 皮肤脚本
  * @static
@@ -95,5 +97,6 @@ var Skin = {
 }
 
 $(document).ready(function () {
+  Util.init()
   Skin.init()
 })

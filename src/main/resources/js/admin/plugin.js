@@ -21,10 +21,10 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.0.7, Mar 28, 2012
  */
-var plugins = {};
+window.plugins = {};
 admin.plugin = {
     plugins: [],
-    
+
     /*
      * 添加插件进行管理
      */
@@ -33,14 +33,14 @@ admin.plugin = {
         data.isInit = false;
         data.hash = data.path.replace("/", "#") + "/" + data.id;
         this.plugins.push(data);
-        
+
         var pathList = this._analysePath(data.path);
         // 添加一二级 Tab
         if (data.index && pathList.length < 2) {
             this._addNew(data, pathList);
         }
     },
-    
+
     /*
      * 根据当前 hash 初始化或刷新插件
      */
@@ -50,7 +50,7 @@ admin.plugin = {
             var data = pluginList[i];
             var pathList = this._analysePath(data.path),
             isCurrentPlugin = false;
-            
+
             // 根据当前 hash 和插件 path 判别是非为当前插件
             if (data.index && window.location.hash.indexOf(data.hash) > -1) {
                 isCurrentPlugin = true;
@@ -58,12 +58,12 @@ admin.plugin = {
                 (window.location.hash === "#main" && data.path.indexOf("/main/panel") > -1)) {
                 isCurrentPlugin = true;
             }
-            
+
             if (isCurrentPlugin) {
                 if (data.isInit) {
                     // 插件已经初始化过，只需进行刷新
                     if (plugins[data.id].refresh) {
-                        plugins[data.id].refresh(tags.page);                           
+                        plugins[data.id].refresh(tags.page);
                     }
                 } else {
                     // 初始化插件
@@ -71,14 +71,14 @@ admin.plugin = {
                         this._addToExist(data, pathList);
                     } else if (pathList.length === 2) {
                         this._addNew(data, pathList);
-                    } 
+                    }
                     plugins[data.id].init(tags.page);
                     data.isInit = true;
                 }
             }
-        }  
+        }
     },
-    
+
     /*
      * 解析添加路径
      */
@@ -87,7 +87,7 @@ admin.plugin = {
         paths.splice(0, 1);
         return paths;
     },
-    
+
     /*
      * 添加一二级 tab
      */
@@ -104,14 +104,14 @@ admin.plugin = {
             admin.tools.push("#" + data.id);
             data.target = $("#tabTools>li").get(data.index - 1);
         }
-        
+
         if (!data.target) {
             alert("data.index is error!");
         }
-        
+
         $("#tabs").tabs("add", data);
     },
-    
+
     /*
      * 在已有页面上进行添加
      */

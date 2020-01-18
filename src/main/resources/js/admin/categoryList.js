@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { TablePaginate } from './tablePaginate'
 /**
  * category list for admin
  *
@@ -32,7 +33,7 @@ admin.categoryList = {
         pageCount: 1,
         currentPage: 1
     },
-    /* 
+    /*
      * 初始化 table, pagination
      */
     init: function(page) {
@@ -91,7 +92,7 @@ admin.categoryList = {
             }
         });
     },
-    /* 
+    /*
      * 根据当前页码获取列表
      * @pagNum 当前页码
      */
@@ -244,7 +245,7 @@ admin.categoryList = {
      * @categoryName 分类名称
      */
     del: function(id, categoryName) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.categoryLabel + '"' + Util.htmlDecode(categoryName) + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.categoryLabel + '"' + htmlDecode(categoryName) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -327,7 +328,7 @@ admin.categoryList = {
 };
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register["category-list"] = {
     "obj": admin.categoryList,

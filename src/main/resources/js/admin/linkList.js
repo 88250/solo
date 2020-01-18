@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { TablePaginate } from './tablePaginate'
 /**
  * link list for admin
  *
@@ -56,10 +57,10 @@ admin.linkList = {
             index: "linkDescription",
             width: 360
         }]);
-    
+
         this.tablePagination.initPagination();
         this.getList(page);
-        
+
         $("#updateLink").dialog({
             title:  $("#updateLink").data('title'),
             width: 700,
@@ -69,9 +70,9 @@ admin.linkList = {
         });
     },
 
-    /* 
+    /*
      * 根据当前页码获取链接列表
-     * 
+     *
      * @pagNum 当前页码
      */
     getList: function (pageNum) {
@@ -81,7 +82,7 @@ admin.linkList = {
         }
         this.pageInfo.currentPage = pageNum;
         var that = this;
-        
+
         $.ajax({
             url: Label.servePath + "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
@@ -92,7 +93,7 @@ admin.linkList = {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 var links = result.links;
                 var linkData = [];
                 admin.linkList.pageInfo.currentCount = links.length;
@@ -118,7 +119,7 @@ admin.linkList = {
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                     }
-                    
+
                     linkData[i].linkTitle = links[i].linkTitle;
                     linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
                     + links[i].linkAddress + "</a>";
@@ -130,12 +131,12 @@ admin.linkList = {
                 }
 
                 that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-    
+
     /*
      * 添加链接
      */
@@ -151,7 +152,7 @@ admin.linkList = {
                     "linkIcon": $("#linkIcon").val()
                 }
             };
-            
+
             $.ajax({
                 url: Label.servePath + "/console/link/",
                 type: "POST",
@@ -163,7 +164,7 @@ admin.linkList = {
                         $("#loadMsg").text("");
                         return;
                     }
-                    
+
                     $("#linkTitle").val("");
                     $("#linkAddress").val("");
                     $("#linkDescription").val("");
@@ -176,15 +177,15 @@ admin.linkList = {
                     if (admin.linkList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
                         admin.setHashByPage(admin.linkList.pageInfo.pageCount);
                     }
-                    
+
                     admin.linkList.getList(admin.linkList.pageInfo.pageCount);
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
+
     /*
      * 获取链接
      * @id 链接 id
@@ -192,7 +193,7 @@ admin.linkList = {
     get: function (id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#updateLink").dialog("open");
-        
+
         $.ajax({
             url: Label.servePath + "/console/link/" + id,
             type: "GET",
@@ -203,19 +204,19 @@ admin.linkList = {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 admin.linkList.id = id;
-                
+
                 $("#linkTitleUpdate").val(result.link.linkTitle);
                 $("#linkAddressUpdate").val(result.link.linkAddress);
                 $("#linkDescriptionUpdate").val(result.link.linkDescription);
                 $("#linkIconUpdate").val(result.link.linkIcon);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-    
+
     /*
      * 更新链接
      */
@@ -232,7 +233,7 @@ admin.linkList = {
                     "linkIcon": $("#linkIconUpdate").val()
                 }
             };
-            
+
             $.ajax({
                 url: Label.servePath + "/console/link/",
                 type: "PUT",
@@ -245,26 +246,26 @@ admin.linkList = {
                         $("#loadMsg").text("");
                         return;
                     }
-                    
+
                     admin.linkList.getList(admin.linkList.pageInfo.currentPage);
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
+
     /*
      * 删除链接
      * @id 链接 id
      * @title 链接标题
      */
     del: function (id, title) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.permalinkLabel + '"' + Util.htmlDecode(title) + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.permalinkLabel + '"' + htmlDecode(title) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            
+
             $.ajax({
                 url: Label.servePath + "/console/link/" + id,
                 type: "DELETE",
@@ -275,27 +276,27 @@ admin.linkList = {
                         $("#loadMsg").text("");
                         return;
                     }
-                    
+
                     var pageNum = admin.linkList.pageInfo.currentPage;
                     if (admin.linkList.pageInfo.currentCount === 1 && admin.linkList.pageInfo.pageCount !== 1 &&
                         admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
                         admin.linkList.pageInfo.pageCount--;
                         pageNum = admin.linkList.pageInfo.pageCount;
                     }
-                    
+
                     var hashList = window.location.hash.split("/");
                     if (pageNum !== parseInt(hashList[hashList.length - 1])) {
                         admin.setHashByPage(pageNum);
                     }
-                    
+
                     admin.linkList.getList(pageNum);
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
+
     /*
      * 验证字段
      * @status 更新或者添加时进行验证
@@ -318,19 +319,19 @@ admin.linkList = {
         }
         return false;
     },
-    
+
     /*
      * 调换顺序
      */
     changeOrder: function (id, order, status) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        
+
         var requestJSONObject = {
             "oId": id.toString(),
             "direction": status
         };
-        
+
         $.ajax({
             url: Label.servePath + "/console/link/order/",
             type: "PUT",
@@ -338,10 +339,10 @@ admin.linkList = {
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
-                
+
                 // Refershes the link list
                 admin.linkList.getList(admin.linkList.pageInfo.currentPage);
-                
+
                 $("#loadMsg").text("");
             }
         });
@@ -349,7 +350,7 @@ admin.linkList = {
 };
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register["link-list"] =  {
     "obj": admin.linkList,

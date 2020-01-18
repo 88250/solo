@@ -58,7 +58,6 @@ var Skin = {
     }
 
     Util.initPjax(function () {
-      Util.parseMarkdown();
       if (Util.isArticlePage(location.href)) {
         if (!$('#articleSideShare .article__code').qrcode) {
           $.ajax({

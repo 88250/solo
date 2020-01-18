@@ -76,7 +76,7 @@ admin.about = {
 }
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register['about'] = {
   'obj': admin.about,

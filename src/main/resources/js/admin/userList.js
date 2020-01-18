@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { TablePaginate } from './tablePaginate'
 /**
  * user list for admin
  *
@@ -207,7 +208,7 @@ admin.userList = {
    */
   del: function (id, userName) {
     var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' +
-      Util.htmlDecode(userName) + '"?')
+      htmlDecode(userName) + '"?')
     if (isDelete) {
       $('#loadMsg').text(Label.loadingLabel)
       $('#tipMsg').text('')

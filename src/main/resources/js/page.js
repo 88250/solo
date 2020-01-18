@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import $ from 'jquery'
 /**
  * @fileoverview Page util, load heighlight and process comment.
  *
@@ -22,7 +24,8 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.5.0.0, Jan 15, 2020
  */
-var Page = function (tips) {
+window.$ = $;
+window.Page = function (tips) {
   this.currentCommentId = ''
   this.tips = tips
 }
@@ -43,7 +46,6 @@ $.extend(Page.prototype, {
       userName: $vcomment.data('name'),
       currentPage: 1,
       vditor: {
-        scriptPath: 'https://cdn.jsdelivr.net/npm/vditor@2.1.1/dist/index.min.js',
         hljsEnable: !Label.luteAvailable,
         hljsStyle: Label.hljsStyle,
       },
