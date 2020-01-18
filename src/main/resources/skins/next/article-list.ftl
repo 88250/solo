@@ -53,7 +53,7 @@
                 <#if commentable>
                 <span>
                     &nbsp; | &nbsp;
-                    <a href="${servePath}${article.articlePermalink}#comments">
+                    <a href="${servePath}${article.articlePermalink}#b3logsolocomments">
                        <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${cmtLabel}</a>
                 </span>
                 </#if>

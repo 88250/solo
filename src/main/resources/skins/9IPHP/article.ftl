@@ -63,7 +63,7 @@
                         &nbsp; | &nbsp;
                         <span class="vditor-tooltipped vditor-tooltipped__n" aria-label="${commentCountLabel}">
                                     <i class="icon-comments"></i>
-                                    <a href="${servePath}${article.articlePermalink}#comments">
+                                    <a href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                         <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}</a>
                                 </span>
                         </#if>
@@ -109,7 +109,8 @@
                     </div>
                 </footer>
                 <#if commentable>
-                <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                    <div id="b3logsolocomments"></div>
+                    <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                     <#if !staticSite>
                     <div id="soloComments" class="fn__none">
                         <@comments commentList=articleComments article=article></@comments>

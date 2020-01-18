@@ -73,7 +73,7 @@
                             </#list>
                         </span>
                         <#if commentable>
-                            <a class="tag" href="${servePath}${article.articlePermalink}#comments">
+                            <a class="tag" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                 <i class="icon__comments"></i> <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                             </a>
                         </#if>
@@ -133,9 +133,10 @@
                 </div>
             </#if>
             <#if commentable>
-            <div id="vcomment" class="module__content"
-                 style="border-radius: 5px;margin-bottom: 30px;box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.2);transition: all .3s;"
-                 data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                <div id="b3logsolocomments"></div>
+                <div id="vcomment" class="module__content"
+                     style="border-radius: 5px;margin-bottom: 30px;box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.2);transition: all .3s;"
+                     data-name="${article.authorName}" data-postId="${article.oId}"></div>
                 <#if !staticSite>
                     <div id="soloComments" class="fn__none">
                         <@comments commentList=articleComments article=article></@comments>

@@ -93,7 +93,7 @@
                         </span>
                         <#if commentable>
                         <span class="ico-comment ico" title="${commentLabel}">
-                            <a rel="nofollow" data-uvstatcmt="${article.oId} href="${servePath}${article.articlePermalink}#comments">
+                            <a rel="nofollow" data-uvstatcmt="${article.oId} href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                 ${article.articleCommentCount}
                             </a>
                         </span>

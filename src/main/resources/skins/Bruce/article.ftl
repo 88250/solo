@@ -74,7 +74,8 @@
                             </div>
                         </div>
                         <#if commentable>
-                        <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                            <div id="b3logsolocomments"></div>
+                            <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                             <#if !staticSite>
                                 <div id="soloComments" style="display: none;">
                                     <@comments commentList=articleComments article=article></@comments>

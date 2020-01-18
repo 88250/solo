@@ -57,7 +57,7 @@
                     <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                 </span>
                 <span class="ico-comment ico" title="${commentLabel}">
-                    <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                    <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                         <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                     </a>
                 </span>

@@ -64,7 +64,7 @@
             </#if>
             with <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> views
             <#if commentable>
-                and <a href="#comments"><span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> comments</a>
+                and <a href="#b3logsolocomments"><span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> comments</a>
             </#if>
         </div>
         <div class="item__tags">
@@ -91,7 +91,8 @@
     <div class="body--gray post__gray">
         <div class="wrapper comment">
             <#if commentable>
-            <div id="vcomment" style="padding: 30px 0;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                <div id="b3logsolocomments"></div>
+                <div id="vcomment" style="padding: 30px 0;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                 <#if !staticSite>
                     <div id="soloComments" style="display: none;">
                         <@comments commentList=articleComments article=article></@comments>
