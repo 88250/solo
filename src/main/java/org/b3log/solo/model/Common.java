@@ -22,7 +22,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.7, Jan 16, 2020
+ * @version 1.7.0.8, Jan 18, 2020
  * @since 0.3.1
  */
 public final class Common {
@@ -256,16 +256,6 @@ public final class Common {
      * Key of post to community.
      */
     public static final String POST_TO_COMMUNITY = "postToCommunity";
-
-    /**
-     * Key of mini postfix.
-     */
-    public static final String MINI_POSTFIX = "miniPostfix";
-
-    /**
-     * Value of mini postfix.
-     */
-    public static final String MINI_POSTFIX_VALUE = ".min";
 
     /**
      * Key of month name.
