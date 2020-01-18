@@ -101,7 +101,7 @@ module.exports = (env, argv) => {
                 name (file) {
                   const skins = file.split('skins')
                   if (skins.length === 2) {
-                    return `skins/${skins[1].split('/')[1]}/css/[name].css`
+                    return `skins/${skins[1].split(path.sep)[1]}/css/[name].css`
                   } else {
                     return 'scss/[name].css'
                   }
