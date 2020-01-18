@@ -71,7 +71,7 @@
                         </div>
                         </#if>
                     </section>
-                    <footer>
+                    <footer class="fn__clear">
                         <figure class="post-author">
                             <a href="${servePath}/authors/${article.authorId}"
                                title="${article.authorName}" alt="${article.authorName}"
@@ -79,17 +79,7 @@
                                 <span class="fn-none">${article.authorName}</span>
                             </a>
                         </figure>
-                        <div class="share fn-right">
-                            <span class="icon icon-wechat"
-                                  data-type="wechat"
-                                  data-title="${article.articleTitle}"
-                                  data-blogtitle="${blogTitle}"
-                                  data-url="${servePath}${article.articlePermalink}"
-                                  data-avatar="${article.authorThumbnailURL}"></span>
-                            <span class="icon icon-weibo" data-type="weibo"></span>
-                            <span class="icon icon-twitter" data-type="twitter"></span>
-                            <span class="icon icon-qqz" data-type="qqz"></span>
-                        </div>
+                        <#include "../../common-template/share.ftl">
                     </footer>
                 </article>
                 <#if 0 != relevantArticlesDisplayCount>
@@ -146,6 +136,7 @@
             <#if 0 != relevantArticlesDisplayCount>
             page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticles1Label}</h4>');
             </#if>
+                page.share();
              </@comment_script>
         </div>
     </body>

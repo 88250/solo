@@ -106,58 +106,6 @@ window.MetroHot = {
   loadImg: function(it) {
     it.style.marginTop = ("margin-top", (220 - it.height) / 2 + "px");
   },
-  /**
-   * @description 分享按钮
-   */
-  share: function() {
-    var $this = $('.share .text')
-    var $qrCode = $this.find('.icon-wechat')
-    var shareURL = $qrCode.data('url')
-    var avatarURL = $qrCode.data('avatar')
-    var title = encodeURIComponent($qrCode.data('title') + ' - ' +
-      $qrCode.data('blogtitle')),
-      url = encodeURIComponent(shareURL)
-
-    var urls = {}
-    urls.weibo = 'http://v.t.sina.com.cn/share/share.php?title=' +
-      title + '&url=' + url + '&pic=' + avatarURL
-    urls.qqz = 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='
-      + url + '&sharesource=qzone&title=' + title + '&pics=' + avatarURL
-    urls.twitter = 'https://twitter.com/intent/tweet?status=' + title + ' ' +
-      url
-
-    $this.find('span').click(function () {
-      var key = $(this).data('type')
-
-      if (!key) {
-        return
-      }
-
-      if (key === 'wechat') {
-        if ($qrCode.find('canvas').length === 0) {
-          $.ajax({
-            method: 'GET',
-            url: Label.staticServePath +
-              '/js/lib/jquery.qrcode.min.js',
-            dataType: 'script',
-            cache: true,
-            success: function () {
-              $qrCode.qrcode({
-                width: 111,
-                height: 111,
-                text: shareURL,
-              })
-            },
-          })
-        } else {
-          $qrCode.find('canvas').slideToggle()
-        }
-        return false
-      }
-
-      window.open(urls[key], '_blank', 'top=100,left=200,width=648,height=618')
-    })
-  },
   /*
    * @description 加载随机文章
    */
@@ -271,7 +219,4 @@ window.MetroHot = {
 
 (function() {
   MetroHot.init();
-  if ($(".article-header").length > 0) {
-    MetroHot.share();
-  }
 })();

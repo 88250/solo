@@ -534,7 +534,6 @@ textarea {
 .online-count,
 .user,
 .notice-board,
-.share,
 .article-relative {
   width: 188px;
 }
@@ -580,34 +579,46 @@ textarea {
   width: 60px;
 }
 
-.online-count,
-.share {
+.online-count{
   background-color: #20608E;
 }
 
-.share div.text {
-  color: #BDBEBD;
-  font-size: 16px;
-  font-weight: normal;
-  left: 128px;
-  line-height: 54px;
-  top: 5px;
-  width: 105px;
+.article__share {
+  display: inline-block;
+  position: relative;
+  z-index: 10;
 
-  .icon-wechat {
-    position: relative;
+  .item {
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+    transition: all .3s ease;
+    opacity: .86;
+    color: #323232;
 
-    canvas {
+    svg {
+      fill: currentColor;
+      height: 20px;
+      width: 20px;
+      float: left;
+    }
+
+    &:hover {
+      transform: rotate(360deg);
+      color: #9EABB3;
+    }
+
+    &__qr {
       position: absolute;
-      right: 43px;
-      top: -17px;
+      top: 30px;
+      left: 33px;
+      height: 99px;
+      width: 99px;
     }
   }
-}
-
-.share .text span:hover {
-  cursor: pointer;
-  color: #FFF;
 }
 
 .online-count .text,
@@ -1061,7 +1072,6 @@ pre.prettyprint {
   .online-count,
   .user,
   .notice-board,
-  .share,
   .article-relative {
     width: 249px;
   }
@@ -1077,10 +1087,6 @@ pre.prettyprint {
   #comments .vditor-reset {
     position: static !important;
     width: auto !important;
-  }
-
-  .share div.text {
-    left: 173px;
   }
 
   .form {

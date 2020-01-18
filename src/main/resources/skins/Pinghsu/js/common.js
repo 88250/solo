@@ -23,6 +23,7 @@
  */
 
 import '../../../js/common'
+
 /**
  * @description 皮肤脚本
  * @static
@@ -43,7 +44,6 @@ window.Skin = {
       },
     })
     header.init()
-
 
     $('.header__nav a').each(function () {
       if (this.href === location.href) {
@@ -80,14 +80,15 @@ window.Skin = {
     if ($('.article__toc').length === 0) {
       return
     }
-    $('.post__toc').css('left', $('.post').offset().left + $('.post').outerWidth())
+    $('.post__toc').
+      css('left', $('.post').offset().left + $('.post').outerWidth())
 
     var $articleTocs = $('.vditor-reset [id^=b3_solo_h]'),
-      $articleToc = $('.article__toc');
+      $articleToc = $('.article__toc')
 
     $(window).unbind('scroll').scroll(function (event) {
       if ($('.article__toc li').length === 0) {
-        return false;
+        return false
       }
 
       if ($(window).scrollTop() > 72) {
@@ -98,29 +99,31 @@ window.Skin = {
       }
 
       // 界面各种图片加载会导致帖子目录定位
-      var toc = [];
+      var toc = []
       $articleTocs.each(function (i) {
         toc.push({
           id: this.id,
-          offsetTop: this.offsetTop
-        });
-      });
+          offsetTop: this.offsetTop,
+        })
+      })
 
       // 当前目录样式
-      var scrollTop = $(window).scrollTop();
+      var scrollTop = $(window).scrollTop()
       for (var i = 0, iMax = toc.length; i < iMax; i++) {
         if (scrollTop < toc[i].offsetTop - 20) {
-          $articleToc.find('li').removeClass('current');
-          var index = i > 0 ? i - 1 : 0;
-          $articleToc.find('a[href="#' + toc[index].id + '"]').parent().addClass('current');
-          break;
+          $articleToc.find('li').removeClass('current')
+          var index = i > 0 ? i - 1 : 0
+          $articleToc.find('a[href="#' + toc[index].id + '"]').
+            parent().
+            addClass('current')
+          break
         }
       }
       if (scrollTop >= toc[toc.length - 1].offsetTop - 20) {
-        $articleToc.find('li').removeClass('current');
-        $articleToc.find('li:last').addClass('current');
+        $articleToc.find('li').removeClass('current')
+        $articleToc.find('li:last').addClass('current')
       }
-    });
+    })
 
     $(window).scroll()
   },
@@ -149,23 +152,19 @@ window.Skin = {
       }
 
       if (key === 'wechat') {
-        if ($qrCode.find('canvas').length === 0) {
-          $.ajax({
-            method: 'GET',
-            url: Label.staticServePath +
-            '/js/lib/jquery.qrcode.min.js',
-            dataType: 'script',
-            cache: true,
-            success: function () {
-              $qrCode.qrcode({
-                width: 128,
-                height: 128,
-                text: shareURL,
-              })
-            },
+        const $qrImg = $('.qrcode')
+        if (typeof QRious === 'undefined') {
+          Util.addScript(Label.staticServePath + '/js/lib/qrious.min.js',
+            'qriousScript')
+          const qr = new QRious({
+            padding: 0,
+            element: $qrCode[0],
+            value: shareURL,
+            size: 128,
           })
+          $qrImg.css('background-image', `url(${qr.toDataURL('image/jpeg')})`)
         } else {
-          $qrCode.find('canvas').slideToggle()
+          $qrImg.slideToggle()
         }
         return false
       }

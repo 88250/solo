@@ -126,7 +126,10 @@
                       data-title="${article.articleTitle}"
                       data-blogtitle="${blogTitle}"
                       data-url="${servePath}${article.articlePermalink}"
-                      data-avatar="${article.authorThumbnailURL}">WeChat</span>
+                      data-avatar="${article.authorThumbnailURL}">
+                    WeChat
+                    <span class="qrcode"></span>
+                </span>
             </span>
             <span class="post__arrow">
                 <#if previousArticlePermalink??>

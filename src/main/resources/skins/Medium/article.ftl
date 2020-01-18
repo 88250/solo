@@ -213,7 +213,6 @@
     <#if pjax><!---- pjax {#pjax} end ----></#if>
 </div>
 <#include "footer.ftl">
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery.qrcode.min.js"></script>
 <#if pjax><!---- pjax {#pjax} start ----></#if>
 <@comment_script oId=article.oId commentable=article.commentable>
     Skin.initArticle()

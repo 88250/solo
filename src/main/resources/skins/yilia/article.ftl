@@ -109,15 +109,7 @@
 
         <footer class="fn-clear share">
             <div class="fn-right">
-                        <span class="icon icon-wechat"
-                              data-type="wechat"
-                              data-title="${article.articleTitle}"
-                              data-blogtitle="${blogTitle}"
-                              data-url="${servePath}${article.articlePermalink}"
-                              data-avatar="${article.authorThumbnailURL}"></span>
-                <span class="icon icon-weibo" data-type="weibo"></span>
-                <span class="icon icon-twitter" data-type="twitter"></span>
-                <span class="icon icon-qqz" data-type="qqz"></span>
+                <#include "../../common-template/share.ftl">
             </div>
         </footer>
         <#if 0 != relevantArticlesDisplayCount>
@@ -155,7 +147,7 @@
         <#if 0 != relevantArticlesDisplayCount>
             page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticles1Label}</h4>');
         </#if>
-        Yilia.share()
+        page.share()
     </@comment_script>
 </main>
 </body>
