@@ -141,7 +141,6 @@ public class AdminConsole {
             final JSONObject skin = optionQueryService.getSkin();
             dataModel.put(Option.CATEGORY_C_SKIN, skin.optString(Option.ID_C_SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
-            dataModelService.fillMinified(dataModel);
             dataModel.put(Common.LUTE_AVAILABLE, Markdowns.LUTE_AVAILABLE);
             // 内置 HTTPS+CDN 文件存储 https://github.com/b3log/solo/issues/12556
             dataModel.put(Common.UPLOAD_TOKEN, "");

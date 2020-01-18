@@ -183,7 +183,6 @@ public class IndexProcessor {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.REFERER, URLs.encode(referer));
         Keys.fillRuntime(dataModel);
-        dataModelService.fillMinified(dataModel);
         dataModelService.fillFaviconURL(dataModel, optionQueryService.getPreference());
         dataModelService.fillUsite(dataModel);
         Solos.addGoogleNoIndex(context);
@@ -223,7 +222,6 @@ public class IndexProcessor {
             dataModelService.fillUsite(dataModel);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
-            dataModelService.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -218,7 +218,6 @@ public class ArticleProcessor {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         Keys.fillRuntime(dataModel);
-        dataModelService.fillMinified(dataModel);
         dataModelService.fillFaviconURL(dataModel, preference);
         dataModelService.fillUsite(dataModel);
     }
