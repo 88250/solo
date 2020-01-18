@@ -225,10 +225,12 @@ public class PreferenceMgmtService {
                 showCodeBlockLnOpt = new JSONObject();
                 showCodeBlockLnOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_CODE_BLOCK_LN);
                 showCodeBlockLnOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+                showCodeBlockLnOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN));
+                optionRepository.add(showCodeBlockLnOpt);
+            } else {
+                showCodeBlockLnOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN));
+                optionRepository.update(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLnOpt);
             }
-            showCodeBlockLnOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN));
-            optionRepository.update(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLnOpt);
-
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
             optionRepository.update(Option.ID_C_CUSTOM_VARS, customVarsOpt);
