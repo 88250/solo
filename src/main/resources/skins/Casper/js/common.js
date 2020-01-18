@@ -24,6 +24,14 @@
 
 import '../../../js/common'
 
+window.utilOptions = {
+  cmtCountCB: (element, cnt) => {
+    if (cnt > 0) {
+      element.parentElement.style.display = 'inline'
+      element.parentElement.nextElementSibling.style.display = 'none'
+    }
+  },
+}
 /**
  * @description 皮肤脚本
  * @static

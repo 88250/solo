@@ -43,11 +43,11 @@ window.Util = {
   /**
    * 初始化浏览数
    */
-  initViewCnt: function () {
+  initViewCnt: function (cb) {
     Util.uvstat = new Uvstat()
     Util.uvstat.addStat()
     Util.uvstat.renderStat()
-    Util.uvstat.renderCmtStat()
+    Util.uvstat.renderCmtStat(cb)
   },
   /**
    * 是否为文章页面
@@ -120,7 +120,7 @@ window.Util = {
           Util.parseMarkdown()
           Util.uvstat.addStat()
           Util.uvstat.renderStat()
-          Util.uvstat.renderCmtStat()
+          Util.uvstat.renderCmtStat(window.utilOptions && window.utilOptions.cmtCountCB)
           cb && cb()
         },
       })
@@ -247,13 +247,13 @@ window.Util = {
   /**
    * @description 页面初始化执行的函数
    */
-  init: function () {
+  init: function (options) {
     Util.killIE()
     Util.parseMarkdown()
     Util.initSW()
     Util.previewImg()
     Util.initDebugInfo()
-    Util.initViewCnt()
+    Util.initViewCnt(options && options.cmtCountCB)
   },
   /**
    * 调试区域文案
@@ -305,5 +305,5 @@ window.Util = {
 }
 
 $(document).ready(function () {
-  Util.init()
+  Util.init(window.utilOptions)
 })
