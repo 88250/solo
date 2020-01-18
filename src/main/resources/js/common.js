@@ -16,18 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import $ from 'jquery'
-window.$ = $
-
 import NProgress from 'nprogress'
 import Uvstat from 'uvstat'
 import pjax from './pjax'
+import Vditor from 'vditor'
+import Vcomment from 'vcmt'
+
+window.$ = $
+window.Vditor = Vditor
+window.Vcomment = Vcomment
 
 /**
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.0, Jan 12, 2020
+ * @version 2.1.0.0, Jan 18, 2020
  */
 
 /**
@@ -114,7 +118,6 @@ window.Util = {
         },
         callback: function () {
           Util.parseMarkdown()
-          Util.parseLanguage()
           Util.uvstat.addStat()
           Util.uvstat.renderStat()
           Util.uvstat.renderCmtStat()
@@ -143,21 +146,6 @@ window.Util = {
     })
   },
   /**
-   * 异步添加 css
-   * @param url css 文件访问地址
-   * @param id css 文件标示
-   */
-  addStyle: function (url, id) {
-    if (!document.getElementById(id)) {
-      var styleElement = document.createElement('link')
-      styleElement.id = id
-      styleElement.setAttribute('rel', 'stylesheet')
-      styleElement.setAttribute('type', 'text/css')
-      styleElement.setAttribute('href', url)
-      document.getElementsByTagName('head')[0].appendChild(styleElement)
-    }
-  },
-  /**
    * 异步添加 js
    * @param url js 文件访问地址
    * @param id js 文件标示
@@ -176,40 +164,15 @@ window.Util = {
       document.getElementsByTagName('head')[0].appendChild(scriptElement)
     }
   },
-  /*
-  * @description 解析语法高亮
-  */
-  parseLanguage: function () {
-    Vditor.highlightRender({
-      style: Label.hljsStyle,
-      enable: !Label.luteAvailable,
-    }, document)
-  },
   /**
    * 按需加载数学公式、流程图、代码复制、五线谱、多媒体、图表
    * @returns {undefined}
    */
   parseMarkdown: function () {
-
-    if (typeof Vditor === 'undefined') {
-      Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@2.1.1/dist/method.min.js',
-        'vditorPreviewScript')
-    }
-
-    Vditor.codeRender(document.body, Label.langLabel)
-    if (Label.luteAvailable) {
-      Vditor.mathRenderByLute(document.body)
-    } else {
-      Vditor.mathRender(document.body)
-    }
-
-    Vditor.abcRender()
-    Vditor.chartRender()
-    Vditor.mediaRender(document.body)
-    Vditor.mermaidRender(document.body)
-    document.querySelectorAll('.vditor-reset').forEach((e) => {
-      Vditor.speechRender(e, Label.langLabel)
+    Vcomment.parseMarkdown({
+      lang: Label.langLabel,
+      hljsEnable: !Label.luteAvailable,
+      hljsStyle: Label.hljsStyle,
     })
   },
   /**
@@ -221,14 +184,16 @@ window.Util = {
         var left = ($(window).width() - 781) / 2,
           top1 = ($(window).height() - 680) / 2
         var killIEHTML = '<div class="killIEIframe" style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
-          + '<iframe class="killIEIframe" style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
+          + '<iframe class="killIEIframe" style=\'left:' + left +
+          'px;z-index:120;top: ' + top1 +
           'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
           Label.servePath + '/kill-browser\'></iframe>'
         $('body').append(killIEHTML)
       } catch (e) {
         var left = 10, top1 = 0
         var killIEHTML = '<div class="killIEIframe" style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
-          + '<iframe class="killIEIframe" style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
+          + '<iframe class="killIEIframe" style=\'left:' + left +
+          'px;z-index:120;top: ' + top1 +
           'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
           Label.servePath + '/kill-browser\'></iframe>'
         document.body.innerHTML = document.body.innerHTML + killIEHTML
@@ -285,7 +250,6 @@ window.Util = {
   init: function () {
     Util.killIE()
     Util.parseMarkdown()
-    Util.parseLanguage()
     Util.initSW()
     Util.previewImg()
     Util.initDebugInfo()

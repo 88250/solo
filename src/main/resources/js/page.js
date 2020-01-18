@@ -16,14 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import $ from 'jquery'
-import Vcomment from 'vcmt'
 /**
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.0.0, Jan 15, 2020
+ * @version 2.6.0.0, Jan 18, 2020
  */
 window.Page = function (tips) {
   this.currentCommentId = ''
@@ -136,9 +134,6 @@ $.extend(Page.prototype, {
 
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
-      Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@2.1.1/dist/index.min.js',
-        'vditorScript')
       var toolbar = [
         'emoji',
         'headings',
@@ -208,7 +203,7 @@ $.extend(Page.prototype, {
             if (element.style.display === 'none') {
               return
             }
-            Util.parseLanguage()
+            Util.parseMarkdown()
           },
         },
         counter: 500,
@@ -400,15 +395,6 @@ $.extend(Page.prototype, {
     }
   },
   /*
-   * @description 添加回复评论表单
-   * @param {String} id 被回复的评论 id
-   */
-  addReplyForm: function (id, name) {
-    var that = this
-    that.currentCommentId = id
-    this.toggleEditor(id, name)
-  },
-  /*
    * @description 隐藏回复评论的浮出层
    * @parma {String} id 被回复的评论 id
    */
@@ -449,7 +435,6 @@ $.extend(Page.prototype, {
       $('#comments').html(commentHTML)
     }
     Util.parseMarkdown()
-    Util.parseLanguage()
     window.location.hash = '#comments'
   },
 })

@@ -74,7 +74,6 @@ var getArticle = function (it, id) {
         $content.html(result)
         $abstract.hide().css('background', 'none')
         $content.fadeIn('slow')
-        Util.parseLanguage()
         Util.parseMarkdown()
       },
     })

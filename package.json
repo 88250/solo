@@ -1,5 +1,5 @@
 {
-  "name": "Solo",
+  "name": "solo",
   "version": "3.8.0",
   "description": " 一款小而美的博客系统，专为程序员设计。",
   "homepage": "https://github.com/88250/solo",
@@ -48,7 +48,7 @@
     "jquery": "^3.4.1",
     "nprogress": "^0.2.0",
     "uvstat": "^1.0.6",
-    "vcmt": "^1.0.6",
+    "vcmt": "^1.0.9",
     "vditor": "^2.1.1"
   }
 }

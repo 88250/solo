@@ -111,7 +111,6 @@ admin.commentList = {
           result.pagination)
 
         Util.parseMarkdown()
-        Util.parseLanguage()
         $('#loadMsg').text('')
       },
     })
