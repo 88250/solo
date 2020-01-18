@@ -72,31 +72,8 @@
             </a>
 
             <#if isArticle>
-                <div class="share side-tile">
-                    <span data-ico="&#xe1fe;"></span>
-                    <div class="title">
-                        ${shareLabel}
-                    </div>
-                    <div class="text">
-                        <#if article??>
-                            <span class="icon-wechat"
-                                  data-type="wechat"
-                                  data-title="${article.articleTitle}"
-                                  data-blogtitle="${blogTitle}"
-                                  data-url="${servePath}${article.articlePermalink}"
-                                  data-avatar="${article.authorThumbnailURL}">微信</span>
-                        <#else>
-                            <span class="icon-wechat"
-                                  data-type="wechat"
-                                  data-title="${page.pageTitle}"
-                                  data-blogtitle="${blogTitle}"
-                                  data-url="${servePath}${page.pagePermalink}"
-                                  data-avatar="${adminUser.userAvatar}">微信</span>
-                        </#if>
-                        <span data-type="weibo">微博</span>
-                        <span data-type="twitter">Twitter</span>
-                        <span data-type="qqz">QQ</span>
-                    </div>
+                <div class="side-tile article-relative">
+                    <#include "../../common-template/share.ftl">
                 </div>
 
                 <#if relevantArticlesDisplayCount??>

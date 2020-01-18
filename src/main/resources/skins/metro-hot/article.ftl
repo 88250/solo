@@ -109,6 +109,7 @@
         <#if 0 != externalRelevantArticlesDisplayCount>
         MetroHot.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
         </#if>
+            page.share()
         </@comment_script>
     </body>
 </html>

@@ -497,10 +497,12 @@ a:active, a:focus, a:hover {
   &__code {
     position: relative;
 
-    canvas {
+    .qrcode {
       position: absolute;
       bottom: 30px;
       left: 0;
+      height: 99px;
+      width: 99px;
     }
   }
 

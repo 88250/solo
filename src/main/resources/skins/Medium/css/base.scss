@@ -530,10 +530,11 @@
 
 .post__share #articleShare .article__code {
   position: absolute;
-  height: 130px;
-  width: 130px;
+  height: 99px;
+  width: 99px;
   left: -2px;
-  top: 22px
+  top: 22px;
+  z-index: 2;
 }
 
 .post__share-icon {
@@ -581,8 +582,8 @@
 
 .post__side .article__code {
   position: absolute;
-  height: 130px;
-  width: 130px;
+  height: 99px;
+  width: 99px;
   left: 45px;
   top: 90px
 }
@@ -711,9 +712,9 @@
 
 .article__toolbar .article__code {
   position: absolute;
-  height: 130px;
-  width: 130px;
-  left: 50px;
+  height: 99px;
+  width: 99px;
+  left: 0;
   bottom: 30px
 }
 
@@ -790,6 +791,10 @@
   display: block;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding: 40px 0 35px
+}
+
+#articleBottomShare {
+  position: relative;
 }
 
 @media (max-width: 768px) {

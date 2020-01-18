@@ -45,14 +45,10 @@
             </a>
         </div>
     </div>
-    <script type="text/javascript" src="${staticServePath}/js/common.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${staticServePath}/js/lib/qrious.min.js" charset="utf-8"></script>
     <script type="text/javascript">
-      (function () {
-        try {
-          $('.startAction')
-        } catch (e) {
-          document.querySelector('.main').innerHTML = "${staticErrorLabel}"
-        }
-      })()
+      if (typeof QRious === 'undefined') {
+        document.querySelector('.main').innerHTML = "${staticErrorLabel}"
+      }
     </script>
 </@commonPage>

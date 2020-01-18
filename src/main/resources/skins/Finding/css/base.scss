@@ -372,10 +372,6 @@ pre code, pre tt {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-qqz:before {
-  content: "\e902";
-}
-
 .icon-register:before {
   content: "\e600";
 }
@@ -751,16 +747,6 @@ article.post {
   border-bottom: #EBF2F6 1px solid;
   word-wrap: break-word;
   width: 80%;
-
-  .share {
-    position: relative;
-
-    canvas {
-      position: absolute;
-      left: 0;
-      top: 36px;
-    }
-  }
 }
 
 .post-content--article {
@@ -864,31 +850,6 @@ article.post:after {
   height: 68px;
   display: block;
   border-radius: 35px;
-}
-
-.share .icon {
-  cursor: pointer;
-  transition: all 0.2s ease-out 0s;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 15px;
-}
-
-.share .icon:hover {
-  transform: rotate(360deg);
-  color: #9EABB3;
-}
-
-.icon-weibo:before {
-  content: "\e605";
-}
-
-.icon-twitter:before {
-  content: "\e60b";
-}
-
-.icon-tencent:before {
-  content: "\e60d";
 }
 
 .icon-google:before {
@@ -1088,6 +1049,58 @@ ul.comments {
   left: 0;
   right: 0;
   margin: 0;
+}
+
+
+.article__share {
+  margin-top: 10px;
+  display: inline-block;
+  position: relative;
+  float: right;
+
+  .item {
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+    color: #fdc200;
+    transition: all .3s ease;
+    opacity: .86;
+
+    svg {
+      fill: currentColor;
+      height: 16px;
+      width: 16px;
+      float: left;
+    }
+
+    &[data-type="wechat"] {
+      color: #3caf36;
+    }
+
+    &[data-type="twitter"] {
+      color: #18a3fa;
+    }
+
+    &[data-type="weibo"] {
+      color: #f93;
+    }
+
+    &:hover {
+      transform: rotate(360deg);
+      color: #9EABB3;
+    }
+
+    &__qr {
+      position: absolute;
+      top: 30px;
+      left: 33px;
+      height: 99px;
+      width: 99px;
+    }
+  }
 }
 
 /* end article */

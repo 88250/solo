@@ -13,8 +13,8 @@
   "license": "AGPLv3",
   "private": true,
   "scripts": {
-    "build": "gulp",
-    "dev": "webpack --config webpack.js"
+    "build": "webpack --mode production",
+    "dev": "webpack"
   },
   "author": "Daniel <dl882509@gmail.com> (http://88250.b3log.org) & Vanessa <v@b3log.org> (http://vanessa.b3log.org)",
   "maintainers": [
