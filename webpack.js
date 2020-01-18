@@ -19,20 +19,20 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const genSkinsEntries = () => {
   const entries = {}
-  // fs.readdirSync('./src/main/resources/skins').forEach(function (file) {
-  //   const jsPath = `./src/main/resources/skins/${file}`
-  //   try {
-  //     fs.statSync(`${jsPath}/js/common.js`)
-  //     entries[`${file}/common`] = `${jsPath}/js/common.js`
-  //   } catch (e) {
-  //   }
-  //
-  //   try {
-  //     fs.statSync(`${jsPath}/css/base.scss`)
-  //     entries[`${file}/base`] = `${jsPath}/css/base.scss`
-  //   } catch (e) {
-  //   }
-  // })
+  fs.readdirSync('./src/main/resources/skins').forEach(function (file) {
+    const jsPath = `./src/main/resources/skins/${file}`
+    try {
+      fs.statSync(`${jsPath}/js/common.js`)
+      entries[`skins/${file}/js/common`] = `${jsPath}/js/common.js`
+    } catch (e) {
+    }
+
+    try {
+      fs.statSync(`${jsPath}/css/base.scss`)
+      entries[`dist/${file}/base`] = `${jsPath}/css/base.scss`
+    } catch (e) {
+    }
+  })
 
   return entries
 }
@@ -100,7 +100,7 @@ module.exports = {
               name(file) {
                 const skins = file.split('skins')
                 if (skins.length === 2) {
-                  return `dist/${skins[1].split('/')[1]}/[name].css`;
+                  return `skins/${skins[1].split('/')[1]}/css/[name].css`;
                 } else {
                   return 'scss/[name].css';
                 }

@@ -16,9 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import $ from 'jquery'
+window.$ = $
+
 import NProgress from 'nprogress'
-import pjax from './pjax'
 import Uvstat from 'uvstat'
+import pjax from './pjax'
 
 /**
  * @fileoverview util and every page should be used.
@@ -32,7 +34,6 @@ import Uvstat from 'uvstat'
  * @description Util
  * @static
  */
-window.$ = $
 window.Util = {
   uvstat: undefined,
   /**

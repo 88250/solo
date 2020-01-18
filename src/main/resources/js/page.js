@@ -17,6 +17,7 @@
  */
 
 import $ from 'jquery'
+import Vcomment from 'vcmt'
 /**
  * @fileoverview Page util, load heighlight and process comment.
  *
@@ -24,7 +25,6 @@ import $ from 'jquery'
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.5.0.0, Jan 15, 2020
  */
-window.$ = $;
 window.Page = function (tips) {
   this.currentCommentId = ''
   this.tips = tips
@@ -91,14 +91,15 @@ $.extend(Page.prototype, {
       }
 
       if (key === 'wechat') {
-        if ($qrCode.find('canvas').length === 0) {
-          Util.addScript(Label.staticServePath +
-            '/js/lib/jquery.qrcode.min.js', 'qrcodeScript')
-          $qrCode.qrcode({
-            width: 128,
-            height: 128,
-            text: shareURL,
+        if (typeof QRious === 'undefined') {
+          Util.addScript(Label.staticServePath + '/js/lib/qrious.min.js', 'qriousScript')
+          const qr = new QRious({
+            padding: 0,
+            element: $qrCode[0],
+            value: shareURL,
+            size:128,
           })
+          $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`)
         } else {
           $qrCode.slideToggle()
         }
