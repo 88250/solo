@@ -34,13 +34,12 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -51,7 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Jan 13, 2020
+ * @version 1.0.1.4, Jan 18, 2020
  * @since 2.9.5
  */
 @RequestProcessor
@@ -63,9 +62,9 @@ public class OAuthProcessor {
     private static final Logger LOGGER = LogManager.getLogger(OAuthProcessor.class);
 
     /**
-     * OAuth parameters - state.
+     * OAuth parameters - state &lt;state, redirectURL&gt;.
      */
-    private static final Set<String> STATES = ConcurrentHashMap.newKeySet();
+    private static final Map<String, String> STATES = new ConcurrentHashMap();
 
     /**
      * Option query service.
@@ -115,11 +114,11 @@ public class OAuthProcessor {
             referer = Latkes.getServePath();
         }
 
-        String state = RandomStringUtils.randomAlphanumeric(16) + referer;
-        STATES.add(state);
+        String state = RandomStringUtils.randomAlphanumeric(16);
+        STATES.put(state, referer);
 
         final String loginAuthURL = "https://hacpai.com/login?goto=" + Latkes.getServePath() + "/login/callback";
-        final String path = loginAuthURL + "?state=" + URLs.encode(state);
+        final String path = loginAuthURL + "?state=" + state;
         context.sendRedirect(path);
     }
 
@@ -131,14 +130,13 @@ public class OAuthProcessor {
     @RequestProcessing(value = "/login/callback", method = HttpMethod.GET)
     public synchronized void authCallback(final RequestContext context) {
         String state = context.param("state");
-        if (!STATES.contains(state)) {
+        final String referer = STATES.get(state);
+        if (null == referer) {
             context.sendError(400);
 
             return;
         }
         STATES.remove(state);
-        String referer = URLs.decode(state);
-        referer = StringUtils.substring(referer, 16);
 
         final Response response = context.getResponse();
         final Request request = context.getRequest();

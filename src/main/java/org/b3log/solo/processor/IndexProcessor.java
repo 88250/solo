@@ -168,7 +168,10 @@ public class IndexProcessor {
             return;
         }
 
-        String referer = context.header("referer");
+        String referer = context.param("referer");
+        if (StringUtils.isBlank(referer)) {
+            referer = context.header("referer");
+        }
         if (StringUtils.isBlank(referer) || !isInternalLinks(referer)) {
             referer = Latkes.getServePath();
         }
