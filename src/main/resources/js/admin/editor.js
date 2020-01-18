@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.3.0.1, Aug 6, 2019
  */
-
+import Vditor from 'vditor'
 admin.editors = {}
 
 /*
@@ -31,7 +31,7 @@ admin.editors = {}
  * @param conf.id 编辑器渲染元素 id
  * @param conf.height 编辑器种类
  */
-var SoloEditor = function (conf) {
+window.SoloEditor = function (conf) {
   this.conf = conf
   this.init()
 }

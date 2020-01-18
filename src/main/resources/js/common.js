@@ -18,6 +18,7 @@
 import $ from 'jquery'
 import NProgress from 'nprogress'
 import pjax from './pjax'
+import Uvstat from 'uvstat'
 
 /**
  * @fileoverview util and every page should be used.

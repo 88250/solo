@@ -1,4 +1,5 @@
-var Util = {
+import $ from 'jquery'
+const pjaxUtil = {
   support: {
     pjax: window.history && window.history.pushState &&
     window.history.replaceState && !navigator.userAgent.match(
@@ -35,7 +36,7 @@ var Util = {
   },
   // 清除所有的cache
   removeAllCache: function () {
-    if (!Util.support.storage)
+    if (!pjaxUtil.support.storage)
       return
     for (var name in localStorage) {
       if ((name.split('_') || [''])[0] === 'pjax') {
@@ -46,23 +47,23 @@ var Util = {
   // 获取cache
   getCache: function (src, time, flag) {
     var item, vkey, tkey, tval
-    time = Util.toInt(time)
-    if (src in Util.stack) {
-      item = Util.stack[src]
-      const ctime = Util.getTime()
+    time = pjaxUtil.toInt(time)
+    if (src in pjaxUtil.stack) {
+      item = pjaxUtil.stack[src]
+      const ctime = pjaxUtil.getTime()
       if ((item.time + time * 1000) > ctime) {
         return item
       } else {
-        delete Util.stack[src]
+        delete pjaxUtil.stack[src]
       }
-    } else if (flag && Util.support.storage) { // 从localStorage里查询
-      var l = Util.getLocalKey(src)
+    } else if (flag && pjaxUtil.support.storage) { // 从localStorage里查询
+      var l = pjaxUtil.getLocalKey(src)
       vkey = l.data
       tkey = l.time
       item = localStorage.getItem(vkey)
       if (item) {
-        tval = Util.toInt(localStorage.getItem(tkey))
-        if ((tval + time * 1000) > Util.getTime()) {
+        tval = pjaxUtil.toInt(localStorage.getItem(tkey))
+        if ((tval + time * 1000) > pjaxUtil.getTime()) {
           return {
             data: item,
             title: localStorage.getItem(l.title),
@@ -78,14 +79,14 @@ var Util = {
   },
   // 设置cache
   setCache: function (src, data, title, flag) {
-    var time = Util.getTime(), key
-    Util.stack[src] = {
+    var time = pjaxUtil.getTime(), key
+    pjaxUtil.stack[src] = {
       data: data,
       title: title,
       time: time,
     }
-    if (flag && Util.support.storage) {
-      key = Util.getLocalKey(src)
+    if (flag && pjaxUtil.support.storage) {
+      key = pjaxUtil.getLocalKey(src)
       localStorage.setItem(key.data, data)
       localStorage.setItem(key.time, time)
       localStorage.setItem(key.title, title)
@@ -93,10 +94,10 @@ var Util = {
   },
   // 清除cache
   removeCache: function (src) {
-    src = Util.getRealUrl(src || location.href)
-    delete Util.stack[src]
-    if (Util.support.storage) {
-      var key = Util.getLocalKey(src)
+    src = pjaxUtil.getRealUrl(src || location.href)
+    delete pjaxUtil.stack[src]
+    if (pjaxUtil.support.storage) {
+      var key = pjaxUtil.getLocalKey(src)
       localStorage.removeItem(key.data)
       localStorage.removeItem(key.time)
       localStorage.removeItem(key.title)
@@ -129,8 +130,8 @@ var pjax = function (options) {
       return true
     }
     // 只是hash不同
-    if (Util.getRealUrl(href) == Util.getRealUrl(location.href)) {
-      var hash = Util.getUrlHash(href)
+    if (pjaxUtil.getRealUrl(href) == pjaxUtil.getRealUrl(location.href)) {
+      var hash = pjaxUtil.getUrlHash(href)
       if (hash) {
         location.hash = hash
         options.callback && options.callback.call(this, {
@@ -295,7 +296,7 @@ pjax.success = function (data, isCached) {
   }, isCached)
   // 设置cache
   if (pjax.options.cache && !isCached) {
-    Util.setCache(pjax.options.url, data, title, pjax.options.storage)
+    pjaxUtil.setCache(pjax.options.url, data, title, pjax.options.storage)
   }
 }
 
@@ -308,9 +309,9 @@ pjax.request = function (options) {
   options = $.extend(true, pjax.defaultOptions, options)
   var cache, container = $(options.container)
   options.oldUrl = options.url
-  options.url = Util.getRealUrl(options.url)
+  options.url = pjaxUtil.getRealUrl(options.url)
   if ($(options.element).length) {
-    cache = Util.toInt($(options.element).attr('data-pjax-cache'))
+    cache = pjaxUtil.toInt($(options.element).attr('data-pjax-cache'))
     if (cache) {
       options.cache = cache
     }
@@ -318,10 +319,10 @@ pjax.request = function (options) {
   if (options.cache === true) {
     options.cache = 24 * 3600
   }
-  options.cache = Util.toInt(options.cache)
+  options.cache = pjaxUtil.toInt(options.cache)
   // 如果将缓存时间设为0，则将之前的缓存也清除
   if (options.cache === 0) {
-    Util.removeAllCache()
+    pjaxUtil.removeAllCache()
   }
   // 展现函数
   if (!options.showFn) {
@@ -332,7 +333,7 @@ pjax.request = function (options) {
   pjax.options = options
   pjax.options.success = pjax.success
   if (options.cache &&
-    (cache = Util.getCache(options.url, options.cache, options.storage))) {
+    (cache = pjaxUtil.getCache(options.url, options.cache, options.storage))) {
     options.beforeSend()
     options.title = cache.title
     pjax.success(cache.data, true)
@@ -373,7 +374,7 @@ $(window).bind('popstate', function (event) {
 })
 
 // not support
-if (!Util.support.pjax) {
+if (!pjaxUtil.support.pjax) {
   pjax = function () {
     return true
   }

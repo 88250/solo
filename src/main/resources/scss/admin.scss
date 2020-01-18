@@ -304,13 +304,15 @@ a[class*=" icon-"]:hover {
 /* start first tab */
 #tabs {
   height: 100%;
-  min-height: 468px;
   width: 240px;
   margin-top: 50px;
   position: fixed;
   top: 0;
   background-color: #32323a;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 #tabs ul {
@@ -744,7 +746,7 @@ button#submitArticle:hover {
 
 .dialog-panel {
   display: none;
-  position: absolute;
+  position: fixed;
   z-index: 100;
 }
 

@@ -173,9 +173,10 @@
     </div>
 </div>
 <#include "admin-label.ftl">
-<script src="${staticServePath}/js/admin/admin.min.js${staticResourceVersion}"></script>
+<script src="${staticServePath}/js/admin/admin.min.js?${staticResourceVersion}"></script>
 ${plugins}
 <script>
+  admin.init()
   admin.inited()
 </script>
 </body>

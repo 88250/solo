@@ -8,7 +8,7 @@
  * @fileoverview webpack ipfs.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 3.2.0.0, Jan 8, 2020
+ * @version 0.1.0.0, Jan 18, 2020
  */
 
 const path = require('path')
@@ -67,11 +67,11 @@ module.exports = {
       './src/main/resources/js/admin/plugin.js',
       './src/main/resources/js/admin/main.js',
       './src/main/resources/js/admin/about.js'],
-    // 'js/common': './src/main/resources/js/common.js',
-    // 'js/page': './src/main/resources/js/page.js',
-    'css/admin': './src/main/resources/scss/admin.scss',
-    // 'css/base': './src/main/resources/scss/base.scss',
-    // 'css/start': './src/main/resources/scss/start.scss',
+    'js/common': './src/main/resources/js/common.js',
+    'js/page': './src/main/resources/js/page.js',
+    'dist/admin': './src/main/resources/scss/admin.scss',
+    'dist/base': './src/main/resources/scss/base.scss',
+    'dist/start': './src/main/resources/scss/start.scss',
   }),
   module: {
     rules: [

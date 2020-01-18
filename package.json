@@ -47,7 +47,8 @@
   "dependencies": {
     "jquery": "^3.4.1",
     "nprogress": "^0.2.0",
-    "uvstat": "^1.0.0",
+    "uvstat": "^1.0.6",
+    "vcmt": "^1.0.6",
     "vditor": "^2.1.1"
   }
 }

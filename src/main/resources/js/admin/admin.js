@@ -28,7 +28,8 @@ import '../lib/jquery/jquery.bowknot.min'
  */
 
 window.$ = $
-export const htmlDecode = function (code) {
+Util.init()
+window.htmlDecode = function (code) {
   var div = document.createElement('div')
   div.innerHTML = decodeURIComponent(code)
   return div.innerText
