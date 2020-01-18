@@ -28,7 +28,7 @@
                 </div>
                 <div class="fn-right">
                     <#if commentable>
-                    <a rel="nofollow" data-ico="&#xe14e;" data-uvstatcmt="${article.oId}" href="${servePath}${article.articlePermalink}#comments">
+                    <a rel="nofollow" data-ico="&#xe14e;" data-uvstatcmt="${article.oId}" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                         ${article.articleCommentCount}
                     </a>
                     </#if>

@@ -69,7 +69,7 @@
                     <img src="${article.authorThumbnailURL}" />
                 </a>
                 <#if commentable>
-                <a class="item__meta" href="${servePath}${article.articlePermalink}#comments">
+                <a class="item__meta" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                     <span data-uvstatcmt="${article.oId}"><span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span></span> ${commentLabel}
                 </a>
                 <#else>

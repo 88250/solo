@@ -56,7 +56,7 @@
                 ${article.articleUpdateDate?string("yyyy-MM-dd")}
                 </time> &nbsp;•&nbsp;
                 <#if commentable>
-                <a href="${servePath}${article.articlePermalink}#comments" class="ft-gray">
+                <a href="${servePath}${article.articlePermalink}#b3logsolocomments" class="ft-gray">
                     <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                 </a> &nbsp;•&nbsp;
                 </#if>

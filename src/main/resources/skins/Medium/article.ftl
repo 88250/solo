@@ -119,7 +119,8 @@
                     <div class="fn-flex-1" id="randomArticles"></div>
                 </div>
                 <#if commentable>
-                <div id="vcomment" class="article__comment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                    <div id="b3logsolocomments"></div>
+                    <div id="vcomment" class="article__comment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                     <#if !staticSite>
                         <div id="soloComments" style="display: none;">
                             <@comments commentList=articleComments article=article></@comments>

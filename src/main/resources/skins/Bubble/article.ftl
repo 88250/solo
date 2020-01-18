@@ -83,16 +83,17 @@
         </div>
     </#if>
     <#if commentable>
-    <div class="wrapper">
-        <div id="vcomment"
-             style="    margin-bottom: 40px; margin-top: 80px;
-    border: 1px solid rgba(255,255,255,0.8);
-    border-radius: 5px;
-    background: rgba(255,255,255,0.9);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    padding: 20px;"
-             data-name="${article.authorName}" data-postId="${article.oId}"></div>
-    </div>
+        <div id="b3logsolocomments"></div>
+        <div class="wrapper">
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="${article.authorName}" data-postId="${article.oId}"></div>
+        </div>
         <#if !staticSite>
         <div id="soloComments" style="display: none;">
             <@comments commentList=articleComments article=article></@comments>

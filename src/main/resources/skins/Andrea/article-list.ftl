@@ -49,7 +49,7 @@
                     ${article.authorName}</a>
                 <#if commentable>
                 |
-                <a rel="nofollow" class="underline" href="${servePath}${article.articlePermalink}#comments">
+                <a rel="nofollow" class="underline" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                     <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                 </a>
                 </#if>

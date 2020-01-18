@@ -49,7 +49,7 @@
         </div>
         <#if commentable>
         <div class="right">
-            <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
+            <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments" class="left">
                 <span class="left articles-commentIcon" title="${commentLabel}"></span>
                 <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
             </a>

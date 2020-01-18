@@ -79,7 +79,7 @@ ${topBarReplacement}
                         </span>
                         <#if commentable>
                         <span class="ico-comment ico" title="${commentLabel}">
-                            <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                            <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                 <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                             </a>
                         </span>
@@ -118,7 +118,8 @@ ${topBarReplacement}
                     <div id="externalRelevantArticles"></div>
                     </#if>
                     <#if commentable>
-                    <div id="vcomment" class="module" data-name="${article.authorName}" data-postId="${article.oId}"></div>
+                        <div id="b3logsolocomments"></div>
+                        <div id="vcomment" class="module" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                         <#if !staticSite>
                         <div id="soloComments" style="display: none;" class="module">
                             <@comments commentList=articleComments article=article></@comments>

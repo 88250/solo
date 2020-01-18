@@ -19,14 +19,15 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.0.1, Mar 22, 2019
+ * @version 1.0.0.0, Jan 18, 2019
  */
 
+import '../../../js/common'
 /**
  * @description 皮肤脚本
  * @static
  */
-var Skin = {
+window.Skin = {
   initToc: function () {
     if ($('.article__toc li').length > 0 && $(window).width() > 768) {
       $('.article__toc').css({

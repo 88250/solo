@@ -19,22 +19,12 @@
  * @fileoverview neoease js.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.8, Sep 6, 2012
+ * @version 1.0.0.0, Jan 18, 2019
  */
-var goTop = function (acceleration) {
-  acceleration = acceleration || 0.1
 
-  var y = $(window).scrollTop()
-  var speed = 1 + acceleration
-  window.scrollTo(0, Math.floor(y / speed))
+import '../../../js/common'
 
-  if (y > 0) {
-    var invokeFunction = 'goTop(' + acceleration + ')'
-    window.setTimeout(invokeFunction, 16)
-  }
-}
-
-var collapseArchive = function (it, year) {
+window.collapseArchive = function (it, year) {
   var tag = true
   if (it.className === 'collapse-ico') {
     it.className = 'expand-ico'
@@ -56,7 +46,7 @@ var collapseArchive = function (it, year) {
   })
 }
 
-var getArticle = function (it, id) {
+window.getArticle = function (it, id) {
   var $abstract = $('#abstract' + id),
     $content = $('#content' + id)
 
@@ -92,7 +82,7 @@ var getArticle = function (it, id) {
   return false
 }
 
-var goTranslate = function () {
+window.goTranslate = function () {
   window.open('http://translate.google.com/translate?sl=auto&tl=auto&u=' +
     location.href)
 }

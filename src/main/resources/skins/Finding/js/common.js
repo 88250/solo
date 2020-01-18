@@ -19,14 +19,15 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.1.0, Sep 21, 2018
+ * @version 1.0.0.0, Jan 18, 2019
  */
 
+import '../../../js/common'
 /**
  * @description Finding 皮肤脚本
  * @static
  */
-var Finding = {
+window.Finding = {
   /**
    * @description 页面初始化
    */
