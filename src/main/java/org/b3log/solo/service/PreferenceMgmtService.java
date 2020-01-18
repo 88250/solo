@@ -20,6 +20,7 @@ package org.b3log.solo.service;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.Transaction;
@@ -38,7 +39,7 @@ import java.util.Locale;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.2, Aug 18, 2019
+ * @version 1.4.0.3, Jan 18, 2020
  * @since 0.4.0
  */
 @Service
@@ -218,6 +219,15 @@ public class PreferenceMgmtService {
             final JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
             hljsThemeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_HLJS_THEME));
             optionRepository.update(Option.ID_C_HLJS_THEME, hljsThemeOpt);
+
+            JSONObject showCodeBlockLnOpt = optionRepository.get(Option.ID_C_SHOW_CODE_BLOCK_LN);
+            if (null == showCodeBlockLnOpt) {
+                showCodeBlockLnOpt = new JSONObject();
+                showCodeBlockLnOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_CODE_BLOCK_LN);
+                showCodeBlockLnOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+            }
+            showCodeBlockLnOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN));
+            optionRepository.update(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLnOpt);
 
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));

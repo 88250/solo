@@ -177,6 +177,12 @@
                         <input id="pullGitHub" type="checkbox" class="normalInput"/>
                     </div>
                 </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        ${showCodeBlockLnLabel}
+                        <input id="showCodeBlockLn" type="checkbox" class="normalInput"/>
+                    </div>
+                </label>
             </div>
             <div class="fn__margin12"></div>
             <div class="fn__flex-1">

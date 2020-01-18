@@ -77,6 +77,7 @@ admin.preference = {
         'true' === preference.commentable ? $('#commentable').attr('checked', 'checked') : $('commentable').removeAttr('checked')
         'true' === preference.syncGitHub ? $('#syncGitHub').attr('checked', 'checked') : $('syncGitHub').removeAttr('checked')
         'true' === preference.pullGitHub ? $('#pullGitHub').attr('checked', 'checked') : $('pullGitHub').removeAttr('checked')
+        'true' === preference.showCodeBlockLn ? $('#showCodeBlockLn').attr('checked', 'checked') : $('showCodeBlockLn').removeAttr('checked')
 
         admin.preference.locale = preference.localeString
 
@@ -226,6 +227,7 @@ admin.preference = {
         'faviconURL': $('#faviconURL').val(),
         'syncGitHub': $('#syncGitHub').prop('checked'),
         'pullGitHub': $('#pullGitHub').prop('checked'),
+        'showCodeBlockLn': $('#showCodeBlockLn').prop('checked'),
         'commentable': $('#commentable').prop('checked'),
         'customVars': $('#customVars').val(),
       },

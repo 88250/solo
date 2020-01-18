@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.6.0.2, Aug 18, 2019
+ * @version 1.6.0.3, Jan 18, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -52,6 +52,11 @@ public final class Option {
     public static final String OPTION_CATEGORY = "optionCategory";
 
     // oId constants
+    /**
+     * Key of code block line num show flag. 支持代码块行号显示 https://github.com/88250/solo/issues/4
+     */
+    public static final String ID_C_SHOW_CODE_BLOCK_LN = "showCodeBlockLn";
+
     /**
      * Key of hljs theme. 在设置中可选择语法高亮主题 https://github.com/b3log/solo/issues/12722
      */
@@ -300,10 +305,15 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.3.0.3, Sep 18, 2019
+     * @version 2.3.0.4, Jan 18, 2020
      * @since 0.3.1
      */
     public static final class DefaultPreference {
+
+        /**
+         * Default show code block line num.
+         */
+        public static final String DEFAULT_SHOW_CODE_BLOCK_LN = "false";
 
         /**
          * Default hljs theme.
