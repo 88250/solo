@@ -58,7 +58,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.14, Jan 16, 2020
+ * @version 1.7.0.15, Jan 18, 2020
  * @since 0.3.1
  */
 @Service
@@ -632,7 +632,6 @@ public class DataModelService {
             final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
             dataModel.put(Option.ID_C_SKIN_DIR_NAME, skinDirName);
             Keys.fillRuntime(dataModel);
-            fillMinified(dataModel);
             fillPageNavigations(dataModel);
             fillStatistic(dataModel);
             fillMostUsedTags(dataModel, preference);
@@ -644,26 +643,6 @@ public class DataModelService {
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
-        }
-    }
-
-    /**
-     * Fills minified directory and file postfix for static JavaScript, CSS.
-     *
-     * @param dataModel the specified data model
-     */
-    public void fillMinified(final Map<String, Object> dataModel) {
-        switch (Latkes.getRuntimeMode()) {
-            case DEVELOPMENT:
-                dataModel.put(Common.MINI_POSTFIX, "");
-                break;
-
-            case PRODUCTION:
-                dataModel.put(Common.MINI_POSTFIX, Common.MINI_POSTFIX_VALUE);
-                break;
-
-            default:
-                throw new AssertionError();
         }
     }
 
