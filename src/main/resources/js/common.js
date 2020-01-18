@@ -303,3 +303,7 @@ window.Util = {
     }))
   },
 }
+
+$(document).ready(function () {
+  Util.init()
+})

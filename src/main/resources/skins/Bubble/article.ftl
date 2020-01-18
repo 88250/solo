@@ -85,7 +85,7 @@
     <#if commentable>
     <div class="wrapper">
         <div id="vcomment"
-             style="    margin-bottom: 40px; margin-top: 80px; 
+             style="    margin-bottom: 40px; margin-top: 80px;
     border: 1px solid rgba(255,255,255,0.8);
     border-radius: 5px;
     background: rgba(255,255,255,0.9);
@@ -113,7 +113,7 @@
     <#if pjax><!---- pjax {#pjax} end ----></#if>
 </div>
 <script type="text/javascript"
-        src="${staticServePath}/skins/${skinDirName}/js/TweenMax${miniPostfix}.js?${staticResourceVersion}"
+        src="${staticServePath}/skins/${skinDirName}/js/TweenMax.min.js?${staticResourceVersion}"
         charset="utf-8"></script>
 <#include "footer.ftl">
 <#if article?? && article.articleToC?? && article.articleToC?size &gt; 0>

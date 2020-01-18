@@ -23,7 +23,7 @@
     Theme ${skinDirName} by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <#include "../../common-template/label.ftl">
-<script src="${staticServePath}/skin/${skinDirName}/js/common.min.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/common.min.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
     // init brush
     var buildBrush = function () {
@@ -76,5 +76,4 @@
         });
     });
 </script>
-<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 ${plugins}

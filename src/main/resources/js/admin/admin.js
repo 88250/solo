@@ -27,8 +27,6 @@ import '../lib/jquery/jquery.bowknot.min'
  * @version 1.4.0.1, Jan 13, 2020
  */
 
-window.$ = $
-Util.init()
 window.htmlDecode = function (code) {
   var div = document.createElement('div')
   div.innerHTML = decodeURIComponent(code)

@@ -97,6 +97,5 @@ window.Skin = {
 }
 
 $(document).ready(function () {
-  Util.init()
   Skin.init()
 })

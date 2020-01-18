@@ -106,8 +106,5 @@ No Result, Return to <a href="${servePath}">Index</a> or <a href="https://hacpai
         Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • Solo ${version}
     </div>
 </div>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
-<#include 'label.ftl'/>
 </body>
 </html>

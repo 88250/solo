@@ -108,7 +108,7 @@ var Finding = {
           $.ajax({
             method: 'GET',
             url: Label.staticServePath +
-            '/js/lib/jquery.qrcode.min.js',
+              '/js/lib/jquery.qrcode.min.js',
             dataType: 'script',
             cache: true,
             success: function () {
