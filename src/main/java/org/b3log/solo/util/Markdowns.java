@@ -60,7 +60,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.11, Jan 17, 2020
+ * @version 2.3.1.12, Jan 18, 2020
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -111,6 +111,15 @@ public final class Markdowns {
      * Whether Lute is available.
      */
     public static boolean LUTE_AVAILABLE;
+
+    public static boolean SHOW_CODE_BLOCK_LN = false;
+
+    /**
+     * Clears cache.
+     */
+    public static void clearCache() {
+        MD_CACHE.clear();
+    }
 
     /**
      * Cleans the specified HTML.
@@ -258,6 +267,7 @@ public final class Markdowns {
     private static String toHtmlByLute(final String markdownText) throws Exception {
         final URL url = new URL(LUTE_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("X-CodeSyntaxHighlightLineNum", String.valueOf(Markdowns.SHOW_CODE_BLOCK_LN));
         conn.setConnectTimeout(100);
         conn.setReadTimeout(1000);
         conn.setDoOutput(true);

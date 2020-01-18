@@ -300,6 +300,14 @@ public final class Server extends BaseServer {
 
             final SkinMgmtService skinMgmtService = beanManager.getReference(SkinMgmtService.class);
             skinMgmtService.loadSkins(skin);
+
+            final JSONObject preference = optionQueryService.getPreference();
+            if (null == preference) {
+                return;
+            }
+
+            final String showClodeBlockLn = preference.optString(org.b3log.solo.model.Option.ID_C_SHOW_CODE_BLOCK_LN);
+            Markdowns.SHOW_CODE_BLOCK_LN = StringUtils.equalsIgnoreCase(showClodeBlockLn, "true");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

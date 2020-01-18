@@ -30,6 +30,7 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.util.Markdowns;
 import org.json.JSONObject;
 
 import java.util.Iterator;
@@ -221,21 +222,26 @@ public class PreferenceMgmtService {
             optionRepository.update(Option.ID_C_HLJS_THEME, hljsThemeOpt);
 
             JSONObject showCodeBlockLnOpt = optionRepository.get(Option.ID_C_SHOW_CODE_BLOCK_LN);
+            final String showCodeBlockLnVal = preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN);
             if (null == showCodeBlockLnOpt) {
                 showCodeBlockLnOpt = new JSONObject();
                 showCodeBlockLnOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_CODE_BLOCK_LN);
                 showCodeBlockLnOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-                showCodeBlockLnOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN));
+                showCodeBlockLnOpt.put(Option.OPTION_VALUE, showCodeBlockLnVal);
                 optionRepository.add(showCodeBlockLnOpt);
             } else {
-                showCodeBlockLnOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN));
+                showCodeBlockLnOpt.put(Option.OPTION_VALUE, showCodeBlockLnVal);
                 optionRepository.update(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLnOpt);
             }
+            Markdowns.SHOW_CODE_BLOCK_LN = "true".equalsIgnoreCase(showCodeBlockLnVal);
+
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
             optionRepository.update(Option.ID_C_CUSTOM_VARS, customVarsOpt);
 
             transaction.commit();
+
+            Markdowns.clearCache();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
