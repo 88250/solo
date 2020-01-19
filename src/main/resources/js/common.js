@@ -302,7 +302,7 @@ window.Util = {
       return valA.localeCompare(valB)
     }))
   },
-}
+};
 
 (() => {
   $.ajax({
@@ -315,4 +315,3 @@ window.Util = {
     },
   })
 })()
-
