@@ -19,11 +19,9 @@ import $ from 'jquery'
 import NProgress from 'nprogress'
 import Uvstat from 'uvstat'
 import pjax from './pjax'
-import Vditor from 'vditor'
 import Vcomment from 'vcmt'
 
 window.$ = $
-window.Vditor = Vditor
 window.Vcomment = Vcomment
 
 /**
@@ -31,7 +29,7 @@ window.Vcomment = Vcomment
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.0, Jan 18, 2020
+ * @version 2.2.0.0, Jan 19, 2020
  */
 
 /**
@@ -120,7 +118,8 @@ window.Util = {
           Util.parseMarkdown()
           Util.uvstat.addStat()
           Util.uvstat.renderStat()
-          Util.uvstat.renderCmtStat(window.utilOptions && window.utilOptions.cmtCountCB)
+          Util.uvstat.renderCmtStat(
+            window.utilOptions && window.utilOptions.cmtCountCB)
           cb && cb()
         },
       })
@@ -305,6 +304,15 @@ window.Util = {
   },
 }
 
-$(document).ready(function () {
-  Util.init(window.utilOptions)
-})
+(() => {
+  $.ajax({
+    method: 'GET',
+    url: 'https://cdn.jsdelivr.net/npm/vditor@2.1.1/dist/index.min.js',
+    dataType: 'script',
+    cache: true,
+    success: () => {
+      Util.init(window.utilOptions)
+    },
+  })
+})()
+
