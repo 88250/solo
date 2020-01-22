@@ -18,6 +18,7 @@
 package org.b3log.solo.util;
 
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
+import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -60,7 +61,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.12, Jan 18, 2020
+ * @version 2.3.1.13, Jan 20, 2020
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -88,7 +89,8 @@ public final class Markdowns {
                     TablesExtension.create(),
                     TaskListExtension.create(),
                     StrikethroughExtension.create(),
-                    AutolinkExtension.create())).
+                    AutolinkExtension.create(),
+                    FootnoteExtension.create())).
             set(HtmlRenderer.SOFT_BREAK, "<br />\n");
 
     /**

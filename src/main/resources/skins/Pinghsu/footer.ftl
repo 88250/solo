@@ -83,7 +83,6 @@
         </div>
     </div>
 </footer>
-        charset="utf-8"></script>
 <#include "../../common-template/label.ftl">
 <script type="text/javascript" src="${staticServePath}/skins/${skinDirName}/js/headroom.min.js"></script>
 <script type="text/javascript"
