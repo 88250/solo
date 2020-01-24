@@ -40,7 +40,7 @@ import java.util.Locale;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.3, Jan 18, 2020
+ * @version 1.4.0.4, Jan 24, 2020
  * @since 0.4.0
  */
 @Service
@@ -234,6 +234,20 @@ public class PreferenceMgmtService {
                 optionRepository.update(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLnOpt);
             }
             Markdowns.SHOW_CODE_BLOCK_LN = "true".equalsIgnoreCase(showCodeBlockLnVal);
+
+            JSONObject showToCOpt = optionRepository.get(Option.ID_C_SHOW_TOC);
+            final String showToCVal = preference.optString(Option.ID_C_SHOW_TOC);
+            if (null == showToCOpt) {
+                showToCOpt = new JSONObject();
+                showToCOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_TOC);
+                showToCOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+                showToCOpt.put(Option.OPTION_VALUE, showToCVal);
+                optionRepository.add(showToCOpt);
+            } else {
+                showToCOpt.put(Option.OPTION_VALUE, showToCVal);
+                optionRepository.update(Option.ID_C_SHOW_TOC, showToCOpt);
+            }
+            Markdowns.SHOW_TOC = "true".equalsIgnoreCase(showToCVal);
 
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));

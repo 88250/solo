@@ -22,6 +22,7 @@ import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.toc.TocExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
@@ -61,7 +62,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.13, Jan 20, 2020
+ * @version 2.3.1.14, Jan 24, 2020
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -115,6 +116,7 @@ public final class Markdowns {
     public static boolean LUTE_AVAILABLE;
 
     public static boolean SHOW_CODE_BLOCK_LN = false;
+    public static boolean SHOW_TOC = false;
 
     /**
      * Clears cache.
@@ -270,6 +272,7 @@ public final class Markdowns {
         final URL url = new URL(LUTE_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestProperty("X-CodeSyntaxHighlightLineNum", String.valueOf(Markdowns.SHOW_CODE_BLOCK_LN));
+        conn.setRequestProperty("X-ToC", String.valueOf(Markdowns.SHOW_TOC));
         conn.setConnectTimeout(100);
         conn.setReadTimeout(1000);
         conn.setDoOutput(true);

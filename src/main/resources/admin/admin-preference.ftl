@@ -183,6 +183,12 @@
                         <input id="showCodeBlockLn" type="checkbox" class="normalInput"/>
                     </div>
                 </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        ${showToCLabel}
+                        <input id="showToC" type="checkbox" class="normalInput"/>
+                    </div>
+                </label>
             </div>
             <div class="fn__margin12"></div>
             <div class="fn__flex-1">

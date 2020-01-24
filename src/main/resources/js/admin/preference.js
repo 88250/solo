@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Aug 18, 2019
+ * @version 1.3.0.4, Jan 24, 2020
  */
 
 /* preference 相关操作 */
@@ -78,6 +78,7 @@ admin.preference = {
         'true' === preference.syncGitHub ? $('#syncGitHub').attr('checked', 'checked') : $('syncGitHub').removeAttr('checked')
         'true' === preference.pullGitHub ? $('#pullGitHub').attr('checked', 'checked') : $('pullGitHub').removeAttr('checked')
         'true' === preference.showCodeBlockLn ? $('#showCodeBlockLn').attr('checked', 'checked') : $('showCodeBlockLn').removeAttr('checked')
+        'true' === preference.showToC ? $('#showToC').attr('checked', 'checked') : $('showToC').removeAttr('checked')
 
         admin.preference.locale = preference.localeString
 
@@ -228,6 +229,7 @@ admin.preference = {
         'syncGitHub': $('#syncGitHub').prop('checked'),
         'pullGitHub': $('#pullGitHub').prop('checked'),
         'showCodeBlockLn': $('#showCodeBlockLn').prop('checked'),
+        'showToC': $('#showToC').prop('checked'),
         'commentable': $('#commentable').prop('checked'),
         'customVars': $('#customVars').val(),
       },

@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.6.0.3, Jan 18, 2020
+ * @version 1.6.0.4, Jan 24, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -53,7 +53,12 @@ public final class Option {
 
     // oId constants
     /**
-     * Key of code block line num show flag. 支持代码块行号显示 https://github.com/88250/solo/issues/4
+     * Key of show ToC flag. 支持 ToC 显示 https://github.com/88250/solo/issues/52
+     */
+    public static final String ID_C_SHOW_TOC = "showToC";
+
+    /**
+     * Key of show code block line num flag. 支持代码块行号显示 https://github.com/88250/solo/issues/4
      */
     public static final String ID_C_SHOW_CODE_BLOCK_LN = "showCodeBlockLn";
 
