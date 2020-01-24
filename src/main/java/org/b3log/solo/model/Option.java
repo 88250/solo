@@ -310,10 +310,15 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.3.0.4, Jan 18, 2020
+     * @version 2.3.0.5, Jan 24, 2020
      * @since 0.3.1
      */
     public static final class DefaultPreference {
+
+        /**
+         * Default show ToC.
+         */
+        public static final String DEFAULT_SHOW_TOC = "false";
 
         /**
          * Default show code block line num.

@@ -53,7 +53,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.37, Jan 18, 2020
+ * @version 1.5.2.38, Jan 24, 2020
  * @since 0.4.0
  */
 @Service
@@ -471,6 +471,12 @@ public class InitService {
      */
     private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject showToCOpt = new JSONObject();
+        showToCOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_TOC);
+        showToCOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        showToCOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_SHOW_TOC);
+        optionRepository.add(showToCOpt);
 
         final JSONObject showCodeBlockLnOpt = new JSONObject();
         showCodeBlockLnOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_CODE_BLOCK_LN);
