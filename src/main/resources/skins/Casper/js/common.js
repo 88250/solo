@@ -59,7 +59,7 @@ window.Skin = {
   initArticle: function () {
     page.share()
 
-    var $articleTocs = $('.vditor-reset [id^=b3_solo_h]')
+    var $articleTocs = $('.vditor-reset [id^=toc_h]')
     var $articleToc = $('.article__toc')
     var $articleProgress = $('.article__progress')
 
