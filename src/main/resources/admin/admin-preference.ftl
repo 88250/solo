@@ -34,6 +34,11 @@
                 <a href="#tools/preference/setting">${paramSettingsLabel}</a>
             </div>
         </li>
+        <li>
+            <div id="tabPreference_markdown">
+                <a href="#tools/preference/markdown">Markdown</a>
+            </div>
+        </li>
     </ul>
 </div>
 <div id="tabPreferencePanel" class="sub-tabs-main">
@@ -185,7 +190,7 @@
                 </label>
                 <label>
                     <div class="fn__flex-inline">
-                        ${showToCLabel}
+                        ${supportToCLabel}
                         <input id="showToC" type="checkbox" class="normalInput"/>
                     </div>
                 </label>
@@ -247,6 +252,54 @@
         <button id="preferenceSignButton3">${signLabel}3</button>
         <textarea rows="8" id="preferenceSign3"></textarea><br><br>
         <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
+        <div class="fn__clear"></div>
+    </div>
+    <div id="tabPreferencePanel_markdown" class="fn__none form">
+        <div class="fn__clear">
+            ${luteHTTPLabel}
+        </div>
+        <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
+        <div class="fn__flex">
+            <div class="fn__flex-1">
+                <label>
+                    <div class="fn__flex-inline">
+                        <input id="footnotes" type="checkbox" class="normalInput"/>
+                        &nbsp;${supportFootnotesLabel}
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        <input id="showToC" type="checkbox" class="normalInput"/>
+                        &nbsp;${supportToCLabel}
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        <input id="autoSpace" type="checkbox" class="normalInput"/>
+                        &nbsp;${autoSpaceLabel}
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        <input id="fixTermTypo" type="checkbox" class="normalInput"/>
+                        &nbsp;${fixTermTypoLabel}
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        <input id="chinesePunct" type="checkbox" class="normalInput"/>
+                        &nbsp;${chinesePunctLabel}
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        <input id="inlineMathAllowDigitAfterOpenMarker" type="checkbox" class="normalInput"/>
+                        &nbsp;${inlineMathAllowDigitAfterOpenMarkerLabel}
+                    </div>
+                </label>
+            </div>
+        </div>
+        <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
     </div>
 </div>
