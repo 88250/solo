@@ -18,11 +18,9 @@
 package org.b3log.solo.util;
 
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
-import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
-import com.vladsch.flexmark.ext.toc.TocExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
@@ -90,8 +88,7 @@ public final class Markdowns {
                     TablesExtension.create(),
                     TaskListExtension.create(),
                     StrikethroughExtension.create(),
-                    AutolinkExtension.create(),
-                    FootnoteExtension.create())).
+                    AutolinkExtension.create())).
             set(HtmlRenderer.SOFT_BREAK, "<br />\n");
 
     /**
