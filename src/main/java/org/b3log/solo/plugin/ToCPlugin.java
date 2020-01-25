@@ -20,8 +20,11 @@ package org.b3log.solo.plugin;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.plugin.NotInteractivePlugin;
+import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
@@ -39,16 +42,24 @@ import java.util.Map;
  * ToC event handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Jul 29, 2019
+ * @version 2.0.1.0, Jan 24, 2020
  * @since 0.6.7
  */
 public class ToCPlugin extends NotInteractivePlugin {
 
-    /**
-     * Public constructor.
-     */
-    public ToCPlugin() {
-        addEventListener(new ToCEventHandler());
+    private ToCEventHandler handler = new ToCEventHandler();
+
+    @Override
+    public void changeStatus() {
+        super.changeStatus();
+
+        final EventManager eventManager = BeanManager.getInstance().getReference(EventManager.class);
+        final PluginStatus status = getStatus();
+        if (PluginStatus.DISABLED == status) {
+            eventManager.unregisterListener(handler);
+        } else {
+            eventManager.registerListener(handler);
+        }
     }
 
     @Override
@@ -66,7 +77,7 @@ public class ToCPlugin extends NotInteractivePlugin {
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.annpeter.cn">Ann Peter</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 2.0.0.0, Jul 29, 2019
+ * @version 2.0.0.1, Jan 24, 2020
  * @since 0.6.7
  */
 class ToCEventHandler extends AbstractEventListener<JSONObject> {
@@ -90,7 +101,7 @@ class ToCEventHandler extends AbstractEventListener<JSONObject> {
             final Element element = hs.get(i);
             final String tagName = element.tagName().toLowerCase();
             final String text = element.text();
-            final String id = "b3_solo_" + tagName + "_" + i;
+            final String id = "toc_" + tagName + "_" + i;
             element.attr("id", id);
             final JSONObject li = new JSONObject().
                     put("className", "toc__" + tagName).

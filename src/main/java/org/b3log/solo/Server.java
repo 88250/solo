@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.8, Jan 13, 2020
+ * @version 2.0.0.9, Jan 24, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -308,6 +308,8 @@ public final class Server extends BaseServer {
 
             final String showClodeBlockLn = preference.optString(org.b3log.solo.model.Option.ID_C_SHOW_CODE_BLOCK_LN);
             Markdowns.SHOW_CODE_BLOCK_LN = StringUtils.equalsIgnoreCase(showClodeBlockLn, "true");
+            final String showToC = preference.optString(org.b3log.solo.model.Option.ID_C_SHOW_TOC);
+            Markdowns.SHOW_TOC = StringUtils.equalsIgnoreCase(showToC, "true");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

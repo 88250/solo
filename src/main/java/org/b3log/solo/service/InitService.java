@@ -53,7 +53,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.37, Jan 18, 2020
+ * @version 1.5.2.38, Jan 24, 2020
  * @since 0.4.0
  */
 @Service
@@ -471,6 +471,42 @@ public class InitService {
      */
     private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject IMADAOMOpt = new JSONObject();
+        IMADAOMOpt.put(Keys.OBJECT_ID, Option.ID_C_IMADAOM);
+        IMADAOMOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        IMADAOMOpt.put(Option.OPTION_VALUE, "false");
+        optionRepository.add(IMADAOMOpt);
+
+        final JSONObject chinesePunctOpt = new JSONObject();
+        chinesePunctOpt.put(Keys.OBJECT_ID, Option.ID_C_CHINESE_PUNCT);
+        chinesePunctOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        chinesePunctOpt.put(Option.OPTION_VALUE, "true");
+        optionRepository.add(chinesePunctOpt);
+
+        final JSONObject fixTermTypoOpt = new JSONObject();
+        fixTermTypoOpt.put(Keys.OBJECT_ID, Option.ID_C_FIX_TERM_TYPO);
+        fixTermTypoOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        fixTermTypoOpt.put(Option.OPTION_VALUE, "true");
+        optionRepository.add(fixTermTypoOpt);
+
+        final JSONObject autoSpaceOpt = new JSONObject();
+        autoSpaceOpt.put(Keys.OBJECT_ID, Option.ID_C_AUTO_SPACE);
+        autoSpaceOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        autoSpaceOpt.put(Option.OPTION_VALUE, "true");
+        optionRepository.add(autoSpaceOpt);
+
+        final JSONObject showToCOpt = new JSONObject();
+        showToCOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_TOC);
+        showToCOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        showToCOpt.put(Option.OPTION_VALUE, "false");
+        optionRepository.add(showToCOpt);
+
+        final JSONObject footnotesOpt = new JSONObject();
+        footnotesOpt.put(Keys.OBJECT_ID, Option.ID_C_FOOTNOTES);
+        footnotesOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        footnotesOpt.put(Option.OPTION_VALUE, "true");
+        optionRepository.add(footnotesOpt);
 
         final JSONObject showCodeBlockLnOpt = new JSONObject();
         showCodeBlockLnOpt.put(Keys.OBJECT_ID, Option.ID_C_SHOW_CODE_BLOCK_LN);

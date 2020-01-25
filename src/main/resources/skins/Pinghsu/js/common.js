@@ -83,7 +83,7 @@ window.Skin = {
     $('.post__toc').
       css('left', $('.post').offset().left + $('.post').outerWidth())
 
-    var $articleTocs = $('.vditor-reset [id^=b3_solo_h]'),
+    var $articleTocs = $('.vditor-reset [id^=toc_h]'),
       $articleToc = $('.article__toc')
 
     $(window).unbind('scroll').scroll(function (event) {

@@ -100,7 +100,7 @@ window.NexT = {
     }
   },
   initToc: function () {
-    var $articleTocs = $('.vditor-reset [id^=b3_solo_h]'),
+    var $articleTocs = $('.vditor-reset [id^=toc_h]'),
       $articleToc = $('.article__toc');
 
     $(window).scroll(function (event) {
