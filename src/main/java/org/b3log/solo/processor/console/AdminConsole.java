@@ -61,7 +61,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.17, Dec 15, 2019
+ * @version 1.7.0.18, Jan 25, 2020
  * @since 0.4.1
  */
 @Singleton
@@ -216,6 +216,7 @@ public class AdminConsole {
             timeZoneIdOptions.append(option);
         }
 
+        dataModel.put(Common.LUTE_AVAILABLE, Markdowns.LUTE_AVAILABLE);
         dataModel.put("timeZoneIdOptions", timeZoneIdOptions.toString());
         fireFreeMarkerActionEvent(templateName, dataModel);
     }
