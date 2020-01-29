@@ -25,6 +25,7 @@
 <a title="Author GitHub Followers" target="_blank" href="https://github.com/88250"><img src="https://img.shields.io/github/followers/88250.svg?label=Followers&style=social"></a>
 </p>
 
+* [Awesome Solo](https://hacpai.com/top/solo)
 * [B3log 构思 - 分布式社区网络](https://hacpai.com/article/1546941897596)
 * [Solo 用户指南](https://hacpai.com/article/1492881378588)
 * [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
