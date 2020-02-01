@@ -20,7 +20,7 @@
  * skin next style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.3.0.0, Aug 2, 2019
+ * @version 2.3.1.0, Feb 1, 2020
  */
 @import "../../../scss/usite";
 @import "../../../scss/toc";
@@ -576,20 +576,6 @@ img {
   font-size: 14px;
   color: #555;
 }
-
-.sidebar > ul > li:hover {
-  color: #f5f5f5;
-}
-
-.sidebar > ul > li.current {
-  color: #87daff;
-  border-bottom-color: #87daff;
-}
-
-.sidebar > ul > li:last-child {
-  margin-left: 10px;
-}
-
 /* end side */
 
 /* start list*/
