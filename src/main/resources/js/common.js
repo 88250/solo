@@ -307,7 +307,7 @@ window.Util = {
 (() => {
   $.ajax({
     method: 'GET',
-    url: 'https://cdn.jsdelivr.net/npm/vditor@2.1.7/dist/index.min.js',
+    url: 'https://cdn.jsdelivr.net/npm/vditor@2.1.8/dist/index.min.js',
     dataType: 'script',
     cache: true,
     success: () => {
