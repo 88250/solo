@@ -32,7 +32,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Image utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Dec 28, 2019
+ * @version 1.1.0.3, Feb 4, 2020
  * @since 2.7.0
  */
 public final class Images {
@@ -61,7 +61,8 @@ public final class Images {
         }
 
         for (final String imgSrc : imgSrcs) {
-            if (StringUtils.contains(imgSrc, ".gif") || StringUtils.containsIgnoreCase(imgSrc, "imageView")) {
+            if (StringUtils.contains(imgSrc, ".gif") || StringUtils.containsIgnoreCase(imgSrc, "imageView") ||
+                    StringUtils.containsIgnoreCase(imgSrc, "data:")) {
                 continue;
             }
 
