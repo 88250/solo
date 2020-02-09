@@ -40,14 +40,6 @@ import org.testng.annotations.Test;
 public class PageConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * addPage.
      *
      * @throws Exception exception

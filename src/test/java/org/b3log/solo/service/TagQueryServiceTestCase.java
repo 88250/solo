@@ -35,14 +35,6 @@ import java.util.List;
 public class TagQueryServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Get Tags.
      *
      * @throws Exception exception

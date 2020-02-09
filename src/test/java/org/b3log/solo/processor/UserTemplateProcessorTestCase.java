@@ -37,14 +37,6 @@ import org.testng.annotations.Test;
 public class UserTemplateProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * showCategoryArticles.
      */
     @Test(dependsOnMethods = "init")

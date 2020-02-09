@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class RepairConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * restoreSigns.
      *
      * @throws Exception exception

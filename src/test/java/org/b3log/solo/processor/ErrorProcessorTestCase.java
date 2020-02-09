@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class ErrorProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * showErrorPage.
      */
     @Test(dependsOnMethods = "init")

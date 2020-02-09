@@ -39,14 +39,6 @@ import java.util.Set;
 public class IndexProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * showStart.
      */
     @Test(dependsOnMethods = "init")

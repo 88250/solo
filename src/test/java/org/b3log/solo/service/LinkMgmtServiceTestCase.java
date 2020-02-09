@@ -33,14 +33,6 @@ import org.testng.annotations.Test;
 public class LinkMgmtServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Add Link.
      *
      * @throws Exception exception

@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class TagConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getTags.
      *
      * @throws Exception exception

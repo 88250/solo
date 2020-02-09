@@ -41,14 +41,6 @@ import org.testng.annotations.Test;
 public class ArticleProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getArchivesArticlesByPage.
      */
     @Test(dependsOnMethods = "init")

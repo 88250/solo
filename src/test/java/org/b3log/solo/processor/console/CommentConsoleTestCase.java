@@ -40,14 +40,6 @@ import java.util.List;
 public class CommentConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getComments.
      *
      * @throws Exception exception

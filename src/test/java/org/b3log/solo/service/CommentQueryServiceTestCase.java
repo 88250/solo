@@ -42,14 +42,6 @@ import java.util.List;
 public class CommentQueryServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Get Comments.
      *
      * @throws Exception exception

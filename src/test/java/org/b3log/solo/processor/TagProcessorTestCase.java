@@ -37,14 +37,6 @@ import org.testng.annotations.Test;
 public class TagProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * showTagArticles.
      */
     @Test(dependsOnMethods = "init")

@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class PluginConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getPlugins.
      *
      * @throws Exception exception

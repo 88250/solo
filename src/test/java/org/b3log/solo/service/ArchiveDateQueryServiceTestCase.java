@@ -37,14 +37,6 @@ import java.util.List;
 public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Get Archive Dates.
      *
      * @throws Exception exception

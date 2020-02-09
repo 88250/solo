@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class AdminConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * showAdminIndex.
      */
     @Test(dependsOnMethods = "init")

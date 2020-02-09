@@ -37,14 +37,6 @@ import org.testng.annotations.Test;
 public class PreferenceConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getSigns.
      */
     @Test(dependsOnMethods = "init")

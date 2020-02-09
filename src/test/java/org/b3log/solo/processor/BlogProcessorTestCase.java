@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class BlogProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getBlogInfo.
      */
     @Test(dependsOnMethods = "init")

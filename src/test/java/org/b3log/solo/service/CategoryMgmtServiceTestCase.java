@@ -34,14 +34,6 @@ import org.testng.annotations.Test;
 public class CategoryMgmtServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Add a category.
      *
      * @throws Exception exception

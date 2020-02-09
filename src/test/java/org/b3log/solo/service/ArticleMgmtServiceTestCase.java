@@ -39,14 +39,6 @@ import java.util.List;
 public class ArticleMgmtServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Add Article.
      *
      * @throws Exception exception

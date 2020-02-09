@@ -39,14 +39,6 @@ import org.testng.annotations.Test;
 public class CategoryConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * addCategory.
      *
      * @throws Exception exception

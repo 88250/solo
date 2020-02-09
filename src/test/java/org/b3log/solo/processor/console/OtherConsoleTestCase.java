@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class OtherConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * removeUnusedArchives.
      *
      * @throws Exception exception

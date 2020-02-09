@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class SearchProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * showOpensearchXML.
      */
     @Test(dependsOnMethods = "init")

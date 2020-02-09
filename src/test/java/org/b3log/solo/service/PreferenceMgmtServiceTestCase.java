@@ -33,14 +33,6 @@ import org.testng.annotations.Test;
 public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Update Preference.
      *
      * @throws Exception exception

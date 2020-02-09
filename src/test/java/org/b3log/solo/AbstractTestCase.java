@@ -43,6 +43,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -114,8 +115,9 @@ public abstract class AbstractTestCase {
     }
 
     /**
-     * Init solo in test.
+     * Init Solo in test.
      */
+    @Test
     public void init() {
         final InitService initService = getInitService();
         final JSONObject requestJSONObject = new JSONObject();

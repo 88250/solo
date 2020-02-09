@@ -37,14 +37,6 @@ import java.util.List;
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Search articles.
      *
      * @throws Exception exception

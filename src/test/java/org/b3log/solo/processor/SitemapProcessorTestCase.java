@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class SitemapProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * sitemap.
      */
     @Test(dependsOnMethods = "init")

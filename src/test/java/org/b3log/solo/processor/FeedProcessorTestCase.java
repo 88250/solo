@@ -35,14 +35,6 @@ import org.testng.annotations.Test;
 public class FeedProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * blogArticlesAtom.
      */
     @Test(dependsOnMethods = "init")

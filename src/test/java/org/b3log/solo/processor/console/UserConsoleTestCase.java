@@ -38,14 +38,6 @@ import org.testng.annotations.Test;
 public class UserConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * updateUser.
      *
      * @throws Exception exception

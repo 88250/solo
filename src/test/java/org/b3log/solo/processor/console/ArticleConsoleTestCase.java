@@ -39,14 +39,6 @@ import org.testng.annotations.Test;
 public class ArticleConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getArticleThumbs.
      *
      * @throws Exception exception
