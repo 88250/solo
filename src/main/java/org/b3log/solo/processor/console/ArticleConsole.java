@@ -180,7 +180,7 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         try {
             final String articleId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 final JSONObject ret = new JSONObject();
                 renderer.setJSONObject(ret);
@@ -298,7 +298,7 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
         final String articleId = context.pathVar("id");
-        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+        final JSONObject currentUser = Solos.getCurrentUser(context);
 
         try {
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
@@ -344,7 +344,7 @@ public class ArticleConsole {
 
         try {
             final String articleId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
@@ -492,7 +492,7 @@ public class ArticleConsole {
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
 
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
                 ret.put(Keys.STATUS_CODE, false);
@@ -554,7 +554,7 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject requestJSONObject = context.requestJSON();
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 
             // 打印请求日志，如果发生特殊情况丢失数据，至少还可以根据日志寻回内容

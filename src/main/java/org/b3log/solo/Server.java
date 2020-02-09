@@ -454,12 +454,12 @@ public final class Server extends BaseServer {
     private static void routeConsoleProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
 
-        final ConsoleAuthAdvice consoleAuthAdvice = beanManager.getReference(ConsoleAuthAdvice.class);
-        final ConsoleAdminAuthAdvice consoleAdminAuthAdvice = beanManager.getReference(ConsoleAdminAuthAdvice.class);
+        final ConsoleAuthMidware consoleAuthMidware = beanManager.getReference(ConsoleAuthMidware.class);
+        final ConsoleAdminAuthMidware consoleAdminAuthMidware = beanManager.getReference(ConsoleAdminAuthMidware.class);
 
         final AdminConsole adminConsole = beanManager.getReference(AdminConsole.class);
         final Dispatcher.RouterGroup adminConsoleGroup = Dispatcher.group();
-        adminConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        adminConsoleGroup.middlewares(consoleAuthMidware::handle);
         adminConsoleGroup.get("/admin-index.do", adminConsole::showAdminIndex).
                 get("/admin-preference.do", adminConsole::showAdminPreferenceFunction).
                 get("/console/export/sql", adminConsole::exportSQL).
@@ -482,7 +482,7 @@ public final class Server extends BaseServer {
 
         final ArticleConsole articleConsole = beanManager.getReference(ArticleConsole.class);
         final Dispatcher.RouterGroup articleConsoleGroup = Dispatcher.group();
-        articleConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        articleConsoleGroup.middlewares(consoleAuthMidware::handle);
         articleConsoleGroup.get("/console/article/push2rhy", articleConsole::pushArticleToCommunity).
                 get("/console/thumbs", articleConsole::getArticleThumbs).
                 get("/console/article/{id}", articleConsole::getArticle).
@@ -496,20 +496,20 @@ public final class Server extends BaseServer {
 
         final CommentConsole commentConsole = beanManager.getReference(CommentConsole.class);
         final Dispatcher.RouterGroup commentConsoleGroup = Dispatcher.group();
-        commentConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        commentConsoleGroup.middlewares(consoleAuthMidware::handle);
         commentConsoleGroup.delete("/console/article/comment/{id}", commentConsole::removeArticleComment).
                 get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments).
                 get("/console/comments/article/{id}", commentConsole::getArticleComments);
 
         final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
         final Dispatcher.RouterGroup tagConsoleGroup = Dispatcher.group();
-        tagConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        tagConsoleGroup.middlewares(consoleAuthMidware::handle);
         tagConsoleGroup.get("/console/tags", tagConsole::getTags).
                 get("/console/tag/unused", tagConsole::getUnusedTags);
 
         final CategoryConsole categoryConsole = beanManager.getReference(CategoryConsole.class);
         final Dispatcher.RouterGroup categoryGroup = Dispatcher.group();
-        categoryGroup.middlewares(consoleAdminAuthAdvice::handle);
+        categoryGroup.middlewares(consoleAdminAuthMidware::handle);
         categoryGroup.put("/console/category/order/", categoryConsole::changeOrder).
                 get("/console/category/{id}", categoryConsole::getCategory).
                 delete("/console/category/{id}", categoryConsole::removeCategory).
@@ -519,7 +519,7 @@ public final class Server extends BaseServer {
 
         final LinkConsole linkConsole = beanManager.getReference(LinkConsole.class);
         final Dispatcher.RouterGroup linkConsoleGroup = Dispatcher.group();
-        linkConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        linkConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         linkConsoleGroup.delete("/console/link/{id}", linkConsole::removeLink).
                 put("/console/link/", linkConsole::updateLink).
                 put("/console/link/order/", linkConsole::changeOrder).
@@ -529,7 +529,7 @@ public final class Server extends BaseServer {
 
         final PageConsole pageConsole = beanManager.getReference(PageConsole.class);
         final Dispatcher.RouterGroup pageConsoleGroup = Dispatcher.group();
-        pageConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        pageConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         pageConsoleGroup.put("/console/page/", pageConsole::updatePage).
                 delete("/console/page/{id}", pageConsole::removePage).
                 post("/console/page/", pageConsole::addPage).
@@ -539,7 +539,7 @@ public final class Server extends BaseServer {
 
         final PluginConsole pluginConsole = beanManager.getReference(PluginConsole.class);
         final Dispatcher.RouterGroup pluginConsoleGroup = Dispatcher.group();
-        pluginConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        pluginConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         pluginConsoleGroup.put("/console/plugin/status/", pluginConsole::setPluginStatus).
                 get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins).
                 post("/console/plugin/toSetting", pluginConsole::toSetting).
@@ -547,32 +547,32 @@ public final class Server extends BaseServer {
 
         final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
         final Dispatcher.RouterGroup preferenceConsoleGroup = Dispatcher.group();
-        preferenceConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        preferenceConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         preferenceConsoleGroup.get("/console/signs/", preferenceConsole::getSigns).
                 get("/console/preference/", preferenceConsole::getPreference).
                 put("/console/preference/", preferenceConsole::updatePreference);
 
         final SkinConsole skinConsole = beanManager.getReference(SkinConsole.class);
         final Dispatcher.RouterGroup skinConsoleGroup = Dispatcher.group();
-        skinConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        skinConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         skinConsoleGroup.get("/console/skin", skinConsole::getSkin).
                 put("/console/skin", skinConsole::updateSkin);
 
         final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
         final Dispatcher.RouterGroup repairConsoleGroup = Dispatcher.group();
-        repairConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        repairConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         repairConsoleGroup.get("/fix/restore-signs", repairConsole::restoreSigns).
                 get("/fix/archivedate-articles", repairConsole::cleanArchiveDateArticles);
 
         final OtherConsole otherConsole = beanManager.getReference(OtherConsole.class);
         final Dispatcher.RouterGroup otherConsoleGroup = Dispatcher.group();
-        otherConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        otherConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         otherConsoleGroup.delete("/console/archive/unused", otherConsole::removeUnusedArchives).
                 delete("/console/tag/unused", otherConsole::removeUnusedTags);
 
         final UserConsole userConsole = beanManager.getReference(UserConsole.class);
         final Dispatcher.RouterGroup userConsoleGroup = Dispatcher.group();
-        userConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        userConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         userConsoleGroup.put("/console/user/", userConsole::updateUser).
                 delete("/console/user/{id}", userConsole::removeUser).
                 get("/console/users/{page}/{pageSize}/{windowSize}", userConsole::getUsers).
@@ -581,7 +581,7 @@ public final class Server extends BaseServer {
 
         final StaticSiteConsole staticSiteConsole = beanManager.getReference(StaticSiteConsole.class);
         final Dispatcher.RouterGroup staticSiteConsoleGroup = Dispatcher.group();
-        staticSiteConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        staticSiteConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         staticSiteConsoleGroup.put("/console/staticsite", staticSiteConsole::genSite);
     }
 

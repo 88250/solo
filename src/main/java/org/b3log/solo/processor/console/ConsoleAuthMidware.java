@@ -19,21 +19,33 @@ package org.b3log.solo.processor.console;
 
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.Singleton;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.solo.util.Solos;
+import org.json.JSONObject;
 
 /**
- * The common auth check before advice for admin console.
+ * The common auth check middleware for admin console.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.0.0.0, Feb 9, 2020
  * @since 2.9.5
  */
 @Singleton
-public class ConsoleAdminAuthAdvice {
+public class ConsoleAuthMidware {
 
     public void handle(final RequestContext context) {
-        if (!Solos.isAdminLoggedIn(context)) {
+        final JSONObject currentUser = Solos.getCurrentUser(context);
+        if (null == currentUser) {
             context.sendError(401);
+            context.abort();
+
+            return;
+        }
+
+        final String userRole = currentUser.optString(User.USER_ROLE);
+        if (Role.VISITOR_ROLE.equals(userRole)) {
+            context.sendError(403);
             context.abort();
         }
 

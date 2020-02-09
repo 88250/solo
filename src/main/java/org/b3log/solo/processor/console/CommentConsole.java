@@ -90,7 +90,7 @@ public class CommentConsole {
 
         try {
             final String commentId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));

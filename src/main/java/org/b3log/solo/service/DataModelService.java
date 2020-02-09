@@ -565,7 +565,7 @@ public class DataModelService {
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
             dataModel.put(Common.IS_INDEX, "/".equals(context.requestURI()));
             dataModel.put(User.USER_NAME, "");
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             if (null != currentUser) {
                 final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
                 dataModel.put(Common.GRAVATAR, userAvatar);
@@ -625,7 +625,7 @@ public class DataModelService {
             }
             dataModel.put(Option.ID_C_META_DESCRIPTION, metaDescription);
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-            dataModel.put(Common.IS_LOGGED_IN, null != Solos.getCurrentUser(context.getRequest(), context.getResponse()));
+            dataModel.put(Common.IS_LOGGED_IN, null != Solos.getCurrentUser(context));
             dataModel.put(Common.FAVICON_API, Solos.FAVICON_API);
             final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
             dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
@@ -956,7 +956,7 @@ public class DataModelService {
             final Template topBarTemplate = Skins.getTemplate("common-template/top-bar.ftl");
             final StringWriter stringWriter = new StringWriter();
             final Map<String, Object> topBarModel = new HashMap<>();
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+            final JSONObject currentUser = Solos.getCurrentUser(context);
 
             Keys.fillServer(topBarModel);
             topBarModel.put(Common.IS_LOGGED_IN, false);

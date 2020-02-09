@@ -163,6 +163,12 @@ public class IndexProcessor {
      * @param context the specified context
      */
     public void showStart(final RequestContext context) {
+        if (initService.isInited() && null != Solos.getCurrentUser(context)) {
+            context.sendRedirect(Latkes.getServePath());
+
+            return;
+        }
+
         String referer = context.param("referer");
         if (StringUtils.isBlank(referer)) {
             referer = context.header("referer");
