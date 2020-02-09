@@ -39,7 +39,6 @@ public class CategoryQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addCategory() throws Exception {
         final CategoryMgmtService categoryMgmtService = getCategoryMgmtService();
 

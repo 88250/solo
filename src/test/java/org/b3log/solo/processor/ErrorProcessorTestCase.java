@@ -37,7 +37,6 @@ public class ErrorProcessorTestCase extends AbstractTestCase {
     /**
      * showErrorPage.
      */
-    @Test(dependsOnMethods = "init")
     public void showErrorPage() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/error/403");

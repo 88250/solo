@@ -39,7 +39,6 @@ public class TagConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getTags() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/tags");

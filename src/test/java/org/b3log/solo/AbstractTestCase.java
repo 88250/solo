@@ -43,7 +43,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -85,6 +84,8 @@ public abstract class AbstractTestCase {
         connection.close();
 
         JdbcRepositories.initAllTables();
+
+        initSolo();
     }
 
     @BeforeMethod
@@ -114,11 +115,7 @@ public abstract class AbstractTestCase {
         userCache.clear();
     }
 
-    /**
-     * Init Solo in test.
-     */
-    @Test
-    public void init() {
+    private void initSolo() {
         final InitService initService = getInitService();
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "Solo");

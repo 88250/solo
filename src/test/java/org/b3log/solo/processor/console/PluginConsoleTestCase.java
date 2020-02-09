@@ -39,7 +39,6 @@ public class PluginConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getPlugins() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/plugins/1/10/20");

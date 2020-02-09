@@ -38,7 +38,6 @@ public class OptionQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getPreference() throws Exception {
         final OptionQueryService optionQueryService = getOptionQueryService();
         final JSONObject preference = optionQueryService.getPreference();

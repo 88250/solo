@@ -39,7 +39,6 @@ public class UserTemplateProcessorTestCase extends AbstractTestCase {
     /**
      * showCategoryArticles.
      */
-    @Test(dependsOnMethods = "init")
     public void showCategoryArticles() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/links.html");

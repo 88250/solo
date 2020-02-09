@@ -37,7 +37,6 @@ public class FeedProcessorTestCase extends AbstractTestCase {
     /**
      * blogArticlesAtom.
      */
-    @Test(dependsOnMethods = "init")
     public void blogArticlesAtom() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/atom.xml");
@@ -51,7 +50,6 @@ public class FeedProcessorTestCase extends AbstractTestCase {
     /**
      * blogArticlesRSS.
      */
-    @Test(dependsOnMethods = "init")
     public void blogArticlesRSS() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/rss.xml");

@@ -105,8 +105,6 @@ public class ErrorProcessor {
                 dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Shows error page failed", e);
-
-                context.sendError(404);
             }
 
             Solos.addGoogleNoIndex(context);

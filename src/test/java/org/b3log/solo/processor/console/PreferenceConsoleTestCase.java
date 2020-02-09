@@ -39,7 +39,6 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
     /**
      * getSigns.
      */
-    @Test(dependsOnMethods = "init")
     public void getSigns() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/signs/");
@@ -58,7 +57,6 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getPreference() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/preference/");
@@ -75,7 +73,6 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
     /**
      * updatePreference.
      */
-    @Test(dependsOnMethods = "init")
     public void updatePreference() {
         final JSONObject p = getOptionQueryService().getPreference();
 

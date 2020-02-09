@@ -43,7 +43,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -76,7 +75,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addArticleWithoutPermalink() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -108,7 +106,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void updateArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -151,7 +148,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void removeArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -210,7 +206,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void cancelPublishArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 

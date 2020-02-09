@@ -34,7 +34,6 @@ public class TagMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void removeUnusedTags() throws Exception {
         final TagMgmtService tagMgmtService = getTagMgmtService();
 

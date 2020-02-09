@@ -17,12 +17,12 @@
  */
 package org.b3log.solo.service;
 
-import junit.framework.Assert;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

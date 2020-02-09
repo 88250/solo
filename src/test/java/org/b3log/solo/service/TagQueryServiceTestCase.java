@@ -39,7 +39,6 @@ public class TagQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getTags() throws Exception {
         final TagQueryService tagQueryService = getTagQueryService();
 
@@ -54,7 +53,6 @@ public class TagQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getTagByTitle() throws Exception {
         final TagQueryService tagQueryService = getTagQueryService();
 

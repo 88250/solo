@@ -39,7 +39,6 @@ public class RepairConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void restoreSigns() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/fix/restore-signs");

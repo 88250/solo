@@ -39,7 +39,6 @@ public class OtherConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void removeUnusedArchives() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/archive/unused");

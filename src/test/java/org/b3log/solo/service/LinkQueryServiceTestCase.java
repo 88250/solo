@@ -38,7 +38,6 @@ public class LinkQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addLink() throws Exception {
         final LinkMgmtService linkMgmtService = getLinkMgmtService();
 

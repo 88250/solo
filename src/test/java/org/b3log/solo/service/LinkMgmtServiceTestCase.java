@@ -37,7 +37,6 @@ public class LinkMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addLink() throws Exception {
         final LinkMgmtService linkMgmtService = getLinkMgmtService();
 
@@ -59,7 +58,6 @@ public class LinkMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void removeLink() throws Exception {
         final LinkMgmtService linkMgmtService = getLinkMgmtService();
 
@@ -93,7 +91,6 @@ public class LinkMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void updateLink() throws Exception {
         final LinkMgmtService linkMgmtService = getLinkMgmtService();
 

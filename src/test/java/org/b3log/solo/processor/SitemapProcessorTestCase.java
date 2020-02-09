@@ -37,7 +37,6 @@ public class SitemapProcessorTestCase extends AbstractTestCase {
     /**
      * sitemap.
      */
-    @Test(dependsOnMethods = "init")
     public void sitemap() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/sitemap.xml");

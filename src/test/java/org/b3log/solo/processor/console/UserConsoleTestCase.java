@@ -42,7 +42,6 @@ public class UserConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void updateUser() throws Exception {
         final JSONObject u = getUserRepository().getFirst(new Query());
 

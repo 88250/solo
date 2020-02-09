@@ -23,7 +23,6 @@ import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.ArchiveDate;
 import org.json.JSONObject;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,6 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getArchiveDates() throws Exception {
         final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 
@@ -56,7 +54,6 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getByArchiveDateString() throws Exception {
         final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 

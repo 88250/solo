@@ -44,7 +44,6 @@ public class LinkConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addLink() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/link/");

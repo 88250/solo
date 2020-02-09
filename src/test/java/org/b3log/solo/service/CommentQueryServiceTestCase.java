@@ -46,7 +46,6 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getComments() throws Exception {
         final CommentQueryService commentQueryService = getCommentQueryService();
 
@@ -62,7 +61,6 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getCommentsOnId() throws Exception {
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject result = articleQueryService.getArticles(Solos.buildPaginationRequest("1/10/20"));

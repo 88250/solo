@@ -41,7 +41,6 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void searchKeyword() throws Exception {
         final ArticleQueryService articleQueryService = getArticleQueryService();
 
@@ -61,7 +60,6 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getRecentArticles() throws Exception {
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
@@ -129,7 +127,6 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getArticlesByTag() throws Exception {
         final TagQueryService tagQueryService = getTagQueryService();
 
@@ -153,7 +150,6 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void getArticlesByArchiveDate() throws Exception {
         final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 

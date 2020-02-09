@@ -39,7 +39,6 @@ public class TagProcessorTestCase extends AbstractTestCase {
     /**
      * showTagArticles.
      */
-    @Test(dependsOnMethods = "init")
     public void showTagArticles() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/tags/Solo");

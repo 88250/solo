@@ -49,7 +49,6 @@ public class CommentProcessorTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addArticleComment() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/article/comments");

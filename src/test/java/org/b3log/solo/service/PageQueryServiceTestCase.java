@@ -39,7 +39,6 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addPage() throws Exception {
         final PageMgmtService pageMgmtService = getPageMgmtService();
 

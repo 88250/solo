@@ -43,7 +43,6 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addArticleComment() throws Exception {
         final ArticleQueryService articleQueryService = getArticleQueryService();
 

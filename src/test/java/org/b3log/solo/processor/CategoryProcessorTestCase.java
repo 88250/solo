@@ -41,7 +41,6 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
     /**
      * showCategoryArticles.
      */
-    @Test(dependsOnMethods = "init")
     public void showCategoryArticles() {
         MockRequest request = mockRequest();
         request.setRequestURI("/console/category/");

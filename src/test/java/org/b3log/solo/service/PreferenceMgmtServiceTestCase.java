@@ -37,7 +37,6 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void updatePreference() throws Exception {
         final PreferenceMgmtService preferenceMgmtService = getPreferenceMgmtService();
         final OptionQueryService optionQueryService = getOptionQueryService();

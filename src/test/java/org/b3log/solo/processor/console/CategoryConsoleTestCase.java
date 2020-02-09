@@ -43,7 +43,6 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addCategory() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/category/");

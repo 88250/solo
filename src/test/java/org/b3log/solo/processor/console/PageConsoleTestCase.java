@@ -44,7 +44,6 @@ public class PageConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addPage() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/page/");

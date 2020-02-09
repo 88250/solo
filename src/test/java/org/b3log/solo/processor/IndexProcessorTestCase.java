@@ -41,7 +41,6 @@ public class IndexProcessorTestCase extends AbstractTestCase {
     /**
      * showStart.
      */
-    @Test(dependsOnMethods = "init")
     public void showStart() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/start");
@@ -55,7 +54,6 @@ public class IndexProcessorTestCase extends AbstractTestCase {
     /**
      * showIndex.
      */
-    @Test(dependsOnMethods = "init")
     public void showIndex() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/");
@@ -69,7 +67,6 @@ public class IndexProcessorTestCase extends AbstractTestCase {
     /**
      * showKillBrowser.
      */
-    @Test(dependsOnMethods = "init")
     public void showKillBrowser() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/kill-browser");
@@ -83,7 +80,6 @@ public class IndexProcessorTestCase extends AbstractTestCase {
     /**
      * logout.
      */
-    @Test(dependsOnMethods = "init")
     public void logout() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/logout");
