@@ -24,6 +24,7 @@ import org.b3log.solo.MockRequest;
 import org.b3log.solo.MockResponse;
 import org.b3log.solo.util.Solos;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.util.Set;
 
@@ -34,7 +35,7 @@ import java.util.Set;
  * @version 1.0.1.4, Feb 22, 2019
  * @since 1.7.0
  */
-//@Test(suiteName = "processor")
+@Test(suiteName = "processor")
 public class IndexProcessorTestCase extends AbstractTestCase {
 
     /**
