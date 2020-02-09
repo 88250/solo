@@ -19,11 +19,11 @@
  * base style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.0.1, Mar 16, 2019
+* @version 2.0.0.2, Feb 9, 2020
 */
 
 @import "../scss/reset";
-@import "vditor/src/assets/scss/classic";
+@import "vditor/src/assets/scss/index";
 
 textarea {
     overflow: hidden;
@@ -194,7 +194,7 @@ button:hover,.button:hover {
 .form textarea {
     padding: 3px;
     overflow: auto;
-    resize: vertical;    
+    resize: vertical;
 }
 /* end form */
 
@@ -205,8 +205,8 @@ button:hover,.button:hover {
 }
 
 /* start icon */
-.putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon, 
-.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon, 
+.putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,
+.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,
 .postIcon,.articlesIcon,.draftsIcon,.usersIcon,.linkIcon,
 .preferenceIcon, .pageIcon, .trueIcon,.falseIcon,
 .fileIcon, .othersIcon, .goTopIcon, .goBottomIcon, .cacheIcon, .aboutIcon {

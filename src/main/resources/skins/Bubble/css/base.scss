@@ -19,13 +19,13 @@
  * skin style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.4.1.0, Oct 4, 2019
+ * @version 0.4.1.1, Feb 9, 2020
  */
 @import "../../../scss/reset";
 @import "../../../scss/usite";
 @import "../../../scss/toc";
 @import "../../../scss/function";
-@import "vditor/src/assets/scss/classic";
+@import "vditor/src/assets/scss/index";
 
 $fade-lighter: rgba(255, 255, 255, .8) !default;
 $gray: #738a94 !default;
