@@ -22,12 +22,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Article;
@@ -51,10 +49,10 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.4.0.0, Apr 18, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.3.1
  */
-@RequestProcessor
+@Singleton
 public class CommentProcessor {
 
     /**
@@ -125,7 +123,6 @@ public class CommentProcessor {
      *
      * @param context the specified context, including a request json object
      */
-    @RequestProcessing(value = "/article/comments", method = HttpMethod.POST)
     public void addArticleComment(final RequestContext context) {
         final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);

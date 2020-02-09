@@ -24,12 +24,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.solo.Server;
@@ -46,10 +44,10 @@ import java.nio.charset.StandardCharsets;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.2, Nov 15, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.4.6
  */
-@RequestProcessor
+@Singleton
 public class BlogProcessor {
 
     /**
@@ -105,7 +103,6 @@ public class BlogProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/manifest.json", method = HttpMethod.GET)
     public void getPWAManifestJSON(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         renderer.setPretty(true);
@@ -143,7 +140,6 @@ public class BlogProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/blog/info", method = HttpMethod.GET)
     public void getBlogInfo(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -182,7 +178,6 @@ public class BlogProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/blog/articles-tags", method = HttpMethod.GET)
     public void getArticlesTags(final RequestContext context) {
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);

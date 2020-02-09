@@ -26,13 +26,15 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.http.*;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.Session;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.http.renderer.TextHtmlRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -56,10 +58,10 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.4.5.9, Jan 9, 2020
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.3.1
  */
-@RequestProcessor
+@Singleton
 public class ArticleProcessor {
 
     /**
@@ -146,7 +148,6 @@ public class ArticleProcessor {
      *
      * @param context the specified request context
      */
-    @RequestProcessing(value = "/console/markdown/2html", method = HttpMethod.POST)
     public void markdown2HTML(final RequestContext context) {
         final JSONObject result = Solos.newSucc();
         context.renderJSON(result);
@@ -180,7 +181,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/console/article-pwd", method = HttpMethod.GET)
     public void showArticlePwdForm(final RequestContext context) {
         final String articleId = context.param("articleId");
         if (StringUtils.isBlank(articleId)) {
@@ -227,7 +227,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/console/article-pwd", method = HttpMethod.POST)
     public void onArticlePwdForm(final RequestContext context) {
         try {
             final Request request = context.getRequest();
@@ -268,7 +267,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/random", method = HttpMethod.POST)
     public void getRandomArticles(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -301,7 +299,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/article/id/{id}/relevant/articles", method = HttpMethod.GET)
     public void getRelevantArticles(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -349,9 +346,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/get-article-content", method = HttpMethod.GET)
     public void getArticleContent(final RequestContext context) {
-        final Request request = context.getRequest();
         final String articleId = context.param("id");
         if (StringUtils.isBlank(articleId)) {
             return;
@@ -380,7 +375,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles", method = HttpMethod.GET)
     public void getArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
         final Request request = context.getRequest();
@@ -422,7 +416,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/tags/{tagTitle}", method = HttpMethod.GET)
     public void getTagArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -475,7 +468,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/archives/{yyyy}/{MM}", method = HttpMethod.GET)
     public void getArchivesArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -527,7 +519,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/authors/{author}", method = HttpMethod.GET)
     public void getAuthorsArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -577,7 +568,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/authors/{author}", method = HttpMethod.GET)
     public void showAuthorArticles(final RequestContext context) {
         final Request request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "author-articles.ftl");
@@ -638,7 +628,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/archives/{yyyy}/{MM}", method = HttpMethod.GET)
     public void showArchiveArticles(final RequestContext context) {
         final Request request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "archive-articles.ftl");
@@ -693,7 +682,6 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/article", method = HttpMethod.GET)
     public void showArticle(final RequestContext context) {
         // See PermalinkHandler#dispatchToArticleProcessor()
         final JSONObject article = (JSONObject) context.attr(Article.ARTICLE);

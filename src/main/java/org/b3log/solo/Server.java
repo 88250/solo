@@ -206,7 +206,7 @@ public final class Server extends BaseServer {
         Dispatcher.HANDLERS.add(3, new PermalinkHandler());
         Dispatcher.endRequestHandler = new AfterRequestHandler();
 
-        routeConsoleProcessors();
+        routeProcessors();
 
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
@@ -365,10 +365,87 @@ public final class Server extends BaseServer {
         }
     }
 
-    /**
-     * 后台控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
-     */
-    public static void routeConsoleProcessors() {
+    public static void routeProcessors() {
+        routeConsoleProcessors();
+        routeIndexProcessors();
+        Dispatcher.mapping();
+    }
+
+    private static void routeIndexProcessors() {
+        final BeanManager beanManager = BeanManager.getInstance();
+
+        final ArticleProcessor articleProcessor = beanManager.getReference(ArticleProcessor.class);
+        final Dispatcher.RouterGroup articleGroup = Dispatcher.group();
+        articleGroup.post("/console/markdown/2html", articleProcessor::markdown2HTML).
+                get("/console/article-pwd", articleProcessor::showArticlePwdForm).
+                post("/console/article-pwd", articleProcessor::onArticlePwdForm).
+                post("/articles/random", articleProcessor::getRandomArticles).
+                get("/article/id/{id}/relevant/articles", articleProcessor::getRelevantArticles).
+                get("/get-article-content", articleProcessor::getArticleContent).
+                get("/articles", articleProcessor::getArticlesByPage).
+                get("/articles/tags/{tagTitle}", articleProcessor::getTagArticlesByPage).
+                get("/articles/archives/{yyyy}/{MM}", articleProcessor::getArchivesArticlesByPage).
+                get("/articles/authors/{author}", articleProcessor::getAuthorsArticlesByPage).
+                get("/authors/{author}", articleProcessor::showAuthorArticles).
+                get("/archives/{yyyy}/{MM}", articleProcessor::showArchiveArticles).
+                get("/article", articleProcessor::showArticle);
+
+        final B3Receiver b3Receiver = beanManager.getReference(B3Receiver.class);
+        final Dispatcher.RouterGroup b3Group = Dispatcher.group();
+        b3Group.route().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle).
+                put("/apis/symphony/comment", b3Receiver::addComment);
+
+        final BlogProcessor blogProcessor = beanManager.getReference(BlogProcessor.class);
+        final Dispatcher.RouterGroup blogGroup = Dispatcher.group();
+        blogGroup.get("/manifest.json", blogProcessor::getPWAManifestJSON).
+                get("/blog/info", blogProcessor::getBlogInfo).
+                get("/blog/articles-tags", blogProcessor::getArticlesTags);
+
+        final CategoryProcessor categoryProcessor = beanManager.getReference(CategoryProcessor.class);
+        final Dispatcher.RouterGroup categoryGroup = Dispatcher.group();
+        categoryGroup.get("/articles/category/{categoryURI}", categoryProcessor::getCategoryArticlesByPage).
+                get("/category/{categoryURI}", categoryProcessor::showCategoryArticles);
+
+        final CommentProcessor commentProcessor = beanManager.getReference(CommentProcessor.class);
+        final Dispatcher.RouterGroup commentGroup = Dispatcher.group();
+        commentGroup.post("/article/comments", commentProcessor::addArticleComment);
+
+        final FeedProcessor feedProcessor = beanManager.getReference(FeedProcessor.class);
+        final Dispatcher.RouterGroup feedGroup = Dispatcher.group();
+        feedGroup.route().get().head().uri("/atom.xml").handler(feedProcessor::blogArticlesAtom).
+                get().head().uri("/rss.xml").handler(feedProcessor::blogArticlesRSS);
+
+        final IndexProcessor indexProcessor = beanManager.getReference(IndexProcessor.class);
+        final Dispatcher.RouterGroup indexGroup = Dispatcher.group();
+        indexGroup.route().get(new String[]{"", "/", "/index.html"}, indexProcessor::showIndex).
+                get("/start", indexProcessor::showStart).
+                get("/logout", indexProcessor::logout).
+                get("/kill-browser", indexProcessor::showKillBrowser);
+
+        final OAuthProcessor oAuthProcessor = beanManager.getReference(OAuthProcessor.class);
+        final Dispatcher.RouterGroup oauthGroup = Dispatcher.group();
+        oauthGroup.get("/login/redirect", oAuthProcessor::redirectAuth).
+                get("/login/callback", oAuthProcessor::authCallback);
+
+        final SearchProcessor searchProcessor = beanManager.getReference(SearchProcessor.class);
+        final Dispatcher.RouterGroup searchGroup = Dispatcher.group();
+        searchGroup.get("/opensearch.xml", searchProcessor::showOpensearchXML).
+                get("/search", searchProcessor::search);
+
+        final SitemapProcessor sitemapProcessor = beanManager.getReference(SitemapProcessor.class);
+        final Dispatcher.RouterGroup sitemapGroup = Dispatcher.group();
+        sitemapGroup.get("/sitemap.xml", sitemapProcessor::sitemap);
+
+        final TagProcessor tagProcessor = beanManager.getReference(TagProcessor.class);
+        final Dispatcher.RouterGroup tagGroup = Dispatcher.group();
+        tagGroup.get("/tags/{tagTitle}", tagProcessor::showTagArticles);
+
+        final UserTemplateProcessor userTemplateProcessor = beanManager.getReference(UserTemplateProcessor.class);
+        final Dispatcher.RouterGroup userTemplateGroup = Dispatcher.group();
+        userTemplateGroup.get("/{name}.html", userTemplateProcessor::showPage);
+    }
+
+    private static void routeConsoleProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
 
         final ConsoleAuthAdvice consoleAuthAdvice = beanManager.getReference(ConsoleAuthAdvice.class);
@@ -500,8 +577,6 @@ public final class Server extends BaseServer {
         final Dispatcher.RouterGroup staticSiteConsoleGroup = Dispatcher.group();
         staticSiteConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
         staticSiteConsoleGroup.put("/console/staticsite", staticSiteConsole::genSite);
-
-        Dispatcher.mapping();
     }
 
     /**

@@ -22,11 +22,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
@@ -48,10 +46,10 @@ import java.util.Date;
  * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.1, Mar 26, 2019
+ * @version 3.0.0.0, Feb 9, 2020
  * @since 0.5.5
  */
-@RequestProcessor
+@Singleton
 public class B3Receiver {
 
     /**
@@ -140,7 +138,6 @@ public class B3Receiver {
      *
      * @param context the specified request context
      */
-    @RequestProcessing(value = "/apis/symphony/article", method = {HttpMethod.POST, HttpMethod.PUT})
     public void postArticle(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.CODE, 0);
         context.renderJSON(ret);
@@ -249,7 +246,6 @@ public class B3Receiver {
      *
      * @param context the specified request context
      */
-    @RequestProcessing(value = "/apis/symphony/comment", method = HttpMethod.PUT)
     public void addComment(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.CODE, 0);
         context.renderJSON(ret);

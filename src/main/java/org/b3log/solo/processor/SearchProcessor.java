@@ -23,14 +23,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.TextXmlRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Paginator;
@@ -57,10 +55,10 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.1.3, Mar 19, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 2.4.0
  */
-@RequestProcessor
+@Singleton
 public class SearchProcessor {
 
     /**
@@ -103,7 +101,6 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/opensearch.xml", method = HttpMethod.GET)
     public void showOpensearchXML(final RequestContext context) {
         final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
@@ -127,7 +124,6 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/search", method = HttpMethod.GET)
     public void search(final RequestContext context) {
         final Request request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "common-template/search.ftl");

@@ -23,13 +23,11 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -50,10 +48,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Jan 18, 2020
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 2.9.5
  */
-@RequestProcessor
+@Singleton
 public class OAuthProcessor {
 
     /**
@@ -107,7 +105,6 @@ public class OAuthProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login/redirect", method = HttpMethod.GET)
     public void redirectAuth(final RequestContext context) {
         String referer = context.param("referer");
         if (StringUtils.isBlank(referer)) {
@@ -127,7 +124,6 @@ public class OAuthProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login/callback", method = HttpMethod.GET)
     public synchronized void authCallback(final RequestContext context) {
         String state = context.param("state");
         final String referer = STATES.get(state);

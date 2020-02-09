@@ -21,14 +21,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -51,10 +49,10 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 30, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 2.0.0
  */
-@RequestProcessor
+@Singleton
 public class CategoryProcessor {
 
     /**
@@ -109,7 +107,6 @@ public class CategoryProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/category/{categoryURI}", method = HttpMethod.GET)
     public void getCategoryArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -157,7 +154,6 @@ public class CategoryProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/category/{categoryURI}", method = HttpMethod.GET)
     public void showCategoryArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "category-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

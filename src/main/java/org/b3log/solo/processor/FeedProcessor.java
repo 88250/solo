@@ -23,13 +23,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AtomRenderer;
 import org.b3log.latke.http.renderer.RssRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
@@ -60,10 +58,10 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 2.0.0.3, Jul 29, 2019
+ * @version 3.0.0.0, Feb 9, 2020
  * @since 0.3.1
  */
-@RequestProcessor
+@Singleton
 public class FeedProcessor {
 
     /**
@@ -94,7 +92,6 @@ public class FeedProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/atom.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
     public void blogArticlesAtom(final RequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
@@ -167,7 +164,6 @@ public class FeedProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/rss.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
     public void blogArticlesRSS(final RequestContext context) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);

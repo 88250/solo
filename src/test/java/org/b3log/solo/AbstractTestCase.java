@@ -52,7 +52,7 @@ import java.util.Collection;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.3, Nov 6, 2019
+ * @version 4.0.0.0, Feb 9, 2020
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -123,7 +123,7 @@ public abstract class AbstractTestCase {
         requestJSONObject.put(UserExt.USER_B3_KEY, "pass");
         initService.init(requestJSONObject);
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
-        Dispatcher.get("/error/{statusCode}", errorProcessor::showErrorPage);
+        Dispatcher.error("/error/{statusCode}", errorProcessor::showErrorPage);
         final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByName("Solo"));
     }
@@ -155,7 +155,7 @@ public abstract class AbstractTestCase {
     public MockDispatcher mockDispatcher(final Request request, final Response response) {
         final MockDispatcher ret = new MockDispatcher();
         ret.init();
-        Server.routeConsoleProcessors();
+        Server.routeProcessors();
         ret.handle(request, response);
 
         return ret;
