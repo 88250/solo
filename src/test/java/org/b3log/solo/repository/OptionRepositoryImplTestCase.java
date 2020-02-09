@@ -17,11 +17,8 @@
  */
 package org.b3log.solo.repository;
 
-import org.b3log.latke.Keys;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Option;
-import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -44,16 +41,7 @@ public final class OptionRepositoryImplTestCase extends AbstractTestCase {
     public void test() throws Exception {
         final OptionRepository optionRepository = getOptionRepository();
 
-        final JSONObject option = new JSONObject();
-        option.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
-        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        option.put(Option.OPTION_VALUE, 0L);
-
-        Transaction transaction = optionRepository.beginTransaction();
-        optionRepository.add(option);
-        transaction.commit();
-
-        Assert.assertEquals(optionRepository.count(), 1);
+        Assert.assertTrue(0 < optionRepository.count());
         Assert.assertNotNull(optionRepository.get(Option.ID_C_BLOG_TITLE));
     }
 }

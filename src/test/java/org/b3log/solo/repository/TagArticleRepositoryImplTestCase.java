@@ -95,6 +95,6 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
 
         final List<JSONObject> mostUsedTags = tagArticleRepository.getMostUsedTags(3);
         Assert.assertNotNull(mostUsedTags);
-        Assert.assertEquals(1, mostUsedTags.size());
+        Assert.assertEquals(2, mostUsedTags.size());
     }
 }

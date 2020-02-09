@@ -87,7 +87,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
         final JSONObject paginationRequest = Solos.buildPaginationRequest("1/20/10");
         final JSONObject result = userQueryService.getUsers(paginationRequest);
         final JSONArray users = result.getJSONArray(User.USERS);
-        Assert.assertEquals(1, users.length());
+        Assert.assertEquals(users.length(), 2);
     }
 
     /**

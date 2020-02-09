@@ -54,7 +54,7 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final List<JSONObject> archiveDates = archiveDateRepository.getArchiveDates();
         Assert.assertNotNull(archiveDates);
-        Assert.assertEquals(1, archiveDates.size());
+        Assert.assertEquals(archiveDates.size(), 2);
     }
 
     /**

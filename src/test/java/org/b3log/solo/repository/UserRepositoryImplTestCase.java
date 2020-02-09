@@ -61,24 +61,7 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         userRepository.add(another);
         transaction.commit();
 
-        Assert.assertNull(userRepository.getAdmin());
-
-        JSONObject admin = new JSONObject();
-        admin.put(User.USER_NAME, "test");
-        admin.put(User.USER_URL, "https://b3log.org");
-        admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        admin.put(UserExt.USER_AVATAR, "");
-        admin.put(UserExt.USER_GITHUB_ID, "");
-        admin.put(UserExt.USER_B3_KEY, "");
-
-        transaction = userRepository.beginTransaction();
-        userRepository.add(admin);
-        transaction.commit();
-
-        admin = userRepository.getAdmin();
-
-        Assert.assertNotNull(admin);
-        Assert.assertEquals("test", admin.optString(User.USER_NAME));
+        Assert.assertNotNull(userRepository.getAdmin());
 
         final JSONObject result = userRepository.get(new Query().setFilter(
                 new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, "test1")));

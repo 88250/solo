@@ -128,7 +128,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         articleRepository.add(article);
         transaction.commit();
 
-        Assert.assertEquals(articleRepository.count(), 2);
+        Assert.assertEquals(articleRepository.count(), 3);
 
         JSONObject previousArticle = articleRepository.getPreviousArticle(article.getString(Keys.OBJECT_ID));
 
@@ -166,11 +166,11 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
     public void getRecentArticles() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
-        Assert.assertEquals(articleRepository.count(), 2);
+        Assert.assertEquals(articleRepository.count(), 3);
 
         List<JSONObject> recentArticles = articleRepository.getRecentArticles(3);
         Assert.assertNotNull(recentArticles);
-        Assert.assertEquals(recentArticles.size(), 2);
+        Assert.assertEquals(recentArticles.size(), 3);
 
         Assert.assertEquals(recentArticles.get(0).getString(Article.ARTICLE_TITLE), "article title2");
         Assert.assertEquals(recentArticles.get(1).getString(Article.ARTICLE_TITLE), "article title1");

@@ -59,7 +59,7 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertNull(linkRepository.getByAddress("test"));
         Assert.assertNotNull(linkRepository.getByAddress("link address"));
 
-        Assert.assertNull(linkRepository.getByOrder(0));
+        Assert.assertNotNull(linkRepository.getByOrder(0));
         Assert.assertNotNull(linkRepository.getByOrder(link1Order));
 
         final JSONObject link2 = new JSONObject();
@@ -88,8 +88,7 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
 
         transaction.commit();
 
-        final int total = 3;
-        Assert.assertEquals(linkRepository.count(), total);
+        Assert.assertEquals(linkRepository.count(), 4);
 
         link1 = linkRepository.getUpper(link2Id);
         Assert.assertNotNull(link1);

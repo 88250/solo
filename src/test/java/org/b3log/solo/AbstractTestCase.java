@@ -120,7 +120,9 @@ public abstract class AbstractTestCase {
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "Solo");
         requestJSONObject.put(UserExt.USER_B3_KEY, "pass");
+        System.out.println("before init");
         initService.init(requestJSONObject);
+        System.out.println("after init");
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
         Dispatcher.error("/error/{statusCode}", errorProcessor::showErrorPage);
         final UserQueryService userQueryService = getUserQueryService();
