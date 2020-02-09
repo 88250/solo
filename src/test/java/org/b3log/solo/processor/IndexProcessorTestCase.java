@@ -39,9 +39,17 @@ import java.util.Set;
 public class IndexProcessorTestCase extends AbstractTestCase {
 
     /**
-     * showStart.
+     * Init.
      */
     @Test
+    public void init() {
+        super.init();
+    }
+
+    /**
+     * showStart.
+     */
+    @Test(dependsOnMethods = "init")
     public void showStart() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/start");
@@ -50,14 +58,6 @@ public class IndexProcessorTestCase extends AbstractTestCase {
 
         final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用! - Solo</title>"));
-    }
-
-    /**
-     * Init.
-     */
-    @Test(dependsOnMethods = "showStart")
-    public void init() {
-        super.init();
     }
 
     /**

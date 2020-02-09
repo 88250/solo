@@ -117,6 +117,7 @@ public class IndexProcessor {
             if (StringUtils.isBlank(specifiedSkin)) {
                 final JSONObject skinOpt = optionQueryService.getSkin();
                 specifiedSkin = Solos.isMobile(request) ?
+
                         skinOpt.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME) :
                         skinOpt.optString(Option.ID_C_SKIN_DIR_NAME);
             }

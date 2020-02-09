@@ -371,6 +371,9 @@ public final class Server extends BaseServer {
         Dispatcher.mapping();
     }
 
+    /**
+     * 前台路由.
+     */
     private static void routeIndexProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
 
@@ -392,7 +395,7 @@ public final class Server extends BaseServer {
 
         final B3Receiver b3Receiver = beanManager.getReference(B3Receiver.class);
         final Dispatcher.RouterGroup b3Group = Dispatcher.group();
-        b3Group.route().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle).
+        b3Group.router().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle).
                 put("/apis/symphony/comment", b3Receiver::addComment);
 
         final BlogProcessor blogProcessor = beanManager.getReference(BlogProcessor.class);
@@ -412,13 +415,13 @@ public final class Server extends BaseServer {
 
         final FeedProcessor feedProcessor = beanManager.getReference(FeedProcessor.class);
         final Dispatcher.RouterGroup feedGroup = Dispatcher.group();
-        feedGroup.route().get().head().uri("/atom.xml").handler(feedProcessor::blogArticlesAtom).
+        feedGroup.router().get().head().uri("/atom.xml").handler(feedProcessor::blogArticlesAtom).
                 get().head().uri("/rss.xml").handler(feedProcessor::blogArticlesRSS);
 
         final IndexProcessor indexProcessor = beanManager.getReference(IndexProcessor.class);
         final Dispatcher.RouterGroup indexGroup = Dispatcher.group();
-        indexGroup.route().get(new String[]{"", "/", "/index.html"}, indexProcessor::showIndex).
-                get("/start", indexProcessor::showStart).
+        indexGroup.router().get(new String[]{"", "/", "/index.html"}, indexProcessor::showIndex);
+        indexGroup.get("/start", indexProcessor::showStart).
                 get("/logout", indexProcessor::logout).
                 get("/kill-browser", indexProcessor::showKillBrowser);
 
@@ -445,6 +448,9 @@ public final class Server extends BaseServer {
         userTemplateGroup.get("/{name}.html", userTemplateProcessor::showPage);
     }
 
+    /**
+     * 后台路由.
+     */
     private static void routeConsoleProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
 
@@ -459,7 +465,7 @@ public final class Server extends BaseServer {
                 get("/console/export/sql", adminConsole::exportSQL).
                 get("/console/export/json", adminConsole::exportJSON).
                 get("/console/export/hexo", adminConsole::exportHexo);
-        adminConsoleGroup.route().get(new String[]{"/admin-article.do",
+        adminConsoleGroup.router().get(new String[]{"/admin-article.do",
                 "/admin-article-list.do",
                 "/admin-comment-list.do",
                 "/admin-link-list.do",
