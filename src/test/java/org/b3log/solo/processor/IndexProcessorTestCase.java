@@ -32,24 +32,11 @@ import java.util.Set;
  * {@link IndexProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 22, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
 public class IndexProcessorTestCase extends AbstractTestCase {
-
-    /**
-     * showStart.
-     */
-    public void showStart() {
-        final MockRequest request = mockRequest();
-        request.setRequestURI("/start");
-        final MockResponse response = mockResponse();
-        mockDispatcher(request, response);
-
-        final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用! - Solo</title>"));
-    }
 
     /**
      * showIndex.
