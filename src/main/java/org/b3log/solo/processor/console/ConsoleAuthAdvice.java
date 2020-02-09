@@ -17,10 +17,7 @@
  */
 package org.b3log.solo.processor.console;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
@@ -31,30 +28,25 @@ import org.json.JSONObject;
  * The common auth check before advice for admin console.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Feb 7, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 2.9.5
  */
 @Singleton
-public class ConsoleAuthAdvice extends ProcessAdvice {
+public class ConsoleAuthAdvice {
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
         final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         if (null == currentUser) {
-            final JSONObject exception401 = new JSONObject();
-            exception401.put(Keys.MSG, "Unauthorized to request [" + context.requestURI() + "], please signin");
-            exception401.put(Keys.STATUS_CODE, 401);
-
-            throw new RequestProcessAdviceException(exception401);
+            context.sendError(401);
+            context.abort();
         }
 
         final String userRole = currentUser.optString(User.USER_ROLE);
         if (Role.VISITOR_ROLE.equals(userRole)) {
-            final JSONObject exception403 = new JSONObject();
-            exception403.put(Keys.MSG, "Forbidden to request [" + context.requestURI() + "]");
-            exception403.put(Keys.STATUS_CODE, 403);
-
-            throw new RequestProcessAdviceException(exception403);
+            context.sendError(403);
+            context.abort();
         }
+
+        context.handle();
     }
 }

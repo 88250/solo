@@ -17,32 +17,26 @@
  */
 package org.b3log.solo.processor.console;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.advice.ProcessAdvice;
-import org.b3log.latke.http.advice.RequestProcessAdviceException;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.util.Solos;
-import org.json.JSONObject;
 
 /**
  * The common auth check before advice for admin console.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Oct 5, 2018
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 2.9.5
  */
 @Singleton
-public class ConsoleAdminAuthAdvice extends ProcessAdvice {
+public class ConsoleAdminAuthAdvice {
 
-    @Override
-    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+    public void handle(final RequestContext context) {
         if (!Solos.isAdminLoggedIn(context)) {
-            final JSONObject exception401 = new JSONObject();
-            exception401.put(Keys.MSG, "Unauthorized to request [" + context.requestURI() + "], please signin using admin account");
-            exception401.put(Keys.STATUS_CODE, 401);
-
-            throw new RequestProcessAdviceException(exception401);
+            context.sendError(401);
+            context.abort();
         }
+
+        context.handle();
     }
 }

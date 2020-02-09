@@ -26,7 +26,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
@@ -50,11 +49,10 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.4, Jan 11, 2020
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.4.0
  */
 @Singleton
-@Before(ConsoleAuthAdvice.class)
 public class ArticleConsole {
 
     /**

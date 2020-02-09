@@ -22,10 +22,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.TextHtmlRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
@@ -44,11 +43,10 @@ import java.util.List;
  * Provides patches on some special issues.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Nov 11, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.3.1
  */
-@RequestProcessor
-@Before(ConsoleAuthAdvice.class)
+@Singleton
 public class RepairConsole {
 
     /**

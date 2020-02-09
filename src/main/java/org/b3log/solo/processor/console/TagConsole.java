@@ -22,10 +22,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagQueryService;
@@ -38,10 +37,10 @@ import java.util.List;
  * Tag console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Dec 11, 2018
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.4.0
  */
-@RequestProcessor
+@Singleton
 public class TagConsole {
 
     /**
@@ -72,7 +71,6 @@ public class TagConsole {
      *
      * @param context the specified request context
      */
-    @Before(ConsoleAuthAdvice.class)
     public void getTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -106,7 +104,6 @@ public class TagConsole {
      *
      * @param context the specified request context
      */
-    @Before(ConsoleAdminAuthAdvice.class)
     public void getUnusedTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

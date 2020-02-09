@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.9, Jan 24, 2020
+ * @version 3.0.0.0, Feb 9, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -370,10 +370,19 @@ public final class Server extends BaseServer {
      */
     public static void routeConsoleProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
+
+        final ConsoleAuthAdvice consoleAuthAdvice = beanManager.getReference(ConsoleAuthAdvice.class);
+        final ConsoleAdminAuthAdvice consoleAdminAuthAdvice = beanManager.getReference(ConsoleAdminAuthAdvice.class);
+
         final AdminConsole adminConsole = beanManager.getReference(AdminConsole.class);
-        Dispatcher.get("/admin-index.do", adminConsole::showAdminIndex);
-        Dispatcher.get("/admin-preference.do", adminConsole::showAdminPreferenceFunction);
-        Dispatcher.route().get(new String[]{"/admin-article.do",
+        final Dispatcher.RouterGroup adminConsoleGroup = Dispatcher.group();
+        adminConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        adminConsoleGroup.get("/admin-index.do", adminConsole::showAdminIndex).
+                get("/admin-preference.do", adminConsole::showAdminPreferenceFunction).
+                get("/console/export/sql", adminConsole::exportSQL).
+                get("/console/export/json", adminConsole::exportJSON).
+                get("/console/export/hexo", adminConsole::exportHexo);
+        adminConsoleGroup.route().get(new String[]{"/admin-article.do",
                 "/admin-article-list.do",
                 "/admin-comment-list.do",
                 "/admin-link-list.do",
@@ -387,85 +396,110 @@ public final class Server extends BaseServer {
                 "/admin-staticsite.do",
                 "/admin-main.do",
                 "/admin-about.do"}, adminConsole::showAdminFunctions);
-        Dispatcher.get("/console/export/sql", adminConsole::exportSQL);
-        Dispatcher.get("/console/export/json", adminConsole::exportJSON);
-        Dispatcher.get("/console/export/hexo", adminConsole::exportHexo);
 
         final ArticleConsole articleConsole = beanManager.getReference(ArticleConsole.class);
-        Dispatcher.get("/console/article/push2rhy", articleConsole::pushArticleToCommunity);
-        Dispatcher.get("/console/thumbs", articleConsole::getArticleThumbs);
-        Dispatcher.get("/console/article/{id}", articleConsole::getArticle);
-        Dispatcher.get("/console/articles/status/{status}/{page}/{pageSize}/{windowSize}", articleConsole::getArticles);
-        Dispatcher.delete("/console/article/{id}", articleConsole::removeArticle);
-        Dispatcher.put("/console/article/unpublish/{id}", articleConsole::cancelPublishArticle);
-        Dispatcher.put("/console/article/canceltop/{id}", articleConsole::cancelTopArticle);
-        Dispatcher.put("/console/article/puttop/{id}", articleConsole::putTopArticle);
-        Dispatcher.put("/console/article/", articleConsole::updateArticle);
-        Dispatcher.post("/console/article/", articleConsole::addArticle);
-
-        final CategoryConsole categoryConsole = beanManager.getReference(CategoryConsole.class);
-        Dispatcher.put("/console/category/order/", categoryConsole::changeOrder);
-        Dispatcher.get("/console/category/{id}", categoryConsole::getCategory);
-        Dispatcher.delete("/console/category/{id}", categoryConsole::removeCategory);
-        Dispatcher.put("/console/category/", categoryConsole::updateCategory);
-        Dispatcher.post("/console/category/", categoryConsole::addCategory);
-        Dispatcher.get("/console/categories/{page}/{pageSize}/{windowSize}", categoryConsole::getCategories);
+        final Dispatcher.RouterGroup articleConsoleGroup = Dispatcher.group();
+        articleConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        articleConsoleGroup.get("/console/article/push2rhy", articleConsole::pushArticleToCommunity).
+                get("/console/thumbs", articleConsole::getArticleThumbs).
+                get("/console/article/{id}", articleConsole::getArticle).
+                get("/console/articles/status/{status}/{page}/{pageSize}/{windowSize}", articleConsole::getArticles).
+                delete("/console/article/{id}", articleConsole::removeArticle).
+                put("/console/article/unpublish/{id}", articleConsole::cancelPublishArticle).
+                put("/console/article/canceltop/{id}", articleConsole::cancelTopArticle).
+                put("/console/article/puttop/{id}", articleConsole::putTopArticle).
+                put("/console/article/", articleConsole::updateArticle).
+                post("/console/article/", articleConsole::addArticle);
 
         final CommentConsole commentConsole = beanManager.getReference(CommentConsole.class);
-        Dispatcher.delete("/console/article/comment/{id}", commentConsole::removeArticleComment);
-        Dispatcher.get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments);
-        Dispatcher.get("/console/comments/article/{id}", commentConsole::getArticleComments);
-
-        final LinkConsole linkConsole = beanManager.getReference(LinkConsole.class);
-        Dispatcher.delete("/console/link/{id}", linkConsole::removeLink);
-        Dispatcher.put("/console/link/", linkConsole::updateLink);
-        Dispatcher.put("/console/link/order/", linkConsole::changeOrder);
-        Dispatcher.post("/console/link/", linkConsole::addLink);
-        Dispatcher.get("/console/links/{page}/{pageSize}/{windowSize}", linkConsole::getLinks);
-        Dispatcher.get("/console/link/{id}", linkConsole::getLink);
-
-        final PageConsole pageConsole = beanManager.getReference(PageConsole.class);
-        Dispatcher.put("/console/page/", pageConsole::updatePage);
-        Dispatcher.delete("/console/page/{id}", pageConsole::removePage);
-        Dispatcher.post("/console/page/", pageConsole::addPage);
-        Dispatcher.put("/console/page/order/", pageConsole::changeOrder);
-        Dispatcher.get("/console/page/{id}", pageConsole::getPage);
-        Dispatcher.get("/console/pages/{page}/{pageSize}/{windowSize}", pageConsole::getPages);
-
-        final PluginConsole pluginConsole = beanManager.getReference(PluginConsole.class);
-        Dispatcher.put("/console/plugin/status/", pluginConsole::setPluginStatus);
-        Dispatcher.get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins);
-        Dispatcher.post("/console/plugin/toSetting", pluginConsole::toSetting);
-        Dispatcher.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
-
-
-        final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
-        Dispatcher.get("/console/signs/", preferenceConsole::getSigns);
-        Dispatcher.get("/console/preference/", preferenceConsole::getPreference);
-        Dispatcher.put("/console/preference/", preferenceConsole::updatePreference);
-
-        final SkinConsole skinConsole = beanManager.getReference(SkinConsole.class);
-        Dispatcher.get("/console/skin", skinConsole::getSkin);
-        Dispatcher.put("/console/skin", skinConsole::updateSkin);
-
-        final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
-        Dispatcher.get("/fix/restore-signs", repairConsole::restoreSigns);
-        Dispatcher.get("/fix/archivedate-articles", repairConsole::cleanArchiveDateArticles);
+        final Dispatcher.RouterGroup commentConsoleGroup = Dispatcher.group();
+        commentConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        commentConsoleGroup.delete("/console/article/comment/{id}", commentConsole::removeArticleComment).
+                get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments).
+                get("/console/comments/article/{id}", commentConsole::getArticleComments);
 
         final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
-        Dispatcher.get("/console/tags", tagConsole::getTags);
-        Dispatcher.get("/console/tag/unused", tagConsole::getUnusedTags);
+        final Dispatcher.RouterGroup tagConsoleGroup = Dispatcher.group();
+        tagConsoleGroup.middlewares(consoleAuthAdvice::handle);
+        tagConsoleGroup.get("/console/tags", tagConsole::getTags).
+                get("/console/tag/unused", tagConsole::getUnusedTags);
+
+        final CategoryConsole categoryConsole = beanManager.getReference(CategoryConsole.class);
+        final Dispatcher.RouterGroup categoryGroup = Dispatcher.group();
+        categoryGroup.middlewares(consoleAdminAuthAdvice::handle);
+        categoryGroup.put("/console/category/order/", categoryConsole::changeOrder).
+                get("/console/category/{id}", categoryConsole::getCategory).
+                delete("/console/category/{id}", categoryConsole::removeCategory).
+                put("/console/category/", categoryConsole::updateCategory).
+                post("/console/category/", categoryConsole::addCategory).
+                get("/console/categories/{page}/{pageSize}/{windowSize}", categoryConsole::getCategories);
+
+        final LinkConsole linkConsole = beanManager.getReference(LinkConsole.class);
+        final Dispatcher.RouterGroup linkConsoleGroup = Dispatcher.group();
+        linkConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        linkConsoleGroup.delete("/console/link/{id}", linkConsole::removeLink).
+                put("/console/link/", linkConsole::updateLink).
+                put("/console/link/order/", linkConsole::changeOrder).
+                post("/console/link/", linkConsole::addLink).
+                get("/console/links/{page}/{pageSize}/{windowSize}", linkConsole::getLinks).
+                get("/console/link/{id}", linkConsole::getLink);
+
+        final PageConsole pageConsole = beanManager.getReference(PageConsole.class);
+        final Dispatcher.RouterGroup pageConsoleGroup = Dispatcher.group();
+        pageConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        pageConsoleGroup.put("/console/page/", pageConsole::updatePage).
+                delete("/console/page/{id}", pageConsole::removePage).
+                post("/console/page/", pageConsole::addPage).
+                put("/console/page/order/", pageConsole::changeOrder).
+                get("/console/page/{id}", pageConsole::getPage).
+                get("/console/pages/{page}/{pageSize}/{windowSize}", pageConsole::getPages);
+
+        final PluginConsole pluginConsole = beanManager.getReference(PluginConsole.class);
+        final Dispatcher.RouterGroup pluginConsoleGroup = Dispatcher.group();
+        pluginConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        pluginConsoleGroup.put("/console/plugin/status/", pluginConsole::setPluginStatus).
+                get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins).
+                post("/console/plugin/toSetting", pluginConsole::toSetting).
+                post("/console/plugin/updateSetting", pluginConsole::updateSetting);
+
+        final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
+        final Dispatcher.RouterGroup preferenceConsoleGroup = Dispatcher.group();
+        preferenceConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        preferenceConsoleGroup.get("/console/signs/", preferenceConsole::getSigns).
+                get("/console/preference/", preferenceConsole::getPreference).
+                put("/console/preference/", preferenceConsole::updatePreference);
+
+        final SkinConsole skinConsole = beanManager.getReference(SkinConsole.class);
+        final Dispatcher.RouterGroup skinConsoleGroup = Dispatcher.group();
+        skinConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        skinConsoleGroup.get("/console/skin", skinConsole::getSkin).
+                put("/console/skin", skinConsole::updateSkin);
+
+        final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
+        final Dispatcher.RouterGroup repairConsoleGroup = Dispatcher.group();
+        repairConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        repairConsoleGroup.get("/fix/restore-signs", repairConsole::restoreSigns).
+                get("/fix/archivedate-articles", repairConsole::cleanArchiveDateArticles);
 
         final OtherConsole otherConsole = beanManager.getReference(OtherConsole.class);
-        Dispatcher.delete("/console/archive/unused", otherConsole::removeUnusedArchives);
-        Dispatcher.delete("/console/tag/unused", otherConsole::removeUnusedTags);
+        final Dispatcher.RouterGroup otherConsoleGroup = Dispatcher.group();
+        otherConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        otherConsoleGroup.delete("/console/archive/unused", otherConsole::removeUnusedArchives).
+                delete("/console/tag/unused", otherConsole::removeUnusedTags);
 
         final UserConsole userConsole = beanManager.getReference(UserConsole.class);
-        Dispatcher.put("/console/user/", userConsole::updateUser);
-        Dispatcher.delete("/console/user/{id}", userConsole::removeUser);
-        Dispatcher.get("/console/users/{page}/{pageSize}/{windowSize}", userConsole::getUsers);
-        Dispatcher.get("/console/user/{id}", userConsole::getUser);
-        Dispatcher.get("/console/changeRole/{id}", userConsole::changeUserRole);
+        final Dispatcher.RouterGroup userConsoleGroup = Dispatcher.group();
+        userConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        userConsoleGroup.put("/console/user/", userConsole::updateUser).
+                delete("/console/user/{id}", userConsole::removeUser).
+                get("/console/users/{page}/{pageSize}/{windowSize}", userConsole::getUsers).
+                get("/console/user/{id}", userConsole::getUser).
+                get("/console/changeRole/{id}", userConsole::changeUserRole);
+
+        final StaticSiteConsole staticSiteConsole = beanManager.getReference(StaticSiteConsole.class);
+        final Dispatcher.RouterGroup staticSiteConsoleGroup = Dispatcher.group();
+        staticSiteConsoleGroup.middlewares(consoleAdminAuthAdvice::handle);
+        staticSiteConsoleGroup.put("/console/staticsite", staticSiteConsole::genSite);
 
         Dispatcher.mapping();
     }

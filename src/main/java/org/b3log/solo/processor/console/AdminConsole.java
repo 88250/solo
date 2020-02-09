@@ -30,7 +30,6 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
-import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
@@ -61,11 +60,10 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.18, Jan 25, 2020
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.4.1
  */
 @Singleton
-@Before(ConsoleAuthAdvice.class)
 public class AdminConsole {
 
     /**

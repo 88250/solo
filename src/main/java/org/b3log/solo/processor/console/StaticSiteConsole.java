@@ -25,13 +25,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
@@ -52,11 +49,10 @@ import java.util.List;
  * Static site console request processing. HTML 静态站点生成 https://github.com/88250/solo/issues/19
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 14, 2020
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 3.9.0
  */
-@RequestProcessor
-@Before(ConsoleAdminAuthAdvice.class)
+@Singleton
 public class StaticSiteConsole {
 
     /**
@@ -75,7 +71,6 @@ public class StaticSiteConsole {
      *
      * @param context the specified request context
      */
-    @RequestProcessing(value = "/console/staticsite", method = HttpMethod.PUT)
     public synchronized void genSite(final RequestContext context) {
         try {
             final JSONObject requestJSONObject = context.requestJSON();

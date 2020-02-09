@@ -22,10 +22,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.service.ArchiveDateMgmtService;
 import org.b3log.solo.service.TagMgmtService;
@@ -35,10 +34,10 @@ import org.json.JSONObject;
  * Other console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 20, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 3.4.0
  */
-@RequestProcessor
+@Singleton
 public class OtherConsole {
 
     /**
@@ -77,7 +76,6 @@ public class OtherConsole {
      *
      * @param context the specified request context
      */
-    @Before(ConsoleAdminAuthAdvice.class)
     public void removeUnusedArchives(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -109,7 +107,6 @@ public class OtherConsole {
      *
      * @param context the specified request context
      */
-    @Before(ConsoleAdminAuthAdvice.class)
     public void removeUnusedTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
