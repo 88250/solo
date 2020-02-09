@@ -20,12 +20,12 @@
  * skin metro-hot style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.3.0.0, Jul 17, 2019
+ * @version 2.3.0.1, Feb 9, 2020
  */
 @import "../../../scss/toc";
 @import "../../../scss/usite";
 @import "../../../scss/function";
-@import "vditor/src/assets/scss/dark";
+@import "vditor/src/assets/scss/index";
 
 .vditor-reset pre > code {
   background-color: rgba(255, 255, 255, 0.04);
