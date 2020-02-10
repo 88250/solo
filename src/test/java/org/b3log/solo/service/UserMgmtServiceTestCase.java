@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  * {@link UserMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
+ * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
  * @version 1.0.0.5, Aug 2, 2018
  */
 @Test(suiteName = "service")

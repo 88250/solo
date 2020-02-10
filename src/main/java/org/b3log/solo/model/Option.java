@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://github.com/hzchendou">hzchendou</a>
+ * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
  * @version 1.6.0.5, Jan 25, 2020
  * @since 0.6.0
  */

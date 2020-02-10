@@ -46,7 +46,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
- * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
+ * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
  * @version 1.1.0.19, Jun 6, 2019
  * @since 0.4.0
  */

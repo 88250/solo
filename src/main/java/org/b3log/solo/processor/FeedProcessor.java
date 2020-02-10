@@ -56,8 +56,7 @@ import java.util.List;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
- * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
+ * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
  * @version 3.0.0.0, Feb 9, 2020
  * @since 0.3.1
  */
