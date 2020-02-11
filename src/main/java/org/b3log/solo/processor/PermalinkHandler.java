@@ -25,7 +25,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.http.function.Handler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Article;

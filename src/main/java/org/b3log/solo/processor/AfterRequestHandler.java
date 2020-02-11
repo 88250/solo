@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.http.function.Handler;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;

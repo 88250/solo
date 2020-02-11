@@ -20,8 +20,8 @@ package org.b3log.solo.processor;
 import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.Response;
-import org.b3log.latke.http.handler.ContextHandleHandler;
-import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.http.function.Handler;
+import org.b3log.latke.http.handler.InvokeHandler;
 import org.b3log.latke.http.handler.RouteHandler;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class MockDispatcher {
 
     public void init() {
         HANDLERS.add(new RouteHandler());
-        HANDLERS.add(new ContextHandleHandler());
+        HANDLERS.add(new InvokeHandler());
     }
 
     public void handle(final Request req, final Response resp) {

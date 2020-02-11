@@ -19,7 +19,7 @@ package org.b3log.solo.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.http.function.Handler;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.util.Solos;

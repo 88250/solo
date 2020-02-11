@@ -26,7 +26,7 @@ import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.http.function.Handler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.OptionQueryService;
