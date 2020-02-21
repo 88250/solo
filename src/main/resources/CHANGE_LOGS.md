@@ -1,3 +1,29 @@
+## v3.9.0 / 2020-02-21
+
+### 引入特性
+
+* [HTML 静态站点生成](https://github.com/88250/solo/issues/19)
+
+### 改进皮肤
+
+* [0 评论应该显示为浏览数](https://github.com/88250/solo/issues/46)
+* [Pinghsu 皮肤 footer.ftl 存在错误 script 标签](https://github.com/88250/solo/issues/50)
+* [next 皮肤目录样式优化](https://github.com/88250/solo/issues/55)
+
+### 改进功能
+
+* [支持代码块行号显示](https://github.com/88250/solo/issues/4)
+
+### 开发重构
+
+* [日志组件迁移到 log4j2](https://github.com/88250/solo/issues/44)
+* [支持 ES6 Module](https://github.com/88250/solo/issues/47)
+
+### 修复缺陷
+
+* [评论插件点击之后自动关闭](https://github.com/88250/solo/issues/48)
+* [解决目录插件偶尔重复加载的问题](https://github.com/88250/solo/issues/53)
+
 ## v3.8.0 / 2020-01-16
 
 ### 引入特性
