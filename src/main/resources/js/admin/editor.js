@@ -19,7 +19,7 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.4.0.0, Jan 18, 2020
+ * @version 1.4.1.0, Feb 23, 2020
  */
 admin.editors = {}
 
@@ -94,7 +94,13 @@ $.extend(SoloEditor.prototype, {
       options.resize.enable = false
     }
 
-    this.editor = new Vditor(this.conf.id, options)
+    if (typeof Vditor === 'undefined') {
+      Util.loadVditor(() => {
+        this.editor = new Vditor(this.conf.id, options)
+      });
+    } else {
+      this.editor = new Vditor(this.conf.id, options)
+    }
 
     if (typeof this.conf.fun === 'function') {
       this.conf.fun()

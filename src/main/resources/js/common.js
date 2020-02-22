@@ -29,7 +29,7 @@ window.Vcomment = Vcomment
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.0, Jan 19, 2020
+ * @version 2.2.0.1, Feb 23, 2020
  */
 
 /**
@@ -302,16 +302,24 @@ window.Util = {
       return valA.localeCompare(valB)
     }))
   },
+  loadVditor: function (cb) {
+    $.ajax({
+      method: 'GET',
+      url: 'https://cdn.jsdelivr.net/npm/vditor@2.2.6/dist/index.min.js',
+      dataType: 'script',
+      cache: true,
+      success: () => {
+        Util.init(window.utilOptions)
+        if (cb) {
+          cb();
+        }
+      },
+    })
+  }
 };
 
 (() => {
-  $.ajax({
-    method: 'GET',
-    url: 'https://cdn.jsdelivr.net/npm/vditor@2.2.5/dist/index.min.js',
-    dataType: 'script',
-    cache: true,
-    success: () => {
-      Util.init(window.utilOptions)
-    },
-  })
+  if (typeof Vditor === 'undefined') {
+    Util.loadVditor();
+  }
 })()
