@@ -59,8 +59,8 @@
                             <#list pageNavigations as page>
                                 <li class="sub-tab">
                                     <a href="${page.pagePermalink}"
-                                       target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon"
-                                                                                                     src="${page.pageIcon}"></#if>${page.pageTitle}
+                                       target="${page.pageOpenTarget}"><#if page.pageIcon != ''>
+									   <img class="page-icon" alt="${page.pageTitle}" src="${page.pageIcon}"></#if>${page.pageTitle}
                                     </a>
                                 </li>
                             </#list>

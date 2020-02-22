@@ -19,7 +19,7 @@
 -->
 <li id="${comment.oId}" class="fn-clear">
     <div class="fn-left avatar-warp">
-        <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+        <img class="avatar-48" title="${comment.commentName}" alt="${comment.commentName}"src="${comment.commentThumbnailURL}">
     </div>
     <div class="fn-left" style="width: 90%">
         <div class="fn-clear post-meta">

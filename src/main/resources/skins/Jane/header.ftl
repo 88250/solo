@@ -26,7 +26,7 @@
         <#list pageNavigations as page>
             <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"
                class="vditor-tooltipped__w vditor-tooltipped" rel="section" aria-label="${page.pageTitle}">
-                <#if page.pageIcon != ''><img src="${page.pageIcon}"><#else>
+                <#if page.pageIcon != ''><img src="${page.pageIcon}" alt="${page.pageTitle}"><#else>
                     <i class="icon__page"></i>
                 </#if>
             </a>

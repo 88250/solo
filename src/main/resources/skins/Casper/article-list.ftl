@@ -66,7 +66,7 @@
                 <a href="${servePath}/authors/${article.authorId}"
                    aria-label="${article.authorName}"
                    class="vditor-tooltipped vditor-tooltipped__n item__avatar">
-                    <img src="${article.authorThumbnailURL}" />
+                    <img src="${article.authorThumbnailURL}" alt="${article.authorId}"/>
                 </a>
                 <#if commentable>
                 <a class="item__meta fn__none" href="${servePath}${article.articlePermalink}#b3logsolocomments">

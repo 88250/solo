@@ -65,7 +65,7 @@
                 </h2>
             </header>
             <main class="fn__clear">
-                <img src="${adminUser.userAvatar}" aria-label="${adminUser.userName}"/>
+                <img src="${adminUser.userAvatar}" alt="${adminUser.userName}" aria-label="${adminUser.userName}"/>
                 <div class="fn-right">
                     <a href="${servePath}/archives.html">
                         ${statistic.statisticPublishedBlogArticleCount}

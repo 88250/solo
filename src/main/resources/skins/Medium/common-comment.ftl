@@ -18,7 +18,7 @@
 
 -->
 <div id="${comment.oId}" class="comment__item">
-    <img class="comment__avatar" src="${comment.commentThumbnailURL}"/>
+    <img class="comment__avatar" src="${comment.commentThumbnailURL}" alt="评论"/>
     <main class="comment__body">
         <div class="fn-clear">
             <span class="comment__user">

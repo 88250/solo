@@ -20,7 +20,7 @@
 <header class="header">
     <div class="wrapper">
         <a href="${servePath}" rel="start" class="header__logo">
-            <img src="${adminUser.userAvatar}"/>
+            <img src="${adminUser.userAvatar}" alt="${blogTitle}"/>
             ${blogTitle}
         </a>
 

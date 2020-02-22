@@ -28,7 +28,7 @@
         <#include "../../common-template/toc.ftl"/>
     <#else>
         <section>
-            <img class="site-author-image" src="${adminUser.userAvatar}" title="${userName}"/>
+            <img class="site-author-image" src="${adminUser.userAvatar}" alt="${userName}"title="${userName}"/>
             <p class="site-author-name">${userName}</p>
             <#if "" != noticeBoard>
                 <p class="site-description motion-element">${blogSubtitle}</p>
