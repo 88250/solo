@@ -1,6 +1,6 @@
 {
   "name": "solo",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "description": " 一款小而美的博客系统，专为程序员设计。",
   "homepage": "https://github.com/88250/solo",
   "repository": {
@@ -49,6 +49,6 @@
     "nprogress": "^0.2.0",
     "uvstat": "^1.0.7",
     "vcmt": "^1.1.1",
-    "vditor": "^2.2.1"
+    "vditor": "^2.2.4"
   }
 }
