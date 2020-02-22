@@ -21,7 +21,7 @@
     <header class="header header--${type}">
         <div class="wrapper header__title">
             <h1 class="header__h1 fn__flex-inline">
-                <img src="${faviconURL}">
+                <img src="${faviconURL}" alt="${blogTitle}">
                 <a href="${servePath}" rel="start" class="header__title">${blogTitle}</a>
             </h1>
             <h2 class="header__h2">${blogSubtitle}</h2>
@@ -37,7 +37,7 @@
 
             <#list pageNavigations as page>
                 <a class="fn__flex-inline" href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                    <#if page.pageIcon != ''><img src="${page.pageIcon}"></#if> ${page.pageTitle}
+                    <#if page.pageIcon != ''><img src="${page.pageIcon}" alt="${page.pageTitle}"></#if> ${page.pageTitle}
                 </a>
             </#list>
 

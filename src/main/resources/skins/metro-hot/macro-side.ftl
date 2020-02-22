@@ -148,7 +148,7 @@
 
             <div class="user side-tile">
             <span>
-                <img src="${faviconURL}"/>
+                <img src="${faviconURL}" alt="${blogTitle}"/>
             </span>
                 <div class="text fn-clear">
                     <#include "../../common-template/macro-user_site.ftl"/>

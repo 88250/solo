@@ -32,7 +32,7 @@
         <nav class="mobile__hidden header__nav">
             <#list pageNavigations as page>
                 <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                    <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}
+                    <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}" alt="${page.pageTitle}"></#if>${page.pageTitle}
                 </a>
             </#list>
             <a href="${servePath}/tags.html" rel="section">
@@ -96,7 +96,7 @@
             <#list pageNavigations as page>
                 <li>
                     <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                        <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}
+                        <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}" alt="${page.pageTitle}"></#if>${page.pageTitle}
                     </a>
                 </li>
             </#list>

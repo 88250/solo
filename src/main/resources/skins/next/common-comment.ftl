@@ -18,7 +18,7 @@
 
 -->
 <li id="${comment.oId}" class="fn-clear">
-    <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+    <img class="avatar-48" title="${comment.commentName}" alt="${comment.commentName}" src="${comment.commentThumbnailURL}">
     <div class="comment-body">
         <div class="fn-clear comment-meta">
                 <span class="fn-left">

@@ -41,7 +41,7 @@
         </header>
         <#if article.articleAbstractText == ''>
             <a class="abstract" href="${servePath}${article.articlePermalink}">
-               <img src="${article.articleImg1URL}"/>
+               <img src="${article.articleImg1URL}" alt="${blogTitle}"/>
             </a>
         <#else>
             <a class="abstract vditor-reset" href="${servePath}${article.articlePermalink}">

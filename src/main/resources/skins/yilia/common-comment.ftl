@@ -18,7 +18,7 @@
 
 -->
 <li id="${comment.oId}">
-    <img class="avatar" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+    <img class="avatar" title="${comment.commentName}" alt="${comment.commentName}" src="${comment.commentThumbnailURL}">
     <div class="content">
         <div class="fn-clear post-meta">
                 <span class="fn-left">

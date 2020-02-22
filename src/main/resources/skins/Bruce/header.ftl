@@ -27,8 +27,8 @@ ${topBarReplacement}
 
             <#list pageNavigations as page>
                 <a class="nav-item" href="${page.pagePermalink}"
-                   target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon"
-                                                                                 src="${page.pageIcon}"></#if>${page.pageTitle}
+                   target="${page.pageOpenTarget}"><#if page.pageIcon != ''>
+				   <img class="page-icon" src="${page.pageIcon}" alt="${page.pageTitle}"></#if>${page.pageTitle}
                 </a>
             </#list>
 

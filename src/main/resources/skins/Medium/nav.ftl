@@ -38,7 +38,7 @@
 
         <#list pageNavigations as page>
             <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                <#if page.pageIcon != ''><img src="${page.pageIcon}"></#if> ${page.pageTitle}
+                <#if page.pageIcon != ''><img src="${page.pageIcon}" alt="${page.pageTitle} "></#if> ${page.pageTitle}
             </a>
         </#list>
 
