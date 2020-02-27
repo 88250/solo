@@ -49,7 +49,7 @@ import java.util.List;
  * Static site console request processing. HTML 静态站点生成 https://github.com/88250/solo/issues/19
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.1.0, Feb 27, 2020
  * @since 3.9.0
  */
 @Singleton
@@ -93,18 +93,12 @@ public class StaticSiteConsole {
             FileUtils.forceMkdir(new File(staticSitePath));
 
             final URL u = new URL(url);
-
-            final String curScheme = Latkes.getServerScheme();
-            final String curHost = Latkes.getServerHost();
-            final String curPort = Latkes.getServerPort();
-
-            // 切换至静态站点生成模式
-            Latkes.setServerScheme(u.getProtocol());
-            Latkes.setServerHost(u.getHost());
+            Latkes.setScheme(u.getProtocol());
+            Latkes.setHost(u.getHost());
             if (-1 != u.getPort()) {
-                Latkes.setServerPort(String.valueOf(u.getPort()));
+                Latkes.setPort(String.valueOf(u.getPort()));
             } else {
-                Latkes.setServerPort("");
+                Latkes.setPort("");
             }
             Solos.GEN_STATIC_SITE = true;
 
@@ -129,10 +123,6 @@ public class StaticSiteConsole {
             genFile("robots.txt");
             genFile("CHANGE_LOGS.md");
 
-            // 恢复之前的动态运行模式
-            Latkes.setServerScheme(curScheme);
-            Latkes.setServerHost(curHost);
-            Latkes.setServerPort(curPort);
             Solos.GEN_STATIC_SITE = false;
 
             LOGGER.log(Level.INFO, "Static site generated [dir=" + staticSitePath + "]");
