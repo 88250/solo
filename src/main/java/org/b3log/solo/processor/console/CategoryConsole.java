@@ -51,7 +51,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Feb 27, 2020
  * @since 2.0.0
  */
 @Singleton
@@ -230,7 +230,7 @@ public class CategoryConsole {
      * {
      *     "oId": "",
      *     "categoryTitle": "",
-     *     "categoryURI": "", // optional
+     *     "categoryURI": "",
      *     "categoryDescription": "", // optional
      *     "categoryTags": "tag1, tag2" // optional
      * }
@@ -302,11 +302,15 @@ public class CategoryConsole {
                 return;
             }
 
-            String uri = requestJSON.optString(Category.CATEGORY_URI, title);
-            if (StringUtils.isBlank(uri)) {
-                uri = title;
+            final String uri = requestJSON.optString(Category.CATEGORY_URI);
+            if (StringUtils.isBlank(uri) || !uri.equals(URLs.encode(uri))) {
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("categoryURIMustBeASCIILabel"));
+
+                return;
             }
-            uri = URLs.encode(uri);
+
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
@@ -361,7 +365,7 @@ public class CategoryConsole {
      * <pre>
      * {
      *     "categoryTitle": "",
-     *     "categoryURI": "", // optional
+     *     "categoryURI": "",
      *     "categoryDescription": "", // optional
      *     "categoryTags": "tag1, tag2" // optional
      * }
@@ -433,11 +437,14 @@ public class CategoryConsole {
                 return;
             }
 
-            String uri = requestJSONObject.optString(Category.CATEGORY_URI, title);
-            if (StringUtils.isBlank(uri)) {
-                uri = title;
+            final String uri = requestJSONObject.optString(Category.CATEGORY_URI);
+            if (StringUtils.isBlank(uri) || !uri.equals(URLs.encode(uri))) {
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("categoryURIMustBeASCIILabel"));
+
+                return;
             }
-            uri = URLs.encode(uri);
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist) {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);

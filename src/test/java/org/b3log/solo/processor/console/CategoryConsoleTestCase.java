@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * {@link CategoryConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Dec 10, 2018
+ * @version 1.1.0.1, Feb 27, 2020
  * @since 2.1.0
  */
 @Test(suiteName = "processor")
@@ -98,6 +98,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         JSONObject category = getCategoryQueryService().getByTitle("分类1");
         requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
         requestJSON.put(Category.CATEGORY_TITLE, "新的分类1");
+        requestJSON.put(Category.CATEGORY_URI, "new-cate-1");
         request.setJSON(requestJSON);
 
         mockAdminLogin(request);
