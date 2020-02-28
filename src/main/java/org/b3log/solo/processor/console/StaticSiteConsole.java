@@ -67,6 +67,16 @@ public class StaticSiteConsole {
     private LangPropsService langPropsService;
 
     /**
+     * Mock request scheme.
+     */
+    private static String scheme;
+
+    /**
+     * Mock request host.
+     */
+    private static String host;
+
+    /**
      * Generates static site.
      *
      * @param context the specified request context
@@ -93,12 +103,10 @@ public class StaticSiteConsole {
             FileUtils.forceMkdir(new File(staticSitePath));
 
             final URL u = new URL(url);
-            Latkes.setScheme(u.getProtocol());
-            Latkes.setHost(u.getHost());
+            scheme = u.getProtocol();
+            host = u.getHost();
             if (-1 != u.getPort()) {
-                Latkes.setPort(String.valueOf(u.getPort()));
-            } else {
-                Latkes.setPort("");
+                host += ":" + u.getPort();
             }
             Solos.GEN_STATIC_SITE = true;
 
@@ -160,7 +168,7 @@ public class StaticSiteConsole {
         }
     }
 
-    private static void genCategories() throws Exception {
+    private static void genCategories() {
         final BeanManager beanManager = BeanManager.getInstance();
         final CategoryQueryService categoryQueryService = beanManager.getReference(CategoryQueryService.class);
         final List<JSONObject> categories = categoryQueryService.getMostTagCategory(Integer.MAX_VALUE);
@@ -245,7 +253,7 @@ public class StaticSiteConsole {
         filePath = StringUtils.replace(filePath, "=", "/");
         FileUtils.forceMkdir(new File(staticSitePath + filePath));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + filePath + "/index.html");
-        String html = Mocks.mockRequest(uri);
+        String html = Mocks.mockRequest(uri, scheme, host);
         IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
         outputStream.close();
         LOGGER.log(Level.INFO, "Generated a page [" + uri + "]");
@@ -254,7 +262,7 @@ public class StaticSiteConsole {
     private static void genURI(final String uri) throws Exception {
         FileUtils.forceMkdirParent(new File(staticSitePath + uri));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + uri);
-        String html = Mocks.mockRequest(uri);
+        String html = Mocks.mockRequest(uri, scheme, host);
         IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
         outputStream.close();
         LOGGER.log(Level.INFO, "Generated a file [" + uri + "]");
@@ -263,13 +271,13 @@ public class StaticSiteConsole {
     private static void genArticle(final String permalink) throws Exception {
         if (!StringUtils.endsWithIgnoreCase(permalink, ".html") && !StringUtils.endsWithIgnoreCase(permalink, ".htm")) {
             FileUtils.forceMkdir(new File(staticSitePath + permalink));
-            final String html = Mocks.mockRequest(permalink);
+            final String html = Mocks.mockRequest(permalink, scheme, host);
             final OutputStream outputStream = new FileOutputStream(staticSitePath + permalink + "/index.html");
             IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
             outputStream.close();
         } else {
             FileUtils.forceMkdirParent(new File(staticSitePath + permalink));
-            final String html = Mocks.mockRequest(permalink);
+            final String html = Mocks.mockRequest(permalink, scheme, host);
             final OutputStream outputStream = new FileOutputStream(staticSitePath + permalink);
             IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
             outputStream.close();

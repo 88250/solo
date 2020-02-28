@@ -19,6 +19,7 @@ package org.b3log.solo.util;
 
 import io.netty.handler.codec.http.*;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.Response;
@@ -31,7 +32,7 @@ import java.util.Map;
  * Mock utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 7, 2020
+ * @version 1.0.0.1, Feb 28, 2020
  * @since 3.9.0
  */
 public final class Mocks {
@@ -39,10 +40,8 @@ public final class Mocks {
     private Mocks() {
     }
 
-    public static String mockRequest(final String uri) {
-        final Mocks.MockRequest request = Mocks.mockRequest();
-        request.setRequestURI(uri);
-
+    public static String mockRequest(final String uri, final String scheme, final String host) {
+        final Mocks.MockRequest request = Mocks.mockRequest0(uri, scheme, host);
         if (StringUtils.contains(uri, "?")) {
             final Map<String, String> params = new LinkedHashMap<>();
             final String query = StringUtils.substringAfter(uri, "?");
@@ -64,8 +63,17 @@ public final class Mocks {
         new MockDispatcher().handle(request, response);
     }
 
-    private static MockRequest mockRequest() {
-        final FullHttpRequest req = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/a");
+    private static MockRequest mockRequest0(final String uri, final String scheme, final String host) {
+        final FullHttpRequest req = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, uri);
+        Latkes.setScheme(scheme);
+        if (StringUtils.contains(host, ":")) {
+            Latkes.setHost(host.split(":")[0]);
+            Latkes.setPort(host.split(":")[1]);
+        } else {
+            Latkes.setHost(host);
+            Latkes.setPort("");
+        }
+
         return new MockRequest(req);
     }
 
