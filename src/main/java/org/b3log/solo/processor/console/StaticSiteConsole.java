@@ -49,7 +49,7 @@ import java.util.List;
  * Static site console request processing. HTML 静态站点生成 https://github.com/88250/solo/issues/19
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.0, Feb 27, 2020
+ * @version 2.0.1.1, Feb 28, 2020
  * @since 3.9.0
  */
 @Singleton
@@ -154,7 +154,7 @@ public class StaticSiteConsole {
         if (!Latkes.isInJar()) {
             rootPath = StaticSiteConsole.class.getResource("/repository.json").getPath();
             rootPath = StringUtils.substringBeforeLast(rootPath, "/repository.json");
-            staticSitePath = StaticSiteConsole.class.getResource("/").getPath() + "static-site";
+            staticSitePath = rootPath + "/static-site";
         } else {
             LOGGER.log(Level.INFO, "Do not support export static site when running in jar");
         }
