@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 14, 2020
+ * @version 1.0.0.2, Feb 29, 2020
  */
 
 /* staticsite 相关操作 */
@@ -30,6 +30,11 @@ admin.staticsite = {
    */
   init: function () {
     $('#loadMsg').text('')
+
+    const ssgURL = window.localStorage.getItem("solo_ssgurl")
+    if (ssgURL) {
+      $('#siteURL').val(ssgURL)
+    }
   },
   /*
    * @description 更新
@@ -50,6 +55,9 @@ admin.staticsite = {
       success: function (result) {
         $('#tipMsg').text(result.msg)
         $('#loadMsg').text('')
+
+        console.log(requestJSONObject.url)
+        window.localStorage.setItem("solo_ssgurl", requestJSONObject.url)
       },
     })
   },
