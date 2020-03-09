@@ -77,7 +77,7 @@ public class ToCPlugin extends NotInteractivePlugin {
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.annpeter.cn">Ann Peter</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 2.0.0.2, Mar 4, 2020
+ * @version 2.0.0.3, Mar 8, 2020
  * @since 0.6.7
  */
 class ToCEventHandler extends AbstractEventListener<JSONObject> {
@@ -96,7 +96,7 @@ class ToCEventHandler extends AbstractEventListener<JSONObject> {
         doc.outputSettings().prettyPrint(false);
 
         final List<JSONObject> toc = new ArrayList<>();
-        final Elements hs = doc.select("h1, h2, h3, h4, h5");
+        final Elements hs = doc.select("body>h1, body>h2, body>h3, body>h4, body>h5, body>h6");
         for (int i = 0; i < hs.size(); i++) {
             final Element element = hs.get(i);
             final String tagName = element.tagName().toLowerCase();
