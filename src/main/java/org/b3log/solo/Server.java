@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.2, Mar 11, 2020
+ * @version 3.0.1.0, Mar 14, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -393,8 +393,8 @@ public final class Server extends BaseServer {
 
         final B3Receiver b3Receiver = beanManager.getReference(B3Receiver.class);
         final Dispatcher.RouterGroup b3Group = Dispatcher.group();
-        b3Group.router().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle).
-                put("/apis/symphony/comment", b3Receiver::addComment);
+        b3Group.router().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle);
+        b3Group.put("/apis/symphony/comment", b3Receiver::addComment);
 
         final BlogProcessor blogProcessor = beanManager.getReference(BlogProcessor.class);
         final Dispatcher.RouterGroup blogGroup = Dispatcher.group();
