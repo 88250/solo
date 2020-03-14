@@ -43,7 +43,7 @@ import org.json.JSONObject;
 import java.util.Date;
 
 /**
- * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
+ * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 3.0.0.1, Mar 14, 2020
