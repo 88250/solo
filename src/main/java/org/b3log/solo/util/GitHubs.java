@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * GitHub utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 14, 2019
+ * @version 1.0.0.2, Mar 17, 2020
  * @since 3.0.0
  */
 public final class GitHubs {
@@ -60,9 +60,8 @@ public final class GitHubs {
                 return null;
             }
             final JSONObject data = result.optJSONObject(Common.DATA);
-            final JSONArray ret = data.optJSONArray("githubrepos");
 
-            return ret;
+            return data.optJSONArray("githubrepos");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets GitHub repos failed", e);
 
