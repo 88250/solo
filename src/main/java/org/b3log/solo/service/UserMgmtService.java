@@ -116,10 +116,10 @@ public class UserMgmtService {
                     put(UserExt.USER_B3_KEY, admin.optString(UserExt.USER_B3_KEY));
             final JSONObject preference = optionQueryService.getPreference();
             final JSONObject client = new JSONObject().
-                    put("title", preference.getString(Option.ID_C_BLOG_TITLE)).
-                    put("host", Latkes.getServePath()).
-                    put("name", "Solo").
-                    put("ver", Server.VERSION).
+                    put("clientTitle", preference.getString(Option.ID_C_BLOG_TITLE)).
+                    put("clientHost", Latkes.getServePath()).
+                    put("clientName", "Solo").
+                    put("clientVersion", Server.VERSION).
                     put("userName", admin.optString(User.USER_NAME)).
                     put("userB3Key", admin.optString(UserExt.USER_B3_KEY));
             requestJSON.put("client", client);
