@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.1, Feb 21, 2020
+ * @version 3.0.1.0, Mar 14, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -71,40 +71,34 @@ public final class Server extends BaseServer {
         Stopwatchs.start("Booting");
 
         final Options options = new Options();
-        final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT").
-                hasArg().desc("listen port, default is 8080").build();
+        final Option listenPortOpt = Option.builder().longOpt("listen_port").argName("LISTEN_PORT").hasArg().desc("listen port, default is 8080").build();
         options.addOption(listenPortOpt);
 
-        final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME").
-                hasArg().desc("browser visit protocol, default is http").build();
+        final Option serverSchemeOpt = Option.builder().longOpt("server_scheme").argName("SERVER_SCHEME").hasArg().desc("browser visit protocol, default is http").build();
         options.addOption(serverSchemeOpt);
 
-        final Option serverHostOpt = Option.builder("sh").longOpt("server_host").argName("SERVER_HOST").
-                hasArg().desc("browser visit domain name, default is localhost").build();
+        final Option serverHostOpt = Option.builder().longOpt("server_host").argName("SERVER_HOST").hasArg().desc("browser visit domain name, default is localhost").build();
         options.addOption(serverHostOpt);
 
-        final Option serverPortOpt = Option.builder("sp").longOpt("server_port").argName("SERVER_PORT").
-                hasArg().desc("browser visit port, default is 8080").build();
+        final Option serverPortOpt = Option.builder().longOpt("server_port").argName("SERVER_PORT").hasArg().desc("browser visit port, default is 8080").build();
         options.addOption(serverPortOpt);
 
-        final Option staticServerSchemeOpt = Option.builder("sss").longOpt("static_server_scheme").argName("STATIC_SERVER_SCHEME").
-                hasArg().desc("browser visit static resource protocol, default is http").build();
+        final Option staticServerSchemeOpt = Option.builder().longOpt("static_server_scheme").argName("STATIC_SERVER_SCHEME").hasArg().desc("browser visit static resource protocol, default is http").build();
         options.addOption(staticServerSchemeOpt);
 
-        final Option staticServerHostOpt = Option.builder("ssh").longOpt("static_server_host").argName("STATIC_SERVER_HOST").
-                hasArg().desc("browser visit static resource domain name, default is localhost").build();
+        final Option staticServerHostOpt = Option.builder().longOpt("static_server_host").argName("STATIC_SERVER_HOST").hasArg().desc("browser visit static resource domain name, default is localhost").build();
         options.addOption(staticServerHostOpt);
 
-        final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT").
-                hasArg().desc("browser visit static resource port, default is 8080").build();
+        final Option staticServerPortOpt = Option.builder().longOpt("static_server_port").argName("STATIC_SERVER_PORT").hasArg().desc("browser visit static resource port, default is 8080").build();
         options.addOption(staticServerPortOpt);
 
-        final Option runtimeModeOpt = Option.builder("rm").longOpt("runtime_mode").argName("RUNTIME_MODE").
-                hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
+        final Option staticPathOpt = Option.builder().longOpt("static_path").argName("STATIC_PATH").hasArg().desc("browser visit static resource path, default is empty").build();
+        options.addOption(staticPathOpt);
+
+        final Option runtimeModeOpt = Option.builder().longOpt("runtime_mode").argName("RUNTIME_MODE").hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
         options.addOption(runtimeModeOpt);
 
-        final Option luteHttpOpt = Option.builder("lute").longOpt("lute_http").argName("LUTE_HTTP").
-                hasArg().desc("lute http URL, default is http://localhost:8249, see https://github.com/88250/lute-http for more details").build();
+        final Option luteHttpOpt = Option.builder().longOpt("lute_http").argName("LUTE_HTTP").hasArg().desc("lute http URL, default is http://localhost:8249, see https://github.com/88250/lute-http for more details").build();
         options.addOption(luteHttpOpt);
 
         options.addOption("h", "help", false, "print help for the command");
@@ -170,6 +164,10 @@ public final class Server extends BaseServer {
         String staticServerPort = commandLine.getOptionValue("static_server_port");
         if (null != staticServerPort) {
             Latkes.setLatkeProperty("staticServerPort", staticServerPort);
+        }
+        String staticPath = commandLine.getOptionValue("static_path");
+        if (null != staticPath) {
+            Latkes.setLatkeProperty("staticPath", staticPath);
         }
         String runtimeMode = commandLine.getOptionValue("runtime_mode");
         if (null != runtimeMode) {
@@ -395,8 +393,8 @@ public final class Server extends BaseServer {
 
         final B3Receiver b3Receiver = beanManager.getReference(B3Receiver.class);
         final Dispatcher.RouterGroup b3Group = Dispatcher.group();
-        b3Group.router().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle).
-                put("/apis/symphony/comment", b3Receiver::addComment);
+        b3Group.router().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle);
+        b3Group.put("/apis/symphony/comment", b3Receiver::addComment);
 
         final BlogProcessor blogProcessor = beanManager.getReference(BlogProcessor.class);
         final Dispatcher.RouterGroup blogGroup = Dispatcher.group();

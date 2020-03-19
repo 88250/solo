@@ -34,6 +34,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.Server;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.19, Jun 6, 2019
+ * @version 1.1.0.20, Mar 17, 2020
  * @since 0.4.0
  */
 @Service
@@ -113,6 +114,15 @@ public class UserMgmtService {
             final JSONObject requestJSON = new JSONObject().
                     put(User.USER_NAME, admin.optString(User.USER_NAME)).
                     put(UserExt.USER_B3_KEY, admin.optString(UserExt.USER_B3_KEY));
+            final JSONObject preference = optionQueryService.getPreference();
+            final JSONObject client = new JSONObject().
+                    put("clientTitle", preference.getString(Option.ID_C_BLOG_TITLE)).
+                    put("clientHost", Latkes.getServePath()).
+                    put("clientName", "Solo").
+                    put("clientVersion", Server.VERSION).
+                    put("userName", admin.optString(User.USER_NAME)).
+                    put("userB3Key", admin.optString(UserExt.USER_B3_KEY));
+            requestJSON.put("client", client);
             final HttpResponse res = HttpRequest.post("https://hacpai.com/user/usite").trustAllCerts(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).
                     body(requestJSON.toString()).send();

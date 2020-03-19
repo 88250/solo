@@ -43,10 +43,10 @@ import org.json.JSONObject;
 import java.util.Date;
 
 /**
- * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
+ * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.0, Feb 9, 2020
+ * @version 3.0.0.1, Mar 14, 2020
  * @since 0.5.5
  */
 @Singleton
@@ -147,6 +147,16 @@ public class B3Receiver {
 
         try {
             final JSONObject client = requestJSONObject.optJSONObject("client");
+            if (null == client) {
+                ret.put(Keys.CODE, 1);
+                final String msg = "Not found client";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
+
+                return;
+            }
+
+
             final String articleAuthorName = client.optString(User.USER_NAME);
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
@@ -170,6 +180,15 @@ public class B3Receiver {
             }
 
             final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
+            if (null == symArticle) {
+                ret.put(Keys.CODE, 1);
+                final String msg = "Not found article";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
+
+                return;
+            }
+
             final String title = symArticle.optString("title");
             final String articleId = symArticle.optString("id");
             final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
@@ -256,7 +275,25 @@ public class B3Receiver {
 
         try {
             final JSONObject symCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
+            if (null == symCmt) {
+                ret.put(Keys.CODE, 1);
+                final String msg = "Not found comment";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
+
+                return;
+            }
+
             final JSONObject symClient = requestJSONObject.optJSONObject("client");
+            if (null == symClient) {
+                ret.put(Keys.CODE, 1);
+                final String msg = "Not found client";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
+
+                return;
+            }
+
             final String articleAuthorName = symClient.optString(User.USER_NAME);
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
