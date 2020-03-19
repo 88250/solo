@@ -52,7 +52,7 @@
             </#if>
 
             <#if article?? && article.articleToC?? && article.articleToC?size &gt; 0>
-                <div class="vditor-reset vditor-reset--dark" style="margin-top: 20px">
+                <div class="vditor-reset" style="margin-top: 20px">
                     <#include "../../common-template/toc.ftl"/>
                 </div>
             </#if>

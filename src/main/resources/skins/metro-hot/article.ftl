@@ -74,7 +74,7 @@
             </div>
             <div class="fn-clear">
                 <div class="main">
-                    <div class="vditor-reset vditor-reset--dark">
+                    <div class="vditor-reset">
                         ${article.articleContent}
                         <#if "" != article.articleSign.signHTML?trim>
                         ${article.articleSign.signHTML}
