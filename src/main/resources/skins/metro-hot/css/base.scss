@@ -27,10 +27,6 @@
 @import "../../../scss/function";
 @import "vditor/src/assets/scss/index";
 
-.vditor-reset pre > code {
-  background-color: rgba(255, 255, 255, 0.04);
-}
-
 .user__site {
   svg {
     height: 14px;
@@ -748,7 +744,6 @@ textarea {
 }
 
 .vditor-reset {
-  background-color: #323232;
   margin-bottom: 30px;
   overflow: hidden;
   padding: 10px;

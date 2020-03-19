@@ -43,6 +43,6 @@
             ${comment.commentDate2?string("yy-MM-dd HH:mm")}
             </div>
         </div>
-        <div class="vditor-reset">${comment.commentContent}</div>
+        <div class="vditor-reset vditor-reset--dark">${comment.commentContent}</div>
     </div>
 </div>
