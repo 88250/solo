@@ -110,7 +110,7 @@ $.extend(SoloEditor.prototype, {
         'list',
         'check',
         'upload',
-        'wysiwyg',
+        'edit-mode',
         'preview',
         'fullscreen',
         'help',
