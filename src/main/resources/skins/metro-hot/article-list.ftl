@@ -56,7 +56,7 @@
                     ${article.articleTitle}
                 </a>
             </h2>
-            <div class="vditor-reset vditor-reset--dark">
+            <div class="vditor-reset">
                 ${article.articleAbstractText}
             </div>
             <div data-ico="&#x003b;" title="${tagLabel}" class="article-tags">
