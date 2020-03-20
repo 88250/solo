@@ -13,3 +13,13 @@ jobs:
         docker login --username=${{ secrets.DOCKER_HUB_USER }} --password=${{ secrets.DOCKER_HUB_PASSWORD }}
         docker build -t mfcookie/solo:latest .
         docker push mfcookie/solo
+        
+    - name: Update the service
+      uses: appleboy/ssh-action@v0.0.6
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: deploy
+        key: ${{ secrets.SSH_KEY }}
+        script_stop: true
+        script: |
+          cd golang && docker-compose pull && docker-compose up -d
