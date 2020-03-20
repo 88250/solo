@@ -18,7 +18,7 @@ jobs:
       uses: appleboy/ssh-action@v0.0.6
       with:
         host: ${{ secrets.SSH_HOST }}
-        username: deploy
+        username: root
         key: ${{ secrets.SSH_KEY }}
         script_stop: true
         script: |
