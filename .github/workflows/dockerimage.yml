@@ -7,12 +7,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: Build the Docker image
-      run: |
-        docker login --username=${{ secrets.DOCKER_HUB_USER }} --password=${{ secrets.DOCKER_HUB_PASSWORD }}
-        docker build -t mfcookie/solo:latest .
-        docker push mfcookie/solo
+#     - uses: actions/checkout@master
+#     - name: Build the Docker image
+#       run: |
+#         docker login --username=${{ secrets.DOCKER_HUB_USER }} --password=${{ secrets.DOCKER_HUB_PASSWORD }}
+#         docker build -t mfcookie/solo:latest .
+#         docker push mfcookie/solo
         
     - name: Update the service
       uses: appleboy/ssh-action@v0.0.6
