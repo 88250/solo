@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.17, Feb 21, 2020
+ * @version 1.2.1.18, Mar 24, 2020
  * @since 1.2.0
  */
 @Service
@@ -102,6 +102,8 @@ public class UpgradeService {
                     V370_380.perform();
                 case "3.8.0":
                     V380_390.perform();
+                case "3.9.0":
+                    V390_400.perform();
 
                     break;
                 default:
