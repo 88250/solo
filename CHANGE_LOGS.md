@@ -1,3 +1,32 @@
+## v4.0.0 / 2020-03-24
+
+### 引入特性
+
+* [优化社区集成](https://github.com/88250/solo/issues/20)
+* [Markdown 支持改进](https://github.com/88250/solo/issues/54)
+
+### 改进功能
+
+* [允许在 localhost 上推送文章到社区](https://github.com/88250/solo/issues/39)
+* [优化“Latke 配置错误”问题](https://github.com/88250/solo/issues/58)
+* [允许 base64 图片](https://github.com/88250/solo/issues/59)
+* [图片 alt 属性优化](https://github.com/88250/solo/issues/64)
+* [编辑器常用表情使用社区端的设置](https://github.com/88250/solo/issues/67)
+* [分类 URI 必须指定为非中文路径](https://github.com/88250/solo/issues/68)
+* [看板娘妹子被分割了](https://github.com/88250/solo/issues/75)
+* [通过 jsDelivr 实现静态资源 CDN 加速](https://github.com/88250/solo/issues/77)
+* [命令行参数去掉单横线短格式支持](https://github.com/88250/solo/issues/78)
+
+### 开发重构
+
+* [重构请求路由](https://github.com/88250/solo/issues/61)
+
+### 修复缺陷
+
+* [生成静态站点链接问题](https://github.com/88250/solo/issues/70)
+* [引用非社区图床图片不应该加图片处理样式](https://github.com/88250/solo/issues/71)
+* [密码文章输入正确密码后也不能访问](https://github.com/88250/solo/issues/79)
+
 ## v3.9.0 / 2020-02-21
 
 ### 引入特性
