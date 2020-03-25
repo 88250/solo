@@ -13,6 +13,9 @@ COPY --from=MVN_BUILD /opt/solo/ /opt/solo/
 RUN apk add --no-cache ca-certificates tzdata
 
 ENV TZ=Asia/Shanghai
+ARG git_commit=0
+ENV git_commit=$git_commit
+
 EXPOSE 8080
 
 ENTRYPOINT [ "java", "-cp", "lib/*:.", "org.b3log.solo.Server" ]
