@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.1, Mar 24, 2020
+ * @version 3.0.1.2, Mar 25, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -167,6 +167,18 @@ public final class Server extends BaseServer {
         }
         String staticPath = commandLine.getOptionValue("static_path");
         if (null != staticPath) {
+            if (StringUtils.equals(staticServerHost, "cdn.jsdelivr.net")) {
+                // 如果使用了 jsDelivr，则需要加上版本号避免 CDN 缓存问题 https://github.com/88250/solo/issues/83
+                // /gh/88250/solo/src/main/resources => /gh/88250/solo@version/src/main/resources
+                if (!StringUtils.contains(staticPath, "@")) {
+                    String gitCommit = System.getenv("git_commit");
+                    if (StringUtils.isBlank(gitCommit)) {
+                        gitCommit = Server.VERSION;
+                    }
+                    LOGGER.log(Level.INFO, "Git commit [" + gitCommit + "]");
+                    staticPath = StringUtils.replace(staticPath, "/solo/", "/solo@" + gitCommit + "/");
+                }
+            }
             Latkes.setLatkeProperty("staticPath", staticPath);
         }
         String runtimeMode = commandLine.getOptionValue("runtime_mode");
