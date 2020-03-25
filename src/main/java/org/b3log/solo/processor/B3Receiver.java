@@ -46,7 +46,7 @@ import java.util.Date;
  * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.1, Mar 14, 2020
+ * @version 3.0.0.2, Mar 25, 2020
  * @since 0.5.5
  */
 @Singleton
@@ -143,7 +143,7 @@ public class B3Receiver {
         context.renderJSON(ret);
 
         final JSONObject requestJSONObject = context.requestJSON();
-        LOGGER.log(Level.INFO, "Adds an article from Sym [" + requestJSONObject.toString() + "]");
+        LOGGER.log(Level.DEBUG, "Adds an article from Sym [" + requestJSONObject.toString() + "]");
 
         try {
             final JSONObject client = requestJSONObject.optJSONObject("client");
@@ -271,7 +271,7 @@ public class B3Receiver {
 
         final JSONObject requestJSONObject = context.requestJSON();
 
-        LOGGER.log(Level.INFO, "Adds a comment from Sym [" + requestJSONObject.toString() + "]");
+        LOGGER.log(Level.DEBUG, "Adds a comment from Sym [" + requestJSONObject.toString() + "]");
 
         try {
             final JSONObject symCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
