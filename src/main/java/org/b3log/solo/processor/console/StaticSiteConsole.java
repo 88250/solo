@@ -24,6 +24,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
@@ -49,7 +50,7 @@ import java.util.List;
  * Static site console request processing. HTML 静态站点生成 https://github.com/88250/solo/issues/19
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.1, Feb 28, 2020
+ * @version 2.0.1.2, Mar 29, 2020
  * @since 3.9.0
  */
 @Singleton
@@ -172,11 +173,20 @@ public class StaticSiteConsole {
         final BeanManager beanManager = BeanManager.getInstance();
         final CategoryQueryService categoryQueryService = beanManager.getReference(CategoryQueryService.class);
         final List<JSONObject> categories = categoryQueryService.getMostTagCategory(Integer.MAX_VALUE);
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
         categories.parallelStream().forEach(category -> {
             final String categoryURI = category.optString(Category.CATEGORY_URI);
             try {
-                genPage("/category/" + categoryURI);
+                final int articleCount = categoryQueryService.getArticleCount(category.optString(Keys.OBJECT_ID));
+                final int pageCount = (int) Math.ceil((double) articleCount / pageSize);
+                int count = 0;
+                while (count++ < pageCount) {
+                    genPage("/category/" + categoryURI);
+                    genPage("/category/" + categoryURI + "?p=" + count);
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Generates a category [uri=" + categoryURI + "] failed", e);
             }
@@ -187,12 +197,21 @@ public class StaticSiteConsole {
         final BeanManager beanManager = BeanManager.getInstance();
         final ArchiveDateQueryService archiveDateQueryService = beanManager.getReference(ArchiveDateQueryService.class);
         final List<JSONObject> archiveDates = archiveDateQueryService.getArchiveDates();
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
         archiveDates.parallelStream().forEach(archiveDate -> {
             final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
             final String dateString = DateFormatUtils.format(time, "yyyy/MM");
             try {
-                genPage("/archives/" + dateString);
+                final int articleCount = archiveDateQueryService.getArchiveDatePublishedArticleCount(archiveDate.optString(Keys.OBJECT_ID));
+                final int pageCount = (int) Math.ceil((double) articleCount / pageSize);
+                int count = 0;
+                while (count++ < pageCount) {
+                    genPage("/archives/" + dateString);
+                    genPage("/archives/" + dateString + "?p=" + count);
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Generates an archive [date=" + archiveDate + "] failed", e);
             }
@@ -203,11 +222,20 @@ public class StaticSiteConsole {
         final BeanManager beanManager = BeanManager.getInstance();
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
         final List<JSONObject> tags = tagQueryService.getTags();
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
         tags.parallelStream().forEach(tag -> {
             final String tagTitle = tag.optString(Tag.TAG_TITLE);
             try {
-                genPage("/tags/" + tagTitle);
+                final int articleCount = tagQueryService.getArticleCount(tag.optString(Keys.OBJECT_ID));
+                final int pageCount = (int) Math.ceil((double) articleCount / pageSize);
+                int count = 0;
+                while (count++ < pageCount) {
+                    genPage("/tags/" + tagTitle);
+                    genPage("/tags/" + tagTitle + "?p=" + count);
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Generates a tag [title=" + tagTitle + "] failed", e);
             }

@@ -28,11 +28,10 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.CategoryRepository;
-import org.b3log.solo.repository.CategoryTagRepository;
-import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,7 +44,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
- * @version 1.0.1.4, Sep 1, 2019
+ * @version 1.1.0.0, Mar 29, 2020
  * @since 2.0.0
  */
 @Service
@@ -63,6 +62,18 @@ public class CategoryQueryService {
     private CategoryRepository categoryRepository;
 
     /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Tag-Article repository.
+     */
+    @Inject
+    private TagArticleRepository tagArticleRepository;
+
+    /**
      * Tag repository.
      */
     @Inject
@@ -73,6 +84,48 @@ public class CategoryQueryService {
      */
     @Inject
     private CategoryTagRepository categoryTagRepository;
+
+    /**
+     * Gets article count of a category specified by the given category id.
+     *
+     * @param categoryId the given category id
+     * @return article count, returns {@code -1} if occurred an exception
+     */
+    public int getArticleCount(final String categoryId) {
+        try {
+            final JSONArray categoryTags = categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
+            if (categoryTags.length() <= 0) {
+                return 0;
+            }
+
+            final List<String> tagIds = new ArrayList<>();
+            for (int i = 0; i < categoryTags.length(); i++) {
+                tagIds.add(categoryTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
+            }
+
+            final StringBuilder queryCount = new StringBuilder("SELECT count(DISTINCT(article.oId)) as `C` FROM ");
+            final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " AS article,").
+                    append(tagArticleRepository.getName() + " AS tag_article").
+                    append(" WHERE article.oId=tag_article.article_oId ").
+                    append(" AND article.").append(Article.ARTICLE_STATUS).append("=?").
+                    append(" AND ").append("tag_article.tag_oId").append(" IN (");
+            for (int i = 0; i < tagIds.size(); i++) {
+                queryStr.append(" ").append(tagIds.get(i));
+                if (i < (tagIds.size() - 1)) {
+                    queryStr.append(",");
+                }
+            }
+            queryStr.append(") ORDER BY `C` DESC");
+            final List<JSONObject> tagArticlesCountResult = articleRepository.
+                    select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_STATUS_C_PUBLISHED);
+
+            return tagArticlesCountResult == null ? 0 : tagArticlesCountResult.get(0).optInt("C");
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets article count failed", e);
+
+            return -1;
+        }
+    }
 
     /**
      * Gets most tag category.
