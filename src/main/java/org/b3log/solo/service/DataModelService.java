@@ -58,7 +58,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.15, Jan 18, 2020
+ * @version 1.7.0.16, Mar 31, 2020
  * @since 0.3.1
  */
 @Service
@@ -277,7 +277,7 @@ public class DataModelService {
     public void fillTags(final Map<String, Object> dataModel) throws ServiceException {
         Stopwatchs.start("Fill Tags");
         try {
-            final List<JSONObject> tags = tagQueryService.getTags();
+            final List<JSONObject> tags = tagQueryService.getTagsOfPublishedArticles();
             dataModel.put(Tag.TAGS, tags);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills tags failed", e);
