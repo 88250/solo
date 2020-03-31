@@ -86,12 +86,12 @@ public class CategoryQueryService {
     private CategoryTagRepository categoryTagRepository;
 
     /**
-     * Gets article count of a category specified by the given category id.
+     * Gets published article count of a category specified by the given category id.
      *
      * @param categoryId the given category id
      * @return article count, returns {@code -1} if occurred an exception
      */
-    public int getArticleCount(final String categoryId) {
+    public int getPublishedArticleCount(final String categoryId) {
         try {
             final JSONArray categoryTags = categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
             if (categoryTags.length() <= 0) {

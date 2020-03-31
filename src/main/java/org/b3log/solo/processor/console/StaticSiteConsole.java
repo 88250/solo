@@ -180,7 +180,7 @@ public class StaticSiteConsole {
         categories.parallelStream().forEach(category -> {
             final String categoryURI = category.optString(Category.CATEGORY_URI);
             try {
-                final int articleCount = categoryQueryService.getArticleCount(category.optString(Keys.OBJECT_ID));
+                final int articleCount = categoryQueryService.getPublishedArticleCount(category.optString(Keys.OBJECT_ID));
                 final int pageCount = (int) Math.ceil((double) articleCount / pageSize);
                 int count = 0;
                 while (count++ < pageCount) {
