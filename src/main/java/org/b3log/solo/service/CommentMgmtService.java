@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.RepositoryException;
@@ -33,7 +32,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
@@ -48,7 +46,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.3, Jun 6, 2019
+ * @version 1.4.0.4, Mar 31, 2020
  * @since 0.3.5
  */
 @Service
@@ -317,11 +315,6 @@ public class CommentMgmtService {
 
             commentRepository.add(comment);
             articleMgmtService.incArticleCommentCount(articleId);
-
-            final JSONObject eventData = new JSONObject();
-            eventData.put(Comment.COMMENT, comment);
-            eventData.put(Article.ARTICLE, article);
-            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
 
             transaction.commit();
         } catch (final Exception e) {

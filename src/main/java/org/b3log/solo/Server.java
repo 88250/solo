@@ -34,7 +34,6 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.B3ArticleSender;
 import org.b3log.solo.event.B3ArticleUpdater;
-import org.b3log.solo.event.B3CommentSender;
 import org.b3log.solo.event.PluginRefresher;
 import org.b3log.solo.processor.*;
 import org.b3log.solo.processor.console.*;
@@ -47,7 +46,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.2, Mar 25, 2020
+ * @version 3.0.1.3, Mar 31, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -346,8 +345,6 @@ public final class Server extends BaseServer {
             eventManager.registerListener(articleSender);
             final B3ArticleUpdater articleUpdater = beanManager.getReference(B3ArticleUpdater.class);
             eventManager.registerListener(articleUpdater);
-            final B3CommentSender commentSender = beanManager.getReference(B3CommentSender.class);
-            eventManager.registerListener(commentSender);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Register event handlers failed", e);
 
