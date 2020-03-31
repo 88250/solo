@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Sitemap processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Mar 31, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -108,7 +108,6 @@ public class SitemapProcessor {
             renderer.setContent(content);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates sitemap failed", e);
-
             context.sendError(500);
         }
     }
@@ -126,17 +125,14 @@ public class SitemapProcessor {
                 select(Article.ARTICLE_PERMALINK, Article.ARTICLE_UPDATED);
         final JSONObject articleResult = articleRepository.get(query);
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
-
         for (int i = 0; i < articles.length(); i++) {
             final JSONObject article = articles.getJSONObject(i);
             final String permalink = article.getString(Article.ARTICLE_PERMALINK);
-
             final URL url = new URL();
             url.setLoc(StringEscapeUtils.escapeXml(Latkes.getServePath() + permalink));
             final long updated = article.getLong(Article.ARTICLE_UPDATED);
             final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updated);
             url.setLastMod(lastMod);
-
             sitemap.addURL(url);
         }
     }
@@ -150,13 +146,10 @@ public class SitemapProcessor {
     private void addNavigations(final Sitemap sitemap) throws Exception {
         final JSONObject result = pageRepository.get(new Query());
         final JSONArray pages = result.getJSONArray(Keys.RESULTS);
-
         for (int i = 0; i < pages.length(); i++) {
             final JSONObject page = pages.getJSONObject(i);
             final String permalink = page.getString(Page.PAGE_PERMALINK);
-
             final URL url = new URL();
-
             // The navigation maybe a page or a link
             // Just filters for user mistakes tolerance
             if (!permalink.contains("://")) {
@@ -164,7 +157,6 @@ public class SitemapProcessor {
             } else {
                 url.setLoc(permalink);
             }
-
             sitemap.addURL(url);
         }
     }
@@ -182,17 +174,13 @@ public class SitemapProcessor {
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.getJSONObject(i);
             final String link = URLs.encode(tag.getString(Tag.TAG_TITLE));
-
             final URL url = new URL();
-
             url.setLoc(Latkes.getServePath() + "/tags/" + link);
-
             sitemap.addURL(url);
         }
 
         // Tags wall
         final URL url = new URL();
-
         url.setLoc(Latkes.getServePath() + "/tags.html");
         sitemap.addURL(url);
     }
@@ -213,9 +201,7 @@ public class SitemapProcessor {
             final String dateString = DateFormatUtils.format(time, "yyyy/MM");
 
             final URL url = new URL();
-
             url.setLoc(Latkes.getServePath() + "/archives/" + dateString);
-
             sitemap.addURL(url);
         }
     }
