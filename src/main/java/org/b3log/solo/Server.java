@@ -403,7 +403,6 @@ public final class Server extends BaseServer {
         final B3Receiver b3Receiver = beanManager.getReference(B3Receiver.class);
         final Dispatcher.RouterGroup b3Group = Dispatcher.group();
         b3Group.router().post().put().uri("/apis/symphony/article").handler(b3Receiver::postArticle);
-        b3Group.put("/apis/symphony/comment", b3Receiver::addComment);
 
         final BlogProcessor blogProcessor = beanManager.getReference(BlogProcessor.class);
         final Dispatcher.RouterGroup blogGroup = Dispatcher.group();
