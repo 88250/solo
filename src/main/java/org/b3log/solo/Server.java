@@ -22,6 +22,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.StringLayout;
+import org.apache.logging.log4j.core.appender.WriterAppender;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.BaseServer;
@@ -40,13 +46,17 @@ import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
+
+import java.io.StringWriter;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.3, Mar 31, 2020
+ * @version 3.0.1.4, Apr 2, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -62,11 +72,45 @@ public final class Server extends BaseServer {
     public static final String VERSION = "4.0.0";
 
     /**
+     * In-Memory tail logger writer.
+     */
+    public static final TailStringWriter TAIL_LOGGER_WRITER = new TailStringWriter();
+
+    /**
+     * Initializes In-Memory logger. 后台增加服务端日志浏览 https://github.com/88250/solo/issues/91
+     */
+    public static void initInMemoryLogger() {
+        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+        final Configuration config = ctx.getConfiguration();
+        final StringLayout layout = PatternLayout.newBuilder().build();
+        final Appender appender = WriterAppender.createAppender(layout, null, TAIL_LOGGER_WRITER, "InMemoryTail", true, true);
+        appender.start();
+        config.addAppender(appender);
+        config.getRootLogger().addAppender(appender, Level.TRACE, null);
+        ctx.updateLoggers();
+    }
+
+    private static class TailStringWriter extends StringWriter {
+
+        private AtomicInteger count = new AtomicInteger();
+
+        @Override
+        public void flush() {
+            super.flush();
+            if (2048 <= count.incrementAndGet()) {
+                super.getBuffer().setLength(0);
+                count.set(0);
+            }
+        }
+    }
+
+    /**
      * Main.
      *
      * @param args the specified arguments
      */
     public static void main(final String[] args) {
+        initInMemoryLogger();
         Stopwatchs.start("Booting");
 
         final Options options = new Options();
