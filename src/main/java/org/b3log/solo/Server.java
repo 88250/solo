@@ -81,7 +81,7 @@ public final class Server extends BaseServer {
     public static void initInMemoryLogger() {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration config = ctx.getConfiguration();
-        final StringLayout layout = PatternLayout.newBuilder().build();
+        final StringLayout layout = PatternLayout.newBuilder().withPattern("[%-5p]-[%d{yyyy-MM-dd HH:mm:ss}]-[%c:%L]: %m%n").build();
         final Appender appender = WriterAppender.createAppender(layout, null, TAIL_LOGGER_WRITER, "InMemoryTail", true, true);
         appender.start();
         config.addAppender(appender);
