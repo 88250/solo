@@ -46,7 +46,6 @@ import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.io.StringWriter;
@@ -90,7 +89,7 @@ public final class Server extends BaseServer {
         ctx.updateLoggers();
     }
 
-    private static class TailStringWriter extends StringWriter {
+    public static class TailStringWriter extends StringWriter {
 
         private AtomicInteger count = new AtomicInteger();
 
@@ -633,6 +632,11 @@ public final class Server extends BaseServer {
         final Dispatcher.RouterGroup staticSiteConsoleGroup = Dispatcher.group();
         staticSiteConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         staticSiteConsoleGroup.put("/console/staticsite", staticSiteConsole::genSite);
+
+        final LogConsole logConsole = beanManager.getReference(LogConsole.class);
+        final Dispatcher.RouterGroup logConsoleGroup = Dispatcher.group();
+        logConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
+        logConsoleGroup.get("/console/log", logConsole::getLog);
     }
 
     /**
