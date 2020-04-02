@@ -64,7 +64,9 @@ $.extend(SoloEditor.prototype, {
 
     const options = {
       typewriterMode: this.conf.typewriterMode,
-      cache: true,
+      cache: {
+        enable: true,
+      },
       tab: '\t',
       preview: {
         delay: 500,
