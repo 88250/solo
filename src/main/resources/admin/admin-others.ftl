@@ -29,6 +29,11 @@
                 <a href="#tools/others/data">${exportDataLabel}</a>
             </div>
         </li>
+        <li>
+            <div id="tabOthers_log">
+                <a href="#tools/others/log">${viewLogLabel}</a>
+            </div>
+        </li>
     </ul>
 </div>
 <div id="tabOthersPanel" class="sub-tabs-main">
@@ -42,6 +47,9 @@
         </#if>
         <button class="fn__margin12" onclick="admin.others.exportJSON();">${exportJSONLabel}</button>
         <button class="fn__margin12" onclick="admin.others.exportHexo();">${exportHexoLabel}</button>
+    </div>
+    <div id="tabOthersPanel_log" class="fn__none form">
+        <textarea rows="32" readonly></textarea>
     </div>
 </div>
 ${plugins}

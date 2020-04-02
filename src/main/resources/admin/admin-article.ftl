@@ -25,10 +25,10 @@
     <div>
         <label>${content1Label}</label>
         <div class="fn__right">
-            <label for="articleThumbnail" style="margin-bottom: 0">
-                ${useTumbnailLabel}
-                <input type="checkbox" style="vertical-align: middle;"
-                       id="articleThumbnail" onclick="$('.article__thumbnail').slideToggle()" />
+            <label for="articleThumbnail" class="checkbox" style="margin-top: 0">
+                <input type="checkbox"
+                       id="articleThumbnail" onclick="$('.article__thumbnail').slideToggle()"/>
+                <span>&nbsp;${useTumbnailLabel}</span>
             </label>
         </div>
         <div class="fn__clear"></div>
@@ -38,7 +38,7 @@
         </div>
         <div>
             <div id="articleContent" name="articleContent"
-                  style="height: 500px;width:100%;"></div>
+                 style="height: 500px;width:100%;"></div>
         </div>
     </div>
     <div>
@@ -56,11 +56,11 @@
     <div class="fn__flex">
         <div class="fn__flex fn__flex-1" style="align-items: center">
             <label for="permalink" class="permalink__label" style="margin-bottom: 0">${permalink1Label}</label>
-            <input id="permalink" class="fn__flex-1" type="text" style="margin: 0 12px 0 6px;" />
+            <input id="permalink" class="fn__flex-1" type="text" style="margin: 0 12px 0 6px;"/>
         </div>
         <div class="fn__right viewpwd__panel">
             <label for="viewPwd">${articleViewPwd1Label}</label>
-            <input id="viewPwd" type="text" style="width: 156px" />
+            <input id="viewPwd" type="text" style="width: 156px"/>
         </div>
     </div>
     <div>
@@ -73,13 +73,14 @@
         </span>
         <div class="fn__right article-commentable__panel">
             <label class="checkbox">
-                <input type="checkbox" id="articleCommentable" checked />
-                ${allowCommentLabel}
+                <input type="checkbox" id="articleCommentable" checked/>
+                <span>&nbsp;${allowCommentLabel}</span>
             </label>
             &nbsp;
             <span id="postToCommunityPanel">
                 <label class="checkbox">
-                    <input id="postToCommunity" type="checkbox" />
+                    <input id="postToCommunity" type="checkbox"/>
+                    <span>&nbsp;</span>
                     <a href="https://hacpai.com/article/1546941897596" target="_blank">${syncToCommunityLabel}</a>
                 </label>
             </span>
@@ -87,7 +88,8 @@
         <div class="fn__clear"></div>
     </div>
     <div class="fn__right">
-        <button id="unSubmitArticle" class="fn__none marginRight12" onclick="admin.article.unPublish();">${unPublishLabel}</button>
+        <button id="unSubmitArticle" class="fn__none marginRight12"
+                onclick="admin.article.unPublish();">${unPublishLabel}</button>
         <button class="marginRight12" id="saveArticle">${saveLabel}${draftListLabel}</button>
         <button id="submitArticle">${publishLabel}</button>
     </div>
