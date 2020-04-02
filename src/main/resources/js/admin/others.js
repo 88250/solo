@@ -44,7 +44,8 @@ admin.others = {
       cache: false,
       timeout: 3000,
       success: function (result) {
-        $('#tabOthersPanel_log textarea').val(result.log)
+        const $textarea = $('#tabOthersPanel_log textarea')
+        $textarea.val(result.log).scrollTop($textarea[0].scrollHeight)
       },
     })
   },
