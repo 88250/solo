@@ -26,6 +26,7 @@ import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.Server;
 import org.b3log.solo.service.ArchiveDateMgmtService;
 import org.b3log.solo.service.TagMgmtService;
 import org.json.JSONObject;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  * Other console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.1.0.0, Apr 2, 2020
  * @since 3.4.0
  */
 @Singleton
@@ -62,6 +63,27 @@ public class OtherConsole {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Get log.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "log": "log lines"
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified request context
+     */
+    public void getLog(final RequestContext context) {
+        context.renderJSON(true);
+
+        final String content = Server.TAIL_LOGGER_WRITER.toString();
+        context.renderJSONValue("log", content);
+    }
 
     /**
      * Removes all unused archives.
