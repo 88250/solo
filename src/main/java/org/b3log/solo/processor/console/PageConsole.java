@@ -39,7 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Plugin console request processing.
+ * Page console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.0.0.0, Feb 9, 2020
