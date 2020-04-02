@@ -618,6 +618,7 @@ public final class Server extends BaseServer {
         otherConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         otherConsoleGroup.delete("/console/archive/unused", otherConsole::removeUnusedArchives).
                 delete("/console/tag/unused", otherConsole::removeUnusedTags);
+        otherConsoleGroup.get("/console/log", otherConsole::getLog);
 
         final UserConsole userConsole = beanManager.getReference(UserConsole.class);
         final Dispatcher.RouterGroup userConsoleGroup = Dispatcher.group();
@@ -632,11 +633,6 @@ public final class Server extends BaseServer {
         final Dispatcher.RouterGroup staticSiteConsoleGroup = Dispatcher.group();
         staticSiteConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         staticSiteConsoleGroup.put("/console/staticsite", staticSiteConsole::genSite);
-
-        final LogConsole logConsole = beanManager.getReference(LogConsole.class);
-        final Dispatcher.RouterGroup logConsoleGroup = Dispatcher.group();
-        logConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
-        logConsoleGroup.get("/console/log", logConsole::getLog);
     }
 
     /**
