@@ -240,7 +240,7 @@ proxy_set_header  Host $http_host;
 proxy_set_header  X-Real-IP $remote_addr;
 ```
 
-否则访问页面可能会出现“Latke 配置错误”；统计在线访客功能会不正常。
+否则访问页面可能会出现“Latke 配置错误”或者样式异常；统计在线访客功能会不正常。
 
 ## 📜 文档
 
