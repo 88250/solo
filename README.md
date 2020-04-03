@@ -41,7 +41,7 @@ https://hacpai.com/top/solo
 
 ## ✨ 功能
 
-* Markdown 编辑器支持三种编辑模式：所见即所得 / 即时渲染 / 分屏预览
+* [Markdown 编辑器](https://github.com/Vanessa219/vditor)支持三种编辑模式：所见即所得 / 即时渲染 / 分屏预览
 * [标签聚合分类](https://hacpai.com/article/1558320086126)
 * 自定义导航链接
 * 随机文章 / 相关文章 / 置顶 / 更新提醒
