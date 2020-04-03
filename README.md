@@ -41,21 +41,21 @@ https://hacpai.com/top/solo
 
 ## ✨ 功能
 
-* Markdown / Emoji
+* Markdown 编辑器支持三种编辑模式：所见即所得 / 即时渲染 / 分屏预览
 * [标签聚合分类](https://hacpai.com/article/1558320086126)
 * 自定义导航链接
 * 随机文章 / 相关文章 / 置顶 / 更新提醒
 * 自定义文章永久链接 / 签名档
 * 配置站点 SEO 参数 / 公告 / 页脚
 * 代码高亮 / 数学公式 / 流程图 / 五线谱
-* [多皮肤，多端适配](https://github.com/88250/solo-skins) / [社区皮肤](https://github.com/88250/solo-third-skins)
+* [多皮肤，多端适配](https://solo.b3log.org/#themes)
 * 多语言 / 国际化
 * 友情链接管理
 * 多用户写作，团队博客
 * [Hexo / Jekyll / Markdown 导入](https://hacpai.com/article/1498490209748)
 * SQL / JSON / Markdown 导出
 * Atom / RSS / Sitemap
-* CDN 静态资源分离
+* CDN 静态资源分离，可配置 jsDelivr CDN 分发
 * [拉取 GitHub 仓库和自动备份](https://hacpai.com/article/1557238327458)
 * [内置 HTTPS+CDN 文件存储](https://hacpai.com/article/1559928188793)
 * [支持生成导出静态站点](https://hacpai.com/article/1579053576274)，用于发布 GitHub Pages
@@ -117,7 +117,7 @@ https://hacpai.com/top/solo
 * [tree-house](https://88250.b3log.org/?skin=tree-house)
 * [yilia](https://88250.b3log.org/?skin=yilia)
 
-欢迎在[该 issue](https://github.com/88250/solo/issues/12449) 下推荐好看的皮肤，我们会尽量进行制作。
+欢迎在[这里](https://github.com/88250/solo/issues/12449)推荐好看的皮肤，我们会尽量进行制作。
 
 ## 🛠️ 安装
 
