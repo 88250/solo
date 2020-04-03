@@ -120,6 +120,8 @@ window.Util = {
           Util.uvstat.renderStat()
           Util.uvstat.renderCmtStat(
             window.utilOptions && window.utilOptions.cmtCountCB)
+          // 看板娘背景
+          soloKanbanniang && soloKanbanniang.bgOnLoad && soloKanbanniang.bgChange()
           cb && cb()
         },
       })

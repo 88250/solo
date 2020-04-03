@@ -19,7 +19,7 @@
 -->
 <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.6/index.css"/>
 <script async src="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.6/index.js"></script>
-<div class="solo-kanbanniang">
+<div class="solo-kanbanniang solo-kanbanniang-bg solo-kanbanniang-bg--onload solo-kanbanniang-bg--onchat solo-kanbanniang-bg--onchange">
     <div class="solo-kanbanniang__tip"></div>
     <canvas id="soloKanbanniang" width="280" height="250"></canvas>
     <div class="solo-kanbanniang__tool">
