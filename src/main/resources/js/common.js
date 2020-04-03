@@ -121,7 +121,7 @@ window.Util = {
           Util.uvstat.renderCmtStat(
             window.utilOptions && window.utilOptions.cmtCountCB)
           // 看板娘背景
-          soloKanbanniang && soloKanbanniang.bgOnLoad && soloKanbanniang.bgChange()
+          soloKanbanniang && soloKanbanniang.bgChange()
           cb && cb()
         },
       })
@@ -313,15 +313,15 @@ window.Util = {
       success: () => {
         Util.init(window.utilOptions)
         if (cb) {
-          cb();
+          cb()
         }
       },
     })
-  }
+  },
 };
 
 (() => {
   if (typeof Vditor === 'undefined') {
-    Util.loadVditor();
+    Util.loadVditor()
   }
 })()
