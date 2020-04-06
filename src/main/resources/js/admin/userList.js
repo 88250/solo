@@ -21,7 +21,7 @@ import { TablePaginate } from './tablePaginate'
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Nov 12, 2019
+ * @version 1.2.0.1, Apr 6, 2020
  */
 
 /* user-list 相关操作 */
@@ -99,8 +99,7 @@ admin.userList = {
         for (var i = 0; i < users.length; i++) {
           userData[i] = {}
           userData[i].userName = `${users[i].userName} 
-&nbsp; <a target="_blank" href="https://hacpai.com/member/${users[i].userName}"><span class="icon-hacpai"></span></a>
-&nbsp; <a target="_blank" href="https://github.com/${users[i].userName}"><span class="icon-github"></span></a>`
+&nbsp; <a target="_blank" href="https://hacpai.com/member/${users[i].userName}" title="社区个人主页"><span class="icon-hacpai"></span></a>`
 
           if ('adminRole' === users[i].userRole) {
             userData[i].isAdmin = '&nbsp;' + Label.administratorLabel
