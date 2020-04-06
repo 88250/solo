@@ -26,6 +26,7 @@
 /* preference 相关操作 */
 admin.preference = {
   locale: '',
+  editorMode: '',
   /*
    * 初始化
    */
@@ -80,6 +81,7 @@ admin.preference = {
         'true' === preference.inlineMathAllowDigitAfterOpenMarker ? $('#inlineMathAllowDigitAfterOpenMarker').attr('checked', 'checked') : $('#inlineMathAllowDigitAfterOpenMarker').removeAttr('checked')
 
         $("input:radio[value='" + preference.editorMode + "']").attr('checked','true');
+        admin.preference.editorMode = preference.editorMode
 
         admin.preference.locale = preference.localeString
 
@@ -240,7 +242,7 @@ admin.preference = {
           return
         }
 
-        if ($('#localeString').val() !== admin.preference.locale) {
+        if ($('#localeString').val() !== admin.preference.locale || $("input[name='editorMode']:checked").val() !== admin.preference.editorMode) {
           window.location.reload()
         }
 
