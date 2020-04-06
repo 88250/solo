@@ -79,6 +79,8 @@ admin.preference = {
         'true' === preference.chinesePunct ? $('#chinesePunct').attr('checked', 'checked') : $('#chinesePunct').removeAttr('checked')
         'true' === preference.inlineMathAllowDigitAfterOpenMarker ? $('#inlineMathAllowDigitAfterOpenMarker').attr('checked', 'checked') : $('#inlineMathAllowDigitAfterOpenMarker').removeAttr('checked')
 
+        $("input:radio[value='" + preference.editorMode + "']").attr('checked','true');
+
         admin.preference.locale = preference.localeString
 
         // sign

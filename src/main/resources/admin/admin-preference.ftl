@@ -250,7 +250,7 @@
     </div>
     <div id="tabPreferencePanel_markdown" class="fn__none form">
         ${editorModeLabel}
-        <label><input name="editorMode" type="radio" value="wysiwyg">&nbsp;${editorModeWYSIWYGLabel} </label>
+        <label><input name="editorMode" type="radio" value="wysiwyg" checked>&nbsp;${editorModeWYSIWYGLabel} </label>
         <label><input name="editorMode" type="radio" value="ir">&nbsp;${editorModeIRLabel} </label>
         <label><input name="editorMode" type="radio" value="sv">&nbsp;${editorModeSVLabel} </label>
 
