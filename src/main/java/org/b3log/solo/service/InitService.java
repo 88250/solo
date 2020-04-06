@@ -53,7 +53,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.38, Jan 24, 2020
+ * @version 1.5.2.39, Apr 6, 2020
  * @since 0.4.0
  */
 @Service
@@ -471,6 +471,12 @@ public class InitService {
      */
     private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject editorModeOpt = new JSONObject();
+        editorModeOpt.put(Keys.OBJECT_ID, Option.ID_C_EDITOR_MODE);
+        editorModeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        editorModeOpt.put(Option.OPTION_VALUE, "wysiwyg");
+        optionRepository.add(editorModeOpt);
 
         final JSONObject IMADAOMOpt = new JSONObject();
         IMADAOMOpt.put(Keys.OBJECT_ID, Option.ID_C_IMADAOM);

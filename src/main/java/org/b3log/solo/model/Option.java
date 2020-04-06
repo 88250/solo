@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 1.6.0.5, Jan 25, 2020
+ * @version 1.6.0.6, Apr 6, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -52,6 +52,17 @@ public final class Option {
     public static final String OPTION_CATEGORY = "optionCategory";
 
     // oId constants
+
+    /**
+     * Key of editor mode. 支持配置编辑器模式 https://github.com/88250/solo/issues/95
+     * <ul>
+     *     <li>wysiwyg：所见即所得</li>
+     *     <li>ir：即时渲染</li>
+     *     <li>sv：分屏预览</li>
+     * </ul>
+     * 模式细节介绍详见 <a href="https://github.com/Vanessa219/vditor">Vditor</a> 编辑器文档。
+     */
+    public static final String ID_C_EDITOR_MODE = "editorMode";
 
     /**
      * Key of inline math allow digit after open marker flag. 内联数学公式是否允许起始 $ 后紧跟数字 https://github.com/88250/solo/issues/54

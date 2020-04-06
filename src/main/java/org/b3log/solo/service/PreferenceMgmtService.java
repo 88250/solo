@@ -40,7 +40,7 @@ import java.util.Locale;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.5, Jan 25, 2020
+ * @version 1.4.0.6, Apr 6, 2020
  * @since 0.4.0
  */
 @Service
@@ -253,6 +253,9 @@ public class PreferenceMgmtService {
             emptyPreferenceOptSave(Option.ID_C_IMADAOM, IMADAOMVal);
             Markdowns.IMADAOM = "true".equalsIgnoreCase(IMADAOMVal);
 
+            final String editorModeVal = preference.optString(Option.ID_C_EDITOR_MODE);
+            emptyPreferenceOptSave(Option.ID_C_EDITOR_MODE, editorModeVal);
+
             transaction.commit();
 
             Markdowns.clearCache();
@@ -268,7 +271,8 @@ public class PreferenceMgmtService {
         LOGGER.log(Level.DEBUG, "Updates preference successfully");
     }
 
-    private void emptyPreferenceOptSave(final String optID, final String val) throws Exception  {
+    private void emptyPreferenceOptSave(final String optID, final String val) throws Exception {
+        // 该方法用于向后兼容，如果数据库中不存在该配置项则创建再保存
         JSONObject opt = optionRepository.get(optID);
         if (null == opt) {
             opt = new JSONObject();
