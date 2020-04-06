@@ -128,6 +128,13 @@ public class AdminConsole {
 
         try {
             final JSONObject preference = optionQueryService.getPreference();
+            // 支持配置编辑器模式 https://github.com/88250/solo/issues/95
+            String editorMode = preference.optString(Option.ID_C_EDITOR_MODE);
+            if (StringUtils.isBlank(editorMode)) {
+                editorMode = "wysiwyg";
+            }
+            dataModel.put(Option.ID_C_EDITOR_MODE, editorMode);
+
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
             dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
