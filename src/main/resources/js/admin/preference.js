@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Jan 24, 2020
+ * @version 1.3.0.5, Apr 6, 2020
  */
 
 /* preference 相关操作 */
@@ -200,8 +200,7 @@ admin.preference = {
         'noticeBoard': $('#noticeBoard').val(),
         'footerContent': $('#footerContent').val(),
         'htmlHead': $('#htmlHead').val(),
-        'externalRelevantArticlesDisplayCount': $(
-          '#externalRelevantArticlesDisplayCount').val(),
+        'externalRelevantArticlesDisplayCount': $('#externalRelevantArticlesDisplayCount').val(),
         'relevantArticlesDisplayCount': $('#relevantArticlesDisplayCount').val(),
         'randomArticlesDisplayCount': $('#randomArticlesDisplayCount').val(),
         'enableArticleUpdateHint': $('#enableArticleUpdateHint').prop('checked'),
@@ -223,6 +222,7 @@ admin.preference = {
         'fixTermTypo': $('#fixTermTypo').prop('checked'),
         'chinesePunct': $('#chinesePunct').prop('checked'),
         'inlineMathAllowDigitAfterOpenMarker': $('#inlineMathAllowDigitAfterOpenMarker').prop('checked'),
+        'editorMode': $("input[name='editorMode']:checked").val(),
       },
     }
 

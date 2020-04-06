@@ -249,6 +249,7 @@ public class PreferenceConsole {
      *         "fixTermTypo": boolean, // Markdown 支持改进 https://github.com/88250/solo/issues/54
      *         "chinesePunct": boolean, // Markdown 支持改进 https://github.com/88250/solo/issues/54
      *         "inlineMathAllowDigitAfterOpenMarker": boolean, // Markdown 支持改进 https://github.com/88250/solo/issues/54
+     *         "editorMode": "", // 支持配置编辑器模式 https://github.com/88250/solo/issues/95
      *     }
      * }
      * </pre>
