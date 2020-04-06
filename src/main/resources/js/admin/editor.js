@@ -63,6 +63,7 @@ $.extend(SoloEditor.prototype, {
     })
 
     const options = {
+      mode: Label.editorMode,
       typewriterMode: this.conf.typewriterMode,
       cache: {
         enable: true,

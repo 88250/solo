@@ -19,6 +19,7 @@
 -->
 <#include "../common-template/label.ftl"/>
 <script type="text/javascript">
+    Label.editorMode = '${editorMode}'
     Label.setMobileLabel = '${setMobileLabel}'
     Label.pushSuccLabel = '${pushSuccLabel}'
     Label.pushToHacpaiLabel = '${pushToHacpaiLabel}'

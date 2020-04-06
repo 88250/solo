@@ -249,57 +249,54 @@
         <div class="fn__clear"></div>
     </div>
     <div id="tabPreferencePanel_markdown" class="fn__none form">
-        ${editorModeLabel}
-        <label><input name="editorMode" type="radio" value="wysiwyg" checked>&nbsp;${editorModeWYSIWYGLabel} </label>
-        <label><input name="editorMode" type="radio" value="ir">&nbsp;${editorModeIRLabel} </label>
-        <label><input name="editorMode" type="radio" value="sv">&nbsp;${editorModeSVLabel} </label>
+        <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
+        <div class="fn__clear"></div>
+
+        <label>${editorModeLabel}</label>
+        <div class="fn__flex">
+            <label class="checkbox fn__flex-1">
+                <input name="editorMode" type="radio" value="wysiwyg" checked>
+                <span>&nbsp;${editorModeWYSIWYGLabel}</span>
+            </label>
+            <label class="checkbox fn__flex-1">
+                <input name="editorMode" type="radio" value="ir">
+                <span>&nbsp;${editorModeIRLabel}</span>
+            </label>
+            <label class="checkbox fn__flex-1">
+                <input name="editorMode" type="radio" value="sv">
+                <span>&nbsp;${editorModeSVLabel}</span>
+            </label>
+        </div>
 
         <#if !luteAvailable>
-        <div class="fn__clear">
-            ${luteHTTPLabel}
-        </div>
-        </#if>
-        <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
-        <div class="fn__flex">
-            <div class="fn__flex-1">
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="footnotes" type="checkbox" class="normalInput"/>
-                        &nbsp;${supportFootnotesLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="showToC" type="checkbox" class="normalInput"/>
-                        &nbsp;${supportToCLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="autoSpace" type="checkbox" class="normalInput"/>
-                        &nbsp;${autoSpaceLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="fixTermTypo" type="checkbox" class="normalInput"/>
-                        &nbsp;${fixTermTypoLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="chinesePunct" type="checkbox" class="normalInput"/>
-                        &nbsp;${chinesePunctLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="inlineMathAllowDigitAfterOpenMarker" type="checkbox" class="normalInput"/>
-                        &nbsp;${inlineMathAllowDigitAfterOpenMarkerLabel}
-                    </div>
-                </label>
+            <div class="fn__clear">
+                ${luteHTTPLabel}
             </div>
-        </div>
+        </#if>
+        <label class="checkbox">
+            <input id="footnotes" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${supportFootnotesLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="showToC" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${supportToCLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="autoSpace" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${autoSpaceLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="fixTermTypo" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${fixTermTypoLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="chinesePunct" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${chinesePunctLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="inlineMathAllowDigitAfterOpenMarker" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${inlineMathAllowDigitAfterOpenMarkerLabel}</span>
+        </label>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
     </div>
