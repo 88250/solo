@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.89, Mar 24, 2020
+    Version: 3.18.3.90, Apr 9, 2020
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -29,8 +29,8 @@
 
     <licenses>
         <license>
-            <name>GNU Affero General Public License, Version 3</name>
-            <url>https://www.gnu.org/licenses/agpl-3.0.txt</url>
+            <name>木兰宽松许可证, 第2版</name>
+            <url>http://license.coscl.org.cn/MulanPSL2</url>
         </license>
     </licenses>
 
