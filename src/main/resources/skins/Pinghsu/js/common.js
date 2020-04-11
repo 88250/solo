@@ -13,7 +13,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.0, Jan 18, 2019
+ * @version 1.0.1.0, Apr 11, 2020
  */
 
 import '../../../js/common'
@@ -77,8 +77,12 @@ window.Skin = {
     $('.post__toc').
       css('left', $('.post').offset().left + $('.post').outerWidth())
 
-    var $articleTocs = $('.vditor-reset [id^=toc_h]'),
-      $articleToc = $('.article__toc')
+    var $articleTocs = $('.post .vditor-reset').
+      children().
+      filter((index, item) => {
+        return item.tagName.indexOf('H') === 0 && item.id
+      })
+    var $articleToc = $('.article__toc')
 
     $(window).unbind('scroll').scroll(function (event) {
       if ($('.article__toc li').length === 0) {
