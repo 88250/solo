@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/88250/solo/issues"
   },
-  "license": "AGPLv3",
+  "license": "MulanPSL2",
   "private": true,
   "scripts": {
     "build": "webpack --mode production",
