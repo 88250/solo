@@ -7,7 +7,7 @@
 <a title="Docker Image CI" target="_blank" href="https://github.com/88250/solo/actions"><img src="https://img.shields.io/github/workflow/status/88250/solo/Docker%20Image%20CI?color=blue&label=Actions&logo=github&style=flat-square"></a>
 <a title="Coverage Status" target="_blank" href="https://coveralls.io/github/88250/solo"><img src="https://img.shields.io/coveralls/github/88250/solo.svg?style=flat-square&color=CC9933"></a>
 <a title="Code Size" target="_blank" href="https://github.com/88250/solo"><img src="https://img.shields.io/github/languages/code-size/88250/solo.svg?style=flat-square&color=6699FF"></a>
-<a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat-square"></a>
+<a title="MulanPSL2" target="_blank" href="https://license.coscl.org.cn/MulanPSL2"><img src="http://img.shields.io/badge/license-MulanPSL2-orange.svg?style=flat-square"></a>
 <br>
 <a title="Releases" target="_blank" href="https://github.com/88250/solo/releases"><img src="https://img.shields.io/github/release/88250/solo.svg?style=flat-square&color=CC6666"></a>
 <a title="Release Date" target="_blank" href="https://github.com/88250/solo/releases"><img src="https://img.shields.io/github/release-date/88250/solo.svg?style=flat-square&color=99CCFF"></a>
@@ -258,7 +258,7 @@ proxy_set_header  X-Real-IP $remote_addr;
 
 ## 📄 授权
 
-Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/licenses/agpl-3.0.txt) 开源协议。
+Solo 使用 [木兰宽松许可证, 第2版](http://license.coscl.org.cn/MulanPSL2) 开源协议。
 
 ## 🙏 鸣谢
 
