@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.0.0, Jan 18, 2020
+ * @version 2.7.0.0, Apr 12, 2020
  */
 window.Page = function (tips) {
   this.currentCommentId = ''
@@ -25,7 +25,7 @@ $.extend(Page.prototype, {
   /**
    * 第三方评论
    */
-  vcomment: function ( ) {
+  vcomment: function () {
     const $vcomment = $('#vcomment')
     if ($vcomment.length === 0) {
       return
@@ -88,7 +88,7 @@ $.extend(Page.prototype, {
             'qriousScript')
         }
 
-        if ($qrCode.css('background-image') === "none") {
+        if ($qrCode.css('background-image') === 'none') {
           const qr = new QRious({
             padding: 0,
             element: $qrCode[0],
@@ -143,6 +143,8 @@ $.extend(Page.prototype, {
         'list',
         'ordered-list',
         'check',
+        'outdent',
+        'indent',
         '|',
         'quote',
         'line',
@@ -159,7 +161,6 @@ $.extend(Page.prototype, {
         'format',
         '|',
         'fullscreen',
-        'devtools',
         'info',
         'help',
       ], resizeEnable = true
@@ -167,14 +168,11 @@ $.extend(Page.prototype, {
         toolbar = [
           'emoji',
           'bold',
-          'italic',
           'link',
           'list',
-          'check',
           'edit-mode',
           'preview',
           'fullscreen',
-          'help',
         ]
         resizeEnable = false
       }
@@ -204,7 +202,10 @@ $.extend(Page.prototype, {
             Util.parseMarkdown()
           },
         },
-        counter: 500,
+        counter: {
+          enable: true,
+          max: 500,
+        },
         resize: {
           enable: resizeEnable,
           position: 'top',
@@ -213,7 +214,7 @@ $.extend(Page.prototype, {
         toolbar: toolbar,
         after: () => {
           vditor.focus()
-        }
+        },
       })
     }
 
