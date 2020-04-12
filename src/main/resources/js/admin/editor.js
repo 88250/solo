@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.1, Feb 24, 2020
+ * @version 1.5.0.0, Apr 12, 2020
  */
 admin.editors = {}
 
@@ -87,7 +87,10 @@ $.extend(SoloEditor.prototype, {
         }
       },
       height: this.conf.height,
-      counter: 102400,
+      counter: {
+        enable: true,
+        max: 102400,
+      },
       resize: {
         enable: this.conf.resize,
       },
@@ -96,23 +99,23 @@ $.extend(SoloEditor.prototype, {
         emojiTail: `<a href="https://hacpai.com/settings/function" target="_blank">设置常用表情</a>`,
         emoji: Label.emoji,
       },
+      toolbarConfig: {
+        pin: true
+      }
     }
 
     if ($(window).width() < 768) {
       options.toolbar = [
-        'emoji',
-        'bold',
-        'italic',
-        'link',
-        'list',
-        'check',
-        'upload',
-        'edit-mode',
-        'preview',
-        'fullscreen',
-        'help',
+        "emoji",
+        "bold",
+        "link",
+        "list",
+        "edit-mode",
+        "preview",
+        "fullscreen",
       ]
       options.resize.enable = false
+      options.toolbarConfig.pin = true;
     }
 
     if (typeof Vditor === 'undefined') {
