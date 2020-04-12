@@ -248,7 +248,7 @@ Otherwise, "Latke configuration error" or abnormal style may appear on the acces
 * [Solo User Guide](https://hacpai.com/article/1492881378588)
 * [Solo from design to implementation](https://hacpai.com/article/1537690756242)
 * [Solo Skin Development Guide](https://hacpai.com/article/1493814851007)
-* [Plugin development] (https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
+* [Plugin development](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
 ## 🏘️ Community
 
