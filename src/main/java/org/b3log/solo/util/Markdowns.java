@@ -54,7 +54,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.15, Jan 25, 2020
+ * @version 2.3.1.16, Apr 12, 2020
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -225,10 +225,10 @@ public final class Markdowns {
             toRemove.forEach(Node::remove);
 
             doc.outputSettings().prettyPrint(false);
+            Images.qiniuImgProcessing(doc);
 
             String ret = doc.select("body").html();
             ret = StringUtils.trim(ret);
-            ret = Images.qiniuImgProcessing(ret);
 
             // cache it
             putHTML(markdownText, ret);

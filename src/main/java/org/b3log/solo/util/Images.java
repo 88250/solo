@@ -17,6 +17,9 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Image utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Feb 27, 2020
+ * @version 1.1.2.0, Apr 12, 2020
  * @since 2.7.0
  */
 public final class Images {
@@ -44,27 +47,25 @@ public final class Images {
     /**
      * Qiniu image processing.
      *
-     * @param html the specified content HTML
-     * @return processed content
+     * @param doc the specified doc
      */
-    public static String qiniuImgProcessing(final String html) {
-        String ret = html;
-        final String[] imgSrcs = StringUtils.substringsBetween(html, "<img src=\"", "\"");
-        if (null == imgSrcs) {
-            return ret;
+    public static void qiniuImgProcessing(final Document doc) {
+        final Elements imgs = doc.select("img");
+        if (imgs.isEmpty()) {
+            return;
         }
 
-        for (final String imgSrc : imgSrcs) {
+        for (final Element img : imgs) {
+            String imgSrc = img.attr("src");
             if (!StringUtils.startsWith(imgSrc, COMMUNITY_FILE_URL) ||
                     StringUtils.contains(imgSrc, ".gif") || StringUtils.containsIgnoreCase(imgSrc, "imageView") ||
                     StringUtils.containsIgnoreCase(imgSrc, "data:")) {
                 continue;
             }
 
-            ret = StringUtils.replace(ret, imgSrc, imgSrc + "?imageView2/2/w/1280/format/jpg/interlace/1/q/100");
+            imgSrc += "?imageView2/2/w/1280/format/jpg/interlace/1/q/100";
+            img.attr("src", imgSrc);
         }
-
-        return ret;
     }
 
     /**
