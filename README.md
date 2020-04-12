@@ -240,162 +240,28 @@ Otherwise, "Latke configuration error" or abnormal style may appear on the acces
 
 ## 📜 Documentation
 
-* [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
-* [从零开始安装 Solo 博客](https://hacpai.com/article/1565021959471)（感谢 @InkDP 分享）
-* [用户指南](https://hacpai.com/article/1492881378588)
-* [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
-* [皮肤开发指南](https://hacpai.com/article/1493814851007)
-* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
+* [Install Solo Blog from scratch](https://hacpai.com/article/1565021959471) (thanks @InkDP for sharing)
+* [Solo User Guide](https://hacpai.com/article/1492881378588)
+* [Solo from design to implementation](https://hacpai.com/article/1537690756242)
+* [Solo Skin Development Guide](https://hacpai.com/article/1493814851007)
+* [Plugin development] (https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
-## 🏘️ 社区
+## 🏘️ Community
 
-* [讨论区](https://hacpai.com/tag/solo)
-* [报告问题](https://github.com/88250/solo/issues/new/choose)
+* [Forum](https://hacpai.com/tag/solo)
+* [Issues](https://github.com/88250/solo/issues/new/choose)
 
-## 📄 授权
+## 📄 License
 
-Solo 使用 [木兰宽松许可证, 第2版](http://license.coscl.org.cn/MulanPSL2) 开源协议。
+Solo uses the [Mulan Permissive Software License，Version 2](http://license.coscl.org.cn/MulanPSL2) open source license.
 
-## 🙏 鸣谢
+## 🙏 Acknowledgement
 
-* [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
-* [Vditor](https://github.com/88250/vditor)： 浏览器端的 Markdown 编辑器
-* [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
+* [jQuery](https://github.com/jquery/jquery): Front-end JavaScript tool library
+* [Vditor](https://github.com/88250/vditor): In-browser Markdown editor
+* [Highlight.js](https://github.com/isagalaev/highlight.js)：Front-end code syntax highlighting library
 * [pjax](https://github.com/defunkt/jquery-pjax)：pushState + AJAX = pjax
-* [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
-* [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
-* [Apache Commons](http://commons.apache.org)：Java 工具库集
-* [Latke](https://github.com/88250/latke)：以 JSON 为主的 Java Web 框架
-
----
-
-## 初始化后
-
-初始化成功后请务必查看自动发布的第一篇文章，里面有一些**必要的操作**，请务必完成。然后请到管理后台 -> 工具 -> 偏好设定中进行一下博客的细节配置。
-
-### 信息配置
-
-* 博客基本信息：标题、子标题、SEO 信息
-* HTML head：可以配置脚本，比如百度统计
-* 公告：可以使用 HTML 和脚本进行配置
-* 页脚：主要用来放备案信息，也可以使用 HTML 和脚本进行配置
-
-### 签名档
-
-最多可以配置 3 个签名档，发布文章的时候选择一个使用，可以使用 HTML 和脚本进行配置。
-
-### 参数设置
-
-下面是一些比较有特色或重要的参数：
-
-* 列表显示方式：仅标题/标题 + 摘要/标题 + 正文
-* 各种分页参数
-* 文章更新提示：启用后一旦某篇文章更新过，则会在文章标题处显示“有更新”的提示，并且排序靠前
-* 允许同步 GitHub 仓库：将文章数据自动导出到 GitHub 仓库，用于展示和备份
-
-## 导入 Markdown
-
-请参考 [Solo 支持 Hexo/Jekyll 数据导入](https://hacpai.com/article/1498490209748)。
-
-## 备份
-
-安全第一，血泪的教训 😢
-
-* H2：备份用户 home 目录下的 solo\_h2 文件夹
-* MySQL：使用 MySQL 相关备份工具
-
-另外，如果开启了自动备份社区功能，则会定时 24 小时自动备份所有文章到社区，请参考 [Solo 拉取 GitHub 仓库和自动备份](https://hacpai.com/article/1557238327458)。
-
-## 其他一些特性
-
-### 多用户
-
-可以几个用户同时使用一个博客发布文章，主要用在团队博客这个场景。权限方面做了简单隔离，非管理员用户可以看到其他用户的博文/评论列表，但是不能进行操作。
-
-### RSS/Atom/Sitemap
-
-提供两种订阅供稿：Atom 1.0、RSS 2.0：
-
-* Atom: /rss.xml
-* RSS: /atom.xml
-
-不要用浏览器直接打开，请通过阅读器查看。另外，Solo 也能生成全站文章的 sitemap.xml。
-
-### 前台皮肤切换
-
-通过 URL 带参（比如 `http://88250.b3log.org/?skin=Finding` ）来确定渲染使用的皮肤。
-
-使用场景举例：
-
-* 在不安装 Solo 的情况下可以方便预览各个皮肤（在 Demo 上）
-* 方便二次开发时集成切换皮肤
-* 博主可以让访客体验到不同的效果，比如：[这个](http://88250.b3log.org/?skin=Finding)皮肤好看？还是[这个](http://88250.b3log.org/?skin=9IPHP)好看？
-
-1. 只有在首页（ `/` ）会取参数 `skin=xxx`
-2. 如果带有就记录到 Cookie 里面，如果带有 `skin=default` 或皮肤不存在则清空 Cookie
-3. 如果要切换成后台默认的皮肤，在首页带参 `skin=default`
-
-### 站外相关文章
-
-“站外相关文章”指的是其他人使用 Solo 发布的文章，该文章含有与你的文章相同的标签。该功能主要是为了加强各个 Solo 博客之间的互动性，让博客访问者可以更有效地访问到相关的内容。
-
-这是 [B3log 构思](https://hacpai.com/b3log)的一部分实现，请大家积极参与进来 🙏
-
-## FAQ
-
-### 服务器内存太小？
-
-可考虑使用 Solo 的静态站点支持，本地写作完成后导出静态站点，发布 GitHub Pages 等服务。
-
-如果还是想使用动态博客的话，可使用内嵌的 H2 数据库代替 MySQL。但建议还是进行内存升级，然后使用 Docker 和 MySQL 部署，这样不仅可以通过更新镜像进行平滑升级，还能使用 MySQL 相关工具更方便地进行数据库运维。
-
-### 获取社区文件存储服务上传凭证异常？
-
-请参考[这里](https://hacpai.com/article/1550393688505)进行配置。
-
-### 如何引入自定义静态资源，比如 .mp3？
-
-请通过 NGINX 反代静态资源实现。
-
-### 如何获得更好的 Markdown 渲染效果？
-
-Solo 默认是使用内建的 [flexmark](https://github.com/vsch/flexmark-java) 进行 md 渲染，可能对有的场景下的渲染效果不是很好。如果你想要获得更好的 md 渲染效果请参考[这里](https://hacpai.com/article/1569240189601)。
-
-### 为什么在线访问计数一直都是 1？
-
-在线访问计数是通过访问者 IP 去重的，每 10 分钟定时刷新一次。如果用了反向代理，请在代理配置部分加入客户端地址标头。比如 NGINX 需要加入如下配置：
-
-```
-proxy_set_header  X-Real-IP  $remote_addr;
-```
-
-### 如何插入广告展位？
-
-可通过签名档、公告栏中插入 HTML、JS 代码来实现。
-
-### 如何放置备案信息？
-
-可通过在页脚配置中插入 HTML、JS 代码来实现。
-
-### 如何使用 jsDelivr CDN 来加速？
-
-启动时加入命令行参数：
-
-```shell
---static_server_scheme=https
---static_server_host=cdn.jsdelivr.net
---static_server_port=
---static_path=/gh/88250/solo/src/main/resources
-```
-
-请注意，以上配置仅支持内置皮肤，如果挂载了第三方皮肤的话请按需调整。
-
-### Solo 会一直维护下去么？
-
-Solo 的第一个版本发布于 `2010` 年，永不断更 😼
-
-Solo 从第一版开始就支持平滑升级，从 v3.0.0 开始支持跨版本升级。在程序升级、数据兼容迁移方面我们做了很多工作。另外，Solo 还支持将数据导出成多种格式，所有的这些努力为的就是让大家能够免去后顾之忧，将精力更多放在创作和分享上。
-
-## 结语
-
-如果你在使用 Solo 过程中碰到问题或者有需求要提，欢迎跟帖，我们会在第一时间回复；如果你对 Solo 开发方面感兴趣，请参考 [Solo 从设计到实现](https://hacpai.com/article/1537690756242)。
+* [jsoup](https://github.com/jhy/jsoup): Java HTML parser
+* [flexmark](https://github.com/vsch/flexmark-java): Java Markdown processor
+* [Apache Commons](http://commons.apache.org): Java commons library
+* [Latke](https://github.com/88250/latke): Java Web framework based on JSON
