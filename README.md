@@ -1,7 +1,7 @@
 <p align = "center">
 <img alt="Solo" src="https://user-images.githubusercontent.com/873584/52320401-2593e600-2a0a-11e9-9ba1-db79ee71d1af.png">
 <br><br>
-小而美的博客系统，专为程序员设计
+Small and beautiful blog system, designed for programmers
 <br><br>
 <a title="Build Status" target="_blank" href="https://travis-ci.org/88250/solo"><img src="https://img.shields.io/travis/88250/solo.svg?style=flat-square"></a>
 <a title="Docker Image CI" target="_blank" href="https://github.com/88250/solo/actions"><img src="https://img.shields.io/github/workflow/status/88250/solo/Docker%20Image%20CI?color=blue&label=Actions&logo=github&style=flat-square"></a>
@@ -25,60 +25,58 @@
 <a title="Author GitHub Followers" target="_blank" href="https://github.com/88250"><img src="https://img.shields.io/github/followers/88250.svg?label=Followers&style=social"></a>
 </p>
 
-## 💡 简介
+## 💡 Introduction
 
-[Solo](https://solo.b3log.org) 是一款小而美的开源博客系统，专为程序员设计。Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖子推送到社区，来自社区的回帖将作为博客评论进行联动（具体细节请浏览 [B3log 构思 - 分布式社区网络](https://hacpai.com/article/1546941897596)）。
+[Solo](https://solo.b3log.org) is a small and beautiful open source blog system, designed for programmers. Solo has a very active [community](https://hacpai.com), which can push articles as posts to the community, and replies from the community will be linked as blog comments (for details, please visit [B3log Ideas - Distributed Community Network](https://hacpai.com/article/1546941897596)).
 
-> 这是一种全新的网络社区体验，让热爱记录和分享的你不再感到孤单！
+> This is a brand new online community experience, so that you who love recording and sharing no longer feel lonely!
 
-欢迎到 [Solo 官方讨论区](https://hacpai.com/tag/sym)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
+Welcome to [Solo Official Discussion Forum](https://hacpai.com/tag/solo) to learn more.
 
-![b3logos.png](https://img.hacpai.com/file/2019/10/image-d3c00d78.png)
-
-## 🗃 案例
+## 🗃 Showcases
 
 https://hacpai.com/top/solo
 
-## ✨ 功能
+## ✨ Features
 
-* [Markdown 编辑器](https://github.com/Vanessa219/vditor)支持三种编辑模式：所见即所得 / 即时渲染 / 分屏预览
-* [标签聚合分类](https://hacpai.com/article/1558320086126)
-* 自定义导航链接
-* 随机文章 / 相关文章 / 置顶 / 更新提醒
-* 自定义文章永久链接 / 签名档
-* 配置站点 SEO 参数 / 公告 / 页脚
-* 代码高亮 / 数学公式 / 流程图 / 五线谱
-* [多皮肤，多端适配](https://solo.b3log.org/#themes)
-* 多语言 / 国际化
-* 友情链接管理
-* 多用户写作，团队博客
-* [Hexo / Jekyll / Markdown 导入](https://hacpai.com/article/1498490209748)
-* SQL / JSON / Markdown 导出
+* [Markdown Editor](https://github.com/Vanessa219/vditor) supports three editing modes: WYSIWYG/Instant Rendering/Split View
+* [Tag aggregation classification](https://hacpai.com/article/1558320086126)
+* Custom navigation links
+* Random articles / Related articles / Pin articles / Update reminder
+* Custom article permanent link / Signature column
+* Configure site SEO parameters / Announcement / Footer
+* Code syntax highlighting / Mathematical formulas / Flow charts / Staves
+* [Multi-skin, multi-end adaptation](https://solo.b3log.org/#themes)
+* Multilingual / International
+* Friendly Link Management
+* Multi-user writing, team blog
+* [Hexo / Jekyll / Markdown import](https://hacpai.com/article/1498490209748)
+* SQL / JSON / Markdown export
 * Atom / RSS / Sitemap
-* CDN 静态资源分离，可配置 jsDelivr CDN 分发
-* [拉取 GitHub 仓库和自动备份](https://hacpai.com/article/1557238327458)
-* [内置 HTTPS+CDN 文件存储](https://hacpai.com/article/1559928188793)
-* [支持生成导出静态站点](https://hacpai.com/article/1579053576274)，用于发布 GitHub Pages
+* CDN static resource separation, configurable jsDelivr CDN distribution
+* [Pull GitHub repository and automatic backup](https://hacpai.com/article/1557238327458)
+* [Built-in HTTPS + CDN file storage](https://hacpai.com/article/1559928188793)
+* [Support to generate and export static sites](https://hacpai.com/article/1579053576274) for publishing GitHub Pages
 
-## 🎨 界面
+## 🎨 Screenshots
 
-### 开始使用
+### Start
 
 ![start.png](https://img.hacpai.com/file/2020/03/start-6fec3c72.png)
 
-### 后台首页
+### Console
 
 ![console.png](https://img.hacpai.com/file/2020/03/console-ff45ec74.png)
 
-### 编辑文章
+### Post
 
 ![post.png](https://img.hacpai.com/file/2020/03/post-acb91edb.png)
 
-### 选择皮肤
+### Skin
 
 ![skins.png](https://img.hacpai.com/file/2019/08/61179517afd61b00a63611e987d5ddea6d6a0fc9-0d368d02.png)
 
-### 前台界面
+### Front
 
 ![pinghsu.png](https://img.hacpai.com/file/2020/03/pinghsu-91c48743.png)
 
@@ -92,9 +90,9 @@ https://hacpai.com/top/solo
 
 ![Jane.png](https://img.hacpai.com/file/2020/03/Jane-55b0414c.png)
 
-## 🍱 皮肤
+## 🍱 Skins
 
-目前内置的皮肤如下，可点击进行预览：
+The current built-in skins are as follows, you can click to preview:
 
 * [Bubble](https://88250.b3log.org/?skin=Bubble)
 * [Casper](https://88250.b3log.org/?skin=Casper)
@@ -117,42 +115,40 @@ https://hacpai.com/top/solo
 * [tree-house](https://88250.b3log.org/?skin=tree-house)
 * [yilia](https://88250.b3log.org/?skin=yilia)
 
-欢迎在[这里](https://github.com/88250/solo/issues/12449)推荐好看的皮肤，我们会尽量进行制作。
+Welcome to [here](https://github.com/88250/solo/issues/2) recommend good-looking skin, we will try to make it.
 
-## 🛠️ 安装
+## 🛠️ Setup
 
-Solo 支持“动静两用”：
+Solo supports "dynamic and static":
 
-* 动态博客：在服务器上搭建，进程常驻内存运行，在线使用
-* 静态博客：在本地电脑运行，写作完成后生成导出静态站点
+* Dynamic blog: built on the server, the process runs in resident memory, and is used online
+* Static blog: run on local computer, generate and export static site after writing
 
-### 本地运行
+### Run locally
 
-本地运行主要用于试用或者生成静态站点，生成静态站点的用法请参考[这里](https://hacpai.com/article/1579053576274)。
+Local operation is mainly used for trial or static site generation, please refer to [here](https://hacpai.com/article/1579053576274) for usage of static site generation.
 
-[下载](https://github.com/88250/solo/releases)最新的 Solo 包解压，进入解压目录执行：
+[Download](https://github.com/88250/solo/releases) and unzip the latest Solo package, enter the decompression directory and execute:
 
 * Windows: `java -cp "lib/*;." org.b3log.solo.Server`
 * Unix-like： `java -cp "lib/*:." org.b3log.solo.Server`
 
-如果你有 Java 开发环境，可参考[这里](https://hacpai.com/article/1493822943172)通过源码构建运行。
+If you have a Java development environment, you can refer to [here](https://hacpai.com/article/1493822943172) to build and run through the source code.
 
-本地运行
+### Docker
 
-### Docker 部署
+Docker deployment is a dynamic blog usage, mainly used to deploy dynamic blogs on the server.
 
-Docker 方式部署是动态博客用法，主要用于在服务器上部署动态博客。
-
-#### 获取最新镜像
+#### Get the latest image
 
 ```shell
 docker pull b3log/solo
 ```
 
-#### 启动容器
+#### Start the container
 
-* 使用 MySQL
-  先手动建库（库名 `solo` ，字符集使用 `utf8mb4` ，排序规则 `utf8mb4_general_ci` ），然后启动容器：
+* Use MySQL
+  First create database schema manually (schema name `solo`, character set use` utf8mb4`, sorting rule `utf8mb4_general_ci`), and then start the container:
   ```shell
   docker run --detach --name solo --network=host \
       --env RUNTIME_DB="MYSQL" \
@@ -163,8 +159,8 @@ docker pull b3log/solo
       b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost --server_port=
   ```
 
-  为了简单，使用了主机网络模式来连接主机上的 MySQL。
-* 使用 H2 Database
+  For simplicity, the host network mode is used to connect to MySQL on the host.
+* Use H2 Database
   ```shell
   docker run --detach --name solo --volume ~/solo_h2/:/opt/solo/h2/ --publish 8080:8080 \
       --env RUNTIME_DB="H2" \
@@ -175,52 +171,52 @@ docker pull b3log/solo
       b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost --server_port=
   ```
 
-启动参数说明：
+Start command line arguments description:
 
-* `--listen_port` ：进程监听端口
-* `--server_scheme` ：最终访问协议，如果反代服务启用了 HTTPS 这里也需要改为 `https`
-* `--server_host` ：最终访问域名或公网 IP，不要带端口
-* `--server_port` ：最终访问端口，使用浏览器默认的 80 或者 443 的话值留空即可
+* `--listen_port`: the process listen port
+* `--server_scheme`: the protocol for the final visiting, if the anti-generation service is enabled with HTTPS, it also needs to be changed to `https`
+* `--server_host`: the domain name or public IP for the final visiting, do not bring port
+* `--server_port`: the port for the final visiting, use the default 80 or 443 of the browser to leave the value blank
 
-完整启动参数的说明可以使用 `-h` 来查看。
+The description of the complete startup arguments can be viewed using `-h`.
 
-#### 日志配置
+#### Logging configuration
 
-默认通过 log4j2 将日志打印到标准输出流，可以通过 `docker logs solo` 进行查看。如果需要覆盖 log4j 配置，可通过挂载文件实现：
+By default, logs are printed to the standard output stream through log4j2, which can be viewed through `docker logs solo`. If you need to override the log4j configuration, you can mount the file to achieve:
 
 ```shell
 --volume ~/log4j2.xml:/opt/solo/log4j2.xml
 ```
 
-#### 皮肤配置
+#### Skin configuration
 
-如果要使用其他皮肤，可以挂载目录 skins（里面需要包含所需使用的所有皮肤）：
+If you want to use other skins, you can mount the directory skins (it needs to contain all the skins you want to use):
 
 ```shell
 --volume ~/skins/:/opt/solo/skins/
 ```
 
-#### 版本升级
+#### Version upgrade
 
-1. 拉取最新镜像
-2. 重启容器
+1. Pull the latest image
+2. Restart the container
 
-可参考[这里](https://github.com/88250/solo/blob/master/scripts/docker-restart.sh)编写一个重启脚本，并通过 crontab 每日凌晨运行来实现自动更新。
+You can refer to [here](https://github.com/88250/solo/blob/master/scripts/docker-restart.sh) to write a restart script and run it through crontab every morning to achieve automatic update.
 
 #### Docker Compose
 
-请参考[这里](https://github.com/liumapp/solo-in-docker)，感谢 [@liumapp](https://github.com/liumapp) 提供。
+Please refer to [here](https://github.com/liumapp/solo-in-docker), thanks to [@liumapp](https://github.com/liumapp) for providing it.
 
-### NGINX 反代
+### NGINX reverse proxy
 
 ```nginx
 upstream backend {
-    server localhost:8080; # Solo 监听端口
+    server localhost:8080; # Solo listen port
 }
 
 server {
     listen       80;
-    server_name  88250.b3log.org; # 博客域名
+    server_name  88250.b3log.org; # blog domain
 
     access_log off;
 
@@ -233,16 +229,16 @@ server {
 }
 ```
 
-**请务必配置**：
+**Be sure to configure**：
 
 ```nginx
 proxy_set_header  Host $http_host;
 proxy_set_header  X-Real-IP $remote_addr;
 ```
 
-否则访问页面可能会出现“Latke 配置错误”或者样式异常；统计在线访客功能会不正常。
+Otherwise, "Latke configuration error" or abnormal style may appear on the access page; the function of counting online visitors will be abnormal.
 
-## 📜 文档
+## 📜 Documentation
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
 * [从零开始安装 Solo 博客](https://hacpai.com/article/1565021959471)（感谢 @InkDP 分享）
