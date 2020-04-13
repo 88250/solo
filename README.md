@@ -1,5 +1,5 @@
 <p align = "center">
-<img alt="Solo" src="https://user-images.githubusercontent.com/873584/52320401-2593e600-2a0a-11e9-9ba1-db79ee71d1af.png">
+<img alt="Solo" src="https://static.b3log.org/images/brand/solo-128.png">
 <br><br>
 Small and beautiful blog system, designed for programmers
 <br><br>
