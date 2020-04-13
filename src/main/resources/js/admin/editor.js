@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.0, Apr 12, 2020
+ * @version 1.5.1.0, Apr 13, 2020
  */
 admin.editors = {}
 
@@ -83,8 +83,10 @@ $.extend(SoloEditor.prototype, {
         url: Label.uploadURL,
         token: Label.uploadToken,
         filename: function (name) {
-          return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
-        }
+          return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
+            replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
+            replace('/\\s/g', '')
+        },
       },
       height: this.conf.height,
       counter: {
@@ -100,34 +102,35 @@ $.extend(SoloEditor.prototype, {
         emoji: Label.emoji,
       },
       toolbarConfig: {
-        pin: true
-      }
+        pin: true,
+      },
+      after: () => {
+        if (typeof this.conf.fun === 'function') {
+          this.conf.fun()
+        }
+      },
     }
 
     if ($(window).width() < 768) {
       options.toolbar = [
-        "emoji",
-        "bold",
-        "link",
-        "list",
-        "edit-mode",
-        "preview",
-        "fullscreen",
+        'emoji',
+        'bold',
+        'link',
+        'list',
+        'edit-mode',
+        'preview',
+        'fullscreen',
       ]
       options.resize.enable = false
-      options.toolbarConfig.pin = true;
+      options.toolbarConfig.pin = true
     }
 
     if (typeof Vditor === 'undefined') {
       Util.loadVditor(() => {
         this.editor = new Vditor(this.conf.id, options)
-      });
+      })
     } else {
       this.editor = new Vditor(this.conf.id, options)
-    }
-
-    if (typeof this.conf.fun === 'function') {
-      this.conf.fun()
     }
   },
   /*
