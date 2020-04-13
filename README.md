@@ -135,7 +135,7 @@ Local operation is mainly used for trial or static site generation, please refer
 [Download](https://github.com/88250/solo/releases) and unzip the latest Solo package, enter the decompression directory and execute:
 
 * Windows: `java -cp "lib/*;." org.b3log.solo.Server`
-* Unix-like： `java -cp "lib/*:." org.b3log.solo.Server`
+* Unix-like: `java -cp "lib/*:." org.b3log.solo.Server`
 
 If you have a Java development environment, you can refer to [here](https://hacpai.com/article/1493822943172) to build and run through the source code.
 
@@ -233,7 +233,7 @@ server {
 }
 ```
 
-**Be sure to configure**：
+**Be sure to configure**: 
 
 ```nginx
 proxy_set_header  Host $http_host;
@@ -263,8 +263,8 @@ Solo uses the [Mulan Permissive Software License，Version 2](http://license.cos
 
 * [jQuery](https://github.com/jquery/jquery): Front-end JavaScript tool library
 * [Vditor](https://github.com/88250/vditor): In-browser Markdown editor
-* [Highlight.js](https://github.com/isagalaev/highlight.js)：Front-end code syntax highlighting library
-* [pjax](https://github.com/defunkt/jquery-pjax)：pushState + AJAX = pjax
+* [Highlight.js](https://github.com/isagalaev/highlight.js): Front-end code syntax highlighting library
+* [pjax](https://github.com/defunkt/jquery-pjax): pushState + AJAX = pjax
 * [jsoup](https://github.com/jhy/jsoup): Java HTML parser
 * [flexmark](https://github.com/vsch/flexmark-java): Java Markdown processor
 * [Apache Commons](http://commons.apache.org): Java commons library
