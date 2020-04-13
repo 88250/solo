@@ -211,7 +211,7 @@ You can refer to [here](https://github.com/88250/solo/blob/master/scripts/docker
 
 Please refer to [here](https://github.com/liumapp/solo-in-docker), thanks to [@liumapp](https://github.com/liumapp) for providing it.
 
-### NGINX reverse proxy
+### Nginx reverse proxy
 
 ```nginx
 upstream backend {
