@@ -32,6 +32,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.GitHubs;
+import org.b3log.solo.util.Statics;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -471,6 +472,8 @@ public class ArticleMgmtService {
             }
 
             transaction.commit();
+
+            Statics.clear();
         } catch (final ServiceException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -565,6 +568,8 @@ public class ArticleMgmtService {
             articleRepository.add(article);
             transaction.commit();
 
+            Statics.clear();
+
             article.put(Common.POST_TO_COMMUNITY, postToCommunity);
             if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS)) {
                 final JSONObject eventData = new JSONObject();
@@ -596,6 +601,8 @@ public class ArticleMgmtService {
             articleRepository.remove(articleId);
             commentRepository.removeComments(articleId);
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

@@ -14,7 +14,6 @@ package org.b3log.solo.cache;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.util.Solos;
-import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -59,7 +58,6 @@ public class PageCache {
         final String pageId = page.optString(Keys.OBJECT_ID);
 
         cache.put(pageId, Solos.clone(page));
-        Statics.clear();
     }
 
     /**
@@ -69,7 +67,6 @@ public class PageCache {
      */
     public void removePage(final String id) {
         cache.remove(id);
-        Statics.clear();
     }
 
     /**
@@ -77,6 +74,5 @@ public class PageCache {
      */
     public void clear() {
         cache.clear();
-        Statics.clear();
     }
 }

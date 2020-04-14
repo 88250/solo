@@ -29,6 +29,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -42,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Apr 14, 2020
  * @since 2.9.5
  */
 @Singleton
@@ -195,6 +196,7 @@ public class OAuthProcessor {
         }
 
         Solos.login(user, response);
+        Statics.clear();
         context.sendRedirect(referer);
         LOGGER.log(Level.INFO, "Logged in [name={}, remoteAddr={}] with oauth", userName, Requests.getRemoteAddr(request));
     }

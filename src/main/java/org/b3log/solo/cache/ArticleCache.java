@@ -15,7 +15,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.util.Solos;
-import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -79,7 +78,6 @@ public class ArticleCache {
     public void putArticle(final JSONObject article) {
         idCache.put(article.optString(Keys.OBJECT_ID), Solos.clone(article));
         permalinkCache.put(article.optString(Article.ARTICLE_PERMALINK), Solos.clone(article));
-        Statics.clear();
     }
 
     /**
@@ -95,7 +93,6 @@ public class ArticleCache {
         final String permalink = article.optString(Article.ARTICLE_PERMALINK);
         idCache.remove(id);
         permalinkCache.remove(permalink);
-        Statics.clear();
     }
 
     /**
@@ -104,6 +101,5 @@ public class ArticleCache {
     public void clear() {
         idCache.clear();
         permalinkCache.clear();
-        Statics.clear();
     }
 }

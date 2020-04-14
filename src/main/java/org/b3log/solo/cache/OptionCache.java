@@ -15,7 +15,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.util.Solos;
-import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -73,7 +72,6 @@ public class OptionCache {
      */
     public void putCategory(final String category, final JSONObject mergedOptions) {
         categoryCache.put(category, mergedOptions);
-        Statics.clear();
     }
 
     /**
@@ -101,8 +99,6 @@ public class OptionCache {
 
         final String category = option.optString(Option.OPTION_CATEGORY);
         removeCategory(category);
-
-        Statics.clear();
     }
 
     /**
@@ -120,7 +116,6 @@ public class OptionCache {
         removeCategory(category);
 
         cache.remove(id);
-        Statics.clear();
     }
 
     /**
@@ -129,6 +124,5 @@ public class OptionCache {
     public void clear() {
         cache.clear();
         categoryCache.clear();
-        Statics.clear();
     }
 }

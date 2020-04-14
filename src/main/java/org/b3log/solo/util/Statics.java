@@ -75,6 +75,11 @@ public final class Statics {
      * @return HTML, returns {@code null} if not found
      */
     public static String get(final RequestContext context) {
+        if (Solos.isLoggedIn(context)) {
+            // 登录用户不走缓存
+            return null;
+        }
+
         final String key = key(context);
         if (null == key) {
             return null;
@@ -101,6 +106,11 @@ public final class Statics {
      * @param context the specified context
      */
     public static void put(final RequestContext context) {
+        if (Solos.isLoggedIn(context)) {
+            // 登录用户生成的内容不写入缓存
+            return;
+        }
+
         final String key = key(context);
         if (null == key) {
             return;
