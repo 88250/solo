@@ -103,8 +103,6 @@ public abstract class AbstractTestCase {
         optionCache.clear();
         final PageCache pageCache = beanManager.getReference(PageCache.class);
         pageCache.clear();
-        final StatisticCache statisticCache = beanManager.getReference(StatisticCache.class);
-        statisticCache.clear();
         final UserCache userCache = beanManager.getReference(UserCache.class);
         userCache.clear();
     }
