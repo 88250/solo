@@ -420,6 +420,7 @@ public final class Server extends BaseServer {
      */
     private static void routeIndexProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
+        final StaticMidware staticMidware = beanManager.getReference(StaticMidware.class);
 
         final ArticleProcessor articleProcessor = beanManager.getReference(ArticleProcessor.class);
         final Dispatcher.RouterGroup articleGroup = Dispatcher.group();
@@ -443,12 +444,14 @@ public final class Server extends BaseServer {
 
         final BlogProcessor blogProcessor = beanManager.getReference(BlogProcessor.class);
         final Dispatcher.RouterGroup blogGroup = Dispatcher.group();
+        blogGroup.middlewares(staticMidware::handle);
         blogGroup.get("/manifest.json", blogProcessor::getPWAManifestJSON).
                 get("/blog/info", blogProcessor::getBlogInfo).
                 get("/blog/articles-tags", blogProcessor::getArticlesTags);
 
         final CategoryProcessor categoryProcessor = beanManager.getReference(CategoryProcessor.class);
         final Dispatcher.RouterGroup categoryGroup = Dispatcher.group();
+        categoryGroup.middlewares(staticMidware::handle);
         categoryGroup.get("/articles/category/{categoryURI}", categoryProcessor::getCategoryArticlesByPage).
                 get("/category/{categoryURI}", categoryProcessor::showCategoryArticles);
 
@@ -458,11 +461,13 @@ public final class Server extends BaseServer {
 
         final FeedProcessor feedProcessor = beanManager.getReference(FeedProcessor.class);
         final Dispatcher.RouterGroup feedGroup = Dispatcher.group();
+        feedGroup.middlewares(staticMidware::handle);
         feedGroup.router().get().head().uri("/atom.xml").handler(feedProcessor::blogArticlesAtom).
                 get().head().uri("/rss.xml").handler(feedProcessor::blogArticlesRSS);
 
         final IndexProcessor indexProcessor = beanManager.getReference(IndexProcessor.class);
         final Dispatcher.RouterGroup indexGroup = Dispatcher.group();
+        indexGroup.middlewares(staticMidware::handle);
         indexGroup.router().get(new String[]{"", "/", "/index.html"}, indexProcessor::showIndex);
         indexGroup.get("/start", indexProcessor::showStart).
                 get("/logout", indexProcessor::logout).
@@ -480,14 +485,17 @@ public final class Server extends BaseServer {
 
         final SitemapProcessor sitemapProcessor = beanManager.getReference(SitemapProcessor.class);
         final Dispatcher.RouterGroup sitemapGroup = Dispatcher.group();
+        sitemapGroup.middlewares(staticMidware::handle);
         sitemapGroup.get("/sitemap.xml", sitemapProcessor::sitemap);
 
         final TagProcessor tagProcessor = beanManager.getReference(TagProcessor.class);
         final Dispatcher.RouterGroup tagGroup = Dispatcher.group();
+        tagGroup.middlewares(staticMidware::handle);
         tagGroup.get("/tags/{tagTitle}", tagProcessor::showTagArticles);
 
         final UserTemplateProcessor userTemplateProcessor = beanManager.getReference(UserTemplateProcessor.class);
         final Dispatcher.RouterGroup userTemplateGroup = Dispatcher.group();
+        userTemplateGroup.middlewares(staticMidware::handle);
         userTemplateGroup.get("/{name}.html", userTemplateProcessor::showPage);
     }
 
