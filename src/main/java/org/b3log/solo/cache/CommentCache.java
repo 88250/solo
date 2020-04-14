@@ -14,6 +14,7 @@ package org.b3log.solo.cache;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -56,6 +57,7 @@ public class CommentCache {
      */
     public void putComment(final JSONObject comment) {
         cache.put(comment.optString(Keys.OBJECT_ID), Solos.clone(comment));
+        Statics.clear();
     }
 
     /**
@@ -65,6 +67,7 @@ public class CommentCache {
      */
     public void removeComment(final String id) {
         cache.remove(id);
+        Statics.clear();
     }
 
     /**
@@ -72,5 +75,6 @@ public class CommentCache {
      */
     public void clear() {
         cache.clear();
+        Statics.clear();
     }
 }

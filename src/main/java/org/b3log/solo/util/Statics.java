@@ -13,7 +13,6 @@ package org.b3log.solo.util;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +34,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Static utilities.
+ * Static utilities. 页面静态化 https://github.com/88250/solo/issues/107
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Apr 14, 2020
@@ -129,28 +128,12 @@ public final class Statics {
         }
     }
 
-    private static File[] files;
-
-    /**
-     * Gets static HTML randomly.
-     *
-     * @return HTML
-     */
-    public static String random() {
-        if (null == DIR) {
-            return null;
+    public static void clear() {
+        try {
+            FileUtils.cleanDirectory(DIR);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Clears static cached files failed", e);
         }
-
-        if (null == files) {
-            files = DIR.listFiles();
-            if (null == files) {
-                return null;
-            }
-        }
-
-        final File file = files[RandomUtils.nextInt(files.length)];
-
-        return readFile(file);
     }
 
     private static String readFile(final File file) {
