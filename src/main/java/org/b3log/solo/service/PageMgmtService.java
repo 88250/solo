@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -24,7 +23,7 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.json.JSONException;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 /**
@@ -32,7 +31,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.0.19, Jun 6, 2019
+ * @version 1.1.0.20, Apr 15, 2020
  * @since 0.4.0
  */
 @Service
@@ -128,6 +127,8 @@ public class PageMgmtService {
             pageRepository.update(pageId, newPage);
             transaction.commit();
 
+            Statics.clear();
+
             LOGGER.log(Level.DEBUG, "Updated a page[id={}]", pageId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -151,6 +152,8 @@ public class PageMgmtService {
             pageRepository.remove(pageId);
             commentRepository.removeComments(pageId);
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -199,15 +202,10 @@ public class PageMgmtService {
             final String ret = pageRepository.add(page);
             transaction.commit();
 
-            return ret;
-        } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
+            Statics.clear();
 
-            throw new ServiceException(e);
-        } catch (final RepositoryException e) {
+            return ret;
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -252,6 +250,8 @@ public class PageMgmtService {
             pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage, Page.PAGE_ORDER);
             pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage, Page.PAGE_ORDER);
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

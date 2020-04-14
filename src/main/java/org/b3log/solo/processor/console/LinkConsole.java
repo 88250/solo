@@ -128,7 +128,6 @@ public class LinkConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
         try {
             final JSONObject requestJSON = context.requestJSON();
             linkMgmtService.updateLink(requestJSON);

@@ -25,6 +25,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.util.Iterator;
@@ -34,7 +35,7 @@ import java.util.Locale;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.6, Apr 6, 2020
+ * @version 1.4.0.7, Apr 15, 2020
  * @since 0.4.0
  */
 @Service
@@ -79,7 +80,6 @@ public class PreferenceMgmtService {
         }
 
         final Transaction transaction = optionRepository.beginTransaction();
-
         try {
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 
@@ -253,6 +253,7 @@ public class PreferenceMgmtService {
             transaction.commit();
 
             Markdowns.clearCache();
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

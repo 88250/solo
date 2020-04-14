@@ -29,6 +29,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.SkinMgmtService;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Statics;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -168,6 +169,8 @@ public class SkinConsole {
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            Statics.clear();
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

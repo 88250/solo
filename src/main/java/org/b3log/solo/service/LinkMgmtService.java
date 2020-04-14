@@ -21,13 +21,14 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 /**
  * Link management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Oct 23, 2019
+ * @version 1.0.0.3, Apr 15, 2020
  * @since 0.4.0
  */
 @Service
@@ -52,11 +53,11 @@ public class LinkMgmtService {
      */
     public void removeLink(final String linkId) throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
-
         try {
             linkRepository.remove(linkId);
-
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -88,12 +89,11 @@ public class LinkMgmtService {
             final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
             final String linkId = link.getString(Keys.OBJECT_ID);
             final JSONObject oldLink = linkRepository.get(linkId);
-
             link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
-
             linkRepository.update(linkId, link);
-
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -143,8 +143,9 @@ public class LinkMgmtService {
 
             linkRepository.update(srcLink.getString(Keys.OBJECT_ID), srcLink);
             linkRepository.update(targetLink.getString(Keys.OBJECT_ID), targetLink);
-
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -173,15 +174,14 @@ public class LinkMgmtService {
      */
     public String addLink(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
-
         try {
             final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
             final int maxOrder = linkRepository.getMaxOrder();
-
             link.put(Link.LINK_ORDER, maxOrder + 1);
             final String ret = linkRepository.add(link);
-
             transaction.commit();
+
+            Statics.clear();
 
             return ret;
         } catch (final Exception e) {

@@ -138,6 +138,9 @@ public final class Statics {
         }
     }
 
+    /**
+     * Clears all files under ~/.solo/static-cache.
+     */
     public static void clear() {
         try {
             FileUtils.cleanDirectory(DIR);
