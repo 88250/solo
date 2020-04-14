@@ -25,7 +25,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
-import org.b3log.solo.cache.StatisticCache;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.util.Solos;
@@ -41,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Statistic management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.5, Jan 8, 2020
+ * @version 2.0.1.6, Apr 14, 2020
  * @since 0.5.0
  */
 @Service
@@ -87,12 +86,6 @@ public class StatisticMgmtService {
      */
     @Inject
     private ArticleRepository articleRepository;
-
-    /**
-     * Statistic cache.
-     */
-    @Inject
-    private StatisticCache statisticCache;
 
     /**
      * Removes the expired online visitor.
@@ -267,6 +260,5 @@ public class StatisticMgmtService {
      */
     private void updateStatistic(final String id, final JSONObject statistic) throws RepositoryException {
         optionRepository.update(id, statistic);
-        statisticCache.clear();
     }
 }
