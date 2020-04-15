@@ -38,7 +38,7 @@ import java.nio.charset.StandardCharsets;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Apr 15, 2020
  * @since 0.4.6
  */
 @Singleton
@@ -146,7 +146,12 @@ public class BlogProcessor {
         jsonObject.put("tagCount", tagQueryService.getTagCount());
         jsonObject.put("servePath", Latkes.getServePath());
         jsonObject.put("staticServePath", Latkes.getStaticServePath());
-        jsonObject.put("version", Server.VERSION);
+        String version = Server.VERSION;
+        final String gitCommit = System.getenv("git_commit");
+        if (StringUtils.isNotBlank(gitCommit)) {
+            version += ", commit " + gitCommit;
+        }
+        jsonObject.put("version", version);
         jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
         jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
         jsonObject.put("locale", Latkes.getLocale());
