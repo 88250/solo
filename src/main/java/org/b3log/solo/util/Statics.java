@@ -187,8 +187,13 @@ public final class Statics {
         }
 
         String ret;
-        final String requestURI = context.requestURI();
-        ret = StringUtils.replace(requestURI, "/", "_");
+        String requestURL = context.requestURI();
+        String requestQueryStr = context.requestQueryStr();
+        if (StringUtils.isNotBlank(requestQueryStr)) {
+            requestURL += "?" + requestQueryStr;
+        }
+        ret = StringUtils.replace(requestURL, "/", "_");
+        ret = StringUtils.replace(ret, "?", "_");
         if (Solos.isMobile(context.getRequest())) {
             ret = "m" + ret;
         }

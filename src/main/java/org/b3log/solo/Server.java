@@ -444,7 +444,6 @@ public final class Server extends BaseServer {
 
         final BlogProcessor blogProcessor = beanManager.getReference(BlogProcessor.class);
         final Dispatcher.RouterGroup blogGroup = Dispatcher.group();
-        blogGroup.middlewares(staticMidware::handle);
         blogGroup.get("/manifest.json", blogProcessor::getPWAManifestJSON).
                 get("/blog/info", blogProcessor::getBlogInfo).
                 get("/blog/articles-tags", blogProcessor::getArticlesTags);
