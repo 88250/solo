@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.0.0, Apr 12, 2020
+ * @version 2.8.0.0, Apr 16, 2020
  */
 window.Page = function (tips) {
   this.currentCommentId = ''
@@ -151,6 +151,8 @@ $.extend(Page.prototype, {
         'code',
         'inline-code',
         'table',
+        'insert-before',
+        'insert-after',
         '|',
         'undo',
         'redo',
@@ -161,15 +163,16 @@ $.extend(Page.prototype, {
         'format',
         '|',
         'fullscreen',
+        'devtools',
         'info',
         'help',
       ], resizeEnable = true
       if ($(window).width() < 768) {
         toolbar = [
           'emoji',
-          'bold',
           'link',
-          'list',
+          'upload',
+          'insert-after',
           'edit-mode',
           'preview',
           'fullscreen',

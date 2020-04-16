@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.0, Apr 13, 2020
+ * @version 1.6.0.0, Apr 16, 2020
  */
 admin.editors = {}
 
@@ -114,9 +114,9 @@ $.extend(SoloEditor.prototype, {
     if ($(window).width() < 768) {
       options.toolbar = [
         'emoji',
-        'bold',
         'link',
-        'list',
+        'upload',
+        'insert-after',
         'edit-mode',
         'preview',
         'fullscreen',
