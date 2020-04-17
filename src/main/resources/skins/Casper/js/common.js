@@ -13,7 +13,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.0, Apr 11, 2020
+ * @version 1.1.0.0, Apr 18, 2020
  */
 
 import '../../../js/common'
@@ -83,6 +83,7 @@ window.Skin = {
         $('.article__top').css('top', 0)
       } else {
         $('.article__top').css('top', -61)
+        $('.article__share .item__qr').hide();
       }
 
       if ($('.article__toc li').length === 0) {
