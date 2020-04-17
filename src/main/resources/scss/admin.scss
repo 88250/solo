@@ -304,6 +304,7 @@ a[class*=" icon-"]:hover {
   top: 0;
   background-color: #32323a;
   overflow: auto;
+  z-index: 1;
   &::-webkit-scrollbar {
     display: none;
   }

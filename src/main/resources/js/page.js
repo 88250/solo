@@ -95,7 +95,7 @@ $.extend(Page.prototype, {
             value: shareURL,
             size: 99,
           })
-          $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`)
+          $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`).show()
         } else {
           $qrCode.slideToggle()
         }
