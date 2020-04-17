@@ -25,6 +25,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -34,7 +35,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Apr 17, 2020
  * @since 0.4.0
  */
 @Singleton
@@ -87,6 +88,8 @@ public class PluginConsole {
         final JSONObject result = pluginMgmtService.setPluginStatus(pluginId, status);
 
         renderer.setJSONObject(result);
+
+        Statics.clear();
     }
 
     /**
