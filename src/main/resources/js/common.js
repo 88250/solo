@@ -115,7 +115,9 @@ window.Util = {
           Util.uvstat.renderCmtStat(
             window.utilOptions && window.utilOptions.cmtCountCB)
           // 看板娘背景
-          soloKanbanniang && soloKanbanniang.bgChange()
+          if (typeof soloKanbanniang !== 'undefined') {
+            soloKanbanniang.bgChange && soloKanbanniang.bgChange()
+          }
           cb && cb()
         },
       })
