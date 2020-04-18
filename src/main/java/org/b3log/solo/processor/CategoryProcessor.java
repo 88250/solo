@@ -43,7 +43,7 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, Feb 27, 2020
+ * @version 2.0.0.2, Apr 18, 2020
  * @since 2.0.0
  */
 @Singleton
@@ -89,12 +89,6 @@ public class CategoryProcessor {
      */
     @Inject
     private CategoryQueryService categoryQueryService;
-
-    /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Gets category articles paged with the specified context.
@@ -191,8 +185,6 @@ public class CategoryProcessor {
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
-
-            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException | JSONException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

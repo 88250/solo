@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Apr 18, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -116,12 +116,6 @@ public class ArticleProcessor {
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
-
-    /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Event manager.
@@ -608,8 +602,6 @@ public class ArticleProcessor {
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
-
-            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -663,8 +655,6 @@ public class ArticleProcessor {
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
-
-            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             context.sendError(404);
@@ -724,12 +714,6 @@ public class ArticleProcessor {
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
-
-            if (!StatisticMgmtService.hasBeenServed(context, response)) {
-                articleMgmtService.incViewCount(articleId);
-            }
-
-            statisticMgmtService.incBlogViewCount(context, response);
 
             // Fire [Before Render Article] event
             final JSONObject eventData = new JSONObject();

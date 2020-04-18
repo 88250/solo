@@ -29,7 +29,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -46,7 +45,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Apr 18, 2020
  * @since 0.4.5
  */
 @Singleton
@@ -68,12 +67,6 @@ public class UserTemplateProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Option query service.
@@ -127,7 +120,6 @@ public class UserTemplateProcessor {
             dataModelService.fillUsite(dataModel);
             dataModelService.fillUserTemplate(context, template, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
-            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

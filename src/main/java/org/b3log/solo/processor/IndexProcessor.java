@@ -36,7 +36,6 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -49,8 +48,8 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
- * @author <a href="https://vanessa.b3log.org">Vanessa</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
+ * @version 2.0.0.1, Apr 18, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -78,12 +77,6 @@ public class IndexProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Initialization service.
@@ -142,8 +135,6 @@ public class IndexProcessor {
             final int nextPageNum = currentPageNum + 1 > pageCount ? pageCount : currentPageNum + 1;
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
             dataModel.put(Common.PATH, "");
-
-            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

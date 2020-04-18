@@ -38,7 +38,7 @@ import java.util.Map;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Apr 18, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -84,12 +84,6 @@ public class TagProcessor {
      */
     @Inject
     private TagQueryService tagQueryService;
-
-    /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Shows articles related with a tag with the specified context.
@@ -138,7 +132,6 @@ public class TagProcessor {
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
-            statisticMgmtService.incBlogViewCount(context, context.getResponse());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -645,46 +645,6 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Increments the view count of the article specified by the given article id.
-     *
-     * @param articleId the given article id
-     * @throws ServiceException service exception
-     */
-    public void incViewCount(final String articleId) throws ServiceException {
-        // v3.7.0 后开始使用社区浏览计数服务 https://github.com/Vanessa219/uvstat
-
-//        JSONObject article;
-//
-//        try {
-//            article = articleRepository.get(articleId);
-//
-//            if (null == article) {
-//                return;
-//            }
-//        } catch (final RepositoryException e) {
-//            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
-//
-//            return;
-//        }
-//
-//        final Transaction transaction = articleRepository.beginTransaction();
-//        try {
-//            article.put(Article.ARTICLE_VIEW_COUNT, article.getInt(Article.ARTICLE_VIEW_COUNT) + 1);
-//            articleRepository.update(articleId, article, ARTICLE_VIEW_COUNT);
-//
-//            transaction.commit();
-//        } catch (final Exception e) {
-//            if (transaction.isActive()) {
-//                transaction.rollback();
-//            }
-//
-//            LOGGER.log(Level.WARN, "Updates article view count failed");
-//
-//            throw new ServiceException(e);
-//        }
-    }
-
-    /**
      * Un-archive an article specified by the given specified article id.
      *
      * @param articleId the given article id
