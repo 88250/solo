@@ -25,13 +25,6 @@
             &copy; ${year}
             <a href="${servePath}">${blogTitle}</a>
             ${footerContent}
-            Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>
-
-            <div class="fn-right">
-                Theme ${skinDirName}
-                <sup>[<a href="https://github.com/iissnan/hexo-theme-next" target="_blank">ref</a>]</sup>
-                by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
-            </div>
         </div>
     </div>
 </footer>

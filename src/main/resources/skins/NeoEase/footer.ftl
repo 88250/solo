@@ -14,10 +14,7 @@
 <div class="footer">
     <div class="wrapper">
         <div class="left">
-            <span style="color: gray;">&copy; ${year}</span> <a href="${servePath}">${blogTitle}</a> ${footerContent}<br/>
-            Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>&nbsp;&nbsp;
-            Theme ${skinDirName}
-            by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+            <span style="color: gray;">&copy; ${year}</span> <a href="${servePath}">${blogTitle}</a> ${footerContent}
         </div>
         <div class="clear"></div>
     </div>

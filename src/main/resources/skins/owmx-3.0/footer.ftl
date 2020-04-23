@@ -13,8 +13,6 @@
 -->
 <footer>
     <span>&copy; ${year}</span> <a href="${servePath}">${blogTitle}</a> ${footerContent}
-    Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>&nbsp;&nbsp;
-    Theme ${skinDirName} by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
     <div onclick="Util.goTop();">${goTopLabel}</div>
 </footer>
 <#include "../../common-template/label.ftl">

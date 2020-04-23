@@ -11,10 +11,7 @@
     See the Mulan PSL v2 for more details.
 
 -->
-<span style="color: gray;">&copy; ${year}</span> <a href="${servePath}">${blogTitle}</a> ${footerContent}<br/>
-Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>&nbsp;&nbsp;
-Theme ${skinDirName}
-by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+<span style="color: #ec0a8b;">&copy; ${year}</span> <a href="${servePath}">${blogTitle}</a> ${footerContent}
 <div class='goTopIcon' onclick='Util.goTop();'></div>
 <div class='goBottomIcon' onclick='Util.goBottom();'></div>
 <#include "../../common-template/label.ftl">

@@ -13,27 +13,16 @@
 -->
 <footer class="footer">
     <div class="fn-clear">
-        <div class="fn-left">
-            Theme ${skinDirName}
-            by
-            <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
-        </div>
-        <span class="fn-right">
-            ${viewCount1Label}<span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
-            &nbsp;
-            ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
-            <#if !staticSite>
+        ${viewCount1Label}<span data-uvstaturl="${servePath}">${statistic.statisticBlogViewCount}</span>
+        &nbsp;
+        ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
+        <#if !staticSite>
             &nbsp; ${onlineVisitor1Label}${onlineVisitorCnt}
-            </#if>
-        </span>
-    </div>
-    <div class="fn-clear">
+        </#if>
+        <br>
         &copy; ${year}
         <a href="${servePath}">${blogTitle}</a>
         ${footerContent}
-        <span class="fn-right">
-            Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>
-        </span>
     </div>
     <span onclick="Util.goTop()" class="icon-goup"></span>
 </footer>
