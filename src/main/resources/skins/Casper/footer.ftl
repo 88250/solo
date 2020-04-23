@@ -14,14 +14,10 @@
 <footer class="footer">
     <div class="wrapper fn__clear">
         <div class="fn__left">
+            <br>
             &copy; ${year}
             <a href="${servePath}">${blogTitle}</a>
-            ${footerContent} &nbsp;•&nbsp;
-            Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>
-            <br>
-            Theme ${skinDirName}
-            <sup>[<a href="https://github.com/TryGhost/Casper" target="_blank">ref</a>]</sup>
-            by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
+            ${footerContent}
         </div>
         <div class="fn__right">
             <a href="${servePath}/tags.html" rel="section">

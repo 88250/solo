@@ -15,13 +15,7 @@
 <div class="footer">
     <@userSite dir="n"></@userSite>
     <br>
-    &copy; ${year} <a href="${servePath}">${blogTitle}</a> ${footerContent} Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>
-    <div>
-        Theme ${skinDirName}
-        by
-        <a rel="friend" href="https://88250.b3log.org" target="_blank">88250</a>
-    </div>
-    <div><em>All rights reserved.</em></div>
+    &copy; ${year} <a href="${servePath}">${blogTitle}</a> ${footerContent}
 </div>
 
 <#include "../../common-template/label.ftl">
