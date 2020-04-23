@@ -15,11 +15,6 @@
     &copy; ${year}
     <a href="${servePath}">${blogTitle}</a>
     ${footerContent}
-    <span class="fn-right">
-        Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>&nbsp;&nbsp;
-        Theme ${skinDirName}
-        by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
-    </span>
 </footer>
 <#include "../../common-template/label.ftl">
 <script src="${staticServePath}/skins/${skinDirName}/js/common.min.js?${staticResourceVersion}"></script>

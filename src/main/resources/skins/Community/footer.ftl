@@ -13,12 +13,10 @@
 -->
 <div class="content paddingTop12 paddingBottom12">
     <div class="left">
+        <br>
         <div>
             <span style="color: gray;">&copy; ${year}</span> <a href="${servePath}">${blogTitle}</a> ${footerContent}
         </div>
-        Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>&nbsp;&nbsp;
-        Theme ${skinDirName}
-        by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
     </div>
     <div class="right nowrap">
         <div class="goTop right" onclick="Util.goTop();">${goTopLabel}</div>

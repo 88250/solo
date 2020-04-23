@@ -20,15 +20,6 @@
     <a href="${servePath}">${blogTitle}</a>
     ${footerContent}
     <div class="fn__none"></div>
-
-    <div class="fn__right">
-        Powered by  <a href="https://solo.b3log.org" target="_blank">Solo</a>
-        <div class="fn__none"></div>
-        &nbsp; &heartsuit;  &nbsp;
-        Theme ${skinDirName}
-        <sup>[<a href="https://github.com/hejianxian/hexo-theme-jane" target="_blank">ref</a>]</sup>
-        by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
-    </div>
 </footer>
 <div class="icon-up" onclick="Util.goTop()"></div>
 
