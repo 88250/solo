@@ -20,7 +20,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.Cookie;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
@@ -28,7 +27,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 
 import java.io.File;
@@ -43,7 +41,7 @@ import java.util.stream.Stream;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.7.0, Jan 14, 2020
+ * @version 1.2.0.0, Apr 30, 2020
  * @since 0.3.1
  */
 public final class Skins {
@@ -232,62 +230,19 @@ public final class Skins {
 
     /**
      * Gets skin directory name from the specified request.
-     * Refers to <a href="https://github.com/b3log/solo/issues/12060">前台皮肤切换</a> for more details.
-     *
-     * @param context the specified request context
-     * @return directory name, or {@code null} if not found
-     */
-    public static String getSkinDirName(final RequestContext context) {
-        // 1. Get skin from query
-        final String specifiedSkin = context.param(Option.CATEGORY_C_SKIN);
-        if (StringUtils.isNotBlank(specifiedSkin)) {
-            final Set<String> skinDirNames = Skins.getSkinDirNames();
-            if (skinDirNames.contains(specifiedSkin)) {
-                return specifiedSkin;
-            } else {
-                return null;
-            }
-        }
-
-        // 2. Get skin from cookie
-        return getSkinDirNameFromCookie(context.getRequest());
-    }
-
-    /**
-     * Gets skin directory name from the specified request's cookie.
+     * Refers to <a href="https://github.com/b3log/solo/issues/12060">前台皮肤切换</a> and
+     * <a href="https://github.com/88250/solo/issues/116">调整前台动态皮肤预览逻辑</a> for more details.
      *
      * @param request the specified request
      * @return directory name, or {@code null} if not found
      */
-    public static String getSkinDirNameFromCookie(final Request request) {
-        final Set<String> skinDirNames = Skins.getSkinDirNames();
-        boolean isMobile = Solos.isMobile(request);
-        String skin = null, mobileSkin = null;
-        final Set<Cookie> cookies = request.getCookies();
-        if (!cookies.isEmpty()) {
-            for (final Cookie cookie : cookies) {
-                if (Common.COOKIE_NAME_SKIN.equals(cookie.getName()) && !isMobile) {
-                    final String s = cookie.getValue();
-                    if (skinDirNames.contains(s)) {
-                        skin = s;
-                        break;
-                    }
-                }
-                if (Common.COOKIE_NAME_MOBILE_SKIN.equals(cookie.getName()) && isMobile) {
-                    final String s = cookie.getValue();
-                    if (skinDirNames.contains(s)) {
-                        mobileSkin = s;
-                        break;
-                    }
-                }
+    public static String getQuerySkin(final Request request) {
+        final String specifiedSkin = request.getParameter(Option.CATEGORY_C_SKIN);
+        if (StringUtils.isNotBlank(specifiedSkin)) {
+            final Set<String> skinDirNames = Skins.getSkinDirNames();
+            if (skinDirNames.contains(specifiedSkin)) {
+                return specifiedSkin;
             }
-        }
-
-        if (StringUtils.isNotBlank(skin)) {
-            return skin;
-        }
-        if (StringUtils.isNotBlank(mobileSkin)) {
-            return mobileSkin;
         }
 
         return null;
