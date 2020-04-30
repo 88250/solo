@@ -246,12 +246,6 @@ public final class Server extends BaseServer {
             }
         }
 
-        Dispatcher.startRequestHandler = new BeforeRequestHandler();
-        Dispatcher.HANDLERS.add(1, new SkinHandler());
-        Dispatcher.HANDLERS.add(2, new InitCheckHandler());
-        Dispatcher.HANDLERS.add(3, new PermalinkHandler());
-        Dispatcher.endRequestHandler = new AfterRequestHandler();
-
         routeProcessors();
 
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
@@ -410,6 +404,12 @@ public final class Server extends BaseServer {
     }
 
     public static void routeProcessors() {
+        Dispatcher.startRequestHandler = new BeforeRequestHandler();
+        Dispatcher.HANDLERS.add(1, new SkinHandler());
+        Dispatcher.HANDLERS.add(2, new InitCheckHandler());
+        Dispatcher.HANDLERS.add(3, new PermalinkHandler());
+        Dispatcher.endRequestHandler = new AfterRequestHandler();
+
         routeConsoleProcessors();
         routeIndexProcessors();
         Dispatcher.mapping();

@@ -25,5 +25,6 @@ public class MockRequest extends Request {
 
     public MockRequest(final FullHttpRequest req) {
         super(null, req);
+        req.headers().set("X-Forwarded-For", "127.0.0.1");
     }
 }

@@ -19,7 +19,6 @@ import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.ioc.Discoverer;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
@@ -40,13 +39,12 @@ import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.util.Collection;
 
 /**
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 4.0.0.0, Feb 9, 2020
+ * @version 4.0.0.1, Apr 30, 2020
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -55,6 +53,11 @@ public abstract class AbstractTestCase {
      * Bean manager.
      */
     private BeanManager beanManager;
+
+    static {
+        Latkes.init();
+        Server.routeProcessors();
+    }
 
     /**
      * Before class.
@@ -67,10 +70,7 @@ public abstract class AbstractTestCase {
      */
     @BeforeClass
     public void beforeClass() throws Exception {
-        Latkes.init();
-
-        final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
-        BeanManager.start(classes);
+        System.out.println("before class");
         beanManager = BeanManager.getInstance();
 
         final Connection connection = Connections.getConnection();
@@ -78,6 +78,7 @@ public abstract class AbstractTestCase {
         connection.close();
 
         JdbcRepositories.initAllTables();
+        InitService.inited = false;
 
         initSolo();
     }
@@ -147,8 +148,6 @@ public abstract class AbstractTestCase {
      */
     public MockDispatcher mockDispatcher(final Request request, final Response response) {
         final MockDispatcher ret = new MockDispatcher();
-        ret.init();
-        Server.routeProcessors();
         ret.handle(request, response);
 
         return ret;

@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
  * {@link ErrorProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Feb 22, 2019
+ * @version 1.0.1.4, Apr 30, 2020
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -33,11 +33,11 @@ public class ErrorProcessorTestCase extends AbstractTestCase {
      */
     public void showErrorPage() {
         final MockRequest request = mockRequest();
-        request.setRequestURI("/error/403");
+        request.setRequestURI("/notfound");
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "<title>403 Forbidden! - Solo 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>404 Not Found! - Solo 的个人博客</title>"));
     }
 }

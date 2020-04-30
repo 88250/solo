@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.39, Apr 6, 2020
+ * @version 1.5.2.40, Apr 30, 2020
  * @since 0.4.0
  */
 @Service
@@ -133,7 +133,7 @@ public class InitService {
     /**
      * Flag of init status.
      */
-    private static boolean inited;
+    public static boolean inited;
 
     /**
      * Flag of printed init prompt.
