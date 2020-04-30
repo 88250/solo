@@ -23,7 +23,7 @@ window.Vcomment = Vcomment
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.2, Apr 30, 2020
+ * @version 2.2.1.0, Apr 30, 2020
  */
 
 /**
@@ -109,7 +109,14 @@ window.Util = {
           return true
         },
         callback: function () {
-          Util.parseMarkdown()
+          try {
+            // TODO vditor@3.1.21 移除 try cache
+            Util.parseMarkdown()
+          } catch (e) {
+          }
+          if (typeof Util.uvstat === 'undefined') {
+            Util.uvstat = new Uvstat()
+          }
           Util.uvstat.addStat()
           Util.uvstat.renderStat()
           Util.uvstat.renderCmtStat(
