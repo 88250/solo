@@ -49,7 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.4, Apr 2, 2020
+ * @version 3.0.1.5, Apr 30, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -634,6 +634,9 @@ public final class Server extends BaseServer {
         final Dispatcher.RouterGroup staticSiteConsoleGroup = Dispatcher.group();
         staticSiteConsoleGroup.middlewares(consoleAdminAuthMidware::handle);
         staticSiteConsoleGroup.put("/console/staticsite", staticSiteConsole::genSite);
+
+        final FetchUploadProcessor fetchUploadProcessor = beanManager.getReference(FetchUploadProcessor.class);
+        Dispatcher.post("/upload/fetch", fetchUploadProcessor::fetchUpload, consoleAuthMidware::handle);
     }
 
     /**

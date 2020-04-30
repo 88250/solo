@@ -29,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Image utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.0, Apr 12, 2020
+ * @version 1.2.0.0, Apr 30, 2020
  * @since 2.7.0
  */
 public final class Images {
@@ -43,6 +43,16 @@ public final class Images {
      * Community file service URL.
      */
     public static String COMMUNITY_FILE_URL = "https://img.hacpai.com";
+
+    /**
+     * Checks whether the specified URL has uploaded.
+     *
+     * @param url the specified URL
+     * @return {@code true} if it has uploaded, returns {@code false} otherwise
+     */
+    public static boolean uploaded(final String url) {
+        return StringUtils.startsWith(url, COMMUNITY_FILE_URL);
+    }
 
     /**
      * Qiniu image processing.
