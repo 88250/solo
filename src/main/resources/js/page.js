@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.0.0, Apr 16, 2020
+ * @version 2.8.0.1, Apr 30, 2020
  */
 window.Page = function (tips) {
   this.currentCommentId = ''
@@ -95,7 +95,8 @@ $.extend(Page.prototype, {
             value: shareURL,
             size: 99,
           })
-          $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`).show()
+          $qrCode.css('background-image', `url(${qr.toDataURL('image/jpeg')})`).
+            show()
         } else {
           $qrCode.slideToggle()
         }
@@ -132,6 +133,7 @@ $.extend(Page.prototype, {
 
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
+      var resizeEnable = true
       var toolbar = [
         'emoji',
         'headings',
@@ -153,29 +155,44 @@ $.extend(Page.prototype, {
         'table',
         'insert-before',
         'insert-after',
-        '|',
         'undo',
         'redo',
         '|',
-        'edit-mode',
-        'both',
-        'preview',
-        'format',
-        '|',
         'fullscreen',
-        'devtools',
-        'info',
-        'help',
-      ], resizeEnable = true
+        'edit-mode',
+        {
+          name: 'more',
+          toolbar: [
+            'both',
+            'code-theme',
+            'content-theme',
+            'export',
+            'outline',
+            'preview',
+            'format',
+            'devtools',
+            'info',
+            'help',
+          ],
+        }]
       if ($(window).width() < 768) {
         toolbar = [
           'emoji',
           'link',
-          'upload',
-          'insert-after',
           'edit-mode',
-          'preview',
-          'fullscreen',
+          'code-theme',
+          'content-theme',
+          {
+            name: 'more',
+            toolbar: [
+              'insert-after',
+              'fullscreen',
+              'preview',
+              'format',
+              'info',
+              'help',
+            ],
+          },
         ]
         resizeEnable = false
       }
@@ -214,7 +231,7 @@ $.extend(Page.prototype, {
           position: 'top',
         },
         lang: Label.langLabel,
-        toolbar: toolbar,
+        toolbar,
         after: () => {
           vditor.focus()
         },

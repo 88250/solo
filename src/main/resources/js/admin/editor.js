@@ -116,10 +116,20 @@ $.extend(SoloEditor.prototype, {
         'emoji',
         'link',
         'upload',
-        'insert-after',
         'edit-mode',
-        'preview',
-        'fullscreen',
+        'code-theme',
+        'content-theme',
+        {
+          name: 'more',
+          toolbar: [
+            'insert-after',
+            'fullscreen',
+            'preview',
+            'format',
+            'info',
+            'help',
+          ],
+        },
       ]
       options.resize.enable = false
       options.toolbarConfig.pin = true
