@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.RequestContext;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.SkinRenderer;
 
 import java.io.ByteArrayInputStream;

@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Skin handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 3, 2019
+ * @version 1.0.0.1, Apr 30, 2020
  * @since 3.6.7
  */
 public class SkinHandler implements Handler {
@@ -62,11 +62,12 @@ public class SkinHandler implements Handler {
     /**
      * Resolve skin (template) for the specified HTTP request.
      * 前台皮肤切换 https://github.com/b3log/solo/issues/12060
+     * 调整前台动态皮肤预览逻辑 https://github.com/88250/solo/issues/116
      *
      * @param request the specified HTTP request
      */
     private void resolveSkinDir(final Request request) {
-        String skin = Skins.getSkinDirNameFromCookie(request);
+        String skin = Skins.getQuerySkin(request);
         if (StringUtils.isBlank(skin)) {
             final BeanManager beanManager = BeanManager.getInstance();
             final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
@@ -85,7 +86,6 @@ public class SkinHandler implements Handler {
                 }
             }
         }
-
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
     }
 

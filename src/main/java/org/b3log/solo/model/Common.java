@@ -16,20 +16,10 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.8, Jan 18, 2020
+ * @version 1.7.0.9, Apr 30, 2020
  * @since 0.3.1
  */
 public final class Common {
-
-    /**
-     * Key of skin cookie name.
-     */
-    public static final String COOKIE_NAME_SKIN = "skin";
-
-    /**
-     * Key of mobile skin cookie name.
-     */
-    public static final String COOKIE_NAME_MOBILE_SKIN = "mobile-skin";
 
     /**
      * Key of favicon URL.

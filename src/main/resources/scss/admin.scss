@@ -14,7 +14,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 3.3.0.2, Feb 9, 2020
+* @version 3.3.1.0, Apr 30, 2020
 */
 @import "reset";
 @import "function";
@@ -958,6 +958,10 @@ button#submitArticle:hover {
   line-height: 22px;
   color: #24292e;
   border-radius: 0 0 3px 3px;
+}
+
+.solo-kanbanniang {
+  z-index: 1;
 }
 
 @media (max-width: 768px) {
