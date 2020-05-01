@@ -51,7 +51,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "nprogress": "^0.2.0",
     "uvstat": "^1.0.7",
     "vcmt": "^1.1.10",
