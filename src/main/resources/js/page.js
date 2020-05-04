@@ -180,8 +180,6 @@ $.extend(Page.prototype, {
           'emoji',
           'link',
           'edit-mode',
-          'code-theme',
-          'content-theme',
           {
             name: 'more',
             toolbar: [

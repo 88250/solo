@@ -109,11 +109,7 @@ window.Util = {
           return true
         },
         callback: function () {
-          try {
-            // TODO vditor@3.1.21 移除 try cache
-            Util.parseMarkdown()
-          } catch (e) {
-          }
+          Util.parseMarkdown()
           if (typeof Util.uvstat === 'undefined') {
             Util.uvstat = new Uvstat()
           }
@@ -310,7 +306,7 @@ window.Util = {
   loadVditor: function (cb) {
     $.ajax({
       method: 'GET',
-      url: 'https://cdn.jsdelivr.net/npm/vditor@3.1.20/dist/index.min.js',
+      url: 'https://cdn.jsdelivr.net/npm/vditor@3.1.22/dist/index.min.js',
       dataType: 'script',
       cache: true,
       success: () => {
