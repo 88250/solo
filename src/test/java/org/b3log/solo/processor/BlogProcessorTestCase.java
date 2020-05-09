@@ -12,6 +12,7 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockRequest;
 import org.b3log.solo.MockResponse;
@@ -22,7 +23,7 @@ import org.testng.annotations.Test;
  * {@link BlogProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Oct 28, 2018
+ * @version 1.0.0.3, May 9, 2020
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -38,7 +39,7 @@ public class BlogProcessorTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.startsWith(content, "{\"staticServePath\":\"http://localhost:8080\""));
+        Assert.assertTrue(StringUtils.startsWith(content, "{\"staticServePath\":\"" + Latkes.getServePath() + "\""));
     }
 
     /**
