@@ -171,7 +171,6 @@ public class CommentQueryService {
                     final String commentId = comment.optString(Keys.OBJECT_ID);
                     commentRepository.remove(commentId);
                     transaction.commit();
-
                     continue;
                 }
 

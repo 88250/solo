@@ -139,7 +139,6 @@ public class B3Receiver {
                 final String msg = "Not found client";
                 ret.put(Keys.MSG, msg);
                 LOGGER.log(Level.WARN, msg);
-
                 return;
             }
 
@@ -151,7 +150,6 @@ public class B3Receiver {
                 final String msg = "Not found user [" + articleAuthorName + "]";
                 ret.put(Keys.MSG, msg);
                 LOGGER.log(Level.WARN, msg);
-
                 return;
             }
 
@@ -162,7 +160,6 @@ public class B3Receiver {
                 final String msg = "Wrong key";
                 ret.put(Keys.MSG, msg);
                 LOGGER.log(Level.WARN, msg);
-
                 return;
             }
 
@@ -172,7 +169,6 @@ public class B3Receiver {
                 final String msg = "Not found article";
                 ret.put(Keys.MSG, msg);
                 LOGGER.log(Level.WARN, msg);
-
                 return;
             }
 
@@ -197,7 +193,6 @@ public class B3Receiver {
                 final JSONObject addRequest = new JSONObject().put(Article.ARTICLE, article);
                 articleMgmtService.addArticle(addRequest);
                 LOGGER.log(Level.INFO, "Added an article [" + title + "] via Sym");
-
                 return;
             }
 

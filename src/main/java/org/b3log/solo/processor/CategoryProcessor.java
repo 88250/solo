@@ -106,7 +106,6 @@ public class CategoryProcessor {
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -155,7 +154,6 @@ public class CategoryProcessor {
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -171,7 +169,6 @@ public class CategoryProcessor {
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             if (0 == pageCount) {
                 context.sendError(404);
-
                 return;
             }
 

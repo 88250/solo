@@ -72,7 +72,6 @@ public class FetchUploadProcessor {
             final String msg = "Gets upload token failed";
             LOGGER.log(Level.ERROR, msg);
             result.put(Keys.MSG, msg);
-
             return;
         }
 
@@ -93,7 +92,6 @@ public class FetchUploadProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fetch file [url=" + originalURL + "] failed", e);
             result.put(Keys.MSG, "Fetch file [url=" + originalURL + "] failed");
-
             return;
         }
 
@@ -124,7 +122,6 @@ public class FetchUploadProcessor {
             final String msg = "Upload file to community OSS [url=" + originalURL + "] failed";
             LOGGER.log(Level.ERROR, msg, e);
             result.put(Keys.MSG, msg);
-
             return;
         }
 

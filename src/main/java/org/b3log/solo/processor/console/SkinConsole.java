@@ -93,7 +93,6 @@ public class SkinConsole {
             final JSONObject skin = optionQueryService.getSkin();
             if (null == skin) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
                 return;
             }
 
@@ -104,7 +103,6 @@ public class SkinConsole {
                 final String name = Latkes.getSkinName(dirName);
                 if (null == name) {
                     LOGGER.log(Level.WARN, "The directory [{}] does not contain any skin, ignored it", dirName);
-
                     continue;
                 }
 

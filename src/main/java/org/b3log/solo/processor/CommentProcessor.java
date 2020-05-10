@@ -136,7 +136,6 @@ public class CommentProcessor {
         if (!Solos.isLoggedIn(context)) {
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, "Need login");
-
             return;
         }
 

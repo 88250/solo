@@ -283,7 +283,6 @@ public class PageConsole {
             final JSONObject result = pageQueryService.getPage(pageId);
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
                 return;
             }
 

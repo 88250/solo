@@ -143,14 +143,12 @@ public class ArticleProcessor {
         final String markdownText = context.requestJSON().optString("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             result.put(Common.DATA, "");
-
             return;
         }
 
         if (!Solos.isLoggedIn(context)) {
             result.put(Keys.CODE, -1);
             result.put(Keys.MSG, langPropsService.get("getFailLabel"));
-
             return;
         }
 
@@ -173,14 +171,12 @@ public class ArticleProcessor {
         final String articleId = context.param("articleId");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(404);
-
             return;
         }
 
         final JSONObject article = articleQueryService.getArticleById(articleId);
         if (null == article) {
             context.sendError(404);
-
             return;
         }
 
@@ -238,7 +234,6 @@ public class ArticleProcessor {
                 }
 
                 context.sendRedirect(Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK));
-
                 return;
             }
 
@@ -266,7 +261,6 @@ public class ArticleProcessor {
             final JsonRenderer renderer = new JsonRenderer();
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
-
             return;
         }
 
@@ -299,7 +293,6 @@ public class ArticleProcessor {
             final JsonRenderer renderer = new JsonRenderer();
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
-
             return;
         }
 
@@ -308,14 +301,12 @@ public class ArticleProcessor {
         final String articleId = context.pathVar("id");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(404);
-
             return;
         }
 
         final JSONObject article = articleQueryService.getArticleById(articleId);
         if (null == article) {
             context.sendError(404);
-
             return;
         }
 
@@ -524,7 +515,6 @@ public class ArticleProcessor {
             final JSONObject authorRet = userQueryService.getUser(authorId);
             if (null == authorRet) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -568,7 +558,6 @@ public class ArticleProcessor {
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -578,14 +567,12 @@ public class ArticleProcessor {
             final JSONObject result = userQueryService.getUser(authorId);
             if (null == result) {
                 context.sendError(404);
-
                 return;
             }
 
             final JSONObject articlesResult = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
             if (null == articlesResult) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -626,7 +613,6 @@ public class ArticleProcessor {
             if (null == result) {
                 LOGGER.log(Level.DEBUG, "Can not find articles for the specified archive date[string={}]", archiveDateString);
                 context.sendError(404);
-
                 return;
             }
 
@@ -642,7 +628,6 @@ public class ArticleProcessor {
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
             if (articles.isEmpty()) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -671,7 +656,6 @@ public class ArticleProcessor {
         final JSONObject article = (JSONObject) context.attr(Article.ARTICLE);
         if (null == article) {
             context.sendError(404);
-
             return;
         }
 

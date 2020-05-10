@@ -101,7 +101,6 @@ public class TagProcessor {
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
             if (null == result) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -116,7 +115,6 @@ public class TagProcessor {
             final JSONObject tagArticleResult = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
             if (null == tagArticleResult) {
                 context.sendError(404);
-
                 return;
             }
 

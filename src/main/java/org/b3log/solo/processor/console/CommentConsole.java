@@ -88,7 +88,6 @@ public class CommentConsole {
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
-
                 return;
             }
 

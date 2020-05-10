@@ -29,7 +29,6 @@ public class ConsoleAdminAuthMidware {
         if (!Solos.isAdminLoggedIn(context)) {
             context.sendError(401);
             context.abort();
-
             return;
         }
 

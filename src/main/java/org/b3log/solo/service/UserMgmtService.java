@@ -131,7 +131,6 @@ public class UserMgmtService {
             usite = result.optJSONObject(Common.DATA);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets usite failed", e);
-
             return;
         }
 
@@ -146,7 +145,6 @@ public class UserMgmtService {
             optionMgmtService.addOrUpdateOption(usiteOpt);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates usite option failed", e);
-
             return;
         }
     }

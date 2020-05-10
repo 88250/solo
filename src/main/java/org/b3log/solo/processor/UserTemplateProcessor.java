@@ -93,7 +93,6 @@ public class UserTemplateProcessor {
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Renders CHANGE_LOGS failed", e);
             }
-
             return;
         }
 
@@ -107,7 +106,6 @@ public class UserTemplateProcessor {
         final Template template = Skins.getSkinTemplate(context, templateName);
         if (null == template) {
             context.sendError(404);
-
             return;
         }
 

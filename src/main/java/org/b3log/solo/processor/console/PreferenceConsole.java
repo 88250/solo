@@ -181,7 +181,6 @@ public class PreferenceConsole {
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
                 return;
             }
 

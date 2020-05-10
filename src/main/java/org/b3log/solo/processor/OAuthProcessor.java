@@ -124,7 +124,6 @@ public class OAuthProcessor {
         final String referer = STATES.get(state);
         if (null == referer) {
             context.sendError(400);
-
             return;
         }
         STATES.remove(state);
@@ -158,7 +157,6 @@ public class OAuthProcessor {
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Registers via oauth failed", e);
                         context.sendError(500);
-
                         return;
                     }
                 } else {
@@ -169,7 +167,6 @@ public class OAuthProcessor {
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Updates user GitHub id failed", e);
                         context.sendError(500);
-
                         return;
                     }
                 }
@@ -182,7 +179,6 @@ public class OAuthProcessor {
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Updates user name failed", e);
                 context.sendError(500);
-
                 return;
             }
         }
@@ -191,7 +187,6 @@ public class OAuthProcessor {
         if (null == user) {
             LOGGER.log(Level.WARN, "Can't get user by name [" + userName + "]");
             context.sendError(404);
-
             return;
         }
 

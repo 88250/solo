@@ -156,7 +156,6 @@ public class CategoryConsole {
             final JSONObject result = categoryQueryService.getCategory(categoryId);
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
                 return;
             }
 
@@ -273,7 +272,6 @@ public class CategoryConsole {
                     final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                     renderer.setJSONObject(jsonObject);
                     jsonObject.put(Keys.MSG, addArticleWithTagFirstLabel);
-
                     return;
                 }
 
@@ -292,7 +290,6 @@ public class CategoryConsole {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryLabel"));
-
                 return;
             }
 
@@ -301,7 +298,6 @@ public class CategoryConsole {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("categoryURIMustBeASCIILabel"));
-
                 return;
             }
 
@@ -310,14 +306,12 @@ public class CategoryConsole {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryURILabel"));
-
                 return;
             }
             if (255 <= StringUtils.length(uri)) {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("categoryURITooLongLabel"));
-
                 return;
             }
 
@@ -409,7 +403,6 @@ public class CategoryConsole {
                     final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                     renderer.setJSONObject(jsonObject);
                     jsonObject.put(Keys.MSG, addArticleWithTagFirstLabel);
-
                     return;
                 }
 
@@ -427,7 +420,6 @@ public class CategoryConsole {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryLabel"));
-
                 return;
             }
 
@@ -436,7 +428,6 @@ public class CategoryConsole {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("categoryURIMustBeASCIILabel"));
-
                 return;
             }
             mayExist = categoryQueryService.getByURI(uri);
@@ -444,14 +435,12 @@ public class CategoryConsole {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryURILabel"));
-
                 return;
             }
             if (255 <= StringUtils.length(uri)) {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("categoryURITooLongLabel"));
-
                 return;
             }
 

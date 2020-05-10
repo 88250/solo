@@ -83,14 +83,12 @@ public class StaticSiteConsole {
             if (!Strings.isURL(url)) {
                 context.renderJSON(-1);
                 context.renderMsg("Invalid site URL");
-
                 return;
             }
 
             if (Latkes.isInJar()) {
                 context.renderJSON(-1);
                 context.renderMsg("Do not support this feature while running in Jar");
-
                 return;
             }
 

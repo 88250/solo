@@ -126,7 +126,6 @@ public class IndexProcessor {
     public void showStart(final RequestContext context) {
         if (initService.isInited() && null != Solos.getCurrentUser(context)) {
             context.sendRedirect(Latkes.getServePath());
-
             return;
         }
 

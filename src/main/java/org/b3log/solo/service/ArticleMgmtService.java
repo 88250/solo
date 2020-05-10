@@ -219,7 +219,6 @@ public class ArticleMgmtService {
             optionMgmtService.addOrUpdateOption(githubReposOpt);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates github repos option failed", e);
-
             return;
         }
 

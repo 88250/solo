@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.SkinRenderer;
 
 import java.io.ByteArrayInputStream;
@@ -46,12 +45,12 @@ public final class Statics {
     /**
      * Logger.
      */
-    private static Logger LOGGER = LogManager.getLogger(Statics.class);
+    private static final Logger LOGGER = LogManager.getLogger(Statics.class);
 
     /**
      * Generated page expire time.
      */
-    private static long EXPIRED = TimeUnit.HOURS.toMillis(6);
+    private static final long EXPIRED = TimeUnit.HOURS.toMillis(6);
 
     private static File DIR;
 

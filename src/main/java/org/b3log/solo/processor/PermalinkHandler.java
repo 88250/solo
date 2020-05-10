@@ -59,7 +59,6 @@ public class PermalinkHandler implements Handler {
             final InitService initService = beanManager.getReference(InitService.class);
             if (!initService.isInited()) {
                 context.handle();
-
                 return;
             }
 
@@ -69,7 +68,6 @@ public class PermalinkHandler implements Handler {
             if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
                 LOGGER.log(Level.DEBUG, "Skip permalink handling request [URI={}]", permalink);
                 context.handle();
-
                 return;
             }
 
@@ -78,13 +76,11 @@ public class PermalinkHandler implements Handler {
             if (null == article) {
                 LOGGER.log(Level.DEBUG, "Not found article with permalink [{}]", permalink);
                 context.handle();
-
                 return;
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Processes article permalink handler failed", e);
             context.sendError(404);
-
             return;
         }
 
@@ -92,11 +88,9 @@ public class PermalinkHandler implements Handler {
         if (Solos.needViewPwd(context, article)) {
             try {
                 context.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
-
                 return;
             } catch (final Exception e) {
                 context.sendError(404);
-
                 return;
             }
         }
@@ -106,7 +100,6 @@ public class PermalinkHandler implements Handler {
         final boolean allowVisitDraftViaPermalink = preference.getBoolean(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(Article.ARTICLE_STATUS) && !allowVisitDraftViaPermalink) {
             context.sendError(404);
-
             return;
         }
 

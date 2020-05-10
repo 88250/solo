@@ -153,7 +153,7 @@ public final class Channel {
     /**
      * Items.
      */
-    private List<Item> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
 
     /**
      * Gets the atom link.

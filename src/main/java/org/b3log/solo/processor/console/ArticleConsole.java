@@ -180,7 +180,6 @@ public class ArticleConsole {
                 renderer.setJSONObject(ret);
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
-
                 return;
             }
 
@@ -298,7 +297,6 @@ public class ArticleConsole {
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
-
                 return;
             }
 
@@ -342,7 +340,6 @@ public class ArticleConsole {
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
-
                 return;
             }
 
@@ -382,7 +379,6 @@ public class ArticleConsole {
         if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
-
             return;
         }
 
@@ -423,7 +419,6 @@ public class ArticleConsole {
         if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
-
             return;
         }
 
@@ -490,7 +485,6 @@ public class ArticleConsole {
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
                 ret.put(Keys.STATUS_CODE, false);
-
                 return;
             }
 

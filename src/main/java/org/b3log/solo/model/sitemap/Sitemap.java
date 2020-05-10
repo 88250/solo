@@ -49,7 +49,7 @@ public final class Sitemap {
     /**
      * URLs.
      */
-    private List<URL> urls = new ArrayList<>();
+    private final List<URL> urls = new ArrayList<>();
 
     /**
      * Adds the specified url.
