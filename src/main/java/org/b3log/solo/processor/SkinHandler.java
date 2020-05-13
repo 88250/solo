@@ -86,7 +86,7 @@ public class SkinHandler implements Handler {
                 }
             }
         }
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, skin);
     }
 
     private static void fillBotAttrs(final Request request) {

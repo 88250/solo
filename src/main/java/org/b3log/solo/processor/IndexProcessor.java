@@ -96,7 +96,7 @@ public class IndexProcessor {
             final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = optionQueryService.getPreference();
 
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
 
             dataModelService.fillIndexArticles(context, dataModel, currentPageNum, preference);
             dataModelService.fillCommon(context, dataModel, preference);

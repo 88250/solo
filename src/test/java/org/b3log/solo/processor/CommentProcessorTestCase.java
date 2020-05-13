@@ -47,7 +47,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/article/comments");
         request.setMethod("POST");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put("oId", addArticle());

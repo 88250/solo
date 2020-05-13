@@ -54,7 +54,7 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
         request = mockRequest();
         request.setRequestURI("/category/cate1");
         request.setMethod("GET");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         response = mockResponse();
         mockDispatcher(request, response);
 

@@ -36,7 +36,7 @@ public class UserTemplateProcessorTestCase extends AbstractTestCase {
     public void showCategoryArticles() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/links.html");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
