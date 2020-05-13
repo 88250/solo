@@ -73,7 +73,7 @@
     </scm>
 
     <properties>
-        <org.b3log.latke.version>3.3.6</org.b3log.latke.version>
+        <org.b3log.latke.version>3.4.0</org.b3log.latke.version>
 
         <jsoup.version>1.12.1</jsoup.version>
         <flexmark.version>0.50.40</flexmark.version>
