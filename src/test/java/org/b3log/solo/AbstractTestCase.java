@@ -136,7 +136,7 @@ public abstract class AbstractTestCase {
         cookieJSONObject.put(Keys.TOKEN, "pass:" + random);
         final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
         request.addCookie(Solos.COOKIE_NAME, cookieValue);
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
     }
 
     /**

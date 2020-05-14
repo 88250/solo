@@ -588,7 +588,7 @@ public class ArticleProcessor {
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -634,7 +634,7 @@ public class ArticleProcessor {
             dataModelService.setArticlesExProperties(context, articles, preference);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
             final Response response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);
@@ -697,7 +697,7 @@ public class ArticleProcessor {
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
 
             // Fire [Before Render Article] event
             final JSONObject eventData = new JSONObject();
