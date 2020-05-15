@@ -23,7 +23,7 @@ window.Vcomment = Vcomment
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.1.0, Apr 30, 2020
+ * @version 2.3.1.0, May 15, 2020
  */
 
 /**
@@ -317,9 +317,32 @@ window.Util = {
       },
     })
   },
+  skinPreview: () => {
+    const skinParam = location.search.split('skin=')
+    let skin = ''
+    let urlHasSkin = false
+    if (skinParam.length === 2) {
+      skin = skinParam[1].split('=')[0]
+      urlHasSkin = true
+    }
+    if (skin) {
+      sessionStorage.setItem('skin', skin)
+    } else {
+      skin = sessionStorage.getItem('skin')
+    }
+    if (!skin) {
+      return
+    }
+    if (!urlHasSkin) {
+      location.search = location.search
+        ? location.search + '&skin=' + skin
+        : '?skin=' + skin
+    }
+  },
 };
 
 (() => {
+  Util.skinPreview()
   if (typeof Vditor === 'undefined') {
     Util.loadVditor()
   }
