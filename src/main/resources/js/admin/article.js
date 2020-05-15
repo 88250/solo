@@ -416,6 +416,7 @@ admin.article = {
 
     // editor
     admin.editors.articleEditor = new SoloEditor({
+      outline: true,
       id: 'articleContent',
       height: 500,
       fun: fun,
