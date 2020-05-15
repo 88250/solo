@@ -42,7 +42,7 @@ public final class Images {
     /**
      * Community file service URL.
      */
-    public static String COMMUNITY_FILE_URL = "https://b3logdata.com";
+    public static String COMMUNITY_FILE_URL = "https://b3logfile.com";
 
     /**
      * Checks whether the specified URL has uploaded.
