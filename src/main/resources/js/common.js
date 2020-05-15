@@ -318,6 +318,9 @@ window.Util = {
     })
   },
   skinPreview: () => {
+    if (location.pathname === '/admin-index.do') {
+      return
+    }
     const skinParam = location.search.split('skin=')
     let skin = ''
     let urlHasSkin = false
