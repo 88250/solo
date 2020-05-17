@@ -36,7 +36,6 @@ public class StaticMidware {
         final String html = Statics.get(context);
         if (null == html) {
             context.handle();
-
             return;
         }
 

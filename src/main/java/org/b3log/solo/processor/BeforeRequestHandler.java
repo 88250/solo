@@ -36,7 +36,6 @@ public class BeforeRequestHandler implements Handler {
             context.setHeader("Retry-After", "600");
             context.sendString("Too Many Requests");
             context.abort();
-
             return;
         }
 

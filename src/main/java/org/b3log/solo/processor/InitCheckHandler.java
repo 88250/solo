@@ -50,7 +50,6 @@ public class InitCheckHandler implements Handler {
         // 禁止直接获取 robots.txt https://github.com/b3log/solo/issues/12543
         if (requestURI.startsWith("/robots.txt") && !isSpiderBot) {
             context.sendError(403);
-
             return;
         }
 
@@ -58,14 +57,12 @@ public class InitCheckHandler implements Handler {
         final InitService initService = beanManager.getReference(InitService.class);
         if (initService.isInited()) {
             context.handle();
-
             return;
         }
 
         if (StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/login/")) {
             // Do initialization
             context.handle();
-
             return;
         }
 

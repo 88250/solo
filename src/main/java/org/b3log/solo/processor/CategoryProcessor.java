@@ -106,7 +106,6 @@ public class CategoryProcessor {
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -155,7 +154,6 @@ public class CategoryProcessor {
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {
                 context.sendError(404);
-
                 return;
             }
 
@@ -171,11 +169,10 @@ public class CategoryProcessor {
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             if (0 == pageCount) {
                 context.sendError(404);
-
                 return;
             }
 
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
             dataModelService.setArticlesExProperties(context, articles, preference);
 
             final List<Integer> pageNums = (List) result.optJSONObject(Pagination.PAGINATION).opt(Pagination.PAGINATION_PAGE_NUMS);

@@ -57,6 +57,7 @@ $.extend(SoloEditor.prototype, {
     })
 
     const options = {
+      outline: this.conf.outline || false,
       mode: Label.editorMode,
       typewriterMode: this.conf.typewriterMode,
       cache: {
@@ -105,6 +106,51 @@ $.extend(SoloEditor.prototype, {
       toolbarConfig: {
         pin: true,
       },
+      toolbar:[
+        "emoji",
+        "headings",
+        "bold",
+        "link",
+        "|",
+        "list",
+        "ordered-list",
+        "check",
+        "outdent",
+        "indent",
+        "|",
+        "quote",
+        "code",
+        "insert-before",
+        "insert-after",
+        "|",
+        "upload",
+        "record",
+        "table",
+        "|",
+        "undo",
+        "redo",
+        "|",
+        "fullscreen",
+        "edit-mode",
+        {
+          name: "more",
+          toolbar: [
+            "italic",
+            "strike",
+            "line",
+            "inline-code",
+            "both",
+            "code-theme",
+            "content-theme",
+            "export",
+            "outline",
+            "preview",
+            "format",
+            "devtools",
+            "info",
+            "help",
+          ],
+        }],
       after: () => {
         if (typeof this.conf.fun === 'function') {
           this.conf.fun()
@@ -118,8 +164,6 @@ $.extend(SoloEditor.prototype, {
         'link',
         'upload',
         'edit-mode',
-        'code-theme',
-        'content-theme',
         {
           name: 'more',
           toolbar: [

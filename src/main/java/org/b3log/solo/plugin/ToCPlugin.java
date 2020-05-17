@@ -41,7 +41,7 @@ import java.util.Map;
  */
 public class ToCPlugin extends NotInteractivePlugin {
 
-    private ToCEventHandler handler = new ToCEventHandler();
+    private final ToCEventHandler handler = new ToCEventHandler();
 
     @Override
     public void changeStatus() {

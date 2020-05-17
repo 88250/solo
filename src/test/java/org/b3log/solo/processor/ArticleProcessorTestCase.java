@@ -161,7 +161,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/archives/" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM"));
         request.setParameter("p", "1");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
@@ -181,7 +181,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/article");
         request.setAttribute(Article.ARTICLE, article);
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
@@ -202,7 +202,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/article-pwd");
         request.setParameter("articleId", articleId);
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 

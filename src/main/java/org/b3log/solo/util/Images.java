@@ -29,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Image utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Apr 30, 2020
+ * @version 1.2.0.1, May 15, 2020
  * @since 2.7.0
  */
 public final class Images {
@@ -42,7 +42,7 @@ public final class Images {
     /**
      * Community file service URL.
      */
-    public static String COMMUNITY_FILE_URL = "https://img.hacpai.com";
+    public static String COMMUNITY_FILE_URL = "https://b3logfile.com";
 
     /**
      * Checks whether the specified URL has uploaded.
@@ -51,7 +51,7 @@ public final class Images {
      * @return {@code true} if it has uploaded, returns {@code false} otherwise
      */
     public static boolean uploaded(final String url) {
-        return StringUtils.startsWith(url, COMMUNITY_FILE_URL);
+        return StringUtils.startsWith(url, COMMUNITY_FILE_URL) || StringUtils.startsWith(url, "https://img.hacpai.com");
     }
 
     /**
@@ -67,7 +67,7 @@ public final class Images {
 
         for (final Element img : imgs) {
             String imgSrc = img.attr("src");
-            if (!StringUtils.startsWith(imgSrc, COMMUNITY_FILE_URL) ||
+            if (!uploaded(imgSrc) ||
                     StringUtils.contains(imgSrc, ".gif") || StringUtils.containsIgnoreCase(imgSrc, "imageView") ||
                     StringUtils.containsIgnoreCase(imgSrc, "data:")) {
                 continue;
@@ -105,11 +105,9 @@ public final class Images {
             final long max = System.currentTimeMillis();
             final long delta = max - min;
             final long time = ThreadLocalRandom.current().nextLong(0, delta) + min;
-
             return COMMUNITY_FILE_URL + "/bing/" + DateFormatUtils.format(time, "yyyyMMdd") + ".jpg";
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates random image URL failed", e);
-
             return COMMUNITY_FILE_URL + "/bing/20171104.jpg";
         }
     }
@@ -122,7 +120,6 @@ public final class Images {
      */
     public static List<String> randomImages(final int n) {
         final List<String> ret = new ArrayList<>();
-
         int i = 0;
         while (i < n * 5) {
             final String url = randImage();

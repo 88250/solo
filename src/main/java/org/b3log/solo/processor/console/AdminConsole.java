@@ -230,7 +230,6 @@ public class AdminConsole {
 
         if (!Solos.isAdminLoggedIn(context)) {
             context.sendError(401);
-
             return;
         }
 
@@ -243,7 +242,6 @@ public class AdminConsole {
         final byte[] zipData = exportService.exportSQL();
         if (null == zipData) {
             context.sendError(500);
-
             return;
         }
 
@@ -263,7 +261,6 @@ public class AdminConsole {
         final Response response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
             context.sendError(401);
-
             return;
         }
 
@@ -297,7 +294,6 @@ public class AdminConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
             context.renderJSON().renderMsg("Export failed, please check log");
-
             return;
         }
     }
@@ -311,7 +307,6 @@ public class AdminConsole {
         final Response response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
             context.sendError(401);
-
             return;
         }
 
@@ -363,7 +358,6 @@ public class AdminConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
             context.renderJSON().renderMsg("Export failed, please check log");
-
             return;
         }
     }

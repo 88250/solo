@@ -456,11 +456,9 @@ public class ExportService {
 
             if (StringUtils.isNotBlank(article.optString(Article.ARTICLE_VIEW_PWD))) {
                 passwords.add(one);
-
                 continue;
             } else if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(Article.ARTICLE_STATUS)) {
                 posts.add(one);
-
                 continue;
             } else {
                 drafts.add(one);

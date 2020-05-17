@@ -73,19 +73,16 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             final String title = originalArticle.getString(Article.ARTICLE_TITLE);
             if (Article.ARTICLE_STATUS_C_PUBLISHED != originalArticle.optInt(Article.ARTICLE_STATUS)) {
                 LOGGER.log(Level.INFO, "Ignored push a draft [title={}] to Rhy", title);
-
                 return;
             }
 
             if (StringUtils.isNotBlank(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
                 LOGGER.log(Level.INFO, "Article [title={}] is a password article, ignored push to Rhy", title);
-
                 return;
             }
 
             if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)) {
                 LOGGER.log(Level.INFO, "Article [title={}] push flag [postToCommunity] is [false], ignored push to Rhy", title);
-
                 return;
             }
 

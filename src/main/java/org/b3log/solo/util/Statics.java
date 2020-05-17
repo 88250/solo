@@ -18,7 +18,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.solo.model.Option;
+import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.processor.SkinRenderer;
 
 import java.io.ByteArrayInputStream;
@@ -38,7 +39,7 @@ import java.util.zip.GZIPOutputStream;
  * Static utilities. 页面静态化 https://github.com/88250/solo/issues/107
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 14, 2020
+ * @version 1.0.0.1, May 10, 2020
  * @since 4.1.0
  */
 public final class Statics {
@@ -46,12 +47,12 @@ public final class Statics {
     /**
      * Logger.
      */
-    private static Logger LOGGER = LogManager.getLogger(Statics.class);
+    private static final Logger LOGGER = LogManager.getLogger(Statics.class);
 
     /**
      * Generated page expire time.
      */
-    private static long EXPIRED = TimeUnit.HOURS.toMillis(6);
+    private static final long EXPIRED = TimeUnit.HOURS.toMillis(6);
 
     private static File DIR;
 
@@ -78,6 +79,12 @@ public final class Statics {
     public static String get(final RequestContext context) {
         if (Solos.isLoggedIn(context)) {
             // 登录用户不走缓存
+            return null;
+        }
+
+        final String remoteAddr = Requests.getRemoteAddr(context.getRequest());
+        if (Strings.isIPv4(remoteAddr)) {
+            // 直接用 IP 访问不走缓存
             return null;
         }
 

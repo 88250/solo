@@ -83,7 +83,6 @@ public class CategoryMgmtService {
                 }
 
                 LOGGER.log(Level.WARN, "Cant not find the target category of source category [order={}]", srcCategoryOrder);
-
                 return;
             }
 

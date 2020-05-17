@@ -85,7 +85,7 @@ public final class Server extends BaseServer {
 
     public static class TailStringWriter extends StringWriter {
 
-        private AtomicInteger count = new AtomicInteger();
+        private final AtomicInteger count = new AtomicInteger();
 
         @Override
         public void flush() {
@@ -153,13 +153,11 @@ public final class Server extends BaseServer {
             commandLine = commandLineParser.parse(options, args);
         } catch (final ParseException e) {
             helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
-
             return;
         }
 
         if (commandLine.hasOption("h")) {
             helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
-
             return;
         }
 

@@ -323,7 +323,6 @@ public class LinkConsole {
             final JSONObject result = linkQueryService.getLink(linkId);
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
                 return;
             }
 

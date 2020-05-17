@@ -629,7 +629,7 @@ public class DataModelService {
             dataModel.put(User.USERS, userList);
             final JSONObject admin = userRepository.getAdmin();
             dataModel.put(Common.ADMIN_USER, admin);
-            final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+            final String skinDirName = (String) context.attr(Keys.TEMPLATE_DIR_NAME);
             dataModel.put(Option.ID_C_SKIN_DIR_NAME, skinDirName);
             Keys.fillRuntime(dataModel);
             fillPageNavigations(dataModel);

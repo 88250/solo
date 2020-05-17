@@ -98,7 +98,6 @@ public class UpgradeService {
                     V380_390.perform();
                 case "3.9.0":
                     V390_400.perform();
-
                     break;
                 default:
                     LOGGER.log(Level.ERROR, "Please upgrade to v3.0.0 first");

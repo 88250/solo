@@ -249,7 +249,6 @@ public final class Markdowns {
             for (final Thread thread : threads) {
                 if (thread.getId() == threadId[0]) {
                     thread.stop();
-
                     break;
                 }
             }

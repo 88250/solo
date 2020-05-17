@@ -93,7 +93,6 @@ public class UserTemplateProcessor {
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Renders CHANGE_LOGS failed", e);
             }
-
             return;
         }
 
@@ -107,7 +106,6 @@ public class UserTemplateProcessor {
         final Template template = Skins.getSkinTemplate(context, templateName);
         if (null == template) {
             context.sendError(404);
-
             return;
         }
 
@@ -119,7 +117,7 @@ public class UserTemplateProcessor {
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
             dataModelService.fillUserTemplate(context, template, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -33,7 +33,6 @@ public class ConsoleAuthMidware {
         if (null == currentUser) {
             context.sendError(401);
             context.abort();
-
             return;
         }
 

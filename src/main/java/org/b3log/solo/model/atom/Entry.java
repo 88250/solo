@@ -153,7 +153,7 @@ public final class Entry {
     /**
      * Categories.
      */
-    private Set<Category> categories = new HashSet<Category>();
+    private final Set<Category> categories = new HashSet<Category>();
 
     /**
      * Gets the URI.

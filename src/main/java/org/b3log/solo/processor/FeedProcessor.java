@@ -167,7 +167,6 @@ public class FeedProcessor {
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 context.sendError(404);
-
                 return;
             }
 

@@ -111,7 +111,7 @@ public final class Skins {
      * @return template, returns {@code null} if not found
      */
     public static Template getSkinTemplate(final RequestContext context, final String templateName) {
-        String templateDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+        String templateDirName = (String) context.attr(Keys.TEMPLATE_DIR_NAME);
         if (StringUtils.isBlank(templateDirName)) {
             templateDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         }

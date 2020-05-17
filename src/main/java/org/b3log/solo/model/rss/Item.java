@@ -71,7 +71,7 @@ public final class Item {
     /**
      * Categories.
      */
-    private Set<Category> categories = new HashSet<>();
+    private final Set<Category> categories = new HashSet<>();
 
     /**
      * Start guid element.

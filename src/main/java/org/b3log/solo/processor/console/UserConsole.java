@@ -229,7 +229,6 @@ public class UserConsole {
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-
             return;
         }
 
