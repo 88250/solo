@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.16, Mar 31, 2020
+ * @version 1.7.1.0, May 18, 2020
  * @since 0.3.1
  */
 @Service
@@ -495,11 +495,10 @@ public class DataModelService {
         final Map<String, String> customVars = new HashMap<>();
         final String customVarsStr = preference.optString(Option.ID_C_CUSTOM_VARS);
         final String[] customVarsArray = customVarsStr.split("\\|");
-        for (int i = 0; i < customVarsArray.length; i++) {
-            final String customVarPair = customVarsArray[i];
+        for (final String customVarPair : customVarsArray) {
             if (StringUtils.isNotBlank(customVarsStr)) {
-                final String customVarKey = customVarPair.split("=")[0];
-                final String customVarVal = customVarPair.split("=")[1];
+                final String customVarKey = StringUtils.substringBefore(customVarPair, "=");
+                final String customVarVal = StringUtils.substringAfter(customVarPair, "=");
                 if (StringUtils.isNotBlank(customVarKey) && StringUtils.isNotBlank(customVarVal)) {
                     customVars.put(customVarKey, customVarVal);
                 }
