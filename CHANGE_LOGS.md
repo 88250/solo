@@ -1,3 +1,47 @@
+## v4.1.0 / 2020-05-19
+
+### 引入特性
+
+* [支持类似 Typora 的即时渲染模式（保留 Markdown 标记符）](https://github.com/88250/solo/issues/81)
+* [后台增加服务端日志浏览](https://github.com/88250/solo/issues/91)
+* [页面静态化](https://github.com/88250/solo/issues/107)
+
+### 改进皮肤
+
+* [皮肤页脚去掉版权信息](https://github.com/88250/solo/issues/111)
+
+### 改进功能
+
+* [社区图床更换新域名](https://github.com/88250/solo/issues/21)
+* [使用 jsDelivr 时自动加入版本号](https://github.com/88250/solo/issues/83)
+* [不显示发布文章计数为零的标签](https://github.com/88250/solo/issues/88)
+* [废弃评论推送社区接口](https://github.com/88250/solo/issues/89)
+* [看板娘背景优化](https://github.com/88250/solo/issues/93)
+* [支持配置编辑器模式](https://github.com/88250/solo/issues/95)
+* [调整前台动态皮肤预览逻辑](https://github.com/88250/solo/issues/116)
+
+### 文档相关
+
+* [Add README in English](https://github.com/88250/solo/issues/104)
+
+### 开发重构
+
+* [Docker 镜像加入 Git 提交哈希值环境变量](https://github.com/88250/solo/issues/82)
+* [更换开源协议为 木兰宽松许可证, 第2版](https://github.com/88250/solo/issues/99)
+* [彻底移除浏览数统计相关代码](https://github.com/88250/solo/issues/110)
+
+### 修复缺陷
+
+* [生成静态站点的分类分页 404](https://github.com/88250/solo/issues/86)
+* [采用 cdn.jsdelivr.net 加速后访问文章详情页面 js 报错](https://github.com/88250/solo/issues/100)
+* [图床上传相同图片后第二幅显示不出来](https://github.com/88250/solo/issues/101)
+* [更新文章编辑器加载报错](https://github.com/88250/solo/issues/106)
+* [后台 footer 遮挡 菜单栏](https://github.com/88250/solo/issues/108)
+* [casper 文章页面开始使用被分享遮挡](https://github.com/88250/solo/issues/109)
+* [导入 Markdown 文件存档时间问题](https://github.com/88250/solo/issues/112)
+* [nijigen 皮肤修改](https://github.com/88250/solo/issues/115)
+* [自定义模板变量解析规则问题](https://github.com/88250/solo/issues/123)
+
 ## v4.0.0 / 2020-03-24
 
 ### 引入特性

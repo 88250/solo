@@ -39,7 +39,7 @@ import java.util.zip.GZIPOutputStream;
  * Static utilities. 页面静态化 https://github.com/88250/solo/issues/107
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, May 10, 2020
+ * @version 1.0.1.0, May 19, 2020
  * @since 4.1.0
  */
 public final class Statics {
@@ -77,6 +77,11 @@ public final class Statics {
      * @return HTML, returns {@code null} if not found
      */
     public static String get(final RequestContext context) {
+        if (Solos.GEN_STATIC_SITE) {
+            // 生成静态站点时不走缓存
+            return null;
+        }
+
         if (Solos.isLoggedIn(context)) {
             // 登录用户不走缓存
             return null;
@@ -114,6 +119,11 @@ public final class Statics {
      * @param context the specified context
      */
     public static void put(final RequestContext context) {
+        if (Solos.GEN_STATIC_SITE) {
+            // 生成静态站点时不走缓存
+            return;
+        }
+
         if (Solos.isLoggedIn(context)) {
             // 登录用户生成的内容不写入缓存
             return;
