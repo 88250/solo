@@ -136,7 +136,8 @@ public final class GitHubs {
                     put("name", repoName).
                     put("description", repoDesc).
                     put("homepage", repoHomepage).
-                    put("has_wiki", false);
+                    put("has_wiki", false).
+                    put("has_projects", false);
             HttpResponse response = HttpRequest.post("https://api.github.com/user/repos").header("Authorization", "token " + pat).
                     connectionTimeout(7000).timeout(30000).header("User-Agent", Solos.USER_AGENT).bodyText(body.toString()).send();
             int statusCode = response.statusCode();
