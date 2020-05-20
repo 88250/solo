@@ -91,7 +91,7 @@ public final class GitHubs {
 
             final JSONObject body = new JSONObject().
                     put("message", ":memo: 更新博客").
-                    put("content", Base64.getEncoder().encode(content));
+                    put("content", Base64.getEncoder().encodeToString(content));
             if (200 == statusCode) {
                 final JSONObject responseData = new JSONObject(responseBody);
                 final JSONArray tree = responseData.optJSONArray("tree");

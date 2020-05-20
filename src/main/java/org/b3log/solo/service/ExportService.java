@@ -27,6 +27,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Execs;
@@ -34,6 +35,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
+import org.b3log.solo.util.GitHubs;
 import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,7 +56,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Jan 12, 2020
+ * @version 1.2.0.0, May 20, 2020
  * @since 2.5.0
  */
 @Service
@@ -242,9 +244,8 @@ public class ExportService {
                 ret = IOUtils.toByteArray(inputStream);
             }
 
-            // 导出 SQL 包后清理临时文件 https://github.com/b3log/solo/issues/12770
-            localFile.delete();
-            zipFile.delete();
+            FileUtils.deleteQuietly(localFile);
+            FileUtils.deleteQuietly(zipFile);
 
             return ret;
         } catch (final Exception e) {
@@ -255,7 +256,79 @@ public class ExportService {
     }
 
     /**
-     * Exports public articles to admin's HacPai account.
+     * Exports public articles to GitHub repo "solo-blog". 同步 GitHub solo-blog 仓库功能 https://github.com/88250/solo/issues/125
+     */
+    public void exportGitHub() {
+        try {
+            final JSONObject preference = optionQueryService.getPreference();
+            if (null == preference) {
+                return;
+            }
+
+            if (!preference.optBoolean(Option.ID_C_SYNC_GITHUB)) {
+                return;
+            }
+
+            String pat = preference.optString(Option.ID_C_GITHUB_PAT);
+            if (StringUtils.isBlank(pat)) {
+                return;
+            }
+
+            LOGGER.log(Level.INFO, "Backup public articles to your GitHub repo [solo-blog]....");
+
+            final JSONObject mds = exportHexoMDs();
+            JdbcRepository.dispose();
+            final List<JSONObject> posts = (List<JSONObject>) mds.opt("posts");
+
+            final String tmpDir = System.getProperty("java.io.tmpdir");
+            final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
+            String localFilePath = tmpDir + File.separator + "solo-blog-repo-" + date;
+            final File localFile = new File(localFilePath);
+
+            final File postDir = new File(localFilePath + File.separator + "posts");
+            exportHexoMd(posts, postDir.getPath());
+
+            final File zipFile = ZipUtil.zip(localFile);
+            byte[] zipData;
+            try (final FileInputStream inputStream = new FileInputStream(zipFile)) {
+                zipData = IOUtils.toByteArray(inputStream);
+            }
+
+            FileUtils.deleteQuietly(localFile);
+            FileUtils.deleteQuietly(zipFile);
+
+            final String clientTitle = preference.optString(Option.ID_C_BLOG_TITLE);
+            final String clientSubtitle = preference.optString(Option.ID_C_BLOG_SUBTITLE);
+
+            final JSONObject gitHubUser = GitHubs.getGitHubUser(pat);
+            if (null == gitHubUser) {
+                return;
+            }
+
+            final String loginName = gitHubUser.optString("login");
+            final String repoName = "solo-blog";
+
+            boolean ok = GitHubs.createOrUpdateGitHubRepo(pat, loginName, repoName, "✍️ " + clientTitle + " - " + clientSubtitle, Latkes.getServePath());
+            if (!ok) {
+                return;
+            }
+
+            final String readme = genSoloBlogReadme(clientTitle, clientSubtitle, preference.optString(Option.ID_C_FAVICON_URL), loginName + "/" + repoName);
+            JdbcRepository.dispose();
+            ok = GitHubs.updateFile(pat, loginName, repoName, "README.md", readme.getBytes(StandardCharsets.UTF_8));
+            if (ok) {
+                ok = GitHubs.updateFile(pat, loginName, repoName, "backup.zip", zipData);
+            }
+            if (ok) {
+                LOGGER.log(Level.INFO, "Exported public articles to your repo [solo-blog]");
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Exports public articles to your repo failed: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Exports all articles to admin's HacPai account.
      */
     public void exportHacPai() {
         try {
@@ -302,59 +375,6 @@ public class ExportService {
             final String clientTitle = preference.optString(Option.ID_C_BLOG_TITLE);
             final String clientSubtitle = preference.optString(Option.ID_C_BLOG_SUBTITLE);
 
-            final Set<String> articleIds = new HashSet<>();
-            final Filter published = new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED);
-
-            final StringBuilder bodyBuilder = new StringBuilder("### 最新\n");
-            final List<JSONObject> recentArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).setPage(1, 20));
-            for (final JSONObject article : recentArticles) {
-                final String title = article.optString(Article.ARTICLE_TITLE);
-                final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-                bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
-                articleIds.add(article.optString(Keys.OBJECT_ID));
-            }
-            bodyBuilder.append("\n\n");
-
-            final StringBuilder mostViewBuilder = new StringBuilder();
-            final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 40));
-            int count = 0;
-            for (final JSONObject article : mostViewArticles) {
-                final String articleId = article.optString(Keys.OBJECT_ID);
-                if (!articleIds.contains(articleId)) {
-                    final String title = article.optString(Article.ARTICLE_TITLE);
-                    final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-                    mostViewBuilder.append("\n* [").append(title).append("](").append(link).append(")");
-                    articleIds.add(articleId);
-                    count++;
-                }
-                if (20 <= count) {
-                    break;
-                }
-            }
-            if (0 < mostViewBuilder.length()) {
-                bodyBuilder.append("### 热门\n").append(mostViewBuilder).append("\n\n");
-            }
-
-            final StringBuilder mostCmtBuilder = new StringBuilder();
-            final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 60));
-            count = 0;
-            for (final JSONObject article : mostCmtArticles) {
-                final String articleId = article.optString(Keys.OBJECT_ID);
-                if (!articleIds.contains(articleId)) {
-                    final String title = article.optString(Article.ARTICLE_TITLE);
-                    final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-                    mostCmtBuilder.append("\n* [").append(title).append("](").append(link).append(")");
-                    articleIds.add(articleId);
-                    count++;
-                }
-                if (20 <= count) {
-                    break;
-                }
-            }
-            if (0 < mostCmtBuilder.length()) {
-                bodyBuilder.append("### 热议\n").append(mostCmtBuilder);
-            }
-
             final JSONObject stat = new JSONObject();
             stat.put("recentArticleTime", articleQueryService.getRecentArticleTime());
             final JSONObject statistic = statisticQueryService.getStatistic();
@@ -373,7 +393,6 @@ public class ExportService {
                             "clientFavicon", preference.optString(Option.ID_C_FAVICON_URL),
                             "clientTitle", clientTitle,
                             "clientSubtitle", clientSubtitle,
-                            "clientBody", bodyBuilder.toString(),
                             "stat", stat.toString(),
                             "file", zipData).send();
             response.close();
@@ -382,6 +401,85 @@ public class ExportService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Exports articles to HacPai failed:" + e.getMessage());
         }
+    }
+
+    private String genSoloBlogReadme(final String blogTitle, final String blogSubTitle, final String favicon, final String repoFullName) throws RepositoryException {
+        final Set<String> articleIds = new HashSet<>();
+        final Filter published = new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED);
+        final StringBuilder bodyBuilder = new StringBuilder("### 最新\n");
+        final List<JSONObject> recentArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).setPage(1, 20));
+        for (final JSONObject article : recentArticles) {
+            final String title = article.optString(Article.ARTICLE_TITLE);
+            final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+            bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+            articleIds.add(article.optString(Keys.OBJECT_ID));
+        }
+        bodyBuilder.append("\n\n");
+
+        final StringBuilder mostViewBuilder = new StringBuilder();
+        final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 40));
+        int count = 0;
+        for (final JSONObject article : mostViewArticles) {
+            final String articleId = article.optString(Keys.OBJECT_ID);
+            if (!articleIds.contains(articleId)) {
+                final String title = article.optString(Article.ARTICLE_TITLE);
+                final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+                mostViewBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                articleIds.add(articleId);
+                count++;
+            }
+            if (20 <= count) {
+                break;
+            }
+        }
+        if (0 < mostViewBuilder.length()) {
+            bodyBuilder.append("### 热门\n").append(mostViewBuilder).append("\n\n");
+        }
+
+        final StringBuilder mostCmtBuilder = new StringBuilder();
+        final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 60));
+        count = 0;
+        for (final JSONObject article : mostCmtArticles) {
+            final String articleId = article.optString(Keys.OBJECT_ID);
+            if (!articleIds.contains(articleId)) {
+                final String title = article.optString(Article.ARTICLE_TITLE);
+                final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+                mostCmtBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                articleIds.add(articleId);
+                count++;
+            }
+            if (20 <= count) {
+                break;
+            }
+        }
+        if (0 < mostCmtBuilder.length()) {
+            bodyBuilder.append("### 热议\n").append(mostCmtBuilder);
+        }
+
+
+        String ret = "<p align=\"center\"><img alt=\"${title}\" src=\"${favicon}\"></p><h2 align=\"center\">\n" +
+                "${title}\n" +
+                "</h2>\n" +
+                "\n" +
+                "<h4 align=\"center\">${subtitle}</h4>\n" +
+                "<p align=\"center\">" +
+                "<a title=\"${title}\" target=\"_blank\" href=\"https://github.com/${repoFullName}\"><img src=\"https://img.shields.io/github/last-commit/${repoFullName}.svg?style=flat-square&color=FF9900\"></a>\n" +
+                "<a title=\"GitHub repo size in bytes\" target=\"_blank\" href=\"https://github.com/${repoFullName}\"><img src=\"https://img.shields.io/github/repo-size/${repoFullName}.svg?style=flat-square\"></a>\n" +
+                "<a title=\"Solo Version\" target=\"_blank\" href=\"https://github.com/88250/solo/releases\"><img src=\"https://img.shields.io/badge/solo-${soloVer}-f1e05a.svg?style=flat-square&color=blueviolet\"></a>\n" +
+                "<a title=\"Hits\" target=\"_blank\" href=\"https://github.com/88250/hits\"><img src=\"https://hits.b3log.org/${repoFullName}.svg\"></a>" +
+                "</p>\n" +
+                "\n" +
+                "${body}\n\n" +
+                "---\n" +
+                "\n" +
+                "本仓库通过 [Solo](https://github.com/88250/solo) 自动进行同步更新 ❤️ ";
+        ret = ret.replace("${title}", blogTitle).
+                replace("${subtitle}", blogSubTitle).
+                replace("${favicon}", favicon).
+                replace("${repoFullName}", repoFullName).
+                replace("${soloVer}", Server.VERSION).
+                replace("${body}", bodyBuilder.toString());
+        return ret;
     }
 
     /**
@@ -456,10 +554,8 @@ public class ExportService {
 
             if (StringUtils.isNotBlank(article.optString(Article.ARTICLE_VIEW_PWD))) {
                 passwords.add(one);
-                continue;
             } else if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(Article.ARTICLE_STATUS)) {
                 posts.add(one);
-                continue;
             } else {
                 drafts.add(one);
             }
