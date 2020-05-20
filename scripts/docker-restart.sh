@@ -20,6 +20,7 @@ restart_solo(){
 }
 
 update_solo(){
+  echo "Pulling Solo's image"
 	isUpdate=$(docker pull b3log/solo | grep "Downloaded")
 	if [[ -z $isUpdate ]]
 	then
