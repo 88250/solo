@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.40, Apr 30, 2020
+ * @version 1.5.2.41, May 20, 2020
  * @since 0.4.0
  */
 @Service
@@ -525,6 +525,12 @@ public class InitService {
         syncGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         syncGitHubOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_SYNC_GITHUB);
         optionRepository.add(syncGitHubOpt);
+
+        final JSONObject githubPATOpt = new JSONObject();
+        githubPATOpt.put(Keys.OBJECT_ID, Option.ID_C_GITHUB_PAT);
+        githubPATOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        githubPATOpt.put(Option.OPTION_VALUE, "");
+        optionRepository.add(githubPATOpt);
 
         final JSONObject pullGitHubOpt = new JSONObject();
         pullGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_PULL_GITHUB);

@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 1.6.0.6, Apr 6, 2020
+ * @version 1.7.0.0, May 20, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -102,6 +102,11 @@ public final class Option {
      * Key of enable backup public articles to HacPai. 备份公开文章到社区 https://hacpai.com/article/1557238327458
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
+
+    /**
+     * Key of GitHub PAT (personal access token).
+     */
+    public static final String ID_C_GITHUB_PAT = "githubPAT";
 
     /**
      * Key of enable sync (pull) GitHub. 拉取并展示仓库 https://hacpai.com/article/1557238327458

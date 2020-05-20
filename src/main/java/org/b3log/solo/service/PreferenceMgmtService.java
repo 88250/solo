@@ -35,7 +35,7 @@ import java.util.Locale;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.7, Apr 15, 2020
+ * @version 1.4.0.8, May 20, 2020
  * @since 0.4.0
  */
 @Service
@@ -207,6 +207,9 @@ public class PreferenceMgmtService {
             syncGitHubOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SYNC_GITHUB));
             optionRepository.update(Option.ID_C_SYNC_GITHUB, syncGitHubOpt);
 
+            final String githubPATVal = preference.optString(Option.ID_C_GITHUB_PAT);
+            emptyPreferenceOptSave(Option.ID_C_GITHUB_PAT, githubPATVal);
+
             final JSONObject pullGitHubOpt = optionRepository.get(Option.ID_C_PULL_GITHUB);
             pullGitHubOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_PULL_GITHUB));
             optionRepository.update(Option.ID_C_PULL_GITHUB, pullGitHubOpt);
@@ -268,6 +271,7 @@ public class PreferenceMgmtService {
 
     private void emptyPreferenceOptSave(final String optID, final String val) throws Exception {
         // 该方法用于向后兼容，如果数据库中不存在该配置项则创建再保存
+
         JSONObject opt = optionRepository.get(optID);
         if (null == opt) {
             opt = new JSONObject();
