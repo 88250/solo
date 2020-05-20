@@ -66,11 +66,21 @@ public final class GitHubs {
         }
     }
 
-    private static boolean updateFile(final String pat, final String loginName, final String repoName, final String filePath, final byte[] content) {
+    /**
+     * Updates a file by the specified personal access token, GitHub login name, repo name, file path and file content.
+     *
+     * @param pat       the specified personal access token
+     * @param loginName the specified GitHub login name
+     * @param repoName  the specified repo name
+     * @param filePath  the specfiied file name
+     * @param content   the specified file content
+     * @return {@code true} if ok, returns {@code false} if failed
+     */
+    public static boolean updateFile(final String pat, final String loginName, final String repoName, final String filePath, final byte[] content) {
         final String fullRepoName = loginName + "/" + repoName;
         try {
             HttpResponse response = HttpRequest.get("https://api.github.com/repos/" + fullRepoName + "/git/trees/master").header("Authorization", "token " + pat).
-                    connectionTimeout(3000).timeout(60000).header("User-Agent", Solos.USER_AGENT).send();
+                    connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).send();
             int statusCode = response.statusCode();
             response.charset("UTF-8");
             String responseBody = response.bodyText();
@@ -95,7 +105,7 @@ public final class GitHubs {
             }
 
             response = HttpRequest.put("https://api.github.com/repos/" + fullRepoName + "/contents/" + filePath).header("Authorization", "token " + pat).
-                    connectionTimeout(3000).timeout(60000 * 2).header("User-Agent", Solos.USER_AGENT).body(body.toString()).send();
+                    connectionTimeout(7000).timeout(60000 * 2).header("User-Agent", Solos.USER_AGENT).bodyText(body.toString()).send();
             statusCode = response.statusCode();
             response.charset("UTF-8");
             responseBody = response.bodyText();
@@ -110,7 +120,17 @@ public final class GitHubs {
         }
     }
 
-    private static boolean createOrUpdateGitHubRepo(final String pat, final String loginName, final String repoName, final String repoDesc, final String repoHomepage) {
+    /**
+     * Creates or updates a GitHub repository by the specified personal access token, GitHub login name, repo name repo desc and repo homepage.
+     *
+     * @param pat          the specified personal access token
+     * @param loginName    the specified GitHub login name
+     * @param repoName     the specified repo name
+     * @param repoDesc     the specified repo desc
+     * @param repoHomepage the specified repo homepage
+     * @return {@code true} if ok, returns {@code false} if failed
+     */
+    public static boolean createOrUpdateGitHubRepo(final String pat, final String loginName, final String repoName, final String repoDesc, final String repoHomepage) {
         try {
             final JSONObject body = new JSONObject().
                     put("name", repoName).
@@ -118,7 +138,7 @@ public final class GitHubs {
                     put("homepage", repoHomepage).
                     put("has_wiki", false);
             HttpResponse response = HttpRequest.post("https://api.github.com/user/repos").header("Authorization", "token " + pat).
-                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).body(body.toString()).send();
+                    connectionTimeout(7000).timeout(30000).header("User-Agent", Solos.USER_AGENT).bodyText(body.toString()).send();
             int statusCode = response.statusCode();
             response.charset("UTF-8");
             String responseBody = response.bodyText();
@@ -131,7 +151,7 @@ public final class GitHubs {
             }
 
             response = HttpRequest.patch("https://api.github.com/repos/" + loginName + "/" + repoName).header("Authorization", "token " + pat).
-                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).body(body.toString()).send();
+                    connectionTimeout(7000).timeout(30000).header("User-Agent", Solos.USER_AGENT).bodyText(body.toString()).send();
             statusCode = response.statusCode();
             responseBody = response.bodyText();
             if (200 != statusCode) {
@@ -145,10 +165,16 @@ public final class GitHubs {
         }
     }
 
-    private static JSONObject getGitHubUser(final String pat) {
+    /**
+     * Gets GitHub user by the specified personal access token.
+     *
+     * @param pat the specified personal access token
+     * @return GitHub user, returns {@code null} if failed
+     */
+    public static JSONObject getGitHubUser(final String pat) {
         try {
             final HttpResponse response = HttpRequest.get("https://api.github.com/user").header("Authorization", "token " + pat).
-                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+                    connectionTimeout(7000).timeout(30000).header("User-Agent", Solos.USER_AGENT).send();
             if (200 != response.statusCode()) {
                 return null;
             }
