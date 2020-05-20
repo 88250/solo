@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.5, Apr 6, 2020
+ * @version 1.3.0.6, May 20, 2020
  */
 
 /* preference 相关操作 */
@@ -59,6 +59,7 @@ admin.preference = {
         $('#relevantArticlesDisplayCount').val(preference.relevantArticlesDisplayCount)
         $('#randomArticlesDisplayCount').val(preference.randomArticlesDisplayCount)
         $('#customVars').val(preference.customVars)
+        $('#githubPAT').val(preference.githubPAT)
 
         'true' === preference.enableArticleUpdateHint ? $('#enableArticleUpdateHint').attr('checked', 'checked') : $('#enableArticleUpdateHint').removeAttr('checked')
         'true' === preference.allowVisitDraftViaPermalink ? $('#allowVisitDraftViaPermalink').attr('checked', 'checked') : $('#allowVisitDraftViaPermalink').removeAttr('checked')
@@ -214,6 +215,7 @@ admin.preference = {
         'showCodeBlockLn': $('#showCodeBlockLn').prop('checked'),
         'commentable': $('#commentable').prop('checked'),
         'customVars': $('#customVars').val(),
+        'githubPAT': $('#githubPAT').val(),
         'footnotes': $('#footnotes').prop('checked'),
         'showToC': $('#showToC').prop('checked'),
         'autoSpace': $('#autoSpace').prop('checked'),

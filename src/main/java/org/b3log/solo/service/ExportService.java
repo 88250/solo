@@ -265,10 +265,6 @@ public class ExportService {
                 return;
             }
 
-            if (!preference.optBoolean(Option.ID_C_SYNC_GITHUB)) {
-                return;
-            }
-
             String pat = preference.optString(Option.ID_C_GITHUB_PAT);
             if (StringUtils.isBlank(pat)) {
                 return;

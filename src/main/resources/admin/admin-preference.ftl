@@ -147,6 +147,10 @@
                     <input id="customVars" class="normalInput" type="text"/>
                 </label>
                 <label>
+                    ${githubPATLabel}
+                    <input id="githubPAT" class="normalInput" type="text"/>
+                </label>
+                <label>
                     <div class="fn__flex-inline">
                         ${enableArticleUpdateHint1Label}
                         <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
