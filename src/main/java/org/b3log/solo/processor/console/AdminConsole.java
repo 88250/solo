@@ -232,16 +232,14 @@ public class AdminConsole {
      * @param context the specified context
      */
     public void importMarkdownZip(final RequestContext context) {
+        context.renderJSON();
+
         final Request request = context.getRequest();
         final FileUpload file = request.getFileUpload("file");
         final String fileName = file.getFilename();
         String suffix = StringUtils.substringAfterLast(fileName, ".");
-        if (StringUtils.isBlank(suffix)) {
-            // TODO
-            return;
-        }
         if (!StringUtils.equalsIgnoreCase(suffix, "zip")) {
-            // TODO
+            context.renderMsg(langPropsService.get("allowZipOnlyLabel"));
             return;
         }
 
@@ -255,12 +253,22 @@ public class AdminConsole {
             final String unzipPath = tmpDir + File.separator + "solo-import-" + date;
             final File unzipDir = new File(unzipPath);
             ZipUtil.unzip(zipFile, unzipDir);
-            importService.importMarkdownDir(unzipDir);
+            final JSONObject result = importService.importMarkdownDir(unzipDir);
+            final int succCount = result.optInt("succCount");
+            final int failCount = result.optInt("failCount");
             FileUtils.deleteQuietly(zipFile);
             FileUtils.deleteQuietly(unzipDir);
+            context.renderJSON(true);
+            String msg = langPropsService.get("importSuccLabel");
+            msg = msg.replace("${succCount}", succCount + "");
+            if (0 < failCount) {
+                msg = langPropsService.get("importFailLabel");
+                msg = msg.replace("${failCount}", failCount + "");
+            }
+            context.renderMsg(msg);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Imports markdown file failed", e);
-            return;
+            context.renderMsg(langPropsService.get("importFailedSeeLogLabel"));
         }
     }
 

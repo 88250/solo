@@ -87,13 +87,19 @@ public class ImportService {
      * Imports markdown files under the specified markdown files dir.
      *
      * @param markdownsDir the specified markdown files dir
+     * @return <pre>
+     * {
+     *     "failCount": int,
+     *     "succCnt": int
+     * }
+     * </pre>
      */
-    public void importMarkdownDir(final File markdownsDir) {
+    public JSONObject importMarkdownDir(final File markdownsDir) {
         LOGGER.debug("Import directory [" + markdownsDir.getPath() + "]");
 
         final JSONObject admin = userQueryService.getAdmin();
         if (null == admin) { // Not init yet
-            return;
+            return null;
         }
 
         final String adminId = admin.optString(Keys.OBJECT_ID);
@@ -102,7 +108,7 @@ public class ImportService {
         final Set<String> failSet = new TreeSet<>();
         final Collection<File> mds = FileUtils.listFiles(markdownsDir, new String[]{"md"}, true);
         if (mds.isEmpty()) {
-            return;
+            return null;
         }
 
         for (final File md : mds) {
@@ -132,7 +138,7 @@ public class ImportService {
         }
 
         if (0 == succCnt && 0 == failCnt) {
-            return;
+            return null;
         }
 
         final StringBuilder logBuilder = new StringBuilder();
@@ -147,6 +153,7 @@ public class ImportService {
             logBuilder.append(" :p");
         }
         LOGGER.info(logBuilder.toString());
+        return new JSONObject().put("failCount", failCnt).put("succCount", succCnt);
     }
 
     private JSONObject parseArticle(final String fileName, String fileContent) {
