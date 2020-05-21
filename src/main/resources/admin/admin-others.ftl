@@ -48,7 +48,7 @@
         <button class="fn__margin12" onclick="admin.others.exportHexo();">${exportHexoLabel}</button>
     </div>
     <div id="tabOthersPanel_import-data" class="fn__none">
-        <form action="${servePath}/console/import/markdown-zip" method="post">
+        <form action="${servePath}/console/import/markdown-zip" method="post" enctype="multipart/form-data">
             <input type="file" name="file">
             <input type="submit" value="${uploadMarkdownZipLabel}">
         </form>
