@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.0, Apr 2, 2020
+ * @version 1.4.1.1, May 21, 2020
  */
 
 /* others 相关操作 */
@@ -134,7 +134,7 @@ admin.others = {
   importZip () {
     const formData = new FormData()
     const $input = $('#otherImportFileInput')
-    formData.append('file', $input[0].files)
+    formData.append('file', $input[0].files[0])
     $.ajax(Label.servePath + '/console/import/markdown-zip', {
       method: 'POST',
       data: formData,
@@ -142,6 +142,7 @@ admin.others = {
       contentType: false,
       success: function (res) {
         $input.val('')
+        $('#tipMsg').text(res.msg)
       },
       complete: function () {
         $input.val('')

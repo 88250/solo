@@ -54,7 +54,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, May 21, 2020
  * @since 0.4.1
  */
 @Singleton
@@ -233,9 +233,12 @@ public class AdminConsole {
      */
     public void importMarkdownZip(final RequestContext context) {
         context.renderJSON();
-
         final Request request = context.getRequest();
         final FileUpload file = request.getFileUpload("file");
+        if (null == file) {
+            context.renderMsg(langPropsService.get("allowZipOnlyLabel"));
+            return;
+        }
         final String fileName = file.getFilename();
         String suffix = StringUtils.substringAfterLast(fileName, ".");
         if (!StringUtils.equalsIgnoreCase(suffix, "zip")) {
