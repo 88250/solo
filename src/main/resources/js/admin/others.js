@@ -131,6 +131,23 @@ admin.others = {
       },
     })
   },
+  importZip () {
+    const formData = new FormData()
+    const $input = $('#otherImportFileInput')
+    formData.append('file', $input[0].files)
+    $.ajax(Label.servePath + '/console/import/markdown-zip', {
+      method: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (res) {
+        $input.val('')
+      },
+      complete: function () {
+        $input.val('')
+      },
+    })
+  }
 }
 
 /*
