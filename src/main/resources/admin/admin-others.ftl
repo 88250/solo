@@ -24,7 +24,7 @@
             </div>
         </li>
         <li>
-            <div id="tabOthers_data">
+            <div id="tabOthers_import-data">
                 <a href="#tools/others/import-data">${importDataLabel}</a>
             </div>
         </li>
@@ -48,8 +48,10 @@
         <button class="fn__margin12" onclick="admin.others.exportHexo();">${exportHexoLabel}</button>
     </div>
     <div id="tabOthersPanel_import-data" class="fn__none">
-        TODO
-        <button class="fn__margin12" onclick="">${uploadMarkdownZipLabel}</button>
+        <form action="${servePath}/console/import/markdown-zip" method="post">
+            <input type="file" name="file">
+            <input type="submit" value="${uploadMarkdownZipLabel}">
+        </form>
     </div>
     <div id="tabOthersPanel_log" class="fn__none form">
         <textarea rows="32" readonly></textarea>
