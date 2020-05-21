@@ -12,6 +12,7 @@
 package org.b3log.solo.processor.console;
 
 import jodd.io.ZipUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -22,6 +23,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.http.FileUpload;
+import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
@@ -31,14 +34,12 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
-import org.b3log.solo.service.DataModelService;
-import org.b3log.solo.service.ExportService;
-import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.*;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -100,6 +101,12 @@ public class AdminConsole {
      */
     @Inject
     private EventManager eventManager;
+
+    /**
+     * Import service.
+     */
+    @Inject
+    private ImportService importService;
 
     /**
      * Shows administrator index with the specified context.
@@ -218,6 +225,45 @@ public class AdminConsole {
         dataModel.put(Common.LUTE_AVAILABLE, Markdowns.LUTE_AVAILABLE);
         dataModel.put("timeZoneIdOptions", timeZoneIdOptions.toString());
         fireFreeMarkerActionEvent(templateName, dataModel);
+    }
+
+    /**
+     * Imports markdown zip.
+     *
+     * @param context the specified context
+     */
+    public void importMarkdownZip(final RequestContext context) {
+        final Request request = context.getRequest();
+        final FileUpload file = request.getFileUpload("file");
+        final String[] allowedSuffixArray = new String[]{"zip"};
+        final String fileName = file.getFilename();
+        String suffix = StringUtils.substringAfterLast(fileName, ".");
+        if (StringUtils.isBlank(suffix)) {
+            // TODO
+            return;
+        }
+        if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+            // TODO
+            return;
+        }
+
+        try {
+            final byte[] bytes = file.getData();
+            final String tmpDir = System.getProperty("java.io.tmpdir");
+            final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
+            final String zipPath = tmpDir + File.separator + "solo-import-" + date + ".zip";
+            final File zipFile = new File(zipPath);
+            FileUtils.writeByteArrayToFile(zipFile, bytes);
+            final String unzipPath = tmpDir + File.separator + "solo-import-" + date;
+            final File unzipDir = new File(unzipPath);
+            ZipUtil.unzip(zipFile, unzipDir);
+            importService.importMarkdownDir(unzipDir);
+            FileUtils.deleteQuietly(zipFile);
+            FileUtils.deleteQuietly(unzipDir);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Imports markdown file failed", e);
+            return;
+        }
     }
 
     /**

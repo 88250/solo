@@ -519,7 +519,8 @@ public final class Server extends BaseServer {
                 get("/admin-preference.do", adminConsole::showAdminPreferenceFunction).
                 get("/console/export/sql", adminConsole::exportSQL).
                 get("/console/export/json", adminConsole::exportJSON).
-                get("/console/export/hexo", adminConsole::exportHexo);
+                get("/console/export/hexo", adminConsole::exportHexo).
+                post("/console/import/markdown-zip", adminConsole::importMarkdownZip);
         adminConsoleGroup.router().get(new String[]{"/admin-article.do",
                 "/admin-article-list.do",
                 "/admin-comment-list.do",

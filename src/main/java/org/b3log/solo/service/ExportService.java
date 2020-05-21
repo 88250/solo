@@ -260,6 +260,10 @@ public class ExportService {
      */
     public void exportGitHub() {
         try {
+            if (Latkes.RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode()) {
+                return;
+            }
+
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 return;

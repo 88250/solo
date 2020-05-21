@@ -35,7 +35,7 @@ import java.util.*;
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Apr 23, 2020
+ * @version 1.0.1.7, May 21, 2020
  * @since 2.2.0
  */
 @Service
@@ -64,8 +64,7 @@ public class ImportService {
     private UserQueryService userQueryService;
 
     /**
-     * Imports markdowns files as articles. See <a href="https://hacpai.com/article/1498490209748">Solo 支持 Hexo/Jekyll 数据导入</a> for
-     * more details.
+     * Imports markdown files as articles. See <a href="https://hacpai.com/article/1498490209748">Solo 支持 Hexo/Jekyll 数据导入</a> for more details.
      */
     public void importMarkdowns() {
         new Thread(() -> {
@@ -80,65 +79,74 @@ public class ImportService {
             }
 
             final File markdownsPath = Latkes.getFile("/markdowns");
-            LOGGER.debug("Import directory [" + markdownsPath.getPath() + "]");
-
-            final JSONObject admin = userQueryService.getAdmin();
-            if (null == admin) { // Not init yet
-                return;
-            }
-
-            final String adminId = admin.optString(Keys.OBJECT_ID);
-
-            int succCnt = 0, failCnt = 0;
-            final Set<String> failSet = new TreeSet<>();
-            final Collection<File> mds = FileUtils.listFiles(markdownsPath, new String[]{"md"}, true);
-            if (mds.isEmpty()) {
-                return;
-            }
-
-            for (final File md : mds) {
-                final String fileName = md.getName();
-                if (StringUtils.equalsIgnoreCase(fileName, "README.md")) {
-                    continue;
-                }
-
-                try {
-                    final String fileContent = FileUtils.readFileToString(md, "UTF-8");
-                    final JSONObject article = parseArticle(fileName, fileContent);
-                    article.put(Article.ARTICLE_AUTHOR_ID, adminId);
-
-                    final JSONObject request = new JSONObject();
-                    request.put(Article.ARTICLE, article);
-
-                    final String id = articleMgmtService.addArticle(request);
-                    FileUtils.moveFile(md, new File(md.getPath() + "." + id));
-                    LOGGER.info("Imported article [" + article.optString(Article.ARTICLE_TITLE) + "]");
-                    succCnt++;
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Import file [" + fileName + "] failed", e);
-
-                    failCnt++;
-                    failSet.add(fileName);
-                }
-            }
-
-            if (0 == succCnt && 0 == failCnt) {
-                return;
-            }
-
-            final StringBuilder logBuilder = new StringBuilder();
-            logBuilder.append("[").append(succCnt).append("] imported, [").append(failCnt).append("] failed");
-            if (failCnt > 0) {
-                logBuilder.append(": ").append(Strings.LINE_SEPARATOR);
-
-                for (final String fail : failSet) {
-                    logBuilder.append("    ").append(fail).append(Strings.LINE_SEPARATOR);
-                }
-            } else {
-                logBuilder.append(" :p");
-            }
-            LOGGER.info(logBuilder.toString());
+            importMarkdownDir(markdownsPath);
         }).start();
+    }
+
+    /**
+     * Imports markdown files under the specified markdown files dir.
+     *
+     * @param markdownsDir the specified markdown files dir
+     */
+    public void importMarkdownDir(final File markdownsDir) {
+        LOGGER.debug("Import directory [" + markdownsDir.getPath() + "]");
+
+        final JSONObject admin = userQueryService.getAdmin();
+        if (null == admin) { // Not init yet
+            return;
+        }
+
+        final String adminId = admin.optString(Keys.OBJECT_ID);
+
+        int succCnt = 0, failCnt = 0;
+        final Set<String> failSet = new TreeSet<>();
+        final Collection<File> mds = FileUtils.listFiles(markdownsDir, new String[]{"md"}, true);
+        if (mds.isEmpty()) {
+            return;
+        }
+
+        for (final File md : mds) {
+            final String fileName = md.getName();
+            if (StringUtils.equalsIgnoreCase(fileName, "README.md")) {
+                continue;
+            }
+
+            try {
+                final String fileContent = FileUtils.readFileToString(md, "UTF-8");
+                final JSONObject article = parseArticle(fileName, fileContent);
+                article.put(Article.ARTICLE_AUTHOR_ID, adminId);
+
+                final JSONObject request = new JSONObject();
+                request.put(Article.ARTICLE, article);
+
+                final String id = articleMgmtService.addArticle(request);
+                FileUtils.moveFile(md, new File(md.getPath() + "." + id));
+                LOGGER.info("Imported article [" + article.optString(Article.ARTICLE_TITLE) + "]");
+                succCnt++;
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Import file [" + fileName + "] failed", e);
+
+                failCnt++;
+                failSet.add(fileName);
+            }
+        }
+
+        if (0 == succCnt && 0 == failCnt) {
+            return;
+        }
+
+        final StringBuilder logBuilder = new StringBuilder();
+        logBuilder.append("[").append(succCnt).append("] imported, [").append(failCnt).append("] failed");
+        if (failCnt > 0) {
+            logBuilder.append(": ").append(Strings.LINE_SEPARATOR);
+
+            for (final String fail : failSet) {
+                logBuilder.append("    ").append(fail).append(Strings.LINE_SEPARATOR);
+            }
+        } else {
+            logBuilder.append(" :p");
+        }
+        LOGGER.info(logBuilder.toString());
     }
 
     private JSONObject parseArticle(final String fileName, String fileContent) {
