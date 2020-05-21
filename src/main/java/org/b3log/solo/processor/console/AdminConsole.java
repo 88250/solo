@@ -34,7 +34,6 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -235,14 +234,13 @@ public class AdminConsole {
     public void importMarkdownZip(final RequestContext context) {
         final Request request = context.getRequest();
         final FileUpload file = request.getFileUpload("file");
-        final String[] allowedSuffixArray = new String[]{"zip"};
         final String fileName = file.getFilename();
         String suffix = StringUtils.substringAfterLast(fileName, ".");
         if (StringUtils.isBlank(suffix)) {
             // TODO
             return;
         }
-        if (!Strings.containsIgnoreCase(suffix, allowedSuffixArray)) {
+        if (!StringUtils.equalsIgnoreCase(suffix, "zip")) {
             // TODO
             return;
         }
