@@ -29,13 +29,14 @@ import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PermalinkQueryService;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 /**
  * Article permalink  handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 12, 2020
+ * @version 1.0.0.5, May 23, 2020
  * @since 3.2.0
  */
 public class PermalinkHandler implements Handler {
@@ -68,6 +69,15 @@ public class PermalinkHandler implements Handler {
             if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
                 LOGGER.log(Level.DEBUG, "Skip permalink handling request [URI={}]", permalink);
                 context.handle();
+                return;
+            }
+
+            // 尝试走静态化缓存
+            final String html = Statics.get(context);
+            if (StringUtils.isNotBlank(html)) {
+                context.getResponse().setContentType("text/html; charset=utf-8");
+                context.sendString(html);
+                context.abort();
                 return;
             }
 

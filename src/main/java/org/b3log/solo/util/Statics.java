@@ -11,16 +11,20 @@
  */
 package org.b3log.solo.util;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.processor.SkinRenderer;
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,7 +43,7 @@ import java.util.zip.GZIPOutputStream;
  * Static utilities. 页面静态化 https://github.com/88250/solo/issues/107
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, May 19, 2020
+ * @version 1.0.1.1, May 23, 2020
  * @since 4.1.0
  */
 public final class Statics {
@@ -204,18 +208,26 @@ public final class Statics {
             return null;
         }
 
-        String ret;
-        String requestURL = context.requestURI();
+        String ret, requestURL;
+
+        // 判断文章自定义链接
+        final JSONObject article = (JSONObject) context.attr(Article.ARTICLE);
+        if (null != article) {
+            requestURL = article.optString(Article.ARTICLE_PERMALINK);
+        } else {
+            requestURL = context.requestURI();
+        }
         String requestQueryStr = context.requestQueryStr();
         if (StringUtils.isNotBlank(requestQueryStr)) {
             requestURL += "?" + requestQueryStr;
         }
+
         ret = StringUtils.replace(requestURL, "/", "_");
         ret = StringUtils.replace(ret, "?", "_");
         if (Solos.isMobile(context.getRequest())) {
             ret = "m" + ret;
         }
-
+        ret = DigestUtils.md5Hex(ret);
         return ret;
     }
 
