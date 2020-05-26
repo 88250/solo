@@ -11,6 +11,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +32,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.0.20, Apr 15, 2020
+ * @version 1.1.1.0, May 26, 2020
  * @since 0.4.0
  */
 @Service
@@ -120,7 +121,8 @@ public class PageMgmtService {
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
-            final String permalink = page.optString(Page.PAGE_PERMALINK).trim();
+            String permalink = page.optString(Page.PAGE_PERMALINK).trim();
+            permalink = StringUtils.replace(permalink, " ", "-");
             newPage.put(Page.PAGE_PERMALINK, permalink);
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
 
@@ -188,7 +190,8 @@ public class PageMgmtService {
             final int maxOrder = pageRepository.getMaxOrder();
             page.put(Page.PAGE_ORDER, maxOrder + 1);
 
-            final String permalink = page.optString(Page.PAGE_PERMALINK);
+            String permalink = page.optString(Page.PAGE_PERMALINK);
+            permalink = StringUtils.replace(permalink, " ", "-");
             if (permalinkQueryService.exist(permalink)) {
                 if (transaction.isActive()) {
                     transaction.rollback();
