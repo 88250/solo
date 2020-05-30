@@ -210,7 +210,7 @@ public class DataModelService {
                 }
 
             final JSONObject articlesResult = articleRepository.get(query);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = (List<JSONObject>) articlesResult.opt(Keys.RESULTS);
             final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             setArticlesExProperties(context, articles, preference);
 

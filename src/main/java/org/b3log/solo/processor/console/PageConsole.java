@@ -29,8 +29,9 @@ import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Page console request processing.
@@ -331,10 +332,8 @@ public class PageConsole {
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/pages/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = pageQueryService.getPages(requestJSONObject);
-            final JSONArray pages = result.optJSONArray(Page.PAGES);
-
-            for (int i = 0; i < pages.length(); i++) {
-                final JSONObject page = pages.getJSONObject(i);
+            final List<JSONObject> pages = (List<JSONObject>) result.opt(Page.PAGES);
+            for (final JSONObject page : pages) {
                 String title = page.optString(Page.PAGE_TITLE);
                 title = StringEscapeUtils.escapeXml(title);
                 page.put(Page.PAGE_TITLE, title);

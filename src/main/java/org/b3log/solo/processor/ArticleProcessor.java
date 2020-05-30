@@ -33,7 +33,10 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.Dates;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.Server;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
@@ -374,7 +377,7 @@ public class ArticleProcessor {
             requestJSONObject.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
             requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
-            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
+            final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
             dataModelService.setArticlesExProperties(context, articles, preference);
 
             jsonObject.put(Keys.RESULTS, result);
@@ -519,7 +522,7 @@ public class ArticleProcessor {
             }
 
             final JSONObject articlesResult = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = (List<JSONObject>) articlesResult.opt(Keys.RESULTS);
             dataModelService.setArticlesExProperties(context, articles, preference);
             final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
 
@@ -576,7 +579,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = (List<JSONObject>) articlesResult.opt(Keys.RESULTS);
             dataModelService.setArticlesExProperties(context, articles, preference);
             final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);

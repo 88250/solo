@@ -16,7 +16,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -59,7 +58,6 @@ public class CategoryTagRepository extends AbstractRepository {
     public JSONObject getByCategoryId(final String categoryId, final int currentPageNum, final int pageSize) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId)).
                 setPage(currentPageNum, pageSize).setPageCount(1);
-
         return get(query);
     }
 
@@ -98,11 +96,7 @@ public class CategoryTagRepository extends AbstractRepository {
      */
     public void removeByCategoryId(final String categoryId) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId));
-        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
-        for (int i = 0; i < relations.length(); i++) {
-            final JSONObject rel = relations.optJSONObject(i);
-            remove(rel.optString(Keys.OBJECT_ID));
-        }
+        remove(query);
     }
 
     /**
@@ -113,10 +107,6 @@ public class CategoryTagRepository extends AbstractRepository {
      */
     public void removeByTagId(final String tagId) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
-        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
-        for (int i = 0; i < relations.length(); i++) {
-            final JSONObject rel = relations.optJSONObject(i);
-            remove(rel.optString(Keys.OBJECT_ID));
-        }
+        remove(query);
     }
 }

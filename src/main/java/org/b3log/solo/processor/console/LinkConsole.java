@@ -27,8 +27,9 @@ import org.b3log.solo.model.Link;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Link console request processing.
@@ -279,16 +280,14 @@ public class LinkConsole {
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
 
-            final JSONArray links = result.optJSONArray(Link.LINKS);
-            for (int i = 0; i < links.length(); i++) {
-                final JSONObject link = links.optJSONObject(i);
+            final List<JSONObject> links = (List<JSONObject>) result.opt(Link.LINKS);
+            for (final JSONObject link : links) {
                 String title = link.optString(Link.LINK_TITLE);
                 title = StringEscapeUtils.escapeXml(title);
                 link.put(Link.LINK_TITLE, title);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));

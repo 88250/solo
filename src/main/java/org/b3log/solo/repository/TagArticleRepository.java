@@ -174,7 +174,6 @@ public class TagArticleRepository extends AbstractRepository {
         final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
                 addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPage(currentPageNum, pageSize);
-
         return get(query);
     }
 }

@@ -77,7 +77,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      * @throws Exception exception
      */
     public void getArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -115,7 +115,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "updateArticle")
     public void removeArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -136,7 +136,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      * @throws Exception exception
      */
     public void cancelPublishArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -157,7 +157,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      * @throws Exception exception
      */
     public void cancelTopArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -178,7 +178,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      * @throws Exception exception
      */
     public void putTopArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -199,7 +199,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      * @throws Exception exception
      */
     public void updateArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
 
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/");
@@ -223,7 +223,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      * @throws Exception exception
      */
     public void addArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         article.put(Keys.OBJECT_ID, "");
         article.put(Article.ARTICLE_PERMALINK, "");
 

@@ -16,7 +16,6 @@ import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -185,10 +184,10 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
-        final JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
+        final List<JSONObject> articles = (List<JSONObject>) articleQueryService.getArticles(paginationRequest).opt(Article.ARTICLES);
 
-        Assert.assertNotEquals(articles.length(), 0);
-        final JSONObject article = articles.getJSONObject(0);
+        Assert.assertNotEquals(articles.size(), 0);
+        final JSONObject article = articles.get(0);
 
         final String articleId = article.getString(Keys.OBJECT_ID);
         articleMgmtService.topArticle(articleId, true);
@@ -228,14 +227,14 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
 
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
-        JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
+        List<JSONObject> articles = (List<JSONObject>) articleQueryService.getArticles(paginationRequest).opt(Article.ARTICLES);
 
-        int articleCount = articles.length();
+        int articleCount = articles.size();
         Assert.assertNotEquals(articleCount, 0);
 
         articleMgmtService.cancelPublishArticle(articleId);
-        articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
-        Assert.assertEquals(articles.length(), articleCount - 1);
+        articles = (List<JSONObject>) articleQueryService.getArticles(paginationRequest).opt(Article.ARTICLES);
+        Assert.assertEquals(articles.size(), articleCount - 1);
     }
 
     /**

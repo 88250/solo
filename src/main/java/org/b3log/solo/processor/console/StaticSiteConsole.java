@@ -247,7 +247,7 @@ public class StaticSiteConsole {
         while (count++ < maxPage) {
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(String.valueOf(currentPageNum) + '/' + pageSize + '/' + windowSize);
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
+            final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
             if (articles.isEmpty()) {
                 break;
             }

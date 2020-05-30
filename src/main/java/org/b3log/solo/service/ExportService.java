@@ -607,16 +607,15 @@ public class ExportService {
 
         final JSONArray users = getJSONs(userRepository);
         ret.put(User.USERS, users);
-
         return ret;
     }
 
     private JSONArray getJSONs(final Repository repository) {
         try {
-            return repository.get(new Query()).optJSONArray(Keys.RESULTS);
+            final List<JSONObject> list = repository.getList(new Query());
+            return new JSONArray(list);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets data from repository [" + repository.getName() + "] failed", e);
-
             return new JSONArray();
         }
     }

@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Blog processor.
@@ -195,7 +196,7 @@ public class BlogProcessor {
         requestJSONObject.put(Keys.EXCLUDES, excludes);
 
         final JSONObject result = articleQueryService.getArticles(requestJSONObject);
-        final JSONArray articles = result.optJSONArray(Article.ARTICLES);
+        final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
 
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -205,8 +206,7 @@ public class BlogProcessor {
         final JSONArray data = new JSONArray();
         ret.put("data", data);
 
-        for (int i = 0; i < articles.length(); i++) {
-            final JSONObject article = articles.optJSONObject(i);
+        for (final JSONObject article : articles) {
             final String tagString = article.optString(Article.ARTICLE_TAGS_REF);
 
             final JSONArray tagArray = new JSONArray();

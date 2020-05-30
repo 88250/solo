@@ -38,7 +38,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.util.Markdowns;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -109,9 +108,9 @@ public class FeedProcessor {
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setPageCount(1);
             final JSONObject articleResult = articleRepository.get(query);
-            final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
+            final List<JSONObject> articles = (List<JSONObject>) articleResult.opt(Keys.RESULTS);
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
-            for (int i = 0; i < articles.length(); i++) {
+            for (int i = 0; i < articles.size(); i++) {
                 final Entry entry = getEntry(articles, isFullContent, i);
                 feed.addEntry(entry);
             }
@@ -124,9 +123,8 @@ public class FeedProcessor {
         }
     }
 
-    private Entry getEntry(final JSONArray articles, final boolean isFullContent, int i)
-            throws JSONException, ServiceException {
-        final JSONObject article = articles.getJSONObject(i);
+    private Entry getEntry(final List<JSONObject> articles, final boolean isFullContent, int i) throws JSONException, ServiceException {
+        final JSONObject article = articles.get(i);
         final Entry ret = new Entry();
         final String title = article.getString(Article.ARTICLE_TITLE);
         ret.setTitle(title);
@@ -192,9 +190,9 @@ public class FeedProcessor {
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING);
             final JSONObject articleResult = articleRepository.get(query);
-            final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
+            final List<JSONObject> articles = (List<JSONObject>) articleResult.opt(Keys.RESULTS);
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
-            for (int i = 0; i < articles.length(); i++) {
+            for (int i = 0; i < articles.size(); i++) {
                 final Item item = getItem(articles, isFullContent, i);
                 channel.addItem(item);
             }
@@ -207,15 +205,13 @@ public class FeedProcessor {
         }
     }
 
-    private Item getItem(final JSONArray articles, final boolean isFullContent, int i) throws JSONException, ServiceException {
-        final JSONObject article = articles.getJSONObject(i);
+    private Item getItem(final List<JSONObject> articles, final boolean isFullContent, int i) throws JSONException, ServiceException {
+        final JSONObject article = articles.get(i);
         final Item ret = new Item();
         String title = article.getString(Article.ARTICLE_TITLE);
         title = EmojiParser.parseToAliases(title);
         ret.setTitle(title);
-        String description = isFullContent
-                ? article.getString(Article.ARTICLE_CONTENT)
-                : article.optString(Article.ARTICLE_ABSTRACT);
+        String description = isFullContent ? article.getString(Article.ARTICLE_CONTENT) : article.optString(Article.ARTICLE_ABSTRACT);
         description = EmojiParser.parseToAliases(description);
         description = Markdowns.toHTML(description);
         ret.setDescription(description);

@@ -38,8 +38,9 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Sitemap processor.
@@ -118,9 +119,8 @@ public class SitemapProcessor {
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
                 select(Article.ARTICLE_PERMALINK, Article.ARTICLE_UPDATED);
         final JSONObject articleResult = articleRepository.get(query);
-        final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
-        for (int i = 0; i < articles.length(); i++) {
-            final JSONObject article = articles.getJSONObject(i);
+        final List<JSONObject> articles = (List<JSONObject>) articleResult.opt(Keys.RESULTS);
+        for (final JSONObject article : articles) {
             final String permalink = article.getString(Article.ARTICLE_PERMALINK);
             final URL url = new URL();
             url.setLoc(StringEscapeUtils.escapeXml(Latkes.getServePath() + permalink));
@@ -139,9 +139,8 @@ public class SitemapProcessor {
      */
     private void addNavigations(final Sitemap sitemap) throws Exception {
         final JSONObject result = pageRepository.get(new Query());
-        final JSONArray pages = result.getJSONArray(Keys.RESULTS);
-        for (int i = 0; i < pages.length(); i++) {
-            final JSONObject page = pages.getJSONObject(i);
+        final List<JSONObject> pages = (List<JSONObject>) result.get(Keys.RESULTS);
+        for (final JSONObject page : pages) {
             final String permalink = page.getString(Page.PAGE_PERMALINK);
             final URL url = new URL();
             // The navigation maybe a page or a link
@@ -163,10 +162,8 @@ public class SitemapProcessor {
      */
     private void addTags(final Sitemap sitemap) throws Exception {
         final JSONObject result = tagRepository.get(new Query());
-        final JSONArray tags = result.getJSONArray(Keys.RESULTS);
-
-        for (int i = 0; i < tags.length(); i++) {
-            final JSONObject tag = tags.getJSONObject(i);
+        final List<JSONObject> tags = (List<JSONObject>) result.opt(Keys.RESULTS);
+        for (final JSONObject tag : tags) {
             final String link = URLs.encode(tag.getString(Tag.TAG_TITLE));
             final URL url = new URL();
             url.setLoc(Latkes.getServePath() + "/tags/" + link);
@@ -187,13 +184,10 @@ public class SitemapProcessor {
      */
     private void addArchives(final Sitemap sitemap) throws Exception {
         final JSONObject result = archiveDateRepository.get(new Query());
-        final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
-
-        for (int i = 0; i < archiveDates.length(); i++) {
-            final JSONObject archiveDate = archiveDates.getJSONObject(i);
+        final List<JSONObject> archiveDates = (List<JSONObject>) result.opt(Keys.RESULTS);
+        for (final JSONObject archiveDate : archiveDates) {
             final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
             final String dateString = DateFormatUtils.format(time, "yyyy/MM");
-
             final URL url = new URL();
             url.setLoc(Latkes.getServePath() + "/archives/" + dateString);
             sitemap.addURL(url);

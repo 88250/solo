@@ -20,13 +20,11 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -87,14 +85,14 @@ public class CategoryQueryService {
      */
     public int getPublishedArticleCount(final String categoryId) {
         try {
-            final JSONArray categoryTags = categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
-            if (categoryTags.length() <= 0) {
+            final List<JSONObject> categoryTags = (List<JSONObject>) categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+            if (categoryTags.isEmpty()) {
                 return 0;
             }
 
             final List<String> tagIds = new ArrayList<>();
-            for (int i = 0; i < categoryTags.length(); i++) {
-                tagIds.add(categoryTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
+            for (JSONObject categoryTag : categoryTags) {
+                tagIds.add(categoryTag.optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
 
             final StringBuilder queryCount = new StringBuilder("SELECT count(DISTINCT(article.oId)) as `C` FROM ");
@@ -251,7 +249,6 @@ public class CategoryQueryService {
                 addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
                 addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         if (requestJSONObject.has(Category.CATEGORY_TITLE)) {
             query.setFilter(new PropertyFilter(Category.CATEGORY_TITLE, FilterOperator.EQUAL,
                     requestJSONObject.optString(Category.CATEGORY_TITLE)));
@@ -262,23 +259,18 @@ public class CategoryQueryService {
             result = categoryRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets categories failed", e);
-
             throw new ServiceException(e);
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> categories = CollectionUtils.jsonArrayToList(data);
-
+        final List<JSONObject> categories = (List<JSONObject>) result.opt(Keys.RESULTS);
         ret.put(Category.CATEGORIES, categories);
-
         return ret;
     }
 

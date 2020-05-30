@@ -154,9 +154,8 @@ public class UserQueryService {
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        final JSONArray users = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> users = (List<JSONObject>) result.opt(Keys.RESULTS);
         ret.put(User.USERS, users);
-
         return ret;
     }
 

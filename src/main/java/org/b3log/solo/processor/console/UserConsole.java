@@ -27,8 +27,9 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * User console request processing.
@@ -106,7 +107,6 @@ public class UserConsole {
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
@@ -140,7 +140,6 @@ public class UserConsole {
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
@@ -185,16 +184,14 @@ public class UserConsole {
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
 
-            final JSONArray users = result.optJSONArray(User.USERS);
-            for (int i = 0; i < users.length(); i++) {
-                final JSONObject user = users.optJSONObject(i);
+            final List<JSONObject> users = (List<JSONObject>) result.opt(User.USERS);
+            for (final JSONObject user : users) {
                 String userName = user.optString(User.USER_NAME);
                 userName = StringEscapeUtils.escapeXml(userName);
                 user.put(User.USER_NAME, userName);
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
@@ -263,7 +260,6 @@ public class UserConsole {
             jsonObject.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }

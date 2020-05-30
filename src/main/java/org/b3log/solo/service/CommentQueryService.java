@@ -33,7 +33,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.Markdowns;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -155,11 +154,10 @@ public class CommentQueryService {
             final Query query = new Query().setPage(currentPageNum, pageSize).
                     addSort(Comment.COMMENT_CREATED, SortDirection.DESCENDING);
             final JSONObject result = commentRepository.get(query);
-            final JSONArray comments = result.getJSONArray(Keys.RESULTS);
+            final List<JSONObject> comments = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             // Sets comment title and content escaping
-            for (int i = 0; i < comments.length(); i++) {
-                final JSONObject comment = comments.getJSONObject(i);
+            for (final JSONObject comment : comments) {
                 String title;
 
                 final String onId = comment.getString(Comment.COMMENT_ON_ID);

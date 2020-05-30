@@ -24,7 +24,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -71,19 +70,15 @@ public class PageQueryService {
      */
     public JSONObject getPage(final String pageId) throws ServiceException {
         final JSONObject ret = new JSONObject();
-
         try {
             final JSONObject page = pageRepository.get(pageId);
             if (null == page) {
                 return null;
             }
-
             ret.put(Page.PAGE, page);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             throw new ServiceException(e);
         }
     }
@@ -117,30 +112,23 @@ public class PageQueryService {
      */
     public JSONObject getPages(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
-
         try {
             final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
-
             final Query query = new Query().setPage(currentPageNum, pageSize).addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(1);
             final JSONObject result = pageRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
-
             final JSONObject pagination = new JSONObject();
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            final JSONArray pages = result.getJSONArray(Keys.RESULTS);
+            final List<JSONObject> pages = (List<JSONObject>) result.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION, pagination);
             ret.put(Page.PAGES, pages);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets pages failed", e);
-
             throw new ServiceException(e);
         }
     }

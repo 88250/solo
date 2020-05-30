@@ -17,7 +17,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.cache.PageCache;
 import org.b3log.solo.model.Page;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -86,13 +85,7 @@ public class PageRepository extends AbstractRepository {
      */
     public JSONObject getByPermalink(final String permalink) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_PERMALINK, FilterOperator.EQUAL, permalink)).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -103,13 +96,11 @@ public class PageRepository extends AbstractRepository {
      */
     public int getMaxOrder() throws RepositoryException {
         final Query query = new Query().addSort(Page.PAGE_ORDER, SortDirection.DESCENDING).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        final JSONObject result = getFirst(query);
+        if (null == result) {
             return -1;
         }
-
-        return array.optJSONObject(0).optInt(Page.PAGE_ORDER);
+        return result.optInt(Page.PAGE_ORDER);
     }
 
     /**
@@ -127,13 +118,7 @@ public class PageRepository extends AbstractRepository {
 
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.LESS_THAN, page.optInt(Page.PAGE_ORDER))).
                 addSort(Page.PAGE_ORDER, SortDirection.DESCENDING).setPage(1, 1).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (1 != array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -151,13 +136,7 @@ public class PageRepository extends AbstractRepository {
 
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.GREATER_THAN, page.optInt(Page.PAGE_ORDER))).
                 addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPage(1, 1).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (1 != array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -169,13 +148,7 @@ public class PageRepository extends AbstractRepository {
      */
     public JSONObject getByOrder(final int order) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order)).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -186,7 +159,6 @@ public class PageRepository extends AbstractRepository {
      */
     public List<JSONObject> getPages() throws RepositoryException {
         final Query query = new Query().addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(1);
-
         return getList(query);
     }
 }

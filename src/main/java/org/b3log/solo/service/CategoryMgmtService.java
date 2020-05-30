@@ -24,8 +24,9 @@ import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.CategoryRepository;
 import org.b3log.solo.repository.CategoryTagRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Category management service.
@@ -117,24 +118,14 @@ public class CategoryMgmtService {
         try {
             final JSONObject category = categoryRepository.get(categoryId);
             category.put(Category.CATEGORY_TAG_CNT, category.optInt(Category.CATEGORY_TAG_CNT) - 1);
-
             categoryRepository.update(categoryId, category);
-
             final Query query = new Query().setFilter(
                     CompositeFilterOperator.and(
                             new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId),
                             new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)));
-
-            final JSONArray relations = categoryTagRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (relations.length() < 1) {
-                return;
-            }
-
-            final JSONObject relation = relations.optJSONObject(0);
-            categoryTagRepository.remove(relation.optString(Keys.OBJECT_ID));
+            categoryTagRepository.remove(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a category-tag relation failed", e);
-
             throw new ServiceException(e);
         }
     }
@@ -152,11 +143,8 @@ public class CategoryMgmtService {
 
             final String categoryId = categoryTag.optString(Category.CATEGORY + "_" + Keys.OBJECT_ID);
             final JSONObject category = categoryRepository.get(categoryId);
-            final int tagCount =
-                    categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).
-                            optJSONArray(Keys.RESULTS).length();
+            final int tagCount = ((List<JSONObject>) categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS)).size();
             category.put(Category.CATEGORY_TAG_CNT, tagCount);
-
             categoryRepository.update(categoryId, category);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a category-tag relation failed", e);

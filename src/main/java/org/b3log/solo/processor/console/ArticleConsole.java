@@ -255,9 +255,8 @@ public class ArticleConsole {
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
 
-            final JSONArray articles = result.optJSONArray(Article.ARTICLES);
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.optJSONObject(i);
+            final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
+            for (final JSONObject article : articles) {
                 String title = article.optString(Article.ARTICLE_TITLE);
                 title = StringEscapeUtils.escapeXml(title);
                 article.put(Article.ARTICLE_TITLE, title);

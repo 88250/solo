@@ -56,7 +56,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void getArticleContent() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -126,7 +126,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void getRelevantArticles() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -176,7 +176,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void showArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
 
         final MockRequest request = mockRequest();
         request.setRequestURI("/article");
@@ -196,7 +196,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void showArticlePwdForm() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();

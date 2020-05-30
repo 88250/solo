@@ -20,7 +20,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.cache.ArticleCache;
 import org.b3log.solo.model.Article;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -157,7 +156,6 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
                 setPage(currentPageNum, pageSize);
-
         return get(query);
     }
 
@@ -177,16 +175,12 @@ public class ArticleRepository extends AbstractRepository {
         final Query query = new Query().
                 setFilter(new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, permalink)).
                 setPageCount(1);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        ret = getFirst(query);
+        if (null == ret) {
             return null;
         }
 
-        ret = array.optJSONObject(0);
         articleCache.putArticle(ret);
-
         return ret;
     }
 
@@ -236,16 +230,12 @@ public class ArticleRepository extends AbstractRepository {
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
                 setPage(1, 1).setPageCount(1).
                 select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (1 != array.length()) {
+        final JSONObject article = getFirst(query);
+        if (null == article) {
             return null;
         }
 
         final JSONObject ret = new JSONObject();
-        final JSONObject article = array.optJSONObject(0);
-
         try {
             ret.put(Article.ARTICLE_TITLE, article.getString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
@@ -253,7 +243,6 @@ public class ArticleRepository extends AbstractRepository {
         } catch (final JSONException e) {
             throw new RepositoryException(e);
         }
-
         return ret;
     }
 
@@ -287,16 +276,12 @@ public class ArticleRepository extends AbstractRepository {
                 addSort(Article.ARTICLE_CREATED, SortDirection.ASCENDING).
                 setPage(1, 1).setPageCount(1).
                 select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (1 != array.length()) {
+        final JSONObject article = getFirst(query);
+        if (null == article) {
             return null;
         }
 
         final JSONObject ret = new JSONObject();
-        final JSONObject article = array.optJSONObject(0);
-
         try {
             ret.put(Article.ARTICLE_TITLE, article.getString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
@@ -304,7 +289,6 @@ public class ArticleRepository extends AbstractRepository {
         } catch (final JSONException e) {
             throw new RepositoryException(e);
         }
-
         return ret;
     }
 

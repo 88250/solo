@@ -20,7 +20,6 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.ArchiveDate;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -72,9 +71,8 @@ public class ArchiveDateRepository extends AbstractRepository {
         LOGGER.log(Level.TRACE, "Archive date [{}] parsed to time [{}]", archiveDate, time);
 
         Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time)).setPageCount(1);
-        JSONObject result = get(query);
-        JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        List<JSONObject> result = getList(query);
+        if (result.isEmpty()) {
             // Try to fix wired timezone issue: https://github.com/b3log/solo/issues/12435
             try {
                 time = DateUtils.parseDate(archiveDate, new String[]{"yyyy/MM"}).getTime();
@@ -84,16 +82,13 @@ public class ArchiveDateRepository extends AbstractRepository {
             }
 
             LOGGER.log(Level.TRACE, "Fix archive date [{}] parsed to time [{}]", archiveDate, time);
-
             query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time)).setPageCount(1);
-            result = get(query);
-            array = result.optJSONArray(Keys.RESULTS);
-            if (0 == array.length()) {
+            result = getList(query);
+            if (result.isEmpty()) {
                 return null;
             }
         }
-
-        return array.optJSONObject(0);
+        return result.get(0);
     }
 
     /**

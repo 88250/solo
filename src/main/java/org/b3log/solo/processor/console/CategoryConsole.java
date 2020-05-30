@@ -32,7 +32,6 @@ import org.b3log.solo.service.CategoryMgmtService;
 import org.b3log.solo.service.CategoryQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -512,9 +511,8 @@ public class CategoryConsole {
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
 
-            final JSONArray categories = result.optJSONArray(Category.CATEGORIES);
-            for (int i = 0; i < categories.length(); i++) {
-                final JSONObject category = categories.optJSONObject(i);
+            final List<JSONObject> categories = (List<JSONObject>) result.opt(Category.CATEGORIES);
+            for (final JSONObject category : categories) {
                 String title = category.optString(Category.CATEGORY_TITLE);
                 title = StringEscapeUtils.escapeXml(title);
                 category.put(Category.CATEGORY_TITLE, title);

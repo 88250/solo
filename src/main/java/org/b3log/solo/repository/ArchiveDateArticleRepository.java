@@ -20,7 +20,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -89,12 +88,6 @@ public class ArchiveDateArticleRepository extends AbstractRepository {
      */
     public JSONObject getByArticleId(final String articleId) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 }
