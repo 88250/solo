@@ -20,10 +20,11 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.UserExt;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * {@link UserRepository} test case.
@@ -60,9 +61,9 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject result = userRepository.get(new Query().setFilter(
                 new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, "test1")));
 
-        final JSONArray users = result.getJSONArray(Keys.RESULTS);
-        Assert.assertEquals(users.length(), 1);
-        Assert.assertEquals(users.getJSONObject(0).getString(User.USER_NAME), "test1");
+        final List<JSONObject> users = (List<JSONObject>) result.opt(Keys.RESULTS);
+        Assert.assertEquals(users.size(), 1);
+        Assert.assertEquals(users.get(0).getString(User.USER_NAME), "test1");
 
         final JSONObject notFound = userRepository.getByUserName("not.found");
         Assert.assertNull(notFound);

@@ -16,7 +16,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -74,8 +73,8 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
     public void getByTagId() throws Exception {
         final TagArticleRepository tagArticleRepository = getTagArticleRepository();
 
-        final JSONArray results = tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).getJSONArray(Keys.RESULTS);
-        Assert.assertEquals(1, results.length());
+        final List<JSONObject> results = (List<JSONObject>) tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+        Assert.assertEquals(1, results.size());
     }
 
     /**

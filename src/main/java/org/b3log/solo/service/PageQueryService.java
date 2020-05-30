@@ -125,7 +125,7 @@ public class PageQueryService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             final List<JSONObject> pages = (List<JSONObject>) result.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION, pagination);
-            ret.put(Page.PAGES, pages);
+            ret.put(Page.PAGES, (Object) pages);
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets pages failed", e);

@@ -268,9 +268,7 @@ public class CategoryQueryService {
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        final List<JSONObject> categories = (List<JSONObject>) result.opt(Keys.RESULTS);
-        ret.put(Category.CATEGORIES, categories);
+        ret.put(Category.CATEGORIES, result.opt(Keys.RESULTS));
         return ret;
     }
 

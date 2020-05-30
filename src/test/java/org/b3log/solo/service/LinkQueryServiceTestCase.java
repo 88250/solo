@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 /**
  * {@link LinkQueryService} test case.
  *
@@ -61,6 +63,6 @@ public class LinkQueryServiceTestCase extends AbstractTestCase {
         final JSONObject result = linkQueryService.getLinks(paginationRequest);
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getJSONArray(Link.LINKS).length(), 2);
+        Assert.assertEquals(((List<JSONObject>) result.opt(Link.LINKS)).size(), 2);
     }
 }

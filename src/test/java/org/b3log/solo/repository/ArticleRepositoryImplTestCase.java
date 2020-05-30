@@ -16,7 +16,6 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -67,9 +66,9 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         articleRepository.add(article);
         transaction.commit();
 
-        final JSONArray results = articleRepository.getByAuthorId("1", 1, Integer.MAX_VALUE).getJSONArray(Keys.RESULTS);
+        final List<JSONObject> results = (List<JSONObject>) articleRepository.getByAuthorId("1", 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
 
-        Assert.assertEquals(results.length(), 1);
+        Assert.assertEquals(results.size(), 1);
     }
 
     /**
@@ -179,10 +178,10 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
     public void isPublished() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
-        final JSONArray all = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+        final List<JSONObject> all = (List<JSONObject>) articleRepository.get(new Query()).opt(Keys.RESULTS);
         Assert.assertNotNull(all);
 
-        final JSONObject article = all.getJSONObject(0);
+        final JSONObject article = all.get(0);
         Assert.assertTrue(articleRepository.isPublished(article.getString(Keys.OBJECT_ID)));
 
         final JSONObject published = articleRepository.getByPermalink("article permalink1");

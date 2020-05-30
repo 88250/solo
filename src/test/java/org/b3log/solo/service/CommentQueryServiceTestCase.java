@@ -59,15 +59,13 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject result = articleQueryService.getArticles(Solos.buildPaginationRequest("1/10/20"));
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getJSONArray(Article.ARTICLES).length(), 1);
+        Assert.assertEquals(((List<JSONObject>) result.opt(Article.ARTICLES)).size(), 1);
 
-        final JSONObject article =
-                result.getJSONArray(Article.ARTICLES).getJSONObject(0);
+        final JSONObject article = ((List<JSONObject>) result.opt(Article.ARTICLES)).get(0);
         final String articleId = article.getString(Keys.OBJECT_ID);
 
         final CommentQueryService commentQueryService = getCommentQueryService();
-        final List<JSONObject> comments =
-                commentQueryService.getComments(articleId);
+        final List<JSONObject> comments = commentQueryService.getComments(articleId);
         Assert.assertNotNull(comments);
         Assert.assertEquals(comments.size(), 1);
     }

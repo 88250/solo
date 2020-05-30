@@ -29,7 +29,6 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -72,7 +71,6 @@ public class UserQueryService {
             return userRepository.getFirst(new Query().setFilter(new PropertyFilter(UserExt.USER_GITHUB_ID, FilterOperator.EQUAL, githubId)));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets a user by GitHub id [" + githubId + "] failed", e);
-
             return null;
         }
     }
@@ -102,7 +100,6 @@ public class UserQueryService {
             return userRepository.getByUserName(userName);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a user by username [" + userName + "] failed", e);
-
             return null;
         }
     }
@@ -144,7 +141,6 @@ public class UserQueryService {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets users failed", e);
-
             throw new ServiceException(e);
         }
 
@@ -154,8 +150,7 @@ public class UserQueryService {
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        final List<JSONObject> users = (List<JSONObject>) result.opt(Keys.RESULTS);
-        ret.put(User.USERS, users);
+        ret.put(User.USERS, result.opt(Keys.RESULTS));
         return ret;
     }
 
@@ -181,7 +176,6 @@ public class UserQueryService {
             user = userRepository.get(userId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a user failed", e);
-
             return null;
         }
 
@@ -190,7 +184,6 @@ public class UserQueryService {
         }
 
         ret.put(User.USER, user);
-
         return ret;
     }
 
@@ -202,7 +195,6 @@ public class UserQueryService {
     public String getLogoutURL() {
         String to = Latkes.getServePath();
         to = URLs.encode(to);
-
         return Latkes.getContextPath() + "/logout?referer=" + to;
     }
 
@@ -215,7 +207,6 @@ public class UserQueryService {
     public String getLoginURL(final String redirectURL) {
         String to = Latkes.getServePath();
         to = URLs.encode(to + redirectURL);
-
         return Latkes.getContextPath() + "/start?referer=" + to;
     }
 }

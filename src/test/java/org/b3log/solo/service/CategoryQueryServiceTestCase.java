@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 /**
  * {@link CategoryQueryService} test case.
  *
@@ -58,6 +60,6 @@ public class CategoryQueryServiceTestCase extends AbstractTestCase {
         final JSONObject result = categoryQueryService.getCategoris(paginationRequest);
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getJSONArray(Category.CATEGORIES).length(), 1);
+        Assert.assertEquals(((List<JSONObject>) result.opt(Category.CATEGORIES)).size(), 1);
     }
 }

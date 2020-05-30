@@ -16,10 +16,11 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * {@link UserQueryService} test case.
@@ -82,8 +83,8 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
         final JSONObject paginationRequest = Solos.buildPaginationRequest("1/20/10");
         final JSONObject result = userQueryService.getUsers(paginationRequest);
-        final JSONArray users = result.getJSONArray(User.USERS);
-        Assert.assertEquals(users.length(), 2);
+        final List<JSONObject> users = (List<JSONObject>) result.opt(User.USERS);
+        Assert.assertEquals(users.size(), 2);
     }
 
     /**

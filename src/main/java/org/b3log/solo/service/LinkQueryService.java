@@ -90,7 +90,7 @@ public class LinkQueryService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             final List<JSONObject> links = (List<JSONObject>) result.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION, pagination);
-            ret.put(Link.LINKS, links);
+            ret.put(Link.LINKS, (Object) links);
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets links failed", e);

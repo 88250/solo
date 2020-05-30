@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 /**
  * {@link PageQueryService} test case.
  *
@@ -62,6 +64,6 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
         final JSONObject result = pageQueryService.getPages(paginationRequest);
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getJSONArray(Page.PAGES).length(), 1);
+        Assert.assertEquals(((List<JSONObject>) result.opt(Page.PAGES)).size(), 1);
     }
 }

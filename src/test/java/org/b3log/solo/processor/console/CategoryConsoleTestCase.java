@@ -113,11 +113,9 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
 
     /**
      * getCategories.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "updateCategory")
-    public void getCategories() throws Exception {
+    public void getCategories() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/categories/1/10/20");
         request.setMethod("GET");

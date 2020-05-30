@@ -77,11 +77,9 @@ public class UserConsoleTestCase extends AbstractTestCase {
 
     /**
      * getUsers.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "getUser")
-    public void getUsers() throws Exception {
+    public void getUsers() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/users/1/10/20");
 
