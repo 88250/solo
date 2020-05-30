@@ -46,7 +46,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.6.0, Jan 15, 2020
+ * @version 1.3.6.1, May 30, 2020
  * @since 0.3.5
  */
 @Service
@@ -142,16 +142,13 @@ public class ArticleQueryService {
                                     new PropertyFilter(Article.ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%"),
                                     new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")))).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setPage(currentPageNum, pageSize);
-
             final JSONObject result = articleRepository.get(query);
-
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final JSONObject preference = optionQueryService.getPreference();
             final int windowSize = preference.optInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
-
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             ret.put(Article.ARTICLES, (Object) articles);
         } catch (final RepositoryException e) {
@@ -204,7 +201,6 @@ public class ArticleQueryService {
                 }
             }
             queryStr.append(") ORDER BY `C` DESC");
-
             final List<JSONObject> tagArticlesCountResult = articleRepository.
                     select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_STATUS_C_PUBLISHED);
             queryStr.append(" LIMIT ").append((currentPageNum - 1) * pageSize).append(",").append(pageSize);
@@ -224,8 +220,8 @@ public class ArticleQueryService {
             pagination.put(Pagination.PAGINATION_RECORD_COUNT, tagArticlesCount);
 
             final Set<String> articleIds = new HashSet<>();
-            for (int i = 0; i < tagArticles.size(); i++) {
-                articleIds.add(tagArticles.get(i).optString("C"));
+            for (final JSONObject tagArticle : tagArticles) {
+                articleIds.add(tagArticle.optString("C"));
             }
             final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
@@ -239,11 +235,9 @@ public class ArticleQueryService {
                 articles.add(article);
             }
             ret.put(Keys.RESULTS, (Object) articles);
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets category articles error", e);
-
             throw new ServiceException(e);
         }
     }
@@ -272,7 +266,6 @@ public class ArticleQueryService {
         try {
             final JSONObject article = articleRepository.get(articleId);
             final String currentUserId = user.getString(Keys.OBJECT_ID);
-
             return article.getString(Article.ARTICLE_AUTHOR_ID).equals(currentUserId);
         } catch (final Exception e) {
             throw new ServiceException(e);
@@ -292,11 +285,9 @@ public class ArticleQueryService {
             }
 
             final JSONObject recentArticle = recentArticles.get(0);
-
             return recentArticle.getLong(Article.ARTICLE_UPDATED);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets recent article time failed", e);
-
             return 0;
         }
     }
@@ -330,7 +321,6 @@ public class ArticleQueryService {
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets author of article [id={}] failed", article.optString(Keys.OBJECT_ID));
-
             throw new ServiceException(e);
         }
     }
@@ -348,7 +338,6 @@ public class ArticleQueryService {
         JSONObject defaultSign = null;
         for (int i = 0; i < signs.length(); i++) {
             final JSONObject ret = signs.getJSONObject(i);
-
             if (signId.equals(ret.optString(Keys.OBJECT_ID))) {
                 return ret;
             }
@@ -359,7 +348,6 @@ public class ArticleQueryService {
         }
 
         LOGGER.log(Level.WARN, "Can not find the sign [id={}], returns a default sign [id=1]", signId);
-
         return defaultSign;
     }
 
@@ -373,7 +361,6 @@ public class ArticleQueryService {
     public boolean hasUpdated(final JSONObject article) throws JSONException {
         final long updateDate = article.getLong(Article.ARTICLE_UPDATED);
         final long createDate = article.getLong(Article.ARTICLE_CREATED);
-
         return createDate != updateDate;
     }
 
@@ -388,7 +375,6 @@ public class ArticleQueryService {
             return articleRepository.getRecentArticles(fetchSize);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets recent articles failed", e);
-
             return Collections.emptyList();
         }
     }
@@ -455,9 +441,7 @@ public class ArticleQueryService {
             article.remove(Article.ARTICLE_UPDATED);
             article.remove(Article.ARTICLE_VIEW_COUNT);
             article.remove(Article.ARTICLE_RANDOM_DOUBLE);
-
             LOGGER.log(Level.DEBUG, "Got an article [id={}]", articleId);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets an article failed", e);
@@ -504,7 +488,6 @@ public class ArticleQueryService {
      */
     public JSONObject getArticles(final JSONObject requestJSONObject) {
         final JSONObject ret = new JSONObject();
-
         try {
             final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
@@ -544,11 +527,9 @@ public class ArticleQueryService {
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
             JSONArray excludes = requestJSONObject.optJSONArray(Keys.EXCLUDES);
             excludes = null == excludes ? new JSONArray() : excludes;
-
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 final JSONObject author = getAuthor(article);
@@ -556,7 +537,6 @@ public class ArticleQueryService {
                 article.put(Common.AUTHOR_NAME, authorName);
                 article.put(Article.ARTICLE_CREATE_TIME, article.getLong(Article.ARTICLE_CREATED));
                 article.put(Article.ARTICLE_UPDATE_TIME, article.getLong(Article.ARTICLE_UPDATED));
-
                 // Remove unused properties
                 for (int j = 0; j < excludes.length(); j++) {
                     article.remove(excludes.optString(j));
@@ -564,7 +544,6 @@ public class ArticleQueryService {
             }
 
             ret.put(Article.ARTICLES, articles);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
@@ -593,7 +572,6 @@ public class ArticleQueryService {
                 return null;
             }
             final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
-
             final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
@@ -602,7 +580,6 @@ public class ArticleQueryService {
             }
 
             final List<JSONObject> retArticles = new ArrayList<>();
-
             final Query query = new Query().setFilter(CompositeFilterOperator.and(
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
                     new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
@@ -618,7 +595,6 @@ public class ArticleQueryService {
             final JSONObject ret = new JSONObject();
             ret.put(Pagination.PAGINATION, pagination);
             ret.put(Keys.RESULTS, (Object) retArticles);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets articles by tag [id=" + tagId + "] failed", e);
@@ -681,7 +657,6 @@ public class ArticleQueryService {
         try {
             final List<JSONObject> ret = articleRepository.getRandomly(fetchSize);
             removeUnusedProperties(ret);
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles randomly failed[fetchSize=" + fetchSize + "]", e);
@@ -705,10 +680,8 @@ public class ArticleQueryService {
             final String[] tagTitles = article.getString(Article.ARTICLE_TAGS_REF).split(",");
             final int maxTagCnt = displayCnt > tagTitles.length ? tagTitles.length : displayCnt;
             final String articleId = article.getString(Keys.OBJECT_ID);
-
             final List<JSONObject> articles = new ArrayList<>();
-
-            for (int i = 0; i < maxTagCnt; i++) { // XXX: should average by tag?
+            for (int i = 0; i < maxTagCnt; i++) {
                 final String tagTitle = tagTitles[i];
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 final String tagId = tag.getString(Keys.OBJECT_ID);
@@ -726,7 +699,6 @@ public class ArticleQueryService {
                     }
 
                     final JSONObject relevant = articleRepository.get(relatedArticleId);
-
                     if (Article.ARTICLE_STATUS_C_PUBLISHED != relevant.optInt(Article.ARTICLE_STATUS)) {
                         continue;
                     }
@@ -760,7 +732,6 @@ public class ArticleQueryService {
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets relevant articles failed", e);
-
             return Collections.emptyList();
         }
     }
