@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.1.0, May 26, 2020
+ * @version 1.1.2.0, Jun 5, 2020
  * @since 0.4.0
  */
 @Service
@@ -192,14 +193,6 @@ public class PageMgmtService {
 
             String permalink = page.optString(Page.PAGE_PERMALINK);
             permalink = StringUtils.replace(permalink, " ", "-");
-            if (permalinkQueryService.exist(permalink)) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
-            }
-
             page.put(Page.PAGE_PERMALINK, permalink);
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
             final String ret = pageRepository.add(page);
@@ -208,7 +201,7 @@ public class PageMgmtService {
             Statics.clear();
 
             return ret;
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
