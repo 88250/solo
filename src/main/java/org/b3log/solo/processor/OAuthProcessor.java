@@ -153,18 +153,31 @@ public class OAuthProcessor {
                 initReq.put(UserExt.USER_GITHUB_ID, userId);
                 initService.init(initReq);
             } else {
-                final JSONObject addUserReq = new JSONObject();
-                addUserReq.put(User.USER_NAME, userName);
-                addUserReq.put(UserExt.USER_AVATAR, userAvatar);
-                addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
-                addUserReq.put(UserExt.USER_GITHUB_ID, userId);
-                addUserReq.put(UserExt.USER_B3_KEY, userName);
-                try {
-                    userMgmtService.addUser(addUserReq);
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Registers via oauth failed", e);
-                    context.sendError(500);
-                    return;
+                user = userQueryService.getUserByName(userName);
+                if (null == user) {
+                    final JSONObject addUserReq = new JSONObject();
+                    addUserReq.put(User.USER_NAME, userName);
+                    addUserReq.put(UserExt.USER_AVATAR, userAvatar);
+                    addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
+                    addUserReq.put(UserExt.USER_GITHUB_ID, userId);
+                    addUserReq.put(UserExt.USER_B3_KEY, userName);
+                    try {
+                        userMgmtService.addUser(addUserReq);
+                    } catch (final Exception e) {
+                        LOGGER.log(Level.ERROR, "Registers via oauth failed", e);
+                        context.sendError(500);
+                        return;
+                    }
+                } else {
+                    user.put(UserExt.USER_GITHUB_ID, userId);
+                    user.put(UserExt.USER_AVATAR, userAvatar);
+                    try {
+                        userMgmtService.updateUser(user);
+                    } catch (final Exception e) {
+                        LOGGER.log(Level.ERROR, "Updates user id failed", e);
+                        context.sendError(500);
+                        return;
+                    }
                 }
             }
         } else {
