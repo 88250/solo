@@ -47,7 +47,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 2.0.0.2, Apr 30, 2020
+ * @version 2.0.0.3, Jun 10, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -95,7 +95,6 @@ public class IndexProcessor {
         try {
             final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = optionQueryService.getPreference();
-
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
 
             dataModelService.fillIndexArticles(context, dataModel, currentPageNum, preference);
@@ -106,14 +105,12 @@ public class IndexProcessor {
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
             dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, previousPageNum);
-
             final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
             final int nextPageNum = currentPageNum + 1 > pageCount ? pageCount : currentPageNum + 1;
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
             dataModel.put(Common.PATH, "");
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             context.sendError(404);
         }
     }
@@ -159,9 +156,7 @@ public class IndexProcessor {
      */
     public void logout(final RequestContext context) {
         final Request request = context.getRequest();
-
         Solos.logout(request, context.getResponse());
-
         Solos.addGoogleNoIndex(context);
         context.sendRedirect(Latkes.getServePath());
     }
@@ -186,7 +181,6 @@ public class IndexProcessor {
             Keys.fillRuntime(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             context.sendError(404);
         }
     }

@@ -106,7 +106,7 @@ public class OAuthProcessor {
             referer = Latkes.getServePath();
         }
 
-        String state = RandomStringUtils.randomAlphanumeric(16);
+        final String state = RandomStringUtils.randomAlphanumeric(16);
         STATES.put(state, referer);
 
         final String loginAuthURL = "https://hacpai.com/login?goto=" + Latkes.getServePath() + "/login/callback";
