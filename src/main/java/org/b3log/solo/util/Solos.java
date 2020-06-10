@@ -136,15 +136,7 @@ public final class Solos {
             if (0 != result.optInt(Keys.CODE)) {
                 return null;
             }
-            final JSONObject data = result.optJSONObject(Common.DATA);
-            final String userName = data.optString("userName");
-            final String userId = data.optString("userId");
-            final String avatarUrl = data.optString("avatar");
-            final JSONObject ret = new JSONObject().
-                    put("userId", userId).
-                    put(User.USER_NAME, userName).
-                    put(UserExt.USER_AVATAR, avatarUrl);
-            return ret;
+            return result.optJSONObject(Common.DATA);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets community user info failed", e);
             return null;
