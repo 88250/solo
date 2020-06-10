@@ -40,6 +40,7 @@ import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 import java.io.StringWriter;
@@ -265,6 +266,8 @@ public final class Server extends BaseServer {
         initService.initTables();
 
         if (initService.isInited()) {
+            Statics.clear();
+
             // Upgrade check https://github.com/b3log/solo/issues/12040
             final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
             upgradeService.upgrade();
