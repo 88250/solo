@@ -18,7 +18,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -226,6 +225,9 @@ public final class Statics {
         ret = StringUtils.replace(ret, "?", "_");
         if (Solos.isMobile(context.getRequest())) {
             ret = "m" + ret;
+        }
+        if (SkinRenderer.isPJAX(context)) {
+            ret += "pjax";
         }
         ret = DigestUtils.md5Hex(ret);
         return ret;

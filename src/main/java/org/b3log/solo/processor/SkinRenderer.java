@@ -28,7 +28,7 @@ import java.util.Map;
  * Skin renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Apr 14, 2020
+ * @version 1.0.1.0, Jun 10, 2020
  * @since 2.9.1
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -60,7 +60,6 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
             // 优先使用皮肤内的登录、报错等模板 https://github.com/b3log/solo/issues/12566
             ret = Skins.getTemplate(templateName);
         }
-
         return ret;
     }
 
@@ -74,8 +73,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      * @throws Exception exception
      */
     @Override
-    protected String genHTML(final Request request, final Map<String, Object> dataModel, final Template template)
-            throws Exception {
+    protected String genHTML(final Request request, final Map<String, Object> dataModel, final Template template) throws Exception {
         final boolean isPJAX = isPJAX(context);
         dataModel.put("pjax", isPJAX);
 
@@ -118,10 +116,9 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      * @param context the specified request context
      * @return {@code true} if it is sending with pjax, otherwise returns {@code false}
      */
-    private static boolean isPJAX(final RequestContext context) {
+    public static boolean isPJAX(final RequestContext context) {
         final boolean pjax = Boolean.valueOf(context.header("X-PJAX"));
         final String pjaxContainer = context.header("X-PJAX-Container");
-
         return pjax && StringUtils.isNotBlank(pjaxContainer);
     }
 }
