@@ -35,7 +35,7 @@ import java.util.Locale;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.8, May 20, 2020
+ * @version 1.4.0.9, Jun 16, 2020
  * @since 0.4.0
  */
 @Service
@@ -218,40 +218,30 @@ public class PreferenceMgmtService {
             hljsThemeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_HLJS_THEME));
             optionRepository.update(Option.ID_C_HLJS_THEME, hljsThemeOpt);
 
-            final String showCodeBlockLnVal = preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN);
-            emptyPreferenceOptSave(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLnVal);
-            Markdowns.SHOW_CODE_BLOCK_LN = "true".equalsIgnoreCase(showCodeBlockLnVal);
-
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
             optionRepository.update(Option.ID_C_CUSTOM_VARS, customVarsOpt);
 
-            final String footnotesVal = preference.optString(Option.ID_C_FOOTNOTES);
-            emptyPreferenceOptSave(Option.ID_C_FOOTNOTES, footnotesVal);
-            Markdowns.FOOTNOTES = "true".equalsIgnoreCase(footnotesVal);
-
-            final String showToCVal = preference.optString(Option.ID_C_SHOW_TOC);
-            emptyPreferenceOptSave(Option.ID_C_SHOW_TOC, showToCVal);
-            Markdowns.SHOW_TOC = "true".equalsIgnoreCase(showToCVal);
-
-            final String autoSpaceVal = preference.optString(Option.ID_C_AUTO_SPACE);
-            emptyPreferenceOptSave(Option.ID_C_AUTO_SPACE, autoSpaceVal);
-            Markdowns.AUTO_SPACE = "true".equalsIgnoreCase(autoSpaceVal);
-
-            final String fixTermTypoVal = preference.optString(Option.ID_C_FIX_TERM_TYPO);
-            emptyPreferenceOptSave(Option.ID_C_FIX_TERM_TYPO, fixTermTypoVal);
-            Markdowns.FIX_TERM_TYPO = "true".equalsIgnoreCase(fixTermTypoVal);
-
-            final String chinesePunctVal = preference.optString(Option.ID_C_CHINESE_PUNCT);
-            emptyPreferenceOptSave(Option.ID_C_CHINESE_PUNCT, chinesePunctVal);
-            Markdowns.CHINESE_PUNCT = "true".equalsIgnoreCase(chinesePunctVal);
-
-            final String IMADAOMVal = preference.optString(Option.ID_C_IMADAOM);
-            emptyPreferenceOptSave(Option.ID_C_IMADAOM, IMADAOMVal);
-            Markdowns.IMADAOM = "true".equalsIgnoreCase(IMADAOMVal);
-
             final String editorModeVal = preference.optString(Option.ID_C_EDITOR_MODE);
             emptyPreferenceOptSave(Option.ID_C_EDITOR_MODE, editorModeVal);
+
+            final String showCodeBlockLnVal = preference.optString(Option.ID_C_SHOW_CODE_BLOCK_LN);
+            emptyPreferenceOptSave(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLnVal);
+            final String footnotesVal = preference.optString(Option.ID_C_FOOTNOTES);
+            emptyPreferenceOptSave(Option.ID_C_FOOTNOTES, footnotesVal);
+            final String showToCVal = preference.optString(Option.ID_C_SHOW_TOC);
+            emptyPreferenceOptSave(Option.ID_C_SHOW_TOC, showToCVal);
+            final String autoSpaceVal = preference.optString(Option.ID_C_AUTO_SPACE);
+            emptyPreferenceOptSave(Option.ID_C_AUTO_SPACE, autoSpaceVal);
+            final String fixTermTypoVal = preference.optString(Option.ID_C_FIX_TERM_TYPO);
+            emptyPreferenceOptSave(Option.ID_C_FIX_TERM_TYPO, fixTermTypoVal);
+            final String chinesePunctVal = preference.optString(Option.ID_C_CHINESE_PUNCT);
+            emptyPreferenceOptSave(Option.ID_C_CHINESE_PUNCT, chinesePunctVal);
+            final String IMADAOMVal = preference.optString(Option.ID_C_IMADAOM);
+            emptyPreferenceOptSave(Option.ID_C_IMADAOM, IMADAOMVal);
+            final String paragraphBeginningSpaceVal = preference.optString(Option.ID_C_PARAGRAPH_BEGINNING_SPACE);
+            emptyPreferenceOptSave(Option.ID_C_PARAGRAPH_BEGINNING_SPACE, paragraphBeginningSpaceVal);
+            Markdowns.loadMarkdownOption(preference);
 
             transaction.commit();
 

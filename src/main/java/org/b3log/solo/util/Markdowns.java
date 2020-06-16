@@ -54,7 +54,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.16, Apr 12, 2020
+ * @version 2.3.1.17, Jun 16, 2020
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -113,6 +113,31 @@ public final class Markdowns {
     public static boolean FIX_TERM_TYPO = false;
     public static boolean CHINESE_PUNCT = false;
     public static boolean IMADAOM = false;
+    public static boolean PARAGRAPH_BEGINNING_SPACE = false;
+
+    /**
+     * Loads markdown option from the specified preference.
+     *
+     * @param preference the specified preference
+     */
+    public static void loadMarkdownOption(final JSONObject preference) {
+        final String showCodeBlockLnVal = preference.optString(org.b3log.solo.model.Option.ID_C_SHOW_CODE_BLOCK_LN);
+        Markdowns.SHOW_CODE_BLOCK_LN = "true".equalsIgnoreCase(showCodeBlockLnVal);
+        final String footnotesVal = preference.optString(org.b3log.solo.model.Option.ID_C_FOOTNOTES);
+        Markdowns.FOOTNOTES = "true".equalsIgnoreCase(footnotesVal);
+        final String showToCVal = preference.optString(org.b3log.solo.model.Option.ID_C_SHOW_TOC);
+        Markdowns.SHOW_TOC = "true".equalsIgnoreCase(showToCVal);
+        final String autoSpaceVal = preference.optString(org.b3log.solo.model.Option.ID_C_AUTO_SPACE);
+        Markdowns.AUTO_SPACE = "true".equalsIgnoreCase(autoSpaceVal);
+        final String fixTermTypoVal = preference.optString(org.b3log.solo.model.Option.ID_C_FIX_TERM_TYPO);
+        Markdowns.FIX_TERM_TYPO = "true".equalsIgnoreCase(fixTermTypoVal);
+        final String chinesePunctVal = preference.optString(org.b3log.solo.model.Option.ID_C_CHINESE_PUNCT);
+        Markdowns.CHINESE_PUNCT = "true".equalsIgnoreCase(chinesePunctVal);
+        final String IMADAOMVal = preference.optString(org.b3log.solo.model.Option.ID_C_IMADAOM);
+        Markdowns.IMADAOM = "true".equalsIgnoreCase(IMADAOMVal);
+        final String paragraphBeginningSpaceVal = preference.optString(org.b3log.solo.model.Option.ID_C_PARAGRAPH_BEGINNING_SPACE);
+        Markdowns.PARAGRAPH_BEGINNING_SPACE = "true".equalsIgnoreCase(paragraphBeginningSpaceVal);
+    }
 
     /**
      * Clears cache.
@@ -192,7 +217,6 @@ public final class Markdowns {
                     if (node instanceof org.jsoup.nodes.TextNode) {
                         final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
                         final org.jsoup.nodes.Node parent = textNode.parent();
-
                         if (parent instanceof Element) {
                             final Element parentElem = (Element) parent;
                             if (parentElem.tagName().equals("code") || parentElem.tagName().equals("pre")) {
@@ -232,14 +256,12 @@ public final class Markdowns {
 
             // cache it
             putHTML(markdownText, ret);
-
             return ret;
         };
 
         Stopwatchs.start("Md to HTML");
         try {
             final Future<String> future = pool.submit(call);
-
             return future.get(MD_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (final TimeoutException e) {
             LOGGER.log(Level.ERROR, "Markdown timeout [md=" + markdownText + "]");
@@ -256,10 +278,8 @@ public final class Markdowns {
             LOGGER.log(Level.ERROR, "Markdown failed [md=" + markdownText + "]", e);
         } finally {
             pool.shutdownNow();
-
             Stopwatchs.end();
         }
-
         return langPropsService.get("contentRenderFailedLabel");
     }
 
@@ -273,6 +293,7 @@ public final class Markdowns {
         conn.setRequestProperty("X-FixTermTypo", String.valueOf(Markdowns.FIX_TERM_TYPO));
         conn.setRequestProperty("X-ChinesePunct", String.valueOf(Markdowns.CHINESE_PUNCT));
         conn.setRequestProperty("X-IMADAOM", String.valueOf(Markdowns.IMADAOM));
+        conn.setRequestProperty("X-ParagraphBeginningSpace", String.valueOf(Markdowns.PARAGRAPH_BEGINNING_SPACE));
         conn.setConnectTimeout(100);
         conn.setReadTimeout(3000);
         conn.setDoOutput(true);
@@ -287,13 +308,11 @@ public final class Markdowns {
         }
 
         conn.disconnect();
-
         return ret;
     }
 
     private static String toHtmlByFlexmark(final String markdownText) {
         com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
-
         return RENDERER.render(document);
     }
 
@@ -309,7 +328,6 @@ public final class Markdowns {
         if (null == value) {
             return null;
         }
-
         return value.optString("data");
     }
 

@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 1.7.0.0, May 20, 2020
+ * @version 1.8.0.0, Jun 16, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -46,6 +46,11 @@ public final class Option {
     public static final String OPTION_CATEGORY = "optionCategory";
 
     // oId constants
+
+    /**
+     * Key of paragraph beginning space flag. Markdown 中文排版段首缩进配置开关 https://github.com/88250/solo/issues/146
+     */
+    public static final String ID_C_PARAGRAPH_BEGINNING_SPACE = "paragraphBeginningSpace";
 
     /**
      * Key of editor mode. 支持配置编辑器模式 https://github.com/88250/solo/issues/95

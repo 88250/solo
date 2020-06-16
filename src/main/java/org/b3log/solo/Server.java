@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.7, May 21, 2020
+ * @version 3.0.1.8, Jun 16, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -334,9 +334,7 @@ public final class Server extends BaseServer {
      */
     private static void loadPreference() {
         Stopwatchs.start("Load Preference");
-
         LOGGER.debug("Loading preference....");
-
         final BeanManager beanManager = BeanManager.getInstance();
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
         JSONObject skin;
@@ -354,16 +352,11 @@ public final class Server extends BaseServer {
                 return;
             }
 
-            final String showClodeBlockLn = preference.optString(org.b3log.solo.model.Option.ID_C_SHOW_CODE_BLOCK_LN);
-            Markdowns.SHOW_CODE_BLOCK_LN = StringUtils.equalsIgnoreCase(showClodeBlockLn, "true");
-            final String showToC = preference.optString(org.b3log.solo.model.Option.ID_C_SHOW_TOC);
-            Markdowns.SHOW_TOC = StringUtils.equalsIgnoreCase(showToC, "true");
+            Markdowns.loadMarkdownOption(preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             System.exit(-1);
         }
-
         Stopwatchs.end();
     }
 

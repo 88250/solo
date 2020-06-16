@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.41, May 20, 2020
+ * @version 1.5.2.42, Jun 16, 2020
  * @since 0.4.0
  */
 @Service
@@ -465,6 +465,12 @@ public class InitService {
      */
     private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject paragraphBeginningSpaceOpt = new JSONObject();
+        paragraphBeginningSpaceOpt.put(Keys.OBJECT_ID, Option.ID_C_PARAGRAPH_BEGINNING_SPACE);
+        paragraphBeginningSpaceOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        paragraphBeginningSpaceOpt.put(Option.OPTION_VALUE, "false");
+        optionRepository.add(paragraphBeginningSpaceOpt);
 
         final JSONObject editorModeOpt = new JSONObject();
         editorModeOpt.put(Keys.OBJECT_ID, Option.ID_C_EDITOR_MODE);
