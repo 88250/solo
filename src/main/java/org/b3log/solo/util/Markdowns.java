@@ -29,6 +29,7 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -114,6 +115,7 @@ public final class Markdowns {
     public static boolean CHINESE_PUNCT = false;
     public static boolean IMADAOM = false;
     public static boolean PARAGRAPH_BEGINNING_SPACE = false;
+    public static boolean SPEECH = false;
 
     /**
      * Loads markdown option from the specified preference.
@@ -137,6 +139,8 @@ public final class Markdowns {
         Markdowns.IMADAOM = "true".equalsIgnoreCase(IMADAOMVal);
         final String paragraphBeginningSpaceVal = preference.optString(org.b3log.solo.model.Option.ID_C_PARAGRAPH_BEGINNING_SPACE);
         Markdowns.PARAGRAPH_BEGINNING_SPACE = "true".equalsIgnoreCase(paragraphBeginningSpaceVal);
+        final String speechVal = preference.optString(Option.ID_C_SPEECH);
+        Markdowns.SPEECH = "true".equalsIgnoreCase(speechVal);
     }
 
     /**

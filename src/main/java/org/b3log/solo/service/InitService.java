@@ -466,6 +466,12 @@ public class InitService {
     private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
 
+        final JSONObject speechOpt = new JSONObject();
+        speechOpt.put(Keys.OBJECT_ID, Option.ID_C_SPEECH);
+        speechOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        speechOpt.put(Option.OPTION_VALUE, "true");
+        optionRepository.add(speechOpt);
+
         final JSONObject paragraphBeginningSpaceOpt = new JSONObject();
         paragraphBeginningSpaceOpt.put(Keys.OBJECT_ID, Option.ID_C_PARAGRAPH_BEGINNING_SPACE);
         paragraphBeginningSpaceOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);

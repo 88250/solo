@@ -241,6 +241,8 @@ public class PreferenceMgmtService {
             emptyPreferenceOptSave(Option.ID_C_IMADAOM, IMADAOMVal);
             final String paragraphBeginningSpaceVal = preference.optString(Option.ID_C_PARAGRAPH_BEGINNING_SPACE);
             emptyPreferenceOptSave(Option.ID_C_PARAGRAPH_BEGINNING_SPACE, paragraphBeginningSpaceVal);
+            final String speechVal = preference.optString(Option.ID_C_SPEECH);
+            emptyPreferenceOptSave(Option.ID_C_SPEECH, speechVal);
             Markdowns.loadMarkdownOption(preference);
 
             transaction.commit();

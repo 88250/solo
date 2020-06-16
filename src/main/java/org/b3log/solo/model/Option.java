@@ -48,6 +48,11 @@ public final class Option {
     // oId constants
 
     /**
+     * Key of speech flag. 增加取消选中文本朗读功能开关 https://github.com/88250/solo/issues/141
+     */
+    public static final String ID_C_SPEECH = "speech";
+
+    /**
      * Key of paragraph beginning space flag. Markdown 中文排版段首缩进配置开关 https://github.com/88250/solo/issues/146
      */
     public static final String ID_C_PARAGRAPH_BEGINNING_SPACE = "paragraphBeginningSpace";
