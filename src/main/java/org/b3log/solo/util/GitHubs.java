@@ -53,15 +53,13 @@ public final class GitHubs {
             }
             res.charset("UTF-8");
             final JSONObject result = new JSONObject(res.bodyText());
-            if (0 != result.optInt(Keys.STATUS_CODE)) {
+            if (0 != result.optInt(Keys.CODE)) {
                 return null;
             }
             final JSONObject data = result.optJSONObject(Common.DATA);
-
             return data.optJSONArray("githubrepos");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets GitHub repos failed", e);
-
             return null;
         }
     }

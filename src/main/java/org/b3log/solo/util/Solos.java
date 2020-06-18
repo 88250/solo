@@ -252,7 +252,6 @@ public final class Solos {
             if (0 != result.optInt(Keys.CODE)) {
                 uploadMsg = result.optString(Keys.MSG);
                 LOGGER.log(Level.ERROR, uploadMsg);
-
                 return null;
             }
 
@@ -261,14 +260,12 @@ public final class Solos {
             uploadToken = data.optString("uploadToken");
             uploadURL = data.optString("uploadURL");
             uploadMsg = "";
-
             return new JSONObject().
                     put(Common.UPLOAD_TOKEN, uploadToken).
                     put(Common.UPLOAD_URL, uploadURL).
                     put(Common.UPLOAD_MSG, uploadMsg);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets upload token failed", e);
-
             return null;
         }
     }
