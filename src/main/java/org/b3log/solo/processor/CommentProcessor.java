@@ -32,6 +32,7 @@ import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.io.StringWriter;
@@ -43,7 +44,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Jun 19, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -128,13 +129,13 @@ public class CommentProcessor {
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
-        if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
+        if (StatusCodes.SUCC != jsonObject.optInt(Keys.CODE)) {
             LOGGER.log(Level.WARN, "Can't add comment[msg={}]", jsonObject.optString(Keys.MSG));
             return;
         }
 
         if (!Solos.isLoggedIn(context)) {
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             jsonObject.put(Keys.MSG, "Need login");
             return;
         }
@@ -166,13 +167,11 @@ public class CommentProcessor {
                 // 1.9.0 向后兼容
             }
 
-            addResult.put(Keys.STATUS_CODE, true);
-
+            addResult.put(Keys.CODE, StatusCodes.SUCC);
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
-
             LOGGER.log(Level.ERROR, "Can not add comment on article", e);
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }
     }

@@ -31,6 +31,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +41,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.4, Mar 31, 2020
+ * @version 1.4.0.5, Jun 19, 2020
  * @since 0.3.5
  */
 @Service
@@ -135,38 +136,31 @@ public class CommentMgmtService {
      *                          }
      * @return check result, for example, <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": "" // Exists if "sc" equals to false
      * }
      * </pre>
      */
     public JSONObject checkAddCommentRequest(final JSONObject requestJSONObject) {
         final JSONObject ret = new JSONObject();
-
         try {
-            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.CODE, StatusCodes.ERR);
             final JSONObject preference = optionQueryService.getPreference();
-
             if (null == preference || !preference.optBoolean(Option.ID_C_COMMENTABLE)) {
                 ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
-
                 return ret;
             }
 
             final String id = requestJSONObject.optString(Keys.OBJECT_ID);
             final String type = requestJSONObject.optString(Common.TYPE);
-
             if (Article.ARTICLE.equals(type)) {
                 final JSONObject article = articleRepository.get(id);
-
                 if (null == article || !article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
                     ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
-
                     return ret;
                 }
             } else {
                 ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
-
                 return ret;
             }
 
@@ -174,7 +168,6 @@ public class CommentMgmtService {
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
                 LOGGER.log(Level.WARN, "Comment name is too long [{}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
-
                 return ret;
             }
 
@@ -182,35 +175,28 @@ public class CommentMgmtService {
             if (null == commenter) {
                 LOGGER.log(Level.WARN, "Not found user [" + commentName + "]");
                 ret.put(Keys.MSG, langPropsService.get("queryUserFailedLabel"));
-
                 return ret;
             }
 
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
-
             if (!Strings.isURL(commentURL) || StringUtils.contains(commentURL, "<")) {
                 requestJSONObject.put(Comment.COMMENT_URL, "");
             }
 
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
-
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
                 LOGGER.log(Level.WARN, "Comment conent length is invalid[{}]", commentContent.length());
                 ret.put(Keys.MSG, langPropsService.get("commentContentCannotEmptyLabel"));
-
                 return ret;
             }
 
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             requestJSONObject.put(Comment.COMMENT_CONTENT, commentContent);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Checks add comment request[" + requestJSONObject.toString() + "] failed", e);
-
-            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.CODE, StatusCodes.ERR);
             ret.put(Keys.MSG, langPropsService.get("addFailLabel"));
-
             return ret;
         }
     }

@@ -398,7 +398,7 @@ $.extend(Page.prototype, {
         data: JSON.stringify(requestJSONObject),
         success: function (result) {
           $('#soloEditorAdd').removeAttr('disabled')
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#soloEditorError').html(result.msg)
             return
           }
