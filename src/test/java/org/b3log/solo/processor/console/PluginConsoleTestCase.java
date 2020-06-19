@@ -30,10 +30,8 @@ public class PluginConsoleTestCase extends AbstractTestCase {
 
     /**
      * getPlugins.
-     *
-     * @throws Exception exception
      */
-    public void getPlugins() throws Exception {
+    public void getPlugins() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/plugins/1/10/20");
 
@@ -43,6 +41,6 @@ public class PluginConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 }

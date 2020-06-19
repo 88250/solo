@@ -30,10 +30,8 @@ public class RepairConsoleTestCase extends AbstractTestCase {
 
     /**
      * restoreSigns.
-     *
-     * @throws Exception exception
      */
-    public void restoreSigns() throws Exception {
+    public void restoreSigns() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/fix/restore-signs");
 

@@ -30,10 +30,8 @@ public class OtherConsoleTestCase extends AbstractTestCase {
 
     /**
      * removeUnusedArchives.
-     *
-     * @throws Exception exception
      */
-    public void removeUnusedArchives() throws Exception {
+    public void removeUnusedArchives() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/archive/unused");
         request.setMethod("DELETE");
@@ -44,6 +42,6 @@ public class OtherConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 }

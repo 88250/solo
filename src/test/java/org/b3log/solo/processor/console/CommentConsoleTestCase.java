@@ -35,10 +35,8 @@ public class CommentConsoleTestCase extends AbstractTestCase {
 
     /**
      * getComments.
-     *
-     * @throws Exception exception
      */
-    public void getComments() throws Exception {
+    public void getComments() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/comments/1/10/20");
 
@@ -48,7 +46,7 @@ public class CommentConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 
     /**
@@ -70,7 +68,7 @@ public class CommentConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 
     /**
@@ -93,6 +91,6 @@ public class CommentConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 }

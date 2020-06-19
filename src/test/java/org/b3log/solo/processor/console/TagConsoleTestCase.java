@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
  * {@link TagConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 11, 2018
+ * @version 1.0.0.1, Jun 19, 2020
  * @since 2.9.8
  */
 @Test(suiteName = "processor")
@@ -30,10 +30,8 @@ public class TagConsoleTestCase extends AbstractTestCase {
 
     /**
      * getTags.
-     *
-     * @throws Exception exception
      */
-    public void getTags() throws Exception {
+    public void getTags() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/tags");
 
@@ -43,32 +41,13 @@ public class TagConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-    }
-
-    /**
-     * getUnusedTags.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "getTags")
-    public void getUnusedTags() throws Exception {
-        final MockRequest request = mockRequest();
-        request.setRequestURI("/console/tag/unused");
-
-        mockAdminLogin(request);
-
-        final MockResponse response = mockResponse();
-        mockDispatcher(request, response);
-
-        final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 
     /**
      * removeUnusedTags.
      */
-    @Test(dependsOnMethods = "getUnusedTags")
+    @Test
     public void removeUnusedTags() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/tag/unused");
@@ -80,6 +59,6 @@ public class TagConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 }

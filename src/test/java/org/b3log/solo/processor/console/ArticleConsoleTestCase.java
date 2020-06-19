@@ -34,10 +34,8 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
 
     /**
      * getArticleThumbs.
-     *
-     * @throws Exception exception
      */
-    public void getArticleThumbs() throws Exception {
+    public void getArticleThumbs() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/thumbs");
         mockAdminLogin(request);
@@ -46,7 +44,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -88,7 +86,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -105,7 +103,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -127,7 +125,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -148,7 +146,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -169,7 +167,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -190,7 +188,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -214,7 +212,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 
     /**
@@ -240,6 +238,6 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "\"code\":0"));
     }
 }
