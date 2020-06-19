@@ -27,6 +27,7 @@ import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.SkinMgmtService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Statics;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -36,7 +37,7 @@ import java.util.Set;
  * Skin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.0, Apr 30, 2020
+ * @version 2.1.0.1, Jun 19, 2020
  * @since 3.5.0
  */
 @Singleton
@@ -88,11 +89,10 @@ public class SkinConsole {
     public void getSkin(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final JSONObject skin = optionQueryService.getSkin();
             if (null == skin) {
-                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
+                renderer.setJSONObject(new JSONObject().put(Keys.CODE, StatusCodes.ERR));
                 return;
             }
 
@@ -110,15 +110,13 @@ public class SkinConsole {
                 skinArray.put(s);
             }
             skin.put("skins", skinArray.toString());
-
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
             ret.put(Option.CATEGORY_C_SKIN, skin);
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -143,23 +141,18 @@ public class SkinConsole {
     public void updateSkin(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject skin = requestJSONObject.getJSONObject(Option.CATEGORY_C_SKIN);
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
-
             skinMgmtService.updateSkin(skin);
-
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
             Statics.clear();
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
