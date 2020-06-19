@@ -27,6 +27,7 @@ import org.b3log.solo.model.Link;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -88,12 +89,11 @@ public class LinkConsole {
             final String linkId = context.pathVar("id");
             linkMgmtService.removeLink(linkId);
 
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
@@ -133,13 +133,12 @@ public class LinkConsole {
             final JSONObject requestJSON = context.requestJSON();
             linkMgmtService.updateLink(requestJSON);
 
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -180,13 +179,12 @@ public class LinkConsole {
 
             linkMgmtService.changeOrder(linkId, direction);
 
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -229,12 +227,11 @@ public class LinkConsole {
 
             ret.put(Keys.OBJECT_ID, linkId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }
@@ -277,7 +274,7 @@ public class LinkConsole {
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/links/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = linkQueryService.getLinks(requestJSONObject);
-            result.put(Keys.STATUS_CODE, true);
+            result.put(Keys.CODE, StatusCodes.SUCC);
             renderer.setJSONObject(result);
 
             final List<JSONObject> links = (List<JSONObject>) result.opt(Link.LINKS);
@@ -288,7 +285,7 @@ public class LinkConsole {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -321,16 +318,15 @@ public class LinkConsole {
             final String linkId = context.pathVar("id");
             final JSONObject result = linkQueryService.getLink(linkId);
             if (null == result) {
-                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
+                renderer.setJSONObject(new JSONObject().put(Keys.CODE, StatusCodes.ERR));
                 return;
             }
 
             renderer.setJSONObject(result);
-            result.put(Keys.STATUS_CODE, true);
+            result.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
