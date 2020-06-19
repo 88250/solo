@@ -65,7 +65,7 @@ admin.commentList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -120,13 +120,12 @@ admin.commentList = {
       $('#loadMsg').text(Label.loadingLabel)
 
       $.ajax({
-        url: Label.servePath + '/console/' + type.toLowerCase() +
-        '/comment/' + id,
+        url: Label.servePath + '/console/' + type.toLowerCase() + '/comment/' + id,
         type: 'DELETE',
         cache: false,
         success: function (result, textStatus) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#loadMsg').text('')
             return
           }

@@ -25,6 +25,7 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.List;
  * Comment console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Jun 19, 2020
  * @since 0.4.0
  */
 @Singleton
@@ -86,19 +87,18 @@ public class CommentConsole {
             final String commentId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(context);
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
-                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.CODE, StatusCodes.ERR);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
                 return;
             }
 
             commentMgmtService.removeArticleComment(commentId);
 
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.CODE, StatusCodes.ERR);
             ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
@@ -145,14 +145,11 @@ public class CommentConsole {
 
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = commentQueryService.getComments(requestJSONObject);
-
-            result.put(Keys.STATUS_CODE, true);
-
+            result.put(Keys.CODE, StatusCodes.SUCC);
             renderer.setJSONObject(result);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -190,13 +187,11 @@ public class CommentConsole {
         try {
             final String articleId = context.pathVar("id");
             final List<JSONObject> comments = commentQueryService.getComments(articleId);
-
             ret.put(Comment.COMMENTS, comments);
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
