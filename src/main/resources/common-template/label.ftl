@@ -13,6 +13,7 @@
 -->
 <script>
   var Label = {
+    speech: ${speech?c},
     servePath: "${servePath}",
     staticServePath: "${staticServePath}",
     luteAvailable: ${luteAvailable?c},
