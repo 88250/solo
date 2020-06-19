@@ -72,8 +72,7 @@ public class OtherConsole {
      * @param context the specified request context
      */
     public void getLog(final RequestContext context) {
-        context.renderJSON(true);
-
+        context.renderJSON(StatusCodes.SUCC);
         final String content = Server.TAIL_LOGGER_WRITER.toString();
         context.renderJSONValue("log", content);
     }

@@ -41,6 +41,7 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -232,7 +233,7 @@ public class AdminConsole {
      * @param context the specified context
      */
     public void importMarkdownZip(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
         final Request request = context.getRequest();
         final FileUpload file = request.getFileUpload("file");
         if (null == file) {
@@ -261,7 +262,7 @@ public class AdminConsole {
             final int failCount = result.optInt("failCount");
             FileUtils.deleteQuietly(zipFile);
             FileUtils.deleteQuietly(unzipDir);
-            context.renderJSON(true);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
             String msg = langPropsService.get("importSuccLabel");
             msg = msg.replace("${succCount}", succCount + "");
             if (0 < failCount) {
@@ -348,8 +349,7 @@ public class AdminConsole {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
-            context.renderJSON().renderMsg("Export failed, please check log");
-            return;
+            context.renderJSON(StatusCodes.ERR).renderMsg("Export failed, please check log");
         }
     }
 
@@ -412,8 +412,7 @@ public class AdminConsole {
             response.sendBytes(zipData);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
-            context.renderJSON().renderMsg("Export failed, please check log");
-            return;
+            context.renderJSON(StatusCodes.ERR).renderMsg("Export failed, please check log");
         }
     }
 

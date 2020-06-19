@@ -28,6 +28,7 @@ import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -36,7 +37,7 @@ import java.util.Map;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Nov 5, 2019
+ * @version 2.0.0.1, Jun 19, 2020
  * @since 0.4.5
  */
 @Singleton
@@ -103,7 +104,7 @@ public class ErrorProcessor {
 
             Solos.addGoogleNoIndex(context);
         } else {
-            context.renderJSON().renderMsg(statusCode);
+            context.renderJSON(StatusCodes.ERR).renderMsg(statusCode);
         }
     }
 }
