@@ -254,7 +254,7 @@ window.timeline = {
           + "/skins/timeline/images/ajax-loader.gif) no-repeat scroll center center #60829F").text("");
       },
       success: function(result, textStatus) {
-        if (!result.sc) {
+        if (0 !== result.code) {
           $more.css("background", "none #60829F").text("Error");
           return;
         }

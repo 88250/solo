@@ -45,6 +45,7 @@ import org.b3log.solo.service.*;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -364,7 +365,7 @@ public class ArticleProcessor {
 
         Stopwatchs.start("Get Articles Paged [pageNum=" + currentPageNum + ']');
         try {
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
 
             final JSONObject preference = optionQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
@@ -382,7 +383,7 @@ public class ArticleProcessor {
 
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             LOGGER.log(Level.ERROR, "Gets article paged failed", e);
         } finally {
             Stopwatchs.end();
@@ -406,7 +407,7 @@ public class ArticleProcessor {
         final int currentPageNum = Paginator.getPage(request);
         Stopwatchs.start("Get Tag-Articles Paged [tagTitle=" + tagTitle + ", pageNum=" + currentPageNum + ']');
         try {
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
 
             final JSONObject preference = optionQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
@@ -434,7 +435,7 @@ public class ArticleProcessor {
             result.put(Article.ARTICLES, articles);
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             LOGGER.log(Level.ERROR, "Gets article paged failed", e);
         } finally {
             Stopwatchs.end();
@@ -459,7 +460,7 @@ public class ArticleProcessor {
 
         Stopwatchs.start("Get Archive-Articles Paged [archive=" + archiveDateString + ", pageNum=" + currentPageNum + ']');
         try {
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
 
             final JSONObject preference = optionQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
@@ -485,7 +486,7 @@ public class ArticleProcessor {
             result.put(Article.ARTICLES, articles);
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             LOGGER.log(Level.ERROR, "Gets article paged failed", e);
         } finally {
             Stopwatchs.end();
@@ -510,7 +511,7 @@ public class ArticleProcessor {
 
         Stopwatchs.start("Get Author-Articles Paged [authorId=" + authorId + ", pageNum=" + currentPageNum + ']');
         try {
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
 
             final JSONObject preference = optionQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
@@ -533,7 +534,7 @@ public class ArticleProcessor {
             result.put(Article.ARTICLES, articles);
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             LOGGER.log(Level.ERROR, "Gets article paged failed", e);
         } finally {
             Stopwatchs.end();
@@ -587,7 +588,6 @@ public class ArticleProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             final JSONObject author = result.getJSONObject(User.USER);
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
-            final Response response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
@@ -639,7 +639,6 @@ public class ArticleProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
-            final Response response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);

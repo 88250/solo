@@ -33,6 +33,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -109,7 +110,7 @@ public class CategoryProcessor {
                 return;
             }
 
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
             final String categoryId = category.optString(Keys.OBJECT_ID);
             final JSONObject preference = optionQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
@@ -125,7 +126,7 @@ public class CategoryProcessor {
             result.put(Article.ARTICLES, articles);
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             LOGGER.log(Level.ERROR, "Gets article paged failed", e);
         } finally {
             Stopwatchs.end();
