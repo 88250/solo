@@ -256,10 +256,6 @@
             <input id="speech" type="checkbox" class="normalInput"/>
             <span>&nbsp;${speechSelectedLabel}</span>
         </label>
-        <label class="checkbox">
-            <input id="speech" type="checkbox" class="normalInput"/>
-            <span>&nbsp;${speechSelectedLabel}</span>
-        </label>
         <#if !luteAvailable>
             <br><br>
             ${luteHTTPLabel}

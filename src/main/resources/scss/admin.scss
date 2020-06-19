@@ -14,7 +14,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 3.3.1.0, Apr 30, 2020
+* @version 3.4.1.0, Jun 19, 2020
 */
 @import "reset";
 @import "function";
@@ -565,6 +565,10 @@ button#submitArticle:hover {
   border-color: #ec6459;
 }
 
+.article-commentable__panel label {
+  margin-bottom: 0;
+}
+
 /* end article */
 
 /* start preference */
@@ -1012,8 +1016,7 @@ button#submitArticle:hover {
     margin-bottom: 10px !important;
   }
 
-  .viewpwd__panel,
-  .article-commentable__panel {
+  .viewpwd__panel {
     float: none;
   }
 
