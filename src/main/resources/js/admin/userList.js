@@ -74,7 +74,7 @@ admin.userList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -139,7 +139,7 @@ admin.userList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -182,7 +182,7 @@ admin.userList = {
         success: function (result, textStatus) {
           $('#userUpdate').dialog('close')
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#loadMsg').text('')
             return
           }
@@ -212,7 +212,7 @@ admin.userList = {
         cache: false,
         success: function (result, textStatus) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#loadMsg').text('')
             return
           }
@@ -248,7 +248,7 @@ admin.userList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
