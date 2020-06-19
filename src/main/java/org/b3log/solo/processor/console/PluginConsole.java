@@ -131,7 +131,7 @@ public class PluginConsole {
             result.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, StatusCodes.ERR);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
