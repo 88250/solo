@@ -98,7 +98,7 @@ admin.articleList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -171,7 +171,7 @@ admin.articleList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }

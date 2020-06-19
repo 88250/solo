@@ -47,7 +47,7 @@ admin.article = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -110,7 +110,7 @@ admin.article = {
         cache: false,
         success: function (result, textStatus) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#loadMsg').text('')
             return
           }
@@ -179,7 +179,7 @@ admin.article = {
         data: JSON.stringify(requestJSONObject),
         success: function (result) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             return
           }
 
@@ -249,7 +249,7 @@ admin.article = {
         data: JSON.stringify(requestJSONObject),
         success: function (result, textStatus) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             return
           }
 
@@ -481,7 +481,7 @@ admin.article = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           return
         }
 
