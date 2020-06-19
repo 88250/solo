@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.1.0, May 18, 2020
+ * @version 1.7.1.1, Jun 19, 2020
  * @since 0.3.1
  */
 @Service
@@ -518,6 +518,12 @@ public class DataModelService {
             showCodeBlockLn = Option.DefaultPreference.DEFAULT_SHOW_CODE_BLOCK_LN;
         }
         dataModel.put(Option.ID_C_SHOW_CODE_BLOCK_LN, showCodeBlockLn);
+
+        String speech = preference.optString(Option.ID_C_SPEECH);
+        if (StringUtils.isBlank(speech)) {
+            speech = "true";
+        }
+        dataModel.put(Option.ID_C_SPEECH, speech);
 
         dataModel.put(Common.COMMENTABLE, preference.optBoolean(Option.ID_C_COMMENTABLE));
 
