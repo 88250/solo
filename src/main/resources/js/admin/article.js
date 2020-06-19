@@ -440,7 +440,7 @@ admin.article = {
         type: 'GET',
         cache: false,
         success: function (result, textStatus) {
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#loadMsg').text(result.msg)
             return
           }

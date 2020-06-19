@@ -84,8 +84,8 @@ admin.others = {
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
-        // AJAX 下载文件的话这里会发两次请求，用 sc 来判断是否是文件，如果没有 sc 说明文件可以下载（实际上就是 result）
-        if (!result.sc) {
+        // AJAX 下载文件的话这里会发两次请求，用 code 来判断是否是文件，如果没有 code 说明文件可以下载（实际上就是 result）
+        if (!result.code) {
           // 再发一次请求进行正式下载
           window.location = Label.servePath + '/console/export/sql'
         } else {
