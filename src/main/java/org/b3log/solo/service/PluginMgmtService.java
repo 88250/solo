@@ -27,6 +27,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.repository.PluginRepository;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ import java.util.Map;
  * Plugin management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 27, 2018
+ * @version 1.0.0.2, Jun 19, 2020
  * @since 0.4.0
  */
 @Service
@@ -150,33 +151,25 @@ public class PluginMgmtService {
      * @return for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
      */
     public JSONObject setPluginStatus(final String pluginId, final String status) {
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
-
         final JSONObject ret = new JSONObject();
-
         for (final AbstractPlugin plugin : plugins) {
             if (plugin.getId().equals(pluginId)) {
                 final Transaction transaction = pluginRepository.beginTransaction();
-
                 try {
                     plugin.setStatus(PluginStatus.valueOf(status));
                     pluginRepository.update(pluginId, plugin.toJSONObject());
-
                     transaction.commit();
-
                     plugin.changeStatus();
-
-                    ret.put(Keys.STATUS_CODE, true);
+                    ret.put(Keys.CODE, StatusCodes.SUCC);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));
-
                     return ret;
                 } catch (final Exception e) {
                     if (transaction.isActive()) {
@@ -184,18 +177,15 @@ public class PluginMgmtService {
                     }
 
                     LOGGER.log(Level.ERROR, "Set plugin status error", e);
-
-                    ret.put(Keys.STATUS_CODE, false);
+                    ret.put(Keys.CODE, StatusCodes.ERR);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
-
                     return ret;
                 }
             }
         }
 
-        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
-
         return ret;
     }
 
@@ -208,7 +198,6 @@ public class PluginMgmtService {
      */
     public JSONObject updatePluginSetting(final String pluginId, final String setting) {
         final JSONObject ret = new JSONObject();
-
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
         for (final AbstractPlugin plugin : plugins) {
@@ -219,29 +208,24 @@ public class PluginMgmtService {
                     final JSONObject pluginJson = plugin.toJSONObject();
                     pluginJson.put(Plugin.PLUGIN_SETTING, setting);
                     pluginRepository.update(pluginId, pluginJson);
-
                     transaction.commit();
-
-                    ret.put(Keys.STATUS_CODE, true);
+                    ret.put(Keys.CODE, StatusCodes.SUCC);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));
-
                     return ret;
                 } catch (final Exception e) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
                     LOGGER.log(Level.ERROR, "Set plugin status error", e);
-                    ret.put(Keys.STATUS_CODE, false);
+                    ret.put(Keys.CODE, StatusCodes.ERR);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
-
                     return ret;
                 }
             }
         }
 
-        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
-
         return ret;
 
     }

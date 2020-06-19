@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
- * @version 2.0.0.1, Apr 17, 2020
+ * @version 2.0.0.2, Jun 19, 2020
  * @since 0.4.0
  */
 @Singleton
@@ -81,14 +81,11 @@ public class PluginConsole {
     public void setPluginStatus(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject requestJSONObject = context.requestJSON();
         final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
         final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
         final JSONObject result = pluginMgmtService.setPluginStatus(pluginId, status);
-
         renderer.setJSONObject(result);
-
         Statics.clear();
     }
 
@@ -176,12 +173,10 @@ public class PluginConsole {
     public void updateSetting(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject requestJSONObject = context.requestJSON();
         final String pluginoId = requestJSONObject.optString(Keys.OBJECT_ID);
         final String settings = requestJSONObject.optString(Plugin.PLUGIN_SETTING);
         final JSONObject ret = pluginMgmtService.updatePluginSetting(pluginoId, settings);
-
         renderer.setJSONObject(ret);
     }
 }
