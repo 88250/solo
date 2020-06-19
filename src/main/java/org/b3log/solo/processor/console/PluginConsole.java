@@ -26,6 +26,7 @@ import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.Solos;
 import org.b3log.solo.util.Statics;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -121,19 +122,16 @@ public class PluginConsole {
     public void getPlugins(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/plugins/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = pluginQueryService.getPlugins(requestJSONObject);
-
             renderer.setJSONObject(result);
-            result.put(Keys.STATUS_CODE, true);
+            result.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -147,7 +145,6 @@ public class PluginConsole {
     public void toSetting(final RequestContext context) {
         final ConsoleRenderer renderer = new ConsoleRenderer(context, "admin-plugin-setting.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         try {
             final JSONObject requestJSONObject = context.requestJSON();
             final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -157,8 +154,7 @@ public class PluginConsole {
             dataModel.put(Keys.OBJECT_ID, pluginId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             final JsonRenderer JsonRenderer = new JsonRenderer();
             JsonRenderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));

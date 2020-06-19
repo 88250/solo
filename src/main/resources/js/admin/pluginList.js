@@ -76,7 +76,7 @@ admin.pluginList = {
             cache: false,
             success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
-                if (!result.sc) {
+                if (0 !== result.code) {
                     $("#loadMsg").text("");
                     return;
                 }
@@ -120,10 +120,8 @@ admin.pluginList = {
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
-
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
-
                 $("#loadMsg").text("");
             }
         });

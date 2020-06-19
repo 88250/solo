@@ -34,7 +34,7 @@ import java.util.List;
  * Plugin query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Jun 19, 2020
  * @since 0.4.0
  */
 @Service
@@ -83,43 +83,33 @@ public class PluginQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getPlugins(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public JSONObject getPlugins(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
-
         try {
             final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
-
             final List<JSONObject> pluginJSONObjects = new ArrayList<JSONObject>();
             final List<AbstractPlugin> plugins = pluginManager.getPlugins();
-
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject jsonObject = plugin.toJSONObject();
-
                 pluginJSONObjects.add(jsonObject);
             }
 
             final int pageCount = (int) Math.ceil((double) pluginJSONObjects.size() / (double) pageSize);
             final JSONObject pagination = new JSONObject();
-
             ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final int start = pageSize * (currentPageNum - 1);
             int end = start + pageSize;
-
             end = end > pluginJSONObjects.size() ? pluginJSONObjects.size() : end;
             ret.put(Plugin.PLUGINS, pluginJSONObjects.subList(start, end));
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets plugins failed", e);
-
             throw new ServiceException(e);
         }
     }
@@ -133,22 +123,17 @@ public class PluginQueryService {
      * @throws JSONException    json exception
      */
     public String getPluginSetting(final String pluginId) throws ServiceException, JSONException {
-
-        JSONObject ret = null;
-
+        JSONObject ret;
         try {
             ret = pluginRepository.get(pluginId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "get plugin[" + pluginId + "] fail");
             throw new ServiceException("get plugin[" + pluginId + "] fail");
-
         }
-
         if (ret == null) {
             LOGGER.log(Level.ERROR, "can not find plugin[" + pluginId + "]");
             throw new ServiceException("can not find plugin[" + pluginId + "]");
         }
-
         return ret.optString(Plugin.PLUGIN_SETTING);
     }
 }
