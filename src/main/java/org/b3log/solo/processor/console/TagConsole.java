@@ -21,6 +21,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagQueryService;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 /**
@@ -69,11 +70,10 @@ public class TagConsole {
 
         try {
             jsonObject.put(Tag.TAGS, tagQueryService.getTags());
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
-
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
         }
     }
 }
