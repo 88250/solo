@@ -172,7 +172,6 @@ public class CategoryConsole {
             result.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
@@ -207,7 +206,6 @@ public class CategoryConsole {
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             jsonObject.put(Keys.CODE, StatusCodes.ERR);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
@@ -337,7 +335,6 @@ public class CategoryConsole {
             ret.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
@@ -464,7 +461,6 @@ public class CategoryConsole {
             ret.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
@@ -518,7 +514,6 @@ public class CategoryConsole {
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
