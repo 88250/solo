@@ -523,7 +523,7 @@ public class DataModelService {
         if (StringUtils.isBlank(speech)) {
             speech = "true";
         }
-        dataModel.put(Option.ID_C_SPEECH, speech);
+        dataModel.put(Option.ID_C_SPEECH, Boolean.parseBoolean(speech));
 
         dataModel.put(Common.COMMENTABLE, preference.optBoolean(Option.ID_C_COMMENTABLE));
 
