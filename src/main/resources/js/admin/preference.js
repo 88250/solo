@@ -67,6 +67,8 @@ admin.preference = {
         'true' === preference.syncGitHub ? $('#syncGitHub').attr('checked', 'checked') : $('#syncGitHub').removeAttr('checked')
         'true' === preference.pullGitHub ? $('#pullGitHub').attr('checked', 'checked') : $('#pullGitHub').removeAttr('checked')
         'true' === preference.showCodeBlockLn ? $('#showCodeBlockLn').attr('checked', 'checked') : $('#showCodeBlockLn').removeAttr('checked')
+        'true' === preference.speech ? $('#speech').attr('checked', 'checked') : $('#speech').removeAttr('checked')
+        'true' === preference.paragraphBeginningSpace ? $('#paragraphBeginningSpace').attr('checked', 'checked') : $('#paragraphBeginningSpace').removeAttr('checked')
 
         'true' === preference.footnotes ? $('#footnotes').attr('checked', 'checked') : $('#footnotes').removeAttr('checked')
         'true' === preference.showToC ? $('#showToC').attr('checked', 'checked') : $('#showToC').removeAttr('checked')
@@ -213,6 +215,8 @@ admin.preference = {
         'syncGitHub': $('#syncGitHub').prop('checked'),
         'pullGitHub': $('#pullGitHub').prop('checked'),
         'showCodeBlockLn': $('#showCodeBlockLn').prop('checked'),
+        'speech': $('#speech').prop('checked'),
+        'paragraphBeginningSpace': $('#paragraphBeginningSpace').prop('checked'),
         'commentable': $('#commentable').prop('checked'),
         'customVars': $('#customVars').val(),
         'githubPAT': $('#githubPAT').val(),

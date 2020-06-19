@@ -420,12 +420,12 @@ a[class*=" icon-"]:hover {
 .form label {
   margin-bottom: 10px;
   display: inline-block;
+  line-height: 20px;
 }
 
 .form label.checkbox {
   display: inline-flex;
   align-items: center;
-  margin: 11px 0;
 }
 
 .form label.checkbox input {
