@@ -150,41 +150,25 @@
                     ${githubPATLabel}
                     <input id="githubPAT" class="normalInput" type="text"/>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${enableArticleUpdateHint1Label}
-                        <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${enableArticleUpdateHint1Label}</span>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${allowVisitDraftViaPermalink1Label}
-                        <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${allowVisitDraftViaPermalink1Label}</span>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${allowComment1Label}
-                        <input id="commentable" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="commentable" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${allowCommentLabel}</span>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${syncGitHubLabel}
-                        <input id="syncGitHub" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="syncGitHub" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${syncGitHubLabel}</span>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${pullGitHubLabel}
-                        <input id="pullGitHub" type="checkbox" class="normalInput"/>
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${showCodeBlockLnLabel}
-                        <input id="showCodeBlockLn" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="pullGitHub" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${pullGitHubLabel}</span>
                 </label>
             </div>
             <div class="fn__margin12"></div>
@@ -249,28 +233,41 @@
     <div id="tabPreferencePanel_markdown" class="fn__none form">
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
-
-        <label>${editorModeLabel}</label>
-        <div class="fn__flex">
-            <label class="checkbox fn__flex-1">
+        ${editorModeLabel}
+        <span class="fn__flex">
+            <label class="fn__flex-1 checkbox">
                 <input name="editorMode" type="radio" value="wysiwyg" checked>
                 <span>&nbsp;${editorModeWYSIWYGLabel}</span>
             </label>
-            <label class="checkbox fn__flex-1">
+            <label class="fn__flex-1 checkbox">
                 <input name="editorMode" type="radio" value="ir">
                 <span>&nbsp;${editorModeIRLabel}</span>
             </label>
-            <label class="checkbox fn__flex-1">
+            <label class="fn__flex-1 checkbox">
                 <input name="editorMode" type="radio" value="sv">
                 <span>&nbsp;${editorModeSVLabel}</span>
             </label>
-        </div>
-
+        </span>
+        <label class="checkbox">
+            <input id="showCodeBlockLn" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${showCodeBlockLnLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="speech" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${speechSelectedLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="speech" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${speechSelectedLabel}</span>
+        </label>
         <#if !luteAvailable>
-            <div class="fn__clear">
-                ${luteHTTPLabel}
-            </div>
+            <br><br>
+            ${luteHTTPLabel}
         </#if>
+        <label class="checkbox">
+            <input id="paragraphBeginningSpace" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${paragraphBeginningSpaceLabel}</span>
+        </label>
         <label class="checkbox">
             <input id="footnotes" type="checkbox" class="normalInput"/>
             <span>&nbsp;${supportFootnotesLabel}</span>
