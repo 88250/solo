@@ -137,7 +137,7 @@ public class CommentMgmtService {
      * @return check result, for example, <pre>
      * {
      *     "code": int,
-     *     "msg": "" // Exists if "sc" equals to false
+     *     "msg": ""
      * }
      * </pre>
      */

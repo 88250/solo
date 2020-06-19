@@ -51,7 +51,7 @@ public class TagConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "tags": [
      *         {"tagTitle": "", ....},
      *         ....

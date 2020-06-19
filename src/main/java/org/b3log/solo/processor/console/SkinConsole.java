@@ -72,7 +72,7 @@ public class SkinConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "skin": {
      *         "skinDirName": "",
      *         "mobileSkinDirName": "",

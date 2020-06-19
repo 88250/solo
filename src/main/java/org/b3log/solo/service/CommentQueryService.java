@@ -137,7 +137,7 @@ public class CommentQueryService {
      *         "commentTime": long,
      *         "commentSharpURL": ""
      *      }, ....]
-     *     "sc": "GET_COMMENTS_SUCC"
+     *     "code": 0
      * }
      * </pre>
      * @throws ServiceException service exception

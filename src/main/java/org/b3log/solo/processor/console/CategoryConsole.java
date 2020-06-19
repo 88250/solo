@@ -95,7 +95,7 @@ public class CategoryConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -131,7 +131,7 @@ public class CategoryConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "category": {
      *         "oId": "",
      *         "categoryTitle": "",
@@ -184,7 +184,7 @@ public class CategoryConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -229,7 +229,7 @@ public class CategoryConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -358,7 +358,7 @@ public class CategoryConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "oId": "", // Generated category id
      *     "msg": ""
      * }
@@ -487,7 +487,7 @@ public class CategoryConsole {
      *         "categoryURI": "",
      *         ....
      *      }, ....]
-     *     "sc": true
+     *     "code": 0
      * }
      * </pre>
      * </p>

@@ -116,7 +116,7 @@ public class B3Receiver {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "oId": "", // Generated article id
      *     "msg": ""
      * }

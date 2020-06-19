@@ -69,7 +69,7 @@ public class CommentConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -114,7 +114,7 @@ public class CommentConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "pagination": {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
@@ -161,7 +161,7 @@ public class CommentConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "comments": [{
      *         "oId": "",
      *         "commentName": "",

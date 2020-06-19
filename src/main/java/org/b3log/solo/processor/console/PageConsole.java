@@ -94,7 +94,7 @@ public class PageConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -128,7 +128,7 @@ public class PageConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -175,7 +175,7 @@ public class PageConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "oId": "", // Generated page id
      *     "msg": ""
      * }
@@ -220,7 +220,7 @@ public class PageConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -255,7 +255,7 @@ public class PageConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean
+     *     "code": int,
      *     "page": {
      *         "oId": "",
      *         "pageTitle": "",
@@ -309,7 +309,7 @@ public class PageConsole {
      *         "pagePermalink": "",
      *         .{@link PageMgmtService...}
      *      }, ....]
-     *     "sc": "GET_PAGES_SUCC"
+     *     "code": 0
      * }
      * </pre>
      * </p>

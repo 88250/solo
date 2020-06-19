@@ -97,7 +97,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": true,
+     *     "code": 0,
      *     "data": [
      *         "https://b3logfile.com/bing/20171226.jpg?imageView2/1/w/960/h/540/interlace/1/q/100",
      *         "https://b3logfile.com/bing/20171105.jpg?imageView2/1/w/960/h/540/interlace/1/q/100",
@@ -163,7 +163,7 @@ public class ArticleConsole {
      *         "oId": "",
      *         "signHTML": ""
      *     }, ....]
-     *     "sc": "GET_ARTICLE_SUCC"
+     *     "code": 0
      * }
      * </pre>
      * </p>
@@ -207,7 +207,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "pagination": {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
@@ -277,7 +277,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -320,7 +320,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -363,7 +363,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -403,7 +403,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -463,7 +463,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -527,7 +527,7 @@ public class ArticleConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "oId": "", // Generated article id
      *     "msg": ""
      * }

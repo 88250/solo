@@ -86,7 +86,7 @@ public class UserConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -120,7 +120,7 @@ public class UserConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -166,7 +166,7 @@ public class UserConsole {
      *         "roleName": "",
      *         ....
      *      }, ....]
-     *     "sc": true
+     *     "code": 0
      * }
      * </pre>
      * </p>
@@ -205,7 +205,7 @@ public class UserConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "user": {
      *         "oId": "",
      *         "userName": "",
@@ -240,7 +240,7 @@ public class UserConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>

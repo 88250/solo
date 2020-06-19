@@ -106,7 +106,7 @@ public class CommentProcessor {
      * <pre>
      * {
      *     "oId": generatedCommentId,
-     *     "sc": "COMMENT_ARTICLE_SUCC",
+     *     "code": 0,
      *     "commentDate": "", // yyyy/MM/dd HH:mm:ss
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",

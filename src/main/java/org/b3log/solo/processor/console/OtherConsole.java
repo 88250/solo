@@ -63,7 +63,7 @@ public class OtherConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "log": "log lines"
      * }
      * </pre>
