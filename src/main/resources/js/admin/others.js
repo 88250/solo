@@ -108,29 +108,6 @@ admin.others = {
     $('#tipMsg').text('')
     window.open(Label.servePath + '/console/export/hexo')
   },
-  /*
-   * 获取未使用的标签。
-   * XXX: Not used this function yet.
-   */
-  getUnusedTags: function () {
-    $.ajax({
-      url: Label.servePath + '/console/tag/unused',
-      type: 'GET',
-      cache: false,
-      success: function (result, textStatus) {
-        $('#tipMsg').text(result.msg)
-        if (!result.sc) {
-          $('#loadMsg').text('')
-          return
-        }
-
-        var unusedTags = result.unusedTags
-        if (0 === unusedTags.length) {
-          return
-        }
-      },
-    })
-  },
   importZip () {
     const formData = new FormData()
     const $input = $('#otherImportFileInput')

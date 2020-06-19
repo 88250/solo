@@ -16,20 +16,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.Server;
 import org.b3log.solo.service.ArchiveDateMgmtService;
 import org.b3log.solo.service.TagMgmtService;
-import org.json.JSONObject;
+import org.b3log.solo.util.StatusCodes;
 
 /**
  * Other console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.0, Apr 2, 2020
+ * @version 2.1.0.1, Jun 19, 2020
  * @since 3.4.0
  */
 @Singleton
@@ -93,20 +92,14 @@ public class OtherConsole {
      * @param context the specified request context
      */
     public void removeUnusedArchives(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject jsonObject = new JSONObject();
-        renderer.setJSONObject(jsonObject);
-
+        context.renderJSON(StatusCodes.ERR);
         try {
             archiveDateMgmtService.removeUnusedArchiveDates();
-
-            jsonObject.put(Keys.STATUS_CODE, true);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC).
+                    renderMsg(langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused archives failed", e);
-
-            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+            context.renderMsg(langPropsService.get("removeFailLabel"));
         }
     }
 
@@ -124,20 +117,14 @@ public class OtherConsole {
      * @param context the specified request context
      */
     public void removeUnusedTags(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject jsonObject = new JSONObject();
-        renderer.setJSONObject(jsonObject);
-
+        context.renderJSON(StatusCodes.ERR);
         try {
             tagMgmtService.removeUnusedTags();
-
-            jsonObject.put(Keys.STATUS_CODE, true);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC).
+                    renderMsg(langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
-
-            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+            context.renderMsg(langPropsService.get("removeFailLabel"));
         }
     }
 }

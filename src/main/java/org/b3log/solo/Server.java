@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.8, Jun 16, 2020
+ * @version 3.0.1.9, Jun 19, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -556,8 +556,7 @@ public final class Server extends BaseServer {
         final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
         final Dispatcher.RouterGroup tagConsoleGroup = Dispatcher.group();
         tagConsoleGroup.middlewares(consoleAuthMidware::handle);
-        tagConsoleGroup.get("/console/tags", tagConsole::getTags).
-                get("/console/tag/unused", tagConsole::getUnusedTags);
+        tagConsoleGroup.get("/console/tags", tagConsole::getTags);
 
         final CategoryConsole categoryConsole = beanManager.getReference(CategoryConsole.class);
         final Dispatcher.RouterGroup categoryGroup = Dispatcher.group();
