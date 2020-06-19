@@ -70,7 +70,7 @@ admin.pageList = {
             cache: false,
             success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
-                if (!result.sc) {
+                if (0 !== result.code) {
                     $("#loadMsg").text("");
                     return;
                 }
@@ -134,7 +134,7 @@ admin.pageList = {
             cache: false,
             success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
-                if (!result.sc) {
+                if (0 !== result.code) {
                     $("#loadMsg").text("");
                     return;
                 }
@@ -166,7 +166,7 @@ admin.pageList = {
                 cache: false,
                 success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
-                    if (!result.sc) {
+                    if (0 !== result.code) {
                         $("#loadMsg").text("");
                         return;
                     }
@@ -215,7 +215,7 @@ admin.pageList = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
-                    if (!result.sc) {
+                    if (0 !== result.code) {
                         $("#loadMsg").text("");
                         return;
                     }
@@ -270,7 +270,7 @@ admin.pageList = {
                 success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
 
-                    if (!result.sc) {
+                    if (0 !== result.code) {
                         $("#loadMsg").text("");
                         return;
                     }
