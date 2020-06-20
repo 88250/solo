@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.9, Jun 19, 2020
+ * @version 3.0.1.10, Jun 20, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -265,9 +265,9 @@ public final class Server extends BaseServer {
         final InitService initService = beanManager.getReference(InitService.class);
         initService.initTables();
 
-        if (initService.isInited()) {
-            Statics.clear();
+        Statics.clear();
 
+        if (initService.isInited()) {
             // Upgrade check https://github.com/b3log/solo/issues/12040
             final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
             upgradeService.upgrade();
