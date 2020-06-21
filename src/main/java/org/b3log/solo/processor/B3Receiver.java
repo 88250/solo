@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.3, Mar 31, 2020
+ * @version 3.0.0.4, Jun 21, 2020
  * @since 0.5.5
  */
 @Singleton
@@ -100,10 +100,10 @@ public class B3Receiver {
      * {
      *     "article": {
      *         "id": "",
-     *          "title": "",
-     *          "content": "",
-     *          "contentHTML": "",
-     *          "tags": "tag1,tag2,tag3"
+     *         "title": "",
+     *         "content": "",
+     *         "contentHTML": "",
+     *         "tags": "tag1,tag2,tag3"
      *     },
      *     "client": {
      *         "userName": "",
@@ -125,7 +125,7 @@ public class B3Receiver {
      *
      * @param context the specified request context
      */
-    public void postArticle(final RequestContext context) {
+    public void receiveArticle(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.CODE, 0);
         context.renderJSON(ret);
 
