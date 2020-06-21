@@ -42,7 +42,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.25, Jan 12, 2020
+ * @version 1.0.2.26, Jan 22, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -100,6 +100,8 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             final JSONObject author = articleQueryService.getAuthor(originalArticle);
             final JSONObject client = new JSONObject().
                     put("title", preference.getString(Option.ID_C_BLOG_TITLE)).
+                    put("subTitle", preference.optString(Option.ID_C_BLOG_SUBTITLE)).
+                    put("favicon", preference.optString(Option.ID_C_FAVICON_URL)).
                     put("host", Latkes.getServePath()).
                     put("name", "Solo").
                     put("ver", Server.VERSION).
