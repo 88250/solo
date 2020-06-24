@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.0, Dec 15, 2019
+ * @version 1.6.1.1, Jun 24, 2020
  */
 admin.article = {
   // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -98,9 +98,7 @@ admin.article = {
    * @param {String} title 文章标题
    */
   del: function (id, fromId, title) {
-    var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' +
-      htmlDecode(title) + '"?')
-    if (isDelete) {
+    if (confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + htmlDecode(title) + '"?')) {
       $('#loadMsg').text(Label.loadingLabel)
       $('#tipMsg').text('')
 
@@ -535,7 +533,7 @@ admin.article = {
     $('#loadMsg').text('')
   },
   /**
-   * @description: 仿重复提交，点击一次后，按钮设置为 disabled
+   * @description: 防重复提交，点击一次后，按钮设置为 disabled
    */
   _addDisabled: function () {
     $('#unSubmitArticle').attr('disabled', 'disabled')
@@ -543,7 +541,7 @@ admin.article = {
     $('#submitArticle').attr('disabled', 'disabled')
   },
   /**
-   * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
+   * @description: 防重复提交，当后台有数据返回后，按钮移除 disabled 状态
    */
   _removeDisabled: function () {
     $('#unSubmitArticle').removeAttr('disabled')
