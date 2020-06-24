@@ -15,7 +15,7 @@ import { TablePaginate } from './tablePaginate'
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Jan 10, 2020
+ * @version 1.3.0.3, Jun 24, 2020
  */
 
 /* article-list 相关操作 */
@@ -73,12 +73,17 @@ admin.articleList = {
    * @param id 文章 id
    */
   syncToHacpai: function (id) {
+    const licenseConfirm = '文章推送社区后将以 署名-相同方式共享 4.0 国际 (CC BY-SA 4.0) (https://creativecommons.org/licenses/by-sa/4.0/deed.zh) 许可协议发布，请确认是否推送？'
+    if (!confirm(licenseConfirm)) {
+      return;
+    }
+
     $.ajax({
       url: Label.servePath + '/console/article/push2rhy?id=' + id,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
-        $('#tipMsg').text(Label.pushSuccLabel)
+        $('#tipMsg').html(Label.pushSuccLabel)
       },
     })
   },
