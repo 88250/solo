@@ -11,15 +11,21 @@
  */
 package org.b3log.solo.processor;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tika.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.http.renderer.BinaryRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
@@ -38,8 +44,10 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Index processor.
@@ -47,7 +55,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 2.0.0.3, Jun 10, 2020
+ * @version 2.0.0.4, Jun 25, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -86,7 +94,6 @@ public class IndexProcessor {
      * Shows index with the specified context.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     public void showIndex(final RequestContext context) {
         final Request request = context.getRequest();
@@ -113,6 +120,56 @@ public class IndexProcessor {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             context.sendError(404);
         }
+    }
+
+    /**
+     * Favicon bytes cache. &lt;"/favicon.ico", bytes&gt;
+     */
+    private static final Cache<String, Object> FAVICON_CACHE = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build();
+
+    /**
+     * Shows favicon with the specified context.
+     *
+     * @param context the specified context
+     */
+    public void showFavicon(final RequestContext context) {
+        final BinaryRenderer binaryRenderer = new BinaryRenderer("image/x-icon");
+        context.setRenderer(binaryRenderer);
+        final String key = "/favicon.ico";
+        byte[] bytes = (byte[]) FAVICON_CACHE.getIfPresent(key);
+        if (null != bytes) {
+            binaryRenderer.setData(bytes);
+            return;
+        }
+
+        final JSONObject preference = optionQueryService.getPreference();
+        String faviconURL;
+        if (null == preference) {
+            faviconURL = Option.DefaultPreference.DEFAULT_FAVICON_URL;
+        } else {
+            faviconURL = preference.optString(Option.ID_C_FAVICON_URL);
+        }
+
+        try {
+            final HttpResponse response = HttpRequest.get(faviconURL).header("User-Agent", Solos.USER_AGENT).connectionTimeout(3000).timeout(7000).send();
+            if (200 == response.statusCode()) {
+                bytes = response.bodyBytes();
+            } else {
+                throw new Exception();
+            }
+            binaryRenderer.setData(bytes);
+        } catch (final Exception e) {
+            try (final InputStream resourceAsStream = IndexProcessor.class.getResourceAsStream("/images/favicon.ico")) {
+                bytes = IOUtils.toByteArray(resourceAsStream);
+                binaryRenderer.setData(bytes);
+            } catch (final Exception ex) {
+                LOGGER.log(Level.ERROR, "Loads default favicon.ico failed", e);
+                context.sendError(500);
+                return;
+            }
+        }
+
+        FAVICON_CACHE.put(key, bytes);
     }
 
     /**

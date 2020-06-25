@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.10, Jun 20, 2020
+ * @version 3.0.1.11, Jun 25, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -469,7 +469,8 @@ public final class Server extends BaseServer {
         final Dispatcher.RouterGroup indexGroup = Dispatcher.group();
         indexGroup.middlewares(staticMidware::handle);
         indexGroup.router().get(new String[]{"", "/", "/index.html"}, indexProcessor::showIndex);
-        indexGroup.get("/start", indexProcessor::showStart).
+        indexGroup.get("/favicon.ico", indexProcessor::showFavicon).
+                get("/start", indexProcessor::showStart).
                 get("/logout", indexProcessor::logout).
                 get("/kill-browser", indexProcessor::showKillBrowser);
 
