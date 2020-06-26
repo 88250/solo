@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 1.8.0.0, Jun 16, 2020
+ * @version 1.8.0.1, Jun 26, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -384,7 +384,7 @@ public final class Option {
         /**
          * Default favicon URL.
          */
-        public static final String DEFAULT_FAVICON_URL = "https://static.b3log.org/images/brand/solo-32.png";
+        public static final String DEFAULT_FAVICON_URL = "https://static.b3log.org/images/brand/solo-128.png";
 
         /**
          * Default custom vars.
