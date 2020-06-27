@@ -102,21 +102,16 @@ public final class URL {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-
         stringBuilder.append(START_URL_ELEMENT);
-
         stringBuilder.append(START_LOC_ELEMENT);
         stringBuilder.append(StringEscapeUtils.escapeXml(loc));
         stringBuilder.append(END_LOC_ELEMENT);
-
         if (StringUtils.isNotBlank(lastMod)) {
             stringBuilder.append(START_LAST_MOD_ELEMENT);
             stringBuilder.append(lastMod);
             stringBuilder.append(END_LAST_MOD_ELEMENT);
         }
-
         stringBuilder.append(END_URL_ELEMENT);
-
         return stringBuilder.toString();
     }
 }

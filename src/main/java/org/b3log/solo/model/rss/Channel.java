@@ -293,41 +293,18 @@ public final class Channel {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-
         stringBuilder.append(START);
-
-        stringBuilder.append(START_TITLE_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(title));
-        stringBuilder.append(END_TITLE_ELEMENT);
-
-        stringBuilder.append(START_LINK_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(link));
-        stringBuilder.append(END_LINK_ELEMENT);
-
+        stringBuilder.append(START_TITLE_ELEMENT).append(StringEscapeUtils.escapeXml(title)).append(END_TITLE_ELEMENT);
+        stringBuilder.append(START_LINK_ELEMENT).append(StringEscapeUtils.escapeXml(link)).append(END_LINK_ELEMENT);
         stringBuilder.append(ATOM_LINK_ELEMENT.replace(ATOM_LINK_VARIABLE, atomLink));
-
-        stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(description));
-        stringBuilder.append(END_DESCRIPTION_ELEMENT);
-
-        stringBuilder.append(START_GENERATOR_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(generator));
-        stringBuilder.append(END_GENERATOR_ELEMENT);
-
-        stringBuilder.append(START_LAST_BUILD_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.SMTP_DATETIME_FORMAT.format(lastBuildDate));
-        stringBuilder.append(END_LAST_BUILD_DATE_ELEMENT);
-
-        stringBuilder.append(START_LANGUAGE_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(language));
-        stringBuilder.append(END_LANGUAGE_ELEMENT);
-
+        stringBuilder.append(START_DESCRIPTION_ELEMENT).append(StringEscapeUtils.escapeXml(description)).append(END_DESCRIPTION_ELEMENT);
+        stringBuilder.append(START_GENERATOR_ELEMENT).append(StringEscapeUtils.escapeXml(generator)).append(END_GENERATOR_ELEMENT);
+        stringBuilder.append(START_LAST_BUILD_DATE_ELEMENT).append(DateFormatUtils.SMTP_DATETIME_FORMAT.format(lastBuildDate)).append(END_LAST_BUILD_DATE_ELEMENT);
+        stringBuilder.append(START_LANGUAGE_ELEMENT).append(StringEscapeUtils.escapeXml(language)).append(END_LANGUAGE_ELEMENT);
         for (final Item item : items) {
             stringBuilder.append(item.toString());
         }
-
         stringBuilder.append(END);
-
         return XMLs.format(stringBuilder.toString());
     }
 }

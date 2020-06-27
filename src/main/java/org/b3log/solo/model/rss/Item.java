@@ -243,35 +243,15 @@ public final class Item {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("<item>").append(START_TITLE_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(title));
-        stringBuilder.append(END_TITLE_ELEMENT);
-
-        stringBuilder.append(START_LINK_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(link));
-        stringBuilder.append(END_LINK_ELEMENT);
-
-        stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append("<![CDATA[" + description + "]]>");
-        stringBuilder.append(END_DESCRIPTION_ELEMENT);
-
-        stringBuilder.append(START_AUTHOR_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(author));
-        stringBuilder.append(END_AUTHOR_ELEMENT);
-
-        stringBuilder.append(START_GUID_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(guid));
-        stringBuilder.append(END_GUID_ELEMENT);
-
+        stringBuilder.append("<item>").append(START_TITLE_ELEMENT).append(StringEscapeUtils.escapeXml(title)).append(END_TITLE_ELEMENT);
+        stringBuilder.append(START_LINK_ELEMENT).append(StringEscapeUtils.escapeXml(link)).append(END_LINK_ELEMENT);
+        stringBuilder.append(START_DESCRIPTION_ELEMENT).append("<![CDATA[" + description + "]]>").append(END_DESCRIPTION_ELEMENT);
+        stringBuilder.append(START_AUTHOR_ELEMENT).append(StringEscapeUtils.escapeXml(author)).append(END_AUTHOR_ELEMENT);
+        stringBuilder.append(START_GUID_ELEMENT).append(StringEscapeUtils.escapeXml(guid)).append(END_GUID_ELEMENT);
         for (final Category category : categories) {
             stringBuilder.append(category.toString());
         }
-
-        stringBuilder.append(START_PUB_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.format(pubDate, "EEE, dd MMM yyyy HH:mm:ss Z", Locale.US));
-        stringBuilder.append(END_PUB_DATE_ELEMENT).append("</item>");
-
+        stringBuilder.append(START_PUB_DATE_ELEMENT).append(DateFormatUtils.format(pubDate, "EEE, dd MMM yyyy HH:mm:ss Z", Locale.US)).append(END_PUB_DATE_ELEMENT).append("</item>");
         return stringBuilder.toString();
     }
 }
