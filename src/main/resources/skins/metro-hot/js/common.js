@@ -107,7 +107,7 @@ window.MetroHot = {
     // getRandomArticles
     $.ajax({
       url: Label.servePath + "/articles/random",
-      type: "POST",
+      type: "GET",
       success: function(result, textStatus) {
         var randomArticles = result.randomArticles;
         if (!randomArticles || 0 === randomArticles.length) {

@@ -99,7 +99,6 @@ public class ArchiveDateRepository extends AbstractRepository {
      */
     public List<JSONObject> getArchiveDates() throws RepositoryException {
         final Query query = new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
-        // TODO: Performance issue
         final List<JSONObject> ret = getList(query);
         for (final JSONObject archiveDate : ret) {
             final String archiveDateId = archiveDate.optString(Keys.OBJECT_ID);

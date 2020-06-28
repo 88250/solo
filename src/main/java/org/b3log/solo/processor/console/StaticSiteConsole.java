@@ -112,6 +112,7 @@ public class StaticSiteConsole {
             genURI("/blog/info");
             genURI("/manifest.json");
             genURI("/rss.xml");
+            genURI("/articles/random");
 
             genArticles();
             genTags();

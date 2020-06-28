@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.11, Jun 25, 2020
+ * @version 3.0.1.12, Jun 28, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -63,7 +63,7 @@ public final class Server extends BaseServer {
     /**
      * Solo version.
      */
-    public static final String VERSION = "4.1.0";
+    public static final String VERSION = "4.2.0";
 
     /**
      * In-Memory tail logger writer.
@@ -428,7 +428,7 @@ public final class Server extends BaseServer {
         articleGroup.post("/console/markdown/2html", articleProcessor::markdown2HTML).
                 get("/console/article-pwd", articleProcessor::showArticlePwdForm).
                 post("/console/article-pwd", articleProcessor::onArticlePwdForm).
-                post("/articles/random", articleProcessor::getRandomArticles).
+                get("/articles/random", articleProcessor::getRandomArticles).
                 get("/article/id/{id}/relevant/articles", articleProcessor::getRelevantArticles).
                 get("/get-article-content", articleProcessor::getArticleContent).
                 get("/articles", articleProcessor::getArticlesByPage).
