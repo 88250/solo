@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link ArticleProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 22, 2019
+ * @version 1.0.1.5, Jun 28, 2020
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -110,8 +110,8 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
     @Test
     public void getRandomArticles() {
         final MockRequest request = mockRequest();
-        request.setRequestURI("/articles/random");
-        request.setMethod("POST");
+        request.setRequestURI("/articles/random.json");
+        request.setMethod("GET");
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 

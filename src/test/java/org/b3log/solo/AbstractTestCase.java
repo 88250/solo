@@ -44,7 +44,7 @@ import java.sql.Connection;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 4.0.0.1, Apr 30, 2020
+ * @version 4.0.0.2, Jun 28, 2020
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -70,7 +70,6 @@ public abstract class AbstractTestCase {
      */
     @BeforeClass
     public void beforeClass() throws Exception {
-        System.out.println("before class");
         beanManager = BeanManager.getInstance();
 
         final Connection connection = Connections.getConnection();
@@ -113,9 +112,7 @@ public abstract class AbstractTestCase {
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "Solo");
         requestJSONObject.put(UserExt.USER_B3_KEY, "pass");
-        System.out.println("before init");
         initService.init(requestJSONObject);
-        System.out.println("after init");
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
         Dispatcher.error("/error/{statusCode}", errorProcessor::showErrorPage);
         final UserQueryService userQueryService = getUserQueryService();

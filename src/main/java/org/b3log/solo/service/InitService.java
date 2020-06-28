@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.42, Jun 16, 2020
+ * @version 1.5.2.43, Jun 28, 2020
  * @since 0.4.0
  */
 @Service
@@ -288,8 +288,6 @@ public class InitService {
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
         commentRepository.add(comment);
-
-        LOGGER.info("Hello World!");
     }
 
     /**
@@ -313,10 +311,8 @@ public class InitService {
             articleRepository.add(article);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds an article failed", e);
-
             throw new RepositoryException(e);
         }
-
         return ret;
     }
 
@@ -417,7 +413,7 @@ public class InitService {
         admin.put(UserExt.USER_GITHUB_ID, requestJSONObject.optString(UserExt.USER_GITHUB_ID));
         userRepository.add(admin);
 
-        LOGGER.info("Initialized admin");
+        LOGGER.debug("Initialized admin");
     }
 
     /**
@@ -436,7 +432,7 @@ public class InitService {
         final int maxOrder = linkRepository.getMaxOrder();
         link.put(Link.LINK_ORDER, maxOrder + 1);
         linkRepository.add(link);
-        LOGGER.info("Initialized link");
+        LOGGER.debug("Initialized link");
     }
 
     /**
@@ -454,7 +450,7 @@ public class InitService {
         statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
         optionRepository.add(statisticBlogViewCountOpt);
 
-        LOGGER.info("Initialized statistic");
+        LOGGER.debug("Initialized statistic");
     }
 
     /**
@@ -736,6 +732,6 @@ public class InitService {
         mobileSkinDirNameOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
         optionRepository.add(mobileSkinDirNameOpt);
 
-        LOGGER.info("Initialized preference");
+        LOGGER.debug("Initialized preference");
     }
 }
