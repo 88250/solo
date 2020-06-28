@@ -261,7 +261,7 @@ $.extend(Page.prototype, {
     var randomArticles1Label = this.tips.randomArticles1Label
     // getRandomArticles
     $.ajax({
-      url: Label.servePath + '/articles/random',
+      url: Label.servePath + '/articles/random.json',
       type: 'GET',
       success: function (result, textStatus) {
         var randomArticles = result.randomArticles
@@ -295,7 +295,7 @@ $.extend(Page.prototype, {
    */
   loadRelevantArticles: function (id, headTitle) {
     $.ajax({
-      url: Label.servePath + '/article/id/' + id + '/relevant/articles',
+      url: Label.servePath + '/article/relevant/' + id + '.json',
       type: 'GET',
       success: function (data, textStatus) {
         var articles = data.relevantArticles

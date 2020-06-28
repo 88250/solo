@@ -130,7 +130,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
-        request.setRequestURI("/article/id/" + articleId + "/relevant/articles");
+        request.setRequestURI("/article/relevant/" + articleId + ".json");
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 

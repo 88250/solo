@@ -25,7 +25,6 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.*;
 import org.b3log.solo.service.*;
@@ -112,7 +111,7 @@ public class StaticSiteConsole {
             genURI("/blog/info");
             genURI("/manifest.json");
             genURI("/rss.xml");
-            genURI("/articles/random");
+            genURI("/articles/random.json");
 
             genArticles();
             genTags();
@@ -260,6 +259,7 @@ public class StaticSiteConsole {
                 final String permalink = article.optString(Article.ARTICLE_PERMALINK);
                 try {
                     genArticle(permalink);
+                    genURI("/article/relevant/" + article.optString(Keys.OBJECT_ID) + ".json");
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Generates an article [uri=" + permalink + "] failed", e);
                 }

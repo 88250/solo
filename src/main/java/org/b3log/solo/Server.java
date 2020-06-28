@@ -428,8 +428,8 @@ public final class Server extends BaseServer {
         articleGroup.post("/console/markdown/2html", articleProcessor::markdown2HTML).
                 get("/console/article-pwd", articleProcessor::showArticlePwdForm).
                 post("/console/article-pwd", articleProcessor::onArticlePwdForm).
-                get("/articles/random", articleProcessor::getRandomArticles).
-                get("/article/id/{id}/relevant/articles", articleProcessor::getRelevantArticles).
+                get("/articles/random.json", articleProcessor::getRandomArticles).
+                get("/article/relevant/{id}.json", articleProcessor::getRelevantArticles).
                 get("/get-article-content", articleProcessor::getArticleContent).
                 get("/articles", articleProcessor::getArticlesByPage).
                 get("/articles/tags/{tagTitle}", articleProcessor::getTagArticlesByPage).

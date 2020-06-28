@@ -106,7 +106,7 @@ window.MetroHot = {
   loadRandomArticles: function() {
     // getRandomArticles
     $.ajax({
-      url: Label.servePath + "/articles/random",
+      url: Label.servePath + "/articles/random.json",
       type: "GET",
       success: function(result, textStatus) {
         var randomArticles = result.randomArticles;
@@ -135,7 +135,7 @@ window.MetroHot = {
    */
   loadRelevantArticles: function(id) {
     $.ajax({
-      url: Label.servePath + "/article/id/" + id + "/relevant/articles",
+      url: Label.servePath + '/article/relevant/' + id + '.json',
       type: "GET",
       success: function(data, textStatus) {
         var articles = data.relevantArticles;
