@@ -314,7 +314,6 @@ public class ArticleMgmtService {
             }
 
             article.put(Common.POST_TO_COMMUNITY, true);
-
             final JSONObject data = new JSONObject().put(ARTICLE, article);
             B3ArticleSender.pushArticleToRhy(data);
         } catch (final Exception e) {
@@ -358,7 +357,6 @@ public class ArticleMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Cancels publish article failed", e);
-
             throw new ServiceException(e);
         }
     }
@@ -479,7 +477,6 @@ public class ArticleMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates an article failed", e);
-
             throw e;
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -487,7 +484,6 @@ public class ArticleMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates an article failed", e);
-
             throw new ServiceException(e.getMessage());
         }
     }
@@ -624,10 +620,8 @@ public class ArticleMgmtService {
 
         try {
             final List<JSONObject> randomArticles = articleRepository.getRandomly(updateCnt);
-
             for (final JSONObject article : randomArticles) {
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-
                 articleRepository.update(article.getString(Keys.OBJECT_ID), article, ARTICLE_RANDOM_DOUBLE);
             }
 
@@ -638,7 +632,6 @@ public class ArticleMgmtService {
             }
 
             LOGGER.log(Level.WARN, "Updates article random value failed");
-
             throw new ServiceException(e);
         }
     }
@@ -666,7 +659,6 @@ public class ArticleMgmtService {
             archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(Keys.OBJECT_ID));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Unarchive date for article[id=" + articleId + "] failed", e);
-
             throw new ServiceException(e);
         }
     }
@@ -822,10 +814,8 @@ public class ArticleMgmtService {
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.optJSONObject(i);
             final JSONObject tagArticleRelation = new JSONObject();
-
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
             tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
-
             tagArticleRepository.add(tagArticleRelation);
         }
     }
@@ -865,7 +855,6 @@ public class ArticleMgmtService {
 
             ret.put(tag);
         }
-
         return ret;
     }
 
@@ -995,7 +984,6 @@ public class ArticleMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
             }
         }
-
         return ret.replaceAll(" ", "-");
     }
 
@@ -1013,7 +1001,6 @@ public class ArticleMgmtService {
                 return true;
             }
         }
-
         return false;
     }
 }
