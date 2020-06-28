@@ -617,20 +617,17 @@ public class ArticleMgmtService {
      */
     public void updateArticlesRandomValue(final int updateCnt) throws ServiceException {
         final Transaction transaction = articleRepository.beginTransaction();
-
         try {
             final List<JSONObject> randomArticles = articleRepository.getRandomly(updateCnt);
             for (final JSONObject article : randomArticles) {
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
                 articleRepository.update(article.getString(Keys.OBJECT_ID), article, ARTICLE_RANDOM_DOUBLE);
             }
-
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-
             LOGGER.log(Level.WARN, "Updates article random value failed");
             throw new ServiceException(e);
         }
@@ -655,7 +652,6 @@ public class ArticleMgmtService {
             if (1 > publishedArticleCount) {
                 archiveDateRepository.remove(archiveDateId);
             }
-
             archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(Keys.OBJECT_ID));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Unarchive date for article[id=" + articleId + "] failed", e);
@@ -683,7 +679,6 @@ public class ArticleMgmtService {
             if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
-
             commentRepository.update(commentId, comment);
         }
     }

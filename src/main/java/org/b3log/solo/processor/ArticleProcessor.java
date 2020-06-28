@@ -688,7 +688,6 @@ public class ArticleProcessor {
 
             prepareShowArticle(preference, dataModel, article);
 
-            final Response response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
