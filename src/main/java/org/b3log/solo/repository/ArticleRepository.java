@@ -11,7 +11,6 @@
  */
 package org.b3log.solo.repository;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
@@ -40,11 +39,6 @@ public class ArticleRepository extends AbstractRepository {
      * Logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(ArticleRepository.class);
-
-    /**
-     * Random range.
-     */
-    private static final double RANDOM_RANGE = 0.1D;
 
     /**
      * Article cache.
@@ -94,39 +88,42 @@ public class ArticleRepository extends AbstractRepository {
     @Override
     public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
         final List<JSONObject> ret = new ArrayList<>();
-
-        if (0 == count()) {
-            return ret;
-        }
-
-        final double mid = Math.random() + RANDOM_RANGE;
-
-        LOGGER.log(Level.TRACE, "Random mid[{}]", mid);
-
-        Query query = new Query().setFilter(CompositeFilterOperator.and(
-                new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
-                new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
-                setPage(1, fetchSize).setPageCount(1);
-
-        final List<JSONObject> list1 = getList(query);
-        ret.addAll(list1);
-
-        final int reminingSize = fetchSize - list1.size();
-        if (0 != reminingSize) { // Query for remains
-            query = new Query();
-            query.setFilter(
+        int loops = 0;
+        do {
+            loops++;
+            double min = Math.random();
+            double max = Math.random();
+            if (min > max) {
+                final double tmp = min;
+                min = max;
+                max = tmp;
+            }
+            final Query query = new Query().setFilter(
                     CompositeFilterOperator.and(
-                            new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
-                            new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
+                            new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, min),
+                            new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, max),
                             new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
-                    setPage(1, reminingSize).setPageCount(1);
+                    select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID).
+                    setPage(1, (int) Math.ceil(fetchSize / 5)).setPageCount(1);
+            if (0.05 <= min) {
+                query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+            }
 
-            final List<JSONObject> list2 = getList(query);
-
-            ret.addAll(list2);
-        }
-
+            final List<JSONObject> records = getList(query);
+            for (final JSONObject record : records) {
+                final String id = record.optString(Keys.OBJECT_ID);
+                boolean contain = false;
+                for (final JSONObject retRecord : ret) {
+                    if (retRecord.optString(Keys.OBJECT_ID).equals(id)) {
+                        contain = true;
+                        break;
+                    }
+                }
+                if (!contain) {
+                    ret.add(record);
+                }
+            }
+        } while (1 <= fetchSize - ret.size() && 10 >= loops);
         return ret;
     }
 
