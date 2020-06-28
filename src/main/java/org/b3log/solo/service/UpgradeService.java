@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.19, May 19, 2020
+ * @version 1.2.1.20, Jun 28, 2020
  * @since 1.2.0
  */
 @Service
@@ -100,6 +100,8 @@ public class UpgradeService {
                     V390_400.perform();
                 case "4.0.0":
                     V400_410.perform();
+                case "4.1.0":
+                    V410_420.perform();
                     break;
                 default:
                     LOGGER.log(Level.ERROR, "Please upgrade to v3.0.0 first");
