@@ -244,7 +244,6 @@ public class ArticleProcessor {
             context.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID) + "&msg=1");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Processes article view password form submits failed", e);
-
             context.sendError(404);
         }
     }
@@ -261,7 +260,6 @@ public class ArticleProcessor {
         final int displayCnt = preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
         if (0 == displayCnt) {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
-
             final JsonRenderer renderer = new JsonRenderer();
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
@@ -270,13 +268,10 @@ public class ArticleProcessor {
 
         Stopwatchs.start("Get Random Articles");
         final List<JSONObject> randomArticles = getRandomArticles(preference);
-
         jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
-
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
-
         Stopwatchs.end();
     }
 
@@ -289,7 +284,6 @@ public class ArticleProcessor {
         final JSONObject jsonObject = new JSONObject();
 
         final JSONObject preference = optionQueryService.getPreference();
-
         final int displayCnt = preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
         if (0 == displayCnt) {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
@@ -594,7 +588,6 @@ public class ArticleProcessor {
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             context.sendError(404);
         }
     }
@@ -707,7 +700,6 @@ public class ArticleProcessor {
             eventManager.fireEventSynchronously(new Event<>(EventTypes.BEFORE_RENDER_ARTICLE, eventData));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             context.sendError(404);
         }
     }
@@ -722,11 +714,9 @@ public class ArticleProcessor {
         try {
             final int displayCnt = preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
             final List<JSONObject> ret = articleQueryService.getArticlesRandomly(displayCnt);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             return Collections.emptyList();
         }
     }
@@ -756,7 +746,6 @@ public class ArticleProcessor {
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
         final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
-
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
@@ -766,15 +755,11 @@ public class ArticleProcessor {
 
         dataModel.put(Article.ARTICLES, articles);
         final String authorId = author.optString(Keys.OBJECT_ID);
-
         dataModel.put(Common.PATH, "/authors/" + authorId);
         dataModel.put(Keys.OBJECT_ID, authorId);
-
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
-
         final String userAvatar = author.optString(UserExt.USER_AVATAR);
         dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
-
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
     }
 
@@ -837,7 +822,6 @@ public class ArticleProcessor {
             ret = year + " " + dataModel.get("yearLabel") + " " + month + " " + dataModel.get("monthLabel");
         }
         dataModel.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
-
         return ret;
     }
 
