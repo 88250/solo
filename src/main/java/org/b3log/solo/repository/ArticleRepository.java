@@ -29,7 +29,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.14, Jan 16, 2020
+ * @version 1.1.1.15, Jun 29, 2020
  * @since 0.3.1
  */
 @Repository
@@ -103,7 +103,6 @@ public class ArticleRepository extends AbstractRepository {
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, min),
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, max),
                             new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
-                    select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_AUTHOR_ID).
                     setPage(1, (int) Math.ceil(fetchSize / 5)).setPageCount(1);
             if (0.05 <= min) {
                 query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
