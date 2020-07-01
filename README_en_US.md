@@ -152,7 +152,18 @@ docker pull b3log/solo
 #### Start the container
 
 * Use MySQL
-  First create database schema manually (schema name `solo`, character set use` utf8mb4`, sorting rule `utf8mb4_general_ci`), and then start the container:
+
+  Create database schema manually (schema name `solo`, character set use` utf8mb4`, sorting rule `utf8mb4_general_ci`):
+
+  ```sql
+  create database solo default character set utf8mb4 collate utf8mb4_general_ci;
+  create user 'root'@'127.0.0.1' identified by '123456';
+  grant all privileges on *.* to 'root'@'127.0.0.1';
+  flush privileges;
+  ```
+
+  Start container:
+
   ```shell
   docker run --detach --name solo --network=host \
       --env RUNTIME_DB="MYSQL" \

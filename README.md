@@ -156,7 +156,17 @@ docker pull b3log/solo
 ****注意****：对于如下命令，如果你不确定如何使用 `\` 来进行换行，就不要换行了，一行内写完整条命令。
 
 * 使用 MySQL
-  先手动建库（库名 `solo` ，字符集使用 `utf8mb4` ，排序规则 `utf8mb4_general_ci` ），然后启动容器：
+
+  手动建库（库名 `solo` ，字符集使用 `utf8mb4` ，排序规则 `utf8mb4_general_ci` ）：
+  
+  ```sql
+  create database solo default character set utf8mb4 collate utf8mb4_general_ci;
+  create user 'root'@'127.0.0.1' identified by '123456';
+  grant all privileges on *.* to 'root'@'127.0.0.1';
+  flush privileges;
+  ```
+  
+  启动容器：
 
   ```shell
   docker run --detach --name solo --network=host \
@@ -167,7 +177,6 @@ docker pull b3log/solo
       --env JDBC_URL="jdbc:mysql://127.0.0.1:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true" \
       b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost --server_port=
   ```
-
 
   为了简单，使用了主机网络模式来连接主机上的 MySQL。
 * 使用 H2 Database
