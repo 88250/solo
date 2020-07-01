@@ -132,6 +132,8 @@ Solo supports "dynamic and static":
 
 Local operation is mainly used for trial or static site generation, please refer to [here](https://hacpai.com/article/1579053576274) for usage of static site generation.
 
+(Video demo tutorial please see here [https://www.bilibili.com/video/BV1tK411n7R3](https://www.bilibili.com/video/BV1tK411n7R3))
+
 [Download](https://github.com/88250/solo/releases) and unzip the latest Solo package, enter the decompression directory and execute:
 
 * Windows: `java -cp "lib/*;." org.b3log.solo.Server`
@@ -142,6 +144,8 @@ If you have a Java development environment, you can refer to [here](https://hacp
 ### Docker
 
 Docker deployment is a dynamic blog usage, mainly used to deploy dynamic blogs on the server.
+
+(Video demo tutorial please see here [https://www.bilibili.com/video/BV1Yk4y1q7rV] (https://www.bilibili.com/video/BV1Yk4y1q7rV))
 
 #### Get the latest image
 

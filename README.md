@@ -134,6 +134,8 @@ Solo 支持“动静两用”：
 
 本地运行主要用于试用或者生成静态站点，生成静态站点的用法请参考[这里](https://hacpai.com/article/1579053576274)。
 
+（视频演示教程请看这里 [https://www.bilibili.com/video/BV1tK411n7R3](https://www.bilibili.com/video/BV1tK411n7R3)）
+
 [下载](https://github.com/88250/solo/releases)最新的 Solo 包解压，进入解压目录执行：
 
 * Windows: `java -cp "lib/*;." org.b3log.solo.Server`
@@ -144,6 +146,8 @@ Solo 支持“动静两用”：
 ### Docker 部署
 
 Docker 方式部署是动态博客用法，主要用于在服务器上部署动态博客。
+
+（视频演示教程请看这里 [https://www.bilibili.com/video/BV1Yk4y1q7rV](https://www.bilibili.com/video/BV1Yk4y1q7rV)）
 
 #### 获取最新镜像
 
