@@ -18,6 +18,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -42,7 +43,7 @@ import java.util.zip.GZIPOutputStream;
  * Static utilities. 页面静态化 https://github.com/88250/solo/issues/107
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, May 23, 2020
+ * @version 1.0.1.2, Jul 4, 2020
  * @since 4.1.0
  */
 public final class Statics {
@@ -80,8 +81,8 @@ public final class Statics {
      * @return HTML, returns {@code null} if not found
      */
     public static String get(final RequestContext context) {
-        if (Solos.GEN_STATIC_SITE) {
-            // 生成静态站点时不走缓存
+        if (Solos.GEN_STATIC_SITE || Latkes.RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode()) {
+            // 生成静态站点时和开发环境时不走缓存
             return null;
         }
 
