@@ -55,6 +55,7 @@ public final class V420_430 {
             versionOpt.put(Option.OPTION_VALUE, toVer);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
+            // 清理后台无用的配置项 https://github.com/88250/solo/issues/160
             optionRepository.remove("mostCommentArticleDisplayCount");
             optionRepository.remove("mostViewArticleDisplayCount");
             optionRepository.remove("recentCommentDisplayCount");
