@@ -165,11 +165,6 @@ public final class Option {
     public static final String ID_C_RECENT_ARTICLE_DISPLAY_CNT = "recentArticleDisplayCount";
 
     /**
-     * Key of recent comment display count.
-     */
-    public static final String ID_C_RECENT_COMMENT_DISPLAY_CNT = "recentCommentDisplayCount";
-
-    /**
      * Key of most used tag display count.
      */
     public static final String ID_C_MOST_USED_TAG_DISPLAY_CNT = "mostUsedTagDisplayCount";
@@ -351,7 +346,7 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.3.0.6, Jan 25, 2020
+     * @version 2.3.0.7, Jul 5, 2020
      * @since 0.3.1
      */
     public static final class DefaultPreference {
@@ -390,11 +385,6 @@ public final class Option {
          * Default recent article display count.
          */
         public static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
-
-        /**
-         * Default recent comment display count.
-         */
-        public static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
 
         /**
          * Default most used tag display count.

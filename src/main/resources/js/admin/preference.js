@@ -44,7 +44,6 @@ admin.preference = {
         $('#metaDescription').val(preference.metaDescription)
         $('#blogTitle').val(preference.blogTitle)
         $('#blogSubtitle').val(preference.blogSubtitle)
-        $('#recentCommentDisplayCount').val(preference.recentCommentDisplayCount)
         $('#mostUsedTagDisplayCount').val(preference.mostUsedTagDisplayCount)
         $('#articleListDisplayCount').val(preference.articleListDisplayCount)
         $('#articleListPaginationWindowSize').val(preference.articleListPaginationWindowSize)
@@ -105,12 +104,6 @@ admin.preference = {
         Label.indexTagDisplayCntLabel + '] ' +
         Label.nonNegativeIntegerOnlyLabel)
       $('#mostUsedTagDisplayCount').focus()
-      return false
-    } else if (!/^\d+$/.test($('#recentCommentDisplayCount').val())) {
-      $('#tipMsg').text('[' + Label.paramSettingsLabel + ' - ' +
-        Label.indexRecentCommentDisplayCntLabel + '] ' +
-        Label.nonNegativeIntegerOnlyLabel)
-      $('#recentCommentDisplayCount').focus()
       return false
     } else if (!/^\d+$/.test($('#articleListDisplayCount').val())) {
       $('#tipMsg').text('[' + Label.paramSettingsLabel + ' - ' + Label.pageSizeLabel +
@@ -176,7 +169,6 @@ admin.preference = {
         'metaDescription': $('#metaDescription').val(),
         'blogTitle': $('#blogTitle').val(),
         'blogSubtitle': $('#blogSubtitle').val(),
-        'recentCommentDisplayCount': $('#recentCommentDisplayCount').val(),
         'mostUsedTagDisplayCount': $('#mostUsedTagDisplayCount').val(),
         'articleListDisplayCount': $('#articleListDisplayCount').val(),
         'articleListPaginationWindowSize': $('#articleListPaginationWindowSize').val(),

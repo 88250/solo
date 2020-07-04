@@ -624,12 +624,6 @@ public class InitService {
         recentArticleDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
         optionRepository.add(recentArticleDisplayCountOpt);
 
-        final JSONObject recentCommentDisplayCountOpt = new JSONObject();
-        recentCommentDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-        recentCommentDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        recentCommentDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
-        optionRepository.add(recentCommentDisplayCountOpt);
-
         final JSONObject blogTitleOpt = new JSONObject();
         blogTitleOpt.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
         blogTitleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);

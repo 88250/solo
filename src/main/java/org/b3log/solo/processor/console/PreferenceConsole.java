@@ -118,8 +118,6 @@ public class PreferenceConsole {
      * {
      *     "code": int,
      *     "preference": {
-     *         "mostViewArticleDisplayCount": int,
-     *         "recentCommentDisplayCount": int,
      *         "mostUsedTagDisplayCount": int,
      *         "articleListDisplayCount": int,
      *         "articleListPaginationWindowSize": int,
@@ -206,8 +204,6 @@ public class PreferenceConsole {
      * <pre>
      * {
      *     "preference": {
-     *         "mostViewArticleDisplayCount": int,
-     *         "recentCommentDisplayCount": int,
      *         "mostUsedTagDisplayCount": int,
      *         "articleListDisplayCount": int,
      *         "articleListPaginationWindowSize": int,
@@ -309,14 +305,6 @@ public class PreferenceConsole {
         input = preference.optString(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ")
                     .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;

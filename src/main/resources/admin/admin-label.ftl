@@ -78,7 +78,6 @@
     Label.paramSettingsLabel = "${paramSettingsLabel}"
     Label.nonNegativeIntegerOnlyLabel = "${nonNegativeIntegerOnlyLabel}"
     Label.indexTagDisplayCntLabel = "${indexTagDisplayCntLabel}"
-    Label.indexRecentCommentDisplayCntLabel = "${indexRecentCommentDisplayCntLabel}"
     Label.pageSizeLabel = "${pageSizeLabel}"
     Label.windowSizeLabel = "${windowSizeLabel}"
     Label.randomArticlesDisplayCntLabel = "${randomArticlesDisplayCntLabel}"

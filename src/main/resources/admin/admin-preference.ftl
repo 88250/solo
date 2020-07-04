@@ -178,10 +178,6 @@
                     <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
                 </label>
                 <label>
-                    ${indexRecentCommentDisplayCnt1Label}
-                    <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
-                </label>
-                <label>
                     ${randomArticlesDisplayCnt1Label}
                     <input id="randomArticlesDisplayCount" class="normalInput" type="text"/>
                 </label>

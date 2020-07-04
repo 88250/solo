@@ -171,10 +171,6 @@ public class PreferenceMgmtService {
             recentArticleDisplayCountOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT));
             optionRepository.update(Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT, recentArticleDisplayCountOpt);
 
-            final JSONObject recentCommentDisplayCountOpt = optionRepository.get(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-            recentCommentDisplayCountOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT));
-            optionRepository.update(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT, recentCommentDisplayCountOpt);
-
             final JSONObject relevantArticlesDisplayCountOpt = optionRepository.get(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
             relevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT));
             optionRepository.update(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT, relevantArticlesDisplayCountOpt);
