@@ -35,7 +35,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 2.0.0.1, Apr 6, 2020
+ * @version 2.0.0.2, Jul 4, 2020
  * @since 0.4.0
  */
 @Singleton
@@ -123,7 +123,6 @@ public class PreferenceConsole {
      *         "mostUsedTagDisplayCount": int,
      *         "articleListDisplayCount": int,
      *         "articleListPaginationWindowSize": int,
-     *         "mostCommentArticleDisplayCount": int,
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
@@ -212,7 +211,6 @@ public class PreferenceConsole {
      *         "mostUsedTagDisplayCount": int,
      *         "articleListDisplayCount": int,
      *         "articleListPaginationWindowSize": int,
-     *         "mostCommentArticleDisplayCount": int,
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
@@ -311,14 +309,6 @@ public class PreferenceConsole {
         input = preference.optString(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ")
                     .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;

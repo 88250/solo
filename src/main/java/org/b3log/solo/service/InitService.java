@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.43, Jun 28, 2020
+ * @version 1.5.2.44, Jul 5, 2020
  * @since 0.4.0
  */
 @Service
@@ -623,12 +623,6 @@ public class InitService {
         mostUsedTagDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         mostUsedTagDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
         optionRepository.add(mostUsedTagDisplayCountOpt);
-
-        final JSONObject mostCommentArticleDisplayCountOpt = new JSONObject();
-        mostCommentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-        mostCommentArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        mostCommentArticleDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
-        optionRepository.add(mostCommentArticleDisplayCountOpt);
 
         final JSONObject recentArticleDisplayCountOpt = new JSONObject();
         recentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT);

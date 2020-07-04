@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 1.8.0.1, Jun 26, 2020
+ * @version 1.8.0.2, Jul 5, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -173,11 +173,6 @@ public final class Option {
      * Key of most used tag display count.
      */
     public static final String ID_C_MOST_USED_TAG_DISPLAY_CNT = "mostUsedTagDisplayCount";
-
-    /**
-     * Key of most comment article display count.
-     */
-    public static final String ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT = "mostCommentArticleDisplayCount";
 
     /**
      * Key of most view article display count.
@@ -415,11 +410,6 @@ public final class Option {
          * Default article list pagination window size.
          */
         public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE = 15;
-
-        /**
-         * Default most comment article display count.
-         */
-        public static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
 
         /**
          * Default blog subtitle.

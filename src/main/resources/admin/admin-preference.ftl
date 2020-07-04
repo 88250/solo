@@ -182,10 +182,6 @@
                     <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
                 </label>
                 <label>
-                    ${indexMostCommentArticleDisplayCnt1Label}
-                    <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
-                </label>
-                <label>
                     ${indexMostViewArticleDisplayCnt1Label}
                     <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
                 </label>

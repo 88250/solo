@@ -79,7 +79,6 @@
     Label.nonNegativeIntegerOnlyLabel = "${nonNegativeIntegerOnlyLabel}"
     Label.indexTagDisplayCntLabel = "${indexTagDisplayCntLabel}"
     Label.indexRecentCommentDisplayCntLabel = "${indexRecentCommentDisplayCntLabel}"
-    Label.indexMostCommentArticleDisplayCntLabel = "${indexMostCommentArticleDisplayCntLabel}"
     Label.indexMostViewArticleDisplayCntLabel = "${indexMostViewArticleDisplayCntLabel}"
     Label.pageSizeLabel = "${pageSizeLabel}"
     Label.windowSizeLabel = "${windowSizeLabel}"
