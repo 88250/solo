@@ -85,7 +85,6 @@ public final class V361_362 {
             LOGGER.log(Level.INFO, "Upgraded from version [" + fromVer + "] to version [" + toVer + "] successfully");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
-
             throw new Exception("Upgrade failed from version [" + fromVer + "] to version [" + toVer + "]");
         }
     }
@@ -106,7 +105,6 @@ public final class V361_362 {
         ret = StringUtils.replace(ret, "[em12]", "❤️");
         ret = StringUtils.replace(ret, "[em13]", "\uD83D\uDC94");
         ret = StringUtils.replace(ret, "[em14]", "\uD83D\uDC7F");
-
         return ret;
     }
 }

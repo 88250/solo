@@ -119,7 +119,6 @@ public final class V299_300 {
             LOGGER.log(Level.INFO, "Upgraded from version [2.9.9] to version [3.0.0] successfully");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
-
             throw new Exception("Upgrade failed from version [2.9.9] to version [3.0.0]");
         }
     }

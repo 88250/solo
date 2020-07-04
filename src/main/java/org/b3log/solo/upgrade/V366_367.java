@@ -98,7 +98,6 @@ public final class V366_367 {
             LOGGER.log(Level.INFO, "Upgraded from version [" + fromVer + "] to version [" + toVer + "] successfully");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
-
             throw new Exception("Upgrade failed from version [" + fromVer + "] to version [" + toVer + "]");
         }
     }

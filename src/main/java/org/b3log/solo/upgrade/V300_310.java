@@ -98,7 +98,6 @@ public final class V300_310 {
             transaction.commit();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
-
             throw new Exception("Upgrade failed from version [3.0.0] to version [3.1.0]");
         }
     }
