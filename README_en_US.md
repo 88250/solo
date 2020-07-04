@@ -128,24 +128,32 @@ Solo supports "dynamic and static":
 * Dynamic blog: built on the server, the process runs in resident memory, and is used online
 * Static blog: run on local computer, generate and export static site after writing
 
+### Video demo tutorial
+
+* [Run on localhost](https://www.bilibili.com/video/BV1tK411n7R3)
+* [Run via IntelliJ IDEA](https://www.bilibili.com/video/BV1jD4y1S7Ez)
+* [Run via Docker on server](https://www.bilibili.com/video/BV1Yk4y1q7rV)
+
+更多视频教程陆续制作中，欢迎到 B 站关注我：[报废程序员D](https://space.bilibili.com/526767010)。
+
 ### Run locally
 
 Local operation is mainly used for trial or static site generation, please refer to [here](https://hacpai.com/article/1579053576274) for usage of static site generation.
 
-(Video demo tutorial please see here [https://www.bilibili.com/video/BV1tK411n7R3](https://www.bilibili.com/video/BV1tK411n7R3))
+(Video demo tutorial please see [here](https://www.bilibili.com/video/BV1tK411n7R3))
 
 [Download](https://github.com/88250/solo/releases) and unzip the latest Solo package, enter the decompression directory and execute:
 
 * Windows: `java -cp "lib/*;." org.b3log.solo.Server`
 * Unix-like: `java -cp "lib/*:." org.b3log.solo.Server`
 
-If you have a Java development environment, you can refer to [here](https://hacpai.com/article/1493822943172) to build and run through the source code.
+If you have a Java development environment, you can refer to [here](https://hacpai.com/article/1493822943172) to build and run through the source code (Video demo tutorial please see [here](https://www.bilibili.com/video/BV1jD4y1S7Ez)).
 
 ### Docker
 
 Docker deployment is a dynamic blog usage, mainly used to deploy dynamic blogs on the server.
 
-(Video demo tutorial please see here [https://www.bilibili.com/video/BV1Yk4y1q7rV] (https://www.bilibili.com/video/BV1Yk4y1q7rV))
+(Video demo tutorial please see [here](https://www.bilibili.com/video/BV1Yk4y1q7rV))
 
 #### Get the latest image
 

@@ -130,6 +130,14 @@ Solo 支持“动静两用”：
 * 动态博客：在服务器上搭建，进程常驻内存运行，在线使用
 * 静态博客：在本地电脑运行，写作完成后生成导出静态站点
 
+### 视频教程
+
+* [本地 localhost 搭建](https://www.bilibili.com/video/BV1tK411n7R3)
+* [通过 IntelliJ IDEA 搭建](https://www.bilibili.com/video/BV1jD4y1S7Ez)
+* [服务器上通过 Docker 搭建](https://www.bilibili.com/video/BV1Yk4y1q7rV)
+
+更多视频教程陆续制作中，欢迎到 B 站关注我：[报废程序员D](https://space.bilibili.com/526767010)。
+
 ### 本地运行
 
 本地运行主要用于试用或者生成静态站点，生成静态站点的用法请参考[这里](https://hacpai.com/article/1579053576274)。
