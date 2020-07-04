@@ -159,10 +159,6 @@ public class PreferenceMgmtService {
             mostUsedTagDisplayCountOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT));
             optionRepository.update(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT, mostUsedTagDisplayCountOpt);
 
-            final JSONObject mostViewArticleDisplayCountOpt = optionRepository.get(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-            mostViewArticleDisplayCountOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT));
-            optionRepository.update(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT, mostViewArticleDisplayCountOpt);
-
             final JSONObject noticeBoardOpt = optionRepository.get(Option.ID_C_NOTICE_BOARD);
             noticeBoardOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_NOTICE_BOARD));
             optionRepository.update(Option.ID_C_NOTICE_BOARD, noticeBoardOpt);

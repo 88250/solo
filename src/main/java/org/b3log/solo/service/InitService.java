@@ -600,12 +600,6 @@ public class InitService {
         externalRelevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
         optionRepository.add(externalRelevantArticlesDisplayCountOpt);
 
-        final JSONObject mostViewArticleDisplayCountOpt = new JSONObject();
-        mostViewArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-        mostViewArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        mostViewArticleDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
-        optionRepository.add(mostViewArticleDisplayCountOpt);
-
         final JSONObject articleListDisplayCountOpt = new JSONObject();
         articleListDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
         articleListDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);

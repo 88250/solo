@@ -314,14 +314,6 @@ public class PreferenceConsole {
             return true;
         }
 
-        input = preference.optString(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
         input = preference.optString(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ")

@@ -484,11 +484,6 @@ public final class Option {
         public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT = 0;
 
         /**
-         * Most view articles display count.
-         */
-        public static final int DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT = 5;
-
-        /**
          * Default signs.
          */
         public static final String DEFAULT_SIGNS;
