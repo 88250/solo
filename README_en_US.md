@@ -134,7 +134,7 @@ Solo supports "dynamic and static":
 * [Run via IntelliJ IDEA](https://www.bilibili.com/video/BV1jD4y1S7Ez)
 * [Run via Docker on server](https://www.bilibili.com/video/BV1Yk4y1q7rV)
 
-更多视频教程陆续制作中，欢迎到 B 站关注我：[报废程序员D](https://space.bilibili.com/526767010)。
+More video tutorials are being produced successively, welcome to follow me on Bilibili: [Scrap Programmer D](https://space.bilibili.com/526767010).
 
 ### Run locally
 
