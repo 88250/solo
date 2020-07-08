@@ -946,6 +946,5 @@ public class ArticleQueryService {
         article.remove(Article.ARTICLE_PUT_TOP);
         article.remove(Article.ARTICLE_VIEW_PWD);
         article.remove(Article.ARTICLE_SIGN_ID);
-        article.remove(Article.ARTICLE_COMMENTABLE);
     }
 }

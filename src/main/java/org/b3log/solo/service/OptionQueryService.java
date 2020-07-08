@@ -73,23 +73,6 @@ public class OptionQueryService {
     }
 
     /**
-     * Checks whether allow comment globally.
-     *
-     * @return {@code true} to allow comment, returns {@code false} otherwise
-     */
-    public boolean allowComment() {
-        try {
-            final JSONObject opt = optionRepository.get(Option.ID_C_COMMENTABLE);
-
-            return opt.optBoolean(Option.OPTION_VALUE);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Checks allow comment failed", e);
-
-            return false;
-        }
-    }
-
-    /**
      * Gets an option with the specified option id.
      *
      * @param optionId the specified option id

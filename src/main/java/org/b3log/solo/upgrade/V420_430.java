@@ -57,7 +57,7 @@ public final class V420_430 {
             final Connection connection = Connections.getConnection();
             final Statement statement = connection.createStatement();
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCommentCount`, DROP COLUMN `articleViewCount`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCommentCount`, DROP COLUMN `articleViewCount`, DROP COLUMN `articleCommentable`");
             statement.close();
             connection.commit();
             connection.close();
@@ -72,6 +72,7 @@ public final class V420_430 {
             optionRepository.remove("mostCommentArticleDisplayCount");
             optionRepository.remove("mostViewArticleDisplayCount");
             optionRepository.remove("recentCommentDisplayCount");
+            optionRepository.remove("commentable");
 
             transaction.commit();
 

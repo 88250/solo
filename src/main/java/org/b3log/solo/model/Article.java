@@ -118,11 +118,6 @@ public final class Article {
     public static final String ARTICLE_RANDOM_DOUBLE = "articleRandomDouble";
 
     /**
-     * Key of comment-able.
-     */
-    public static final String ARTICLE_COMMENTABLE = "articleCommentable";
-
-    /**
      * Key of view password.
      */
     public static final String ARTICLE_VIEW_PWD = "articleViewPwd";

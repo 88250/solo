@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 1.8.0.2, Jul 5, 2020
+ * @version 1.8.0.3, Jul 9, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -170,11 +170,6 @@ public final class Option {
     public static final String ID_C_MOST_USED_TAG_DISPLAY_CNT = "mostUsedTagDisplayCount";
 
     /**
-     * Key of most view article display count.
-     */
-    public static final String ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT = "mostViewArticleDisplayCount";
-
-    /**
      * Key of article list display count.
      */
     public static final String ID_C_ARTICLE_LIST_DISPLAY_COUNT = "articleListDisplayCount";
@@ -246,11 +241,6 @@ public final class Option {
      * </p>
      */
     public static final String ID_C_ARTICLE_LIST_STYLE = "articleListStyle";
-
-    /**
-     * Key of article/page comment-able.
-     */
-    public static final String ID_C_COMMENTABLE = "commentable";
 
     /**
      * Key of feed (Atom/RSS) output mode.
@@ -330,11 +320,6 @@ public final class Option {
      * Key of statistic blog published article count.
      */
     public static final String ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT = "statisticPublishedBlogArticleCount";
-
-    /**
-     * Key of statistic blog comment(published article) count.
-     */
-    public static final String ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT = "statisticPublishedBlogCommentCount";
 
     /**
      * Private constructor.
@@ -482,11 +467,6 @@ public final class Option {
          * Default allow visit draft via permalink.
          */
         public static final String DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "false";
-
-        /**
-         * Default allow comment article/page.
-         */
-        public static final String DEFAULT_COMMENTABLE = "true";
 
         /**
          * Default article list display style.

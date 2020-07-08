@@ -519,8 +519,6 @@ public class DataModelService {
         }
         dataModel.put(Option.ID_C_SPEECH, Boolean.parseBoolean(speech));
 
-        dataModel.put(Common.COMMENTABLE, preference.optBoolean(Option.ID_C_COMMENTABLE));
-
         dataModel.put("staticSite", Solos.GEN_STATIC_SITE);
         if (!Solos.GEN_STATIC_SITE) {
             dataModel.put("pagingSep", "?p=");

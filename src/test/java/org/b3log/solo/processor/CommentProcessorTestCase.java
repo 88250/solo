@@ -99,7 +99,6 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
 
         return articleMgmtService.addArticle(requestJSONObject);

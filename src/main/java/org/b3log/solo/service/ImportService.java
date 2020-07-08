@@ -178,7 +178,6 @@ public class ImportService {
             ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstractText(fileContent));
             ret.put(Article.ARTICLE_TAGS_REF, DEFAULT_TAG);
             ret.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
-            ret.put(Article.ARTICLE_COMMENTABLE, true);
             ret.put(Article.ARTICLE_VIEW_PWD, "");
             return ret;
         }
@@ -222,11 +221,8 @@ public class ImportService {
         }
         tagBuilder.deleteCharAt(tagBuilder.length() - 1);
         ret.put(Article.ARTICLE_TAGS_REF, tagBuilder.toString());
-
         ret.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
-        ret.put(Article.ARTICLE_COMMENTABLE, true);
         ret.put(Article.ARTICLE_VIEW_PWD, "");
-
         return ret;
     }
 
@@ -241,7 +237,6 @@ public class ImportService {
         if (StringUtils.isNotBlank(ret)) {
             return ret;
         }
-
         return Article.getAbstractText(content);
     }
 
@@ -266,7 +261,6 @@ public class ImportService {
         } else if (date instanceof Date) {
             return (Date) date;
         }
-
         return new Date();
     }
 
@@ -288,7 +282,6 @@ public class ImportService {
         }
         if (null == tags) {
             ret.add(DEFAULT_TAG);
-
             return ret;
         }
 
@@ -305,7 +298,6 @@ public class ImportService {
             }
         }
         ret.addAll(tagSet);
-
         return ret;
     }
 }

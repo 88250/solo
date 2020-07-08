@@ -254,7 +254,6 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_ABSTRACT, Article.getAbstractText(content));
                 article.put(Article.ARTICLE_TAGS_REF, "开源,GitHub");
                 article.put(Article.ARTICLE_PERMALINK, permalink);
-                article.put(Article.ARTICLE_COMMENTABLE, true);
                 article.put(Article.ARTICLE_CONTENT, content);
                 article.put(Article.ARTICLE_VIEW_PWD, "");
                 article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);

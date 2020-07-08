@@ -257,7 +257,6 @@ public class InitService {
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
         final String articleImg1URL = Article.getArticleImg1URL(article);
         article.put(Article.ARTICLE_IMG1_URL, articleImg1URL);
@@ -639,12 +638,6 @@ public class InitService {
         allowVisitDraftViaPermalinkOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         optionRepository.add(allowVisitDraftViaPermalinkOpt);
-
-        final JSONObject commentableOpt = new JSONObject();
-        commentableOpt.put(Keys.OBJECT_ID, Option.ID_C_COMMENTABLE);
-        commentableOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        commentableOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_COMMENTABLE);
-        optionRepository.add(commentableOpt);
 
         final JSONObject versionOpt = new JSONObject();
         versionOpt.put(Keys.OBJECT_ID, Option.ID_C_VERSION);

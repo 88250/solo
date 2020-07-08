@@ -56,7 +56,6 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_UPDATED, new Date().getTime());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
         article.put(Article.ARTICLE_IMG1_URL, Article.getArticleImg1URL(article));
 
@@ -109,7 +108,6 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_UPDATED, new Date().getTime());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
         article.put(Article.ARTICLE_IMG1_URL, Article.getArticleImg1URL(article));
 

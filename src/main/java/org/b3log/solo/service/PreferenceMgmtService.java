@@ -115,10 +115,6 @@ public class PreferenceMgmtService {
             blogTitleOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_BLOG_TITLE));
             optionRepository.update(Option.ID_C_BLOG_TITLE, blogTitleOpt);
 
-            final JSONObject commentableOpt = optionRepository.get(Option.ID_C_COMMENTABLE);
-            commentableOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_COMMENTABLE));
-            optionRepository.update(Option.ID_C_COMMENTABLE, commentableOpt);
-
             final JSONObject enableArticleUpdateHintOpt = optionRepository.get(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT);
             enableArticleUpdateHintOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             optionRepository.update(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, enableArticleUpdateHintOpt);

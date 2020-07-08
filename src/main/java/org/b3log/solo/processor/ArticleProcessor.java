@@ -825,9 +825,7 @@ public class ArticleProcessor {
      * @param article    the specified article
      * @throws Exception exception
      */
-    private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
-            throws Exception {
-        article.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
+    private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         article.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
