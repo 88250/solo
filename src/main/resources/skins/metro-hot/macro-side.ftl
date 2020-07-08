@@ -83,7 +83,7 @@
                         <div class="next-disabled side-tile">
                             <span data-ico="&#xe107;"></span>
                             <div class="title">
-                                ${newestArticleLabel}
+                                ${recentArticlesLabel}
                             </div>
                         </div>
                     </#if>
