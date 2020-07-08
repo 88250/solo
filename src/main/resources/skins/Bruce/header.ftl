@@ -26,7 +26,7 @@ ${topBarReplacement}
                 </a>
             </#list>
 
-            <a class="nav-item" href="${servePath}/links.html">${friendLinkLabel}</a>
+            <a class="nav-item" href="${servePath}/links.html">${linkLabel}</a>
             <a class="nav-item" href="${servePath}/tags.html">${tagLabel}</a>
             <a class="nav-item" href="${servePath}/archives.html">${archiveLabel}</a>
             <#if !staticSite>
