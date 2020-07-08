@@ -42,10 +42,8 @@
             </#list>
             </span>
             <div class="fn__right">
-            <#if commentable>
                 <a class="ft__red" href="${servePath}${article.articlePermalink}#b3logsolocomments"><span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}</a>
                 •
-            </#if>
                 <a class="ft__red" href="${servePath}${article.articlePermalink}"><span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}</a>
             </div>
         </div>

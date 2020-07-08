@@ -34,13 +34,11 @@
         <div class="article-date">
             ${article.articleUpdateDate?string("yyyy-MM-dd")}<br>${article.articleUpdateDate?string("HH:mm:ss")}
         </div>
-        <#if commentable>
         <div class="article-comment">
             <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                 ${commentLabel}(<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>)
             </a>
         </div>
-        </#if>
     </div>
     <div class="right article-main">
         <#list article.articleTags?split(",") as articleTag>

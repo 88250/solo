@@ -272,11 +272,6 @@ public final class Common {
     public static final String PERMALINK = "permalink";
 
     /**
-     * Key of commentable.
-     */
-    public static final String COMMENTABLE = "commentable";
-
-    /**
      * Key of articles view password.
      */
     public static final String ARTICLES_VIEW_PWD = "articlesViewPwd";

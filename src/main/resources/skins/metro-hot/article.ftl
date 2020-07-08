@@ -51,11 +51,9 @@
                         </#list>
                     </div>
                     <div class="article-info">
-                        <#if commentable>
                         <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                             <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                         </a>
-                        </#if>
                         <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
                             <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
                         </a>
@@ -73,17 +71,15 @@
                         ${article.articleSign.signHTML}
                         </#if>
                     </div>
-                    <#if commentable>
                         <div id="b3logsolocomments"></div>
                         <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                    </#if>
                     <#include "copyright.ftl"/>
                 </div>
                 <@side isArticle=true />
             </div>
         </div>
         <#include "footer.ftl">
-        <@comment_script oId=article.oId commentable=article.commentable>
+        <@comment_script oId=article.oId>
         MetroHot.tips = {
             externalRelevantArticlesDisplayCount: "${externalRelevantArticlesDisplayCount}",
         blogHost: "${blogHost}"

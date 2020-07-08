@@ -54,12 +54,11 @@ ${topBarReplacement}
                     <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                         <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
                     </a>
-                    <#if commentable> | ${commentCount1Label}
+                    | ${commentCount1Label}
                         <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                             <span class="left articles-commentIcon" title="${commentLabel}"></span>
                             <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                         </a>
-                    </#if>
                 </p>
                 <p>
                     ${tags1Label}
@@ -96,20 +95,18 @@ ${topBarReplacement}
             <div id="relevantArticles" class="article-relative"></div>
             <div id="randomArticles"></div>
             <div id="externalRelevantArticles"></div>
-            <#if commentable>
                 <div id="b3logsolocomments"></div>
                 <div id="vcomment"
                      class="comments"
                      style="padding-top: 15px;"
                      data-name="${article.authorName}" data-postId="${article.oId}"></div>
-            </#if>
         </article>
         <#include "side.ftl">
         <div class="clear"></div>
     </div>
     <#include "footer.ftl">
 </div>
-<@comment_script oId=article.oId commentable=article.commentable>
+<@comment_script oId=article.oId>
     page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
     <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();

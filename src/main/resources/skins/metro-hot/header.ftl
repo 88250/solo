@@ -28,7 +28,7 @@
                         class="page-icon" src="${page.pageIcon}" alt="${page.pageTitle}"></#if>${page.pageTitle}</a>
             </li>
         </#list>
-        <#if commentable && !staticSite>
+        <#if !staticSite>
             <li>
                 <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
             </li>

@@ -78,10 +78,8 @@
             <#include "../../common-template/toc.ftl"/>
         </div>
     </#if>
-    <#if commentable>
         <div id="b3logsolocomments"></div>
         <div id="vcomment" class="comment__wrapper wrapper" style="margin: 40px auto" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-    </#if>
     <div class="article__bottom">
         <div class="wrapper">
             <div class="fn__flex">
@@ -97,7 +95,7 @@
 </div>
 <#include "footer.ftl">
 <#if pjax><!---- pjax {#pjax} start ----></#if>
-<@comment_script oId=article.oId commentable=article.commentable>
+<@comment_script oId=article.oId>
     page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
     <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles('<h3>${randomArticlesLabel}</h3>');

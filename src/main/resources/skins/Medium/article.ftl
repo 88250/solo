@@ -111,10 +111,8 @@
                     <div class="fn-flex-1" id="relevantArticles"></div>
                     <div class="fn-flex-1" id="randomArticles"></div>
                 </div>
-                <#if commentable>
                     <div id="b3logsolocomments"></div>
                     <div id="vcomment" class="article__comment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                </#if>
             </div>
         </div>
 
@@ -202,7 +200,7 @@
 </div>
 <#include "footer.ftl">
 <#if pjax><!---- pjax {#pjax} start ----></#if>
-<@comment_script oId=article.oId commentable=article.commentable>
+<@comment_script oId=article.oId>
     Skin.initArticle()
     Skin.initComment = function (articleOId, articleTags) {
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";

@@ -48,12 +48,10 @@
                         ${articleTag}
                     </a> &nbsp;
                 </#list>
-                <#if commentable>
                     &nbsp;·&nbsp;
                     <a class="item__tag" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                         <span data-uvstatcmt="${article.oId}">0</span> ${commentLabel}
                     </a>
-                </#if>
                 &nbsp;·&nbsp;
                 <a class="item__tag" href="${servePath}${article.articlePermalink}">
                     <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}

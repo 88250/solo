@@ -52,14 +52,12 @@
                                     ${article.articleUpdateDate?string("yyyy-MM-dd")}
                                     </time>
                                 </span>
-                        <#if commentable>
                         &nbsp; | &nbsp;
                         <span class="vditor-tooltipped vditor-tooltipped__n" aria-label="${commentCountLabel}">
                                     <i class="icon-comments"></i>
                                     <a href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                         <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}</a>
                                 </span>
-                        </#if>
                         &nbsp; | &nbsp;
                         <span class="vditor-tooltipped vditor-tooltipped__n" aria-label="${viewCountLabel}">
                                     <i class="icon-views"></i>
@@ -101,10 +99,8 @@
                         </#if>
                     </div>
                 </footer>
-                <#if commentable>
                     <div id="b3logsolocomments"></div>
                     <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                </#if>
                 <br>
                 <div id="externalRelevantArticles" class="list"></div>
                 <div id="relevantArticles" class="list"></div>
@@ -115,7 +111,7 @@
     </div>
 </div>
 <#include "footer.ftl">
-<@comment_script oId=article.oId commentable=article.commentable>
+<@comment_script oId=article.oId>
     page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
     <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();

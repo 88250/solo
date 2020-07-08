@@ -65,11 +65,9 @@
                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                             </#list>
                         </span>
-                        <#if commentable>
                             <a class="tag" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                 <i class="icon__comments"></i> <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                             </a>
-                        </#if>
                         <span class="tag">
                             <i class="icon__views"></i>
                         <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
@@ -125,12 +123,10 @@
                     </div>
                 </div>
             </#if>
-            <#if commentable>
                 <div id="b3logsolocomments"></div>
                 <div id="vcomment" class="module__content"
                      style="border-radius: 5px;margin-bottom: 30px;box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.2);transition: all .3s;"
                      data-name="${article.authorName}" data-postId="${article.oId}"></div>
-            </#if>
 
             <div class="fn__flex article__relevant">
                 <div class="fn__flex-1" id="externalRelevantArticlesWrap">
@@ -159,7 +155,7 @@
 </div>
 <#include "footer.ftl">
 <#if pjax><!---- pjax {#pjax} start ----></#if>
-<@comment_script oId=article.oId commentable=article.commentable>
+<@comment_script oId=article.oId>
     page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
     <#if 0 != randomArticlesDisplayCount>
     page.loadRandomArticles('<header class="module__header">${randomArticlesLabel}</header>');

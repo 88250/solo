@@ -79,11 +79,9 @@
                                         </#if>
                                     </div>
                                     <div class="right">
-                                        <#if commentable>
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments" class="left">
                                             &nbsp;<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}&nbsp;&nbsp;
                                         </a>
-                                        </#if>
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">
                                             &nbsp;&nbsp;<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}&nbsp;&nbsp;
                                         </a>
@@ -95,12 +93,10 @@
                                 <div id="externalRelevantArticles" class="article-relative"></div>
                             </div>
                             <div class="line right"></div>
-                            <#if commentable>
                                 <div id="b3logsolocomments"></div>
                                 <div id="vcomment"
                                      style="margin: 88px 100px 0 99px;background-color: #effdff;border-radius: 10px;padding: 10px;"
                                      data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                            </#if>
                         </div>
                         <div class="left side">
                             <#include "side.ftl">
@@ -113,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <@comment_script oId=article.oId commentable=article.commentable>
+        <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();

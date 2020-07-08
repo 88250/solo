@@ -50,11 +50,9 @@
                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                 </#list>
             </span>
-            <#if commentable>
             <a class="tag" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                 <i class="icon__comments"></i> <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
             </a>
-            </#if>
             <span class="tag">
                 <i class="icon__views"></i>
                 <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}

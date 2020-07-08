@@ -70,13 +70,11 @@ ${topBarReplacement}
                         <span class="ico-author ico" title="${authorLabel}">
                             <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                         </span>
-                        <#if commentable>
                         <span class="ico-comment ico" title="${commentLabel}">
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                 <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                             </a>
                         </span>
-                        </#if>
                         <span class="ico-view ico" title="${viewLabel}">
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                             <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
@@ -110,10 +108,8 @@ ${topBarReplacement}
                     <#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
                     <div id="externalRelevantArticles"></div>
                     </#if>
-                    <#if commentable>
                         <div id="b3logsolocomments"></div>
                         <div id="vcomment" class="module" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                    </#if>
                 </div>
             </div>
             <#if article?? && article.articleToC?? && article.articleToC?size &gt; 0>
@@ -128,7 +124,7 @@ ${topBarReplacement}
     </div>
 </div>
         <#include "footer.ftl">
-        <@comment_script oId=article.oId commentable=article.commentable>
+        <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
             <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");

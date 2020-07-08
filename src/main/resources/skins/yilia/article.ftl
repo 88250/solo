@@ -54,7 +54,6 @@
                 </#list>
             </div>
             <span>&nbsp;&nbsp;&nbsp;</span>
-            <#if commentable>
                 <a href="${servePath}${article.articlePermalink}#b3logsolocomments"
                    class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                    aria-label="${commentLabel}">
@@ -116,15 +115,13 @@
         </#if>
         <br>
     </article>
-    <#if commentable>
         <div id="b3logsolocomments"></div>
         <div id="vcomment" style="padding: 30px 60px 30px 50px;" data-name="${article.authorName}"
              data-postId="${article.oId}"></div>
-    </#if>
 
     <#include "footer.ftl">
 
-    <@comment_script oId=article.oId commentable=article.commentable>
+    <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         <#if 0 != externalRelevantArticlesDisplayCount>
             page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");

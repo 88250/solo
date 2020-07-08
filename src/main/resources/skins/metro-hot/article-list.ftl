@@ -21,11 +21,9 @@
                     ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
                 </div>
                 <div class="fn-right">
-                    <#if commentable>
                     <a rel="nofollow" data-ico="&#xe14e;" data-uvstatcmt="${article.oId}" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                         ${article.articleCommentCount}
                     </a>
-                    </#if>
                     <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
                         <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
                     </a>

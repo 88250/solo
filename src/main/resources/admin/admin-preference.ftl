@@ -157,10 +157,6 @@
                     <span>&nbsp;${allowVisitDraftViaPermalink1Label}</span>
                 </label>
                 <label class="checkbox">
-                    <input id="commentable" type="checkbox" class="normalInput"/>
-                    <span>&nbsp;${allowCommentLabel}</span>
-                </label>
-                <label class="checkbox">
                     <input id="syncGitHub" type="checkbox" class="normalInput"/>
                     <span>&nbsp;${syncGitHubLabel}</span>
                 </label>

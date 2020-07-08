@@ -112,13 +112,11 @@
                             <div id="randomArticles" class="article-relative"></div>
                             <div id="externalRelevantArticles" class="article-relative"></div>
                         </div>
-                        <#if commentable>
                             <div id="b3logsolocomments"></div>
                             <div id="vcomment"
                                  class="comments"
                                  style="padding-top: 15px"
                                  data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                        </#if>
                     </div>
                     <div class="right">
                         <#include "side.ftl">
@@ -132,7 +130,7 @@
             <div class="footer-icon"><#include "statistic.ftl"></div>
             <#include "footer.ftl">
         </div>
-        <@comment_script oId=article.oId commentable=article.commentable>
+        <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();

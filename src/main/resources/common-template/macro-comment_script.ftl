@@ -11,8 +11,7 @@
     See the Mulan PSL v2 for more details.
 
 -->
-<#macro comment_script oId commentable>
-
+<#macro comment_script oId>
 <script type="text/javascript">
     Util.addScript('${staticServePath}/js/page.min.js?${staticResourceVersion}', 'soloPageScript')
     var page = new Page({

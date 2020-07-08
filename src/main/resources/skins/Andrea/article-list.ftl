@@ -41,12 +41,10 @@
                 by
                 <a rel="nofollow" class="underline" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                     ${article.authorName}</a>
-                <#if commentable>
                 |
                 <a rel="nofollow" class="underline" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                     <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                 </a>
-                </#if>
             </div>
         </div>
         <div class="clear"></div>

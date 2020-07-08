@@ -60,7 +60,6 @@ admin.preference = {
 
         'true' === preference.enableArticleUpdateHint ? $('#enableArticleUpdateHint').attr('checked', 'checked') : $('#enableArticleUpdateHint').removeAttr('checked')
         'true' === preference.allowVisitDraftViaPermalink ? $('#allowVisitDraftViaPermalink').attr('checked', 'checked') : $('#allowVisitDraftViaPermalink').removeAttr('checked')
-        'true' === preference.commentable ? $('#commentable').attr('checked', 'checked') : $('#commentable').removeAttr('checked')
         'true' === preference.syncGitHub ? $('#syncGitHub').attr('checked', 'checked') : $('#syncGitHub').removeAttr('checked')
         'true' === preference.pullGitHub ? $('#pullGitHub').attr('checked', 'checked') : $('#pullGitHub').removeAttr('checked')
         'true' === preference.showCodeBlockLn ? $('#showCodeBlockLn').attr('checked', 'checked') : $('#showCodeBlockLn').removeAttr('checked')
@@ -193,7 +192,6 @@ admin.preference = {
         'showCodeBlockLn': $('#showCodeBlockLn').prop('checked'),
         'speech': $('#speech').prop('checked'),
         'paragraphBeginningSpace': $('#paragraphBeginningSpace').prop('checked'),
-        'commentable': $('#commentable').prop('checked'),
         'customVars': $('#customVars').val(),
         'githubPAT': $('#githubPAT').val(),
         'footnotes': $('#footnotes').prop('checked'),

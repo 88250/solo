@@ -53,13 +53,11 @@
                                     ${article.articleUpdateDate?string("yyyy-MM-dd")}
                                 </time>
                             </span>
-                        <#if commentable>
                         <span class="post-comments-count">
                                 &nbsp; | &nbsp;
                                 <a href="${servePath}${article.articlePermalink}#b3logsolocomments">
                                     <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${cmtLabel}</a>
                         </span>
-                        </#if>
                         &nbsp; | &nbsp; ${viewsLabel}
                         <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>°C
                     </div>
@@ -100,10 +98,8 @@
                 </footer>
             </article>
         </div>
-        <#if commentable>
             <div id="b3logsolocomments"></div>
             <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-        </#if>
         <#if 0 != relevantArticlesDisplayCount>
             <div id="relevantArticles"></div>
         </#if>
@@ -117,7 +113,7 @@
     </div>
 </main>
 <#include "footer.ftl">
-<@comment_script oId=article.oId commentable=article.commentable>
+<@comment_script oId=article.oId>
     page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
     <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");

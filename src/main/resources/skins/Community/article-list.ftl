@@ -35,13 +35,11 @@
                         ${viewLabel} (<span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>)
                     </a>
                 </li>
-                <#if commentable>
                 <li>
                     <a rel="nofollow" title="${commentLabel}" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                         ${commentLabel} (<span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>)
                     </a>
                 </li>
-                </#if>
             </ul>
         </div>
         <div class="article-main">

@@ -84,10 +84,8 @@
                 <#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
                 <div id="externalRelevantArticles" class="fn-wrap"></div>
                 </#if>
-                <#if commentable>
                     <div id="b3logsolocomments"></div>
                     <div id="vcomment" style="margin-top: 100px" class="fn-wrap" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                </#if>
             </main>
             <#if nextArticlePermalink?? || previousArticlePermalink??>
             <aside class="read-next">
@@ -113,7 +111,7 @@
             </#if>
             <#include "footer.ftl">
 
-            <@comment_script oId=article.oId commentable=article.commentable>
+            <@comment_script oId=article.oId>
             page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
             <#if 0 != externalRelevantArticlesDisplayCount>
             page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");

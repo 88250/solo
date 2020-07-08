@@ -52,14 +52,12 @@
                 </#list>
             </div>
             <span>&nbsp;&nbsp;&nbsp;</span>
-            <#if commentable>
                 <a href="${servePath}${article.articlePermalink}#b3logsolocomments"
                    class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                    aria-label="${commentLabel}">
                     <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                     <span class="icon-chat"></span>
                 </a>
-            </#if>
             <a class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                href="${servePath}${article.articlePermalink}"
                aria-label="${viewLabel}">

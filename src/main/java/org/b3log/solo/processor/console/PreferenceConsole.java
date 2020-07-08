@@ -145,7 +145,6 @@ public class PreferenceConsole {
      *         "allowVisitDraftViaPermalink": boolean,
      *         "version": "",
      *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
-     *         "commentable": boolean,
      *         "feedOutputMode: "" // Optional values: "abstract"/"full"
      *         "feedOutputCnt": int,
      *         "faviconURL": "",
@@ -226,7 +225,6 @@ public class PreferenceConsole {
      *             }, ...],
      *         "allowVisitDraftViaPermalink": boolean,
      *         "articleListStyle": "",
-     *         "commentable": boolean,
      *         "feedOutputMode: "",
      *         "feedOutputCnt": int,
      *         "faviconURL": "",

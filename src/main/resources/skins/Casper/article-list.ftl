@@ -62,11 +62,9 @@
                    class="vditor-tooltipped vditor-tooltipped__n item__avatar">
                     <img src="${article.authorThumbnailURL}" alt="${article.authorId}"/>
                 </a>
-                <#if commentable>
                 <a class="item__meta fn__none" href="${servePath}${article.articlePermalink}#b3logsolocomments">
                     <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
                 </a>
-                </#if>
                 <a class="item__meta" href="${servePath}${article.articlePermalink}">
                     <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
                 </a>

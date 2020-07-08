@@ -44,13 +44,11 @@
                         ${article.articleUpdateDate?string("yyyy-MM-dd")}
                     </time>
                 </span>
-                <#if commentable>
                 <span>
                     &nbsp; | &nbsp;
                     <a href="${servePath}${article.articlePermalink}#b3logsolocomments">
                        <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${cmtLabel}</a>
                 </span>
-                </#if>
                     &nbsp; | &nbsp;${viewsLabel} <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>°C
                 </div>
             </header>

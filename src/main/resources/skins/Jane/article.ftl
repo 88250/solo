@@ -55,10 +55,8 @@
             </#list>
             </span>
             <div class="fn__right">
-                <#if commentable>
                 <a class="ft__red" href="${servePath}${article.articlePermalink}#b3logsolocomments"><span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}</a>
                 •
-                </#if>
                 <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
             </div>
         </div>
@@ -94,10 +92,8 @@
         </div>
         </#if>
     </div>
-    <#if commentable>
         <div id="b3logsolocomments"></div>
         <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-    </#if>
     <#if 0 != relevantArticlesDisplayCount>
         <div id="relevantArticles" class="article__near"></div>
     </#if>
@@ -114,7 +110,7 @@
 </div>
 <#include "footer.ftl">
 <#if pjax><!---- pjax {#pjax} start ----></#if>
-<@comment_script oId=article.oId commentable=article.commentable>
+<@comment_script oId=article.oId>
 page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
 <#if 0 != externalRelevantArticlesDisplayCount>
     page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
