@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.12, Jun 28, 2020
+ * @version 3.0.1.13, Jul 8, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -455,10 +455,6 @@ public final class Server extends BaseServer {
         categoryGroup.get("/articles/category/{categoryURI}", categoryProcessor::getCategoryArticlesByPage).
                 get("/category/{categoryURI}", categoryProcessor::showCategoryArticles);
 
-        final CommentProcessor commentProcessor = beanManager.getReference(CommentProcessor.class);
-        final Dispatcher.RouterGroup commentGroup = Dispatcher.group();
-        commentGroup.post("/article/comments", commentProcessor::addArticleComment);
-
         final FeedProcessor feedProcessor = beanManager.getReference(FeedProcessor.class);
         final Dispatcher.RouterGroup feedGroup = Dispatcher.group();
         feedGroup.middlewares(staticMidware::handle);
@@ -546,13 +542,6 @@ public final class Server extends BaseServer {
                 put("/console/article/puttop/{id}", articleConsole::putTopArticle).
                 put("/console/article/", articleConsole::updateArticle).
                 post("/console/article/", articleConsole::addArticle);
-
-        final CommentConsole commentConsole = beanManager.getReference(CommentConsole.class);
-        final Dispatcher.RouterGroup commentConsoleGroup = Dispatcher.group();
-        commentConsoleGroup.middlewares(consoleAuthMidware::handle);
-        commentConsoleGroup.delete("/console/article/comment/{id}", commentConsole::removeArticleComment).
-                get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments).
-                get("/console/comments/article/{id}", commentConsole::getArticleComments);
 
         final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
         final Dispatcher.RouterGroup tagConsoleGroup = Dispatcher.group();

@@ -22,7 +22,6 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.Response;
 import org.b3log.latke.http.Session;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.JsonRenderer;
@@ -56,7 +55,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 2.0.0.2, Apr 28, 2020
+ * @version 2.0.0.3, Jul 8, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -78,12 +77,6 @@ public class ArticleProcessor {
      */
     @Inject
     private TagQueryService tagQueryService;
-
-    /**
-     * Comment query service.
-     */
-    @Inject
-    private CommentQueryService commentQueryService;
 
     /**
      * DataModelService.
@@ -877,18 +870,6 @@ public class ArticleProcessor {
             dataModel.put(Common.PREVIOUS_ARTICLE_ABSTRACT, previousArticle.getString(Article.ARTICLE_ABSTRACT));
             LOGGER.debug("Got the previous article");
         }
-        Stopwatchs.end();
-
-        Stopwatchs.start("Get Article CMTs");
-        LOGGER.debug("Getting article's comments....");
-        final int cmtCount = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-        if (0 != cmtCount) {
-            final List<JSONObject> articleComments = commentQueryService.getComments(articleId);
-            dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-        } else {
-            dataModel.put(Article.ARTICLE_COMMENTS_REF, Collections.emptyList());
-        }
-        LOGGER.debug("Got article's comments");
         Stopwatchs.end();
 
         dataModel.put(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));

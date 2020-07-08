@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, May 20, 2020
+ * @version 1.2.0.1, Jul 8, 2020
  * @since 2.5.0
  */
 @Service
@@ -96,12 +96,6 @@ public class ExportService {
      */
     @Inject
     private CategoryTagRepository categoryTagRepository;
-
-    /**
-     * Comment repository.
-     */
-    @Inject
-    private CommentRepository commentRepository;
 
     /**
      * Link repository.
@@ -583,9 +577,6 @@ public class ExportService {
 
         final JSONArray categoryTags = getJSONs(categoryTagRepository);
         ret.put(Category.CATEGORY + "_" + Tag.TAG, categoryTags);
-
-        final JSONArray comments = getJSONs(commentRepository);
-        ret.put(Comment.COMMENTS, comments);
 
         final JSONArray links = getJSONs(linkRepository);
         ret.put(Link.LINKS, links);

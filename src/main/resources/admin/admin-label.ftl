@@ -33,7 +33,6 @@
     Label.selectLabel = "${selectLabel}"
     Label.outOfDateLabel = "${outOfDateLabel}"
     Label.upToDateLabel = "${upToDateLabel}"
-    Label.commentContentLabel = "${commentContentLabel}"
     Label.loadingLabel = "${loadingLabel}"
     Label.noCommentLabel = "${noCommentLabel}"
     Label.confirmRemoveLabel = "${confirmRemoveLabel}"

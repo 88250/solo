@@ -108,12 +108,6 @@ public class ArticleMgmtService {
     private TagArticleRepository tagArticleRepository;
 
     /**
-     * Comment repository.
-     */
-    @Inject
-    private CommentRepository commentRepository;
-
-    /**
      * Category-tag repository.
      */
     @Inject
@@ -430,11 +424,6 @@ public class ArticleMgmtService {
 
             archiveDate(article);
 
-            if (!oldArticle.getString(Article.ARTICLE_PERMALINK).equals(permalink)) { // The permalink has been updated
-                // Updates related comments' links
-                processCommentsForArticleUpdate(article);
-            }
-
             // Fill auto properties
             fillAutoProperties(oldArticle, article);
             // Set date
@@ -594,7 +583,6 @@ public class ArticleMgmtService {
             unArchiveDate(articleId);
             removeTagArticleRelations(articleId);
             articleRepository.remove(articleId);
-            commentRepository.removeComments(articleId);
             transaction.commit();
 
             Statics.clear();
@@ -660,30 +648,6 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Processes comments for article update.
-     *
-     * @param article the specified article to update
-     * @throws Exception exception
-     */
-    private void processCommentsForArticleUpdate(final JSONObject article) throws Exception {
-        final String articleId = article.getString(Keys.OBJECT_ID);
-
-        final List<JSONObject> comments = commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
-        for (final JSONObject comment : comments) {
-            final String commentId = comment.getString(Keys.OBJECT_ID);
-            final String sharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
-            comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
-            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
-            }
-            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-            }
-            commentRepository.update(commentId, comment);
-        }
-    }
-
-    /**
      * Processes tags for article update.
      * <p>
      * <ul>
@@ -703,10 +667,9 @@ public class ArticleMgmtService {
         String[] tagStrings = tagsString.split(",");
         final List<JSONObject> newTags = new ArrayList<>();
 
-        for (int i = 0; i < tagStrings.length; i++) {
-            final String tagTitle = tagStrings[i].trim();
+        for (final String tagString : tagStrings) {
+            final String tagTitle = tagString.trim();
             JSONObject newTag = tagRepository.getByTitle(tagTitle);
-
             if (null == newTag) {
                 newTag = new JSONObject();
                 newTag.put(Tag.TAG_TITLE, tagTitle);

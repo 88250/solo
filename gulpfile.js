@@ -89,7 +89,6 @@ function miniAdmin () {
     './src/main/resources/js/admin/pluginList.js',
     './src/main/resources/js/admin/userList.js',
     './src/main/resources/js/admin/categoryList.js',
-    './src/main/resources/js/admin/commentList.js',
     './src/main/resources/js/admin/plugin.js',
     './src/main/resources/js/admin/main.js',
     './src/main/resources/js/admin/about.js']

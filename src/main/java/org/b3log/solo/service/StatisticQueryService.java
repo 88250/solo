@@ -22,14 +22,13 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.CommentRepository;
 import org.json.JSONObject;
 
 /**
  * Statistic query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.2, Jan 28, 2019
+ * @version 2.0.0.3, Jul 8, 2020
  * @since 0.5.0
  */
 @Service
@@ -51,12 +50,6 @@ public class StatisticQueryService {
      */
     @Inject
     private ArticleRepository articleRepository;
-
-    /**
-     * Comment repository.
-     */
-    @Inject
-    private CommentRepository commentRepository;
 
     /**
      * Gets the online visitor count.

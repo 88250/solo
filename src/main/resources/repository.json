@@ -112,73 +112,6 @@
       ]
     },
     {
-      "name": "comment",
-      "description": "评论表",
-      "keys": [
-        {
-          "name": "oId",
-          "description": "主键",
-          "type": "String",
-          "length": 19
-        },
-        {
-          "name": "commentContent",
-          "description": "评论内容",
-          "type": "String",
-          "length": 2048
-        },
-        {
-          "name": "commentCreated",
-          "description": "评论时间戳",
-          "type": "long"
-        },
-        {
-          "name": "commentName",
-          "description": "评论人名称",
-          "type": "String",
-          "length": 50
-        },
-        {
-          "name": "commentOnId",
-          "description": "评论的文章/页面的 id",
-          "type": "String",
-          "length": 19
-        },
-        {
-          "name": "commentSharpURL",
-          "description": "评论访问路径，带 # 锚点",
-          "type": "String",
-          "length": 255
-        },
-        {
-          "name": "commentThumbnailURL",
-          "description": "评论人头像图片链接地址",
-          "type": "String",
-          "length": 512
-        },
-        {
-          "name": "commentURL",
-          "description": "评论人链接地址",
-          "type": "String",
-          "length": "255"
-        },
-        {
-          "name": "commentOriginalCommentId",
-          "description": "评论回复时原始的评论 id，即父评论 id",
-          "type": "String",
-          "length": 19,
-          "nullable": true
-        },
-        {
-          "name": "commentOriginalCommentName",
-          "description": "评论回复时原始的评论人名称，即父评论人名称",
-          "type": "String",
-          "length": 50,
-          "nullable": true
-        }
-      ]
-    },
-    {
       "name": "link",
       "description": "链接表",
       "keys": [
@@ -387,7 +320,7 @@
         },
         {
           "name": "userGitHubId",
-          "description": "用户 GitHub Open Id",
+          "description": "用户 GitHub Open Id，社区端用户 id",
           "type": "String",
           "length": 32
         }

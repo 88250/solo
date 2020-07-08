@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.44, Jul 5, 2020
+ * @version 1.5.2.45, Jul 8, 2020
  * @since 0.4.0
  */
 @Service
@@ -99,12 +99,6 @@ public class InitService {
      */
     @Inject
     private ArticleRepository articleRepository;
-
-    /**
-     * Comment repository.
-     */
-    @Inject
-    private CommentRepository commentRepository;
 
     /**
      * Link repository.
@@ -269,25 +263,7 @@ public class InitService {
         article.put(Article.ARTICLE_VIEW_PWD, "");
         final String articleImg1URL = Article.getArticleImg1URL(article);
         article.put(Article.ARTICLE_IMG1_URL, articleImg1URL);
-
-        final String articleId = addHelloWorldArticle(article);
-
-        final JSONObject comment = new JSONObject();
-        comment.put(Keys.OBJECT_ID, articleId);
-        comment.put(Comment.COMMENT_NAME, "88250");
-        comment.put(Comment.COMMENT_URL, "https://hacpai.com/member/88250");
-        comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
-        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
-        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-        comment.put(Comment.COMMENT_THUMBNAIL_URL, Images.COMMUNITY_FILE_URL + "/avatar/1353745196354_1535379434567.png?imageView2/1/w/64/h/64/q/100");
-        comment.put(Comment.COMMENT_CREATED, now);
-        comment.put(Comment.COMMENT_ON_ID, articleId);
-        final String commentId = Ids.genTimeMillisId();
-        comment.put(Keys.OBJECT_ID, commentId);
-        final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
-        comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
-
-        commentRepository.add(comment);
+        addHelloWorldArticle(article);
     }
 
     /**

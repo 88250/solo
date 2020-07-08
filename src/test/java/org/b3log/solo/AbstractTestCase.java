@@ -44,7 +44,7 @@ import java.sql.Connection;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 4.0.0.2, Jun 28, 2020
+ * @version 4.0.0.3, Jul 8, 2020
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -245,15 +245,6 @@ public abstract class AbstractTestCase {
     }
 
     /**
-     * Gets comment repository.
-     *
-     * @return comment repository
-     */
-    public CommentRepository getCommentRepository() {
-        return beanManager.getReference(CommentRepository.class);
-    }
-
-    /**
      * Gets archive date repository.
      *
      * @return archive date repository
@@ -413,24 +404,6 @@ public abstract class AbstractTestCase {
      */
     public TagMgmtService getTagMgmtService() {
         return beanManager.getReference(TagMgmtService.class);
-    }
-
-    /**
-     * Gets comment query service.
-     *
-     * @return comment query service
-     */
-    public CommentQueryService getCommentQueryService() {
-        return beanManager.getReference(CommentQueryService.class);
-    }
-
-    /**
-     * Gets comment management service.
-     *
-     * @return comment management service
-     */
-    public CommentMgmtService getCommentMgmtService() {
-        return beanManager.getReference(CommentMgmtService.class);
     }
 
     /**

@@ -24,16 +24,18 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.service.*;
+import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.OptionQueryService;
+import org.b3log.solo.service.UserMgmtService;
 import org.json.JSONObject;
 
 /**
  * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.4, Jun 21, 2020
+ * @version 3.0.0.5, Jul 8, 2020
  * @since 0.5.5
  */
 @Singleton
@@ -51,22 +53,10 @@ public class B3Receiver {
     private UserRepository userRepository;
 
     /**
-     * Comment repository.
-     */
-    @Inject
-    private static CommentRepository commentRepository;
-
-    /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
-
-    /**
-     * Comment management service.
-     */
-    @Inject
-    private CommentMgmtService commentMgmtService;
 
     /**
      * Article management service.
