@@ -63,7 +63,7 @@
                     ${articleTag}</a>
             </#list>
             <a href="${servePath}${article.articlePermalink}#more" rel="contents" class="fn-right">
-                ${readLabel} &raquo;
+                ${readmoreLabel}
             </a>
         </footer>
     </article>
