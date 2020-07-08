@@ -15,7 +15,7 @@ package org.b3log.solo.event;
  * Event types.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Mar 31, 2020
+ * @version 1.1.0.10, Jul 8, 2020
  * @since 0.3.1
  */
 public final class EventTypes {
@@ -34,11 +34,6 @@ public final class EventTypes {
      * Indicates a before render article event.
      */
     public static final String BEFORE_RENDER_ARTICLE = "Before Render Article";
-
-    /**
-     * Indicates an add comment to page event.
-     */
-    public static final String ADD_COMMENT_TO_PAGE = "Add Comment To Page";
 
     /**
      * Private constructor.

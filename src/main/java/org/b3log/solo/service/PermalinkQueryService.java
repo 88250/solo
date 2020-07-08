@@ -58,7 +58,7 @@ public class PermalinkQueryService {
      */
     public static final String[] RESERVED_LINKS = new String[]{
             "/", "/article", "/tags.html", "/tags", "/page", "/atom.xml", "/rss.xml", "/articles/random", "/captcha", "/kill-browser",
-            "/article/comments", "/page/comments", "/get-article-content", "/sitemap.xml",
+            "/get-article-content", "/sitemap.xml",
             "/logout", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do",
             "/admin-link-list.do", "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do",
             "/admin-draft-list.do", "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label",

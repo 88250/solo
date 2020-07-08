@@ -232,7 +232,7 @@ public class InitService {
     }
 
     /**
-     * Publishes the first article "Hello World" and the first comment with the specified locale.
+     * Publishes the first article "Hello World".
      *
      * @throws Exception exception
      */
@@ -250,7 +250,7 @@ public class InitService {
         article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENT_COUNT, 1);
+        article.put(Article.ARTICLE_COMMENT_COUNT, 0);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         final JSONObject admin = userRepository.getAdmin();
         final long now = System.currentTimeMillis();

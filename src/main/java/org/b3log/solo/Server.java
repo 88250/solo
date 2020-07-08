@@ -516,7 +516,6 @@ public final class Server extends BaseServer {
                 post("/console/import/markdown-zip", adminConsole::importMarkdownZip);
         adminConsoleGroup.router().get(new String[]{"/admin-article.do",
                 "/admin-article-list.do",
-                "/admin-comment-list.do",
                 "/admin-link-list.do",
                 "/admin-page-list.do",
                 "/admin-others.do",
