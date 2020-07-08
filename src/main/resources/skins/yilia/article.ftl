@@ -60,7 +60,6 @@
                     <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
                     <span class="icon-chat"></span>
                 </a>
-            </#if>
             <a class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                href="${servePath}${article.articlePermalink}"
                aria-label="${viewLabel}">
