@@ -58,7 +58,6 @@ module.exports = (env, argv) => {
         './src/main/resources/js/admin/editor.js',
         './src/main/resources/js/admin/tablePaginate.js',
         './src/main/resources/js/admin/article.js',
-        './src/main/resources/js/admin/comment.js',
         './src/main/resources/js/admin/articleList.js',
         './src/main/resources/js/admin/draftList.js',
         './src/main/resources/js/admin/pageList.js',

@@ -63,21 +63,6 @@ $.extend(TablePaginate.prototype, {
     },
 
     /*
-     * 初始化评论对话框
-     */
-    initCommentsDialog: function () {
-        var that = this;
-        $("#" + this.id + "Comments").dialog({
-            "modal": true,
-            "hideFooter": true,
-            "close": function () {
-                admin[that.id + "List"].getList(that.currentPage);
-                return true;
-            }
-        });
-    },
-
-    /*
      * 更新 table & paginateion
      */
     updateTablePagination: function (data, currentPage, pageInfo) {

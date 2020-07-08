@@ -23,7 +23,7 @@ admin.articleList = {
   tablePagination: new TablePaginate('article'),
 
   /*
-   * 初始化 table, pagination, comments dialog
+   * 初始化 table, pagination
    */
   init: function (page) {
     this.tablePagination.buildTable([
@@ -54,7 +54,6 @@ admin.articleList = {
         style: 'padding-left: 12px;',
       }])
     this.tablePagination.initPagination()
-    this.tablePagination.initCommentsDialog()
     this.getList(page)
 
     var that = this

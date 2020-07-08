@@ -42,6 +42,7 @@
     Label.updateLabel = "${updateLabel}"
     Label.titleLabel = "${titleLabel}"
     Label.authorLabel = "${authorLabel}"
+    Label.commentLabel = "${commentLabel}"
     Label.dateLabel = "${dateLabel}"
     Label.pageLabel = "${pageLabel}"
     Label.gotoLabel = "${gotoLabel}"

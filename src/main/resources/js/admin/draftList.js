@@ -54,7 +54,6 @@ admin.draftList = {
         style: 'padding-left: 12px;',
       }])
     this.tablePagination.initPagination()
-    this.tablePagination.initCommentsDialog()
     this.getList(page)
   },
 

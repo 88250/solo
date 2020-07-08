@@ -66,11 +66,6 @@
             <button id="articleSign0">${noSignLabel}</button>
         </span>
         <div class="fn__flex-center article-commentable__panel">
-            <label class="checkbox">
-                <input type="checkbox" id="articleCommentable" checked/>
-                <span>&nbsp;${allowCommentLabel}</span>
-            </label>
-            &nbsp;
             <span id="postToCommunityPanel">
                 <label class="checkbox">
                     <input id="postToCommunity" type="checkbox"/>

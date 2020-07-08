@@ -52,10 +52,6 @@
                     <time>
                     ${article.articleCreateDate?string("yyyy-MM-dd")}
                     </time>
-                    &nbsp;
-                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
-                    &nbsp;
-                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
                 </div>
             </header>
             <div class="vditor-reset">
