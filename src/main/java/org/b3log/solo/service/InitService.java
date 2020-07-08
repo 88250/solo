@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.45, Jul 8, 2020
+ * @version 1.5.2.46, Jul 8, 2020
  * @since 0.4.0
  */
 @Service
@@ -250,8 +250,6 @@ public class InitService {
         article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENT_COUNT, 0);
-        article.put(Article.ARTICLE_VIEW_COUNT, 0);
         final JSONObject admin = userRepository.getAdmin();
         final long now = System.currentTimeMillis();
         article.put(Article.ARTICLE_CREATED, now);

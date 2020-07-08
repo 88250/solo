@@ -25,7 +25,7 @@ import java.util.List;
  * {@link ArticleQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Jan 28, 2019
+ * @version 1.1.0.3, Jul 8, 2020
  */
 @Test(suiteName = "service")
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
@@ -77,7 +77,6 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
         final JSONObject article = articleQueryService.getArticle(articleId);
 
         Assert.assertNotNull(article);
-        Assert.assertEquals(article.optString(Article.ARTICLE_VIEW_COUNT), "");
     }
 
     /**

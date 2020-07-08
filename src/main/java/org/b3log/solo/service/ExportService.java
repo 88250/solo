@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Jul 8, 2020
+ * @version 1.2.0.2, Jul 8, 2020
  * @since 2.5.0
  */
 @Service
@@ -409,47 +409,6 @@ public class ExportService {
             articleIds.add(article.optString(Keys.OBJECT_ID));
         }
         bodyBuilder.append("\n\n");
-
-        final StringBuilder mostViewBuilder = new StringBuilder();
-        final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 40));
-        int count = 0;
-        for (final JSONObject article : mostViewArticles) {
-            final String articleId = article.optString(Keys.OBJECT_ID);
-            if (!articleIds.contains(articleId)) {
-                final String title = article.optString(Article.ARTICLE_TITLE);
-                final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-                mostViewBuilder.append("\n* [").append(title).append("](").append(link).append(")");
-                articleIds.add(articleId);
-                count++;
-            }
-            if (20 <= count) {
-                break;
-            }
-        }
-        if (0 < mostViewBuilder.length()) {
-            bodyBuilder.append("### 热门\n").append(mostViewBuilder).append("\n\n");
-        }
-
-        final StringBuilder mostCmtBuilder = new StringBuilder();
-        final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 60));
-        count = 0;
-        for (final JSONObject article : mostCmtArticles) {
-            final String articleId = article.optString(Keys.OBJECT_ID);
-            if (!articleIds.contains(articleId)) {
-                final String title = article.optString(Article.ARTICLE_TITLE);
-                final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-                mostCmtBuilder.append("\n* [").append(title).append("](").append(link).append(")");
-                articleIds.add(articleId);
-                count++;
-            }
-            if (20 <= count) {
-                break;
-            }
-        }
-        if (0 < mostCmtBuilder.length()) {
-            bodyBuilder.append("### 热议\n").append(mostCmtBuilder);
-        }
-
 
         String ret = "<p align=\"center\"><img alt=\"${title}\" src=\"${favicon}\"></p><h2 align=\"center\">\n" +
                 "${title}\n" +

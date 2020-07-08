@@ -27,7 +27,7 @@ import java.util.List;
  * {@link ArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Jan 16, 2020
+ * @version 1.0.0.7, Jul 8, 2020
  */
 @Test(suiteName = "repository")
 public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -48,8 +48,6 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
         article.put(Article.ARTICLE_AUTHOR_ID, "1");
-        article.put(Article.ARTICLE_COMMENT_COUNT, 0);
-        article.put(Article.ARTICLE_VIEW_COUNT, 0);
         article.put(Article.ARTICLE_CONTENT, "article content");
         article.put(Article.ARTICLE_PERMALINK, "article permalink1");
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
@@ -103,8 +101,6 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
         article.put(Article.ARTICLE_AUTHOR_ID, "1");
-        article.put(Article.ARTICLE_COMMENT_COUNT, 1);
-        article.put(Article.ARTICLE_VIEW_COUNT, 1);
         article.put(Article.ARTICLE_CONTENT, "article content");
         article.put(Article.ARTICLE_PERMALINK, "article permalink2");
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);

@@ -48,7 +48,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.1, Jan 8, 2020
+ * @version 1.3.4.2, Jul 8, 2020
  * @since 0.3.5
  */
 @Service
@@ -252,7 +252,6 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
                 article.put(Article.ARTICLE_TITLE, "我在 GitHub 上的开源项目");
                 article.put(Article.ARTICLE_ABSTRACT, Article.getAbstractText(content));
-                article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 article.put(Article.ARTICLE_TAGS_REF, "开源,GitHub");
                 article.put(Article.ARTICLE_PERMALINK, permalink);
                 article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -313,21 +312,6 @@ public class ArticleMgmtService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Pushes an article [id=" + articleId + "] to HacPai failed", e);
         }
-    }
-
-    /**
-     * Article comment count +1 for an article specified by the given article id.
-     *
-     * @param articleId the given article id
-     * @throws JSONException       json exception
-     * @throws RepositoryException repository exception
-     */
-    public void incArticleCommentCount(final String articleId) throws JSONException, RepositoryException {
-        final JSONObject article = articleRepository.get(articleId);
-        final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
-        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-        newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
-        articleRepository.update(articleId, newArticle, ARTICLE_COMMENT_COUNT);
     }
 
     /**
@@ -521,8 +505,6 @@ public class ArticleMgmtService {
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
 
-            article.put(Article.ARTICLE_COMMENT_COUNT, article.optInt(Article.ARTICLE_COMMENT_COUNT));
-            article.put(Article.ARTICLE_VIEW_COUNT, 0);
             if (!article.has(Article.ARTICLE_CREATED)) {
                 article.put(Article.ARTICLE_CREATED, System.currentTimeMillis());
             }
@@ -873,8 +855,6 @@ public class ArticleMgmtService {
     private void fillAutoProperties(final JSONObject oldArticle, final JSONObject article) throws JSONException {
         final long created = oldArticle.getLong(ARTICLE_CREATED);
         article.put(ARTICLE_CREATED, created);
-        article.put(ARTICLE_COMMENT_COUNT, oldArticle.getInt(ARTICLE_COMMENT_COUNT));
-        article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
         article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
         article.put(ARTICLE_AUTHOR_ID, oldArticle.getString(ARTICLE_AUTHOR_ID));
         article.put(ARTICLE_RANDOM_DOUBLE, Math.random());

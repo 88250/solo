@@ -22,7 +22,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.3, Jul 8, 2020
+ * @version 1.5.0.4, Jul 8, 2020
  * @since 0.3.1
  */
 public final class Article {
@@ -91,16 +91,6 @@ public final class Article {
      * Key of tags.
      */
     public static final String ARTICLE_TAGS_REF = "articleTags";
-
-    /**
-     * Key of comment count.
-     */
-    public static final String ARTICLE_COMMENT_COUNT = "articleCommentCount";
-
-    /**
-     * Key of view count.
-     */
-    public static final String ARTICLE_VIEW_COUNT = "articleViewCount";
 
     /**
      * Key of sign id.
