@@ -12,7 +12,6 @@
 
 -->
 <#include "../../common-template/macro-common_head.ftl">
-<#include "macro-comments.ftl">
 <#include "../../common-template/macro-comment_script.ftl">
 <!DOCTYPE html>
 <html>
@@ -114,11 +113,6 @@ ${topBarReplacement}
                     <#if commentable>
                         <div id="b3logsolocomments"></div>
                         <div id="vcomment" class="module" data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                        <#if !staticSite>
-                        <div id="soloComments" style="display: none;" class="module">
-                            <@comments commentList=articleComments article=article></@comments>
-                        </div>
-                        </#if>
                     </#if>
                 </div>
             </div>

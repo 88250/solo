@@ -43,7 +43,6 @@ $.extend(Page.prototype, {
       },
       error () {
         $vcomment.remove()
-        $('#soloComments').show()
       },
     })
 

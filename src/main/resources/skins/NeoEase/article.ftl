@@ -12,7 +12,6 @@
 
 -->
 <#include "../../common-template/macro-common_head.ftl">
-<#include "macro-comments.ftl">
 <#include "../../common-template/macro-comment_script.ftl">
 <!DOCTYPE html>
 <html>
@@ -104,11 +103,6 @@
                         <div id="b3logsolocomments"></div>
                         <div id="vcomment" style="margin:15px 5px 0 5px;padding: 10px;background-color: #F5F5F5;box-sizing: border-box"
                              data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                        <#if !staticSite>
-                            <div id="soloComments" style="display: none;">
-                                <@comments commentList=articleComments article=article></@comments>
-                            </div>
-                        </#if>
                     </#if>
                 </div>
                 <#include "side.ftl">

@@ -12,7 +12,6 @@
 
 -->
 <#include "../../common-template/macro-common_head.ftl">
-<#include "macro-comments.ftl">
 <#include "../../common-template/macro-comment_script.ftl">
 <!DOCTYPE html>
 <html>
@@ -103,11 +102,6 @@ ${topBarReplacement}
                      class="comments"
                      style="padding-top: 15px;"
                      data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                <#if !staticSite>
-                <div id="soloComments" style="display: none;">
-                    <@comments commentList=articleComments article=article></@comments>
-                </div>
-                </#if>
             </#if>
         </article>
         <#include "side.ftl">
