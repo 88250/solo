@@ -19,7 +19,5 @@
 </div>
 <div id="articlePagination" class="fn__right fn__margin12">
 </div>
-<div id="articleComments" class="fn__none">
-</div>
 <div class="fn__clear"></div>
 ${plugins}

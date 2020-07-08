@@ -100,9 +100,7 @@ admin.draftList = {
                                 <a href=\'javascript:void(0)\' onclick="admin.article.del(\'' +
             articles[i].oId + '\', \'draft\', \'' +
             encodeURIComponent(articles[i].articleTitle) + '\')">' +
-            Label.removeLabel + '</a>  \
-                                <a href=\'javascript:void(0)\' onclick="admin.comment.open(\'' +
-            articles[i].oId + '\', \'draft\')">' + Label.commentLabel + '</a>'
+            Label.removeLabel + '</a>'
         }
 
         that.tablePagination.updateTablePagination(articleData, pageNum,

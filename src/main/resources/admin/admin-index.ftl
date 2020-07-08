@@ -72,13 +72,6 @@
                     </li>
                 </ul>
             </li>
-            <li>
-                <div id="tabs_comment-list">
-                    <a href="#comment-list">
-                        <span class="icon-cmts"></span> ${commentListLabel}
-                    </a>
-                </div>
-            </li>
             <li id="tools">
                 <div id="tabToolsTitle" onclick="admin.collapseNav(this)">
                     <span class="icon-setting"></span>

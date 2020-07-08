@@ -97,8 +97,6 @@ public abstract class AbstractTestCase {
     public void afterClass() {
         final ArticleCache articleCache = beanManager.getReference(ArticleCache.class);
         articleCache.clear();
-        final CommentCache commentCache = beanManager.getReference(CommentCache.class);
-        commentCache.clear();
         final OptionCache optionCache = beanManager.getReference(OptionCache.class);
         optionCache.clear();
         final PageCache pageCache = beanManager.getReference(PageCache.class);

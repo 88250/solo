@@ -136,9 +136,7 @@ admin.articleList = {
                                 <a href=\'javascript:void(0)\' onclick="admin.articleList.syncToHacpai(\'' +
             articles[i].oId + '\')">' + Label.pushToHacpaiLabel + '</a>  \
                                 <a href=\'javascript:void(0)\' onclick="admin.articleList.popTop(this, \'' +
-            articles[i].oId + '\')">' + topClass + '</a>  \
-                                <a href=\'javascript:void(0)\' onclick="admin.comment.open(\'' +
-            articles[i].oId + '\', \'article\')">' + Label.commentLabel + '</a>'
+            articles[i].oId + '\')">' + topClass + '</a>'
         }
 
         that.tablePagination.updateTablePagination(articleData, pageNum,
