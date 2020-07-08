@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.20, Jun 28, 2020
+ * @version 1.2.1.21, Jul 8, 2020
  * @since 1.2.0
  */
 @Service
@@ -60,24 +60,6 @@ public class UpgradeService {
 
             // 如果版本较老，则调用对应的升级程序进行升级，并贯穿升级下去直到最新版
             switch (currentVer) {
-                case "2.9.9":
-                    V299_300.perform();
-                case "3.0.0":
-                    V300_310.perform();
-                case "3.1.0":
-                    V310_320.perform();
-                case "3.2.0":
-                    V320_330.perform();
-                case "3.3.0":
-                    V330_340.perform();
-                case "3.4.0":
-                    V340_350.perform();
-                case "3.5.0":
-                    V350_360.perform();
-                case "3.6.0":
-                    V360_361.perform();
-                case "3.6.1":
-                    V361_362.perform();
                 case "3.6.2":
                     V362_363.perform();
                 case "3.6.3":
@@ -104,7 +86,7 @@ public class UpgradeService {
                     V410_420.perform();
                     break;
                 default:
-                    LOGGER.log(Level.ERROR, "Please upgrade to v3.0.0 first");
+                    LOGGER.log(Level.ERROR, "Please upgrade to v3.6.2 first");
                     System.exit(-1);
             }
         } catch (final Exception e) {
