@@ -47,7 +47,6 @@
     Label.moreLabel = "${moreLabel}"
     Label.viewLabel = "${viewLabel}"
     Label.commentLabel = "${commentLabel}"
-    Label.noCommentLabel = "${noCommentLabel}"
     Label.tagLabel = "${tagLabel}"
     Label.topArticleLabel = "${topArticleLabel}"
     Label.authorLabel = "${authorLabel}"
