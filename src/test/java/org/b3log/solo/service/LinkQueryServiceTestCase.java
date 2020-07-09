@@ -24,7 +24,7 @@ import java.util.List;
  * {@link LinkQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Oct 23, 2019
+ * @version 1.0.0.4, Jul 9, 2020
  */
 @Test(suiteName = "service")
 public class LinkQueryServiceTestCase extends AbstractTestCase {
@@ -63,6 +63,6 @@ public class LinkQueryServiceTestCase extends AbstractTestCase {
         final JSONObject result = linkQueryService.getLinks(paginationRequest);
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(((List<JSONObject>) result.opt(Link.LINKS)).size(), 2);
+        Assert.assertEquals(((List<JSONObject>) result.opt(Link.LINKS)).size(), 1);
     }
 }

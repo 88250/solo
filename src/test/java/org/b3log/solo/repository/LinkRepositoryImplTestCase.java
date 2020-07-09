@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
  * {@link LinkRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 23, 2019
+ * @version 1.0.0.2, Jul 9, 2020
  */
 @Test(suiteName = "repository")
 public final class LinkRepositoryImplTestCase extends AbstractTestCase {
@@ -36,10 +36,9 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
     public void test() throws Exception {
         final LinkRepository linkRepository = getLinkRepository();
 
-        final int link1Order = 1, link2Order = 2, link3Order = 3;
+        final int link1Order = 0, link2Order = 1, link3Order = 2;
 
         JSONObject link1 = new JSONObject();
-
         link1.put(Link.LINK_TITLE, "link title");
         link1.put(Link.LINK_DESCRIPTION, "link description");
         link1.put(Link.LINK_ADDRESS, "link address");
@@ -57,7 +56,6 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertNotNull(linkRepository.getByOrder(link1Order));
 
         final JSONObject link2 = new JSONObject();
-
         link2.put(Link.LINK_TITLE, "link title");
         link2.put(Link.LINK_DESCRIPTION, "link description");
         link2.put(Link.LINK_ADDRESS, "link address");
@@ -69,20 +67,17 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
 
         Assert.assertEquals(linkRepository.getMaxOrder(), link2Order);
 
-
         JSONObject link3 = new JSONObject();
-
         link3.put(Link.LINK_TITLE, "link title");
         link3.put(Link.LINK_DESCRIPTION, "link description");
         link3.put(Link.LINK_ADDRESS, "link address");
         link3.put(Link.LINK_ORDER, link3Order);
         transaction = linkRepository.beginTransaction();
-
         linkRepository.add(link3);
 
         transaction.commit();
 
-        Assert.assertEquals(linkRepository.count(), 4);
+        Assert.assertEquals(linkRepository.count(), 3);
 
         link1 = linkRepository.getUpper(link2Id);
         Assert.assertNotNull(link1);
