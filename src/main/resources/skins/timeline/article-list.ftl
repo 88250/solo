@@ -52,12 +52,12 @@
                 </span>
                 <span class="ico-comment ico" title="${commentLabel}">
                     <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
-                        <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
+                        <span data-uvstatcmt="${article.oId}">0</span>
                     </a>
                 </span>
                 <span class="ico-view ico" title="${viewLabel}">
                     <a rel="nofollow" href="${servePath}${article.articlePermalink}">
-                        <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
+                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                     </a>
                 </span>
             </div>

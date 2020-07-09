@@ -55,8 +55,8 @@
             <#if article.category??>
                 in <a href="${servePath}/category/${article.category.categoryURI}">${article.category.categoryTitle}</a>
             </#if>
-            with <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> views
-                and <a href="#b3logsolocomments"><span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> comments</a>
+            with <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> views
+                and <a href="#b3logsolocomments"><span data-uvstatcmt="${article.oId}">0</span> comments</a>
         </div>
         <div class="item__tags">
             <#list article.articleTags?split(",") as articleTag>

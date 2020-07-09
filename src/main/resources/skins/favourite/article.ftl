@@ -71,7 +71,7 @@
                             <div class="margin25">
                                 <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">
                                     <span class="left article-browserIcon" title="${viewLabel}"></span>
-                                    <span class="count"><span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span></span>
+                                    <span class="count"><span data-uvstaturl="${servePath}${article.articlePermalink}">0</span></span>
                                 </a>
                                 <div class="left">
                                     <span class="tagsIcon" title="${tagLabel}"></span>
@@ -84,7 +84,7 @@
                                 </div>
                                 <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments" class="left">
                                     <span class="left articles-commentIcon" title="${commentLabel}"></span>
-                                    <span class="count" data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
+                                    <span class="count" data-uvstatcmt="${article.oId}">0</span>
                                 </a>
                                 <div class="right">
                                     <a rel="nofollow" href="#b3logsolocomments" class="right">

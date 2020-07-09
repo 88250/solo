@@ -117,10 +117,9 @@ admin.articleList = {
             + articles[i].articleTitle + '</a><span class=\'table-tag\'>' +
             articles[i].articleTags + '</span>'
           articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime)
-          articleData[i].comments = `<span data-uvstatcmt="${articles[i].oId}">${articles[i].articleCommentCount}</span>`
+          articleData[i].comments = `<span data-uvstatcmt="${articles[i].oId}">0</span>`
           articleData[i].articleViewCount = '<span data-uvstaturl="' +
-            Label.servePath + articles[i].articlePermalink + '">' +
-            articles[i].articleViewCount + '</span>'
+            Label.servePath + articles[i].articlePermalink + '">0</span>'
           articleData[i].author = articles[i].authorName
 
           var topClass = articles[i].articlePutTop

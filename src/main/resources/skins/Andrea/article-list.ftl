@@ -43,7 +43,7 @@
                     ${article.authorName}</a>
                 |
                 <a rel="nofollow" class="underline" href="${servePath}${article.articlePermalink}#b3logsolocomments">
-                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
+                    <span data-uvstatcmt="${article.oId}">0</span> ${commentLabel}
                 </a>
             </div>
         </div>

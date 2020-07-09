@@ -54,7 +54,7 @@
                     </a>
                 &nbsp;·&nbsp;
                 <a class="item__tag" href="${servePath}${article.articlePermalink}">
-                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
                 </a>
             </div>
         </article>

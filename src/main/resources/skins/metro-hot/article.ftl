@@ -52,10 +52,10 @@
                     </div>
                     <div class="article-info">
                         <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${article.articlePermalink}#b3logsolocomments">
-                            <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
+                            <span data-uvstatcmt="${article.oId}">0</span>
                         </a>
                         <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
-                            <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
+                            <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                         </a>
                         <a rel="nofollow" data-ico="&#x0060;" href="${servePath}/authors/${article.authorId}">
                             ${article.authorName}

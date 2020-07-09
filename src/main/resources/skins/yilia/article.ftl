@@ -57,13 +57,13 @@
                 <a href="${servePath}${article.articlePermalink}#b3logsolocomments"
                    class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                    aria-label="${commentLabel}">
-                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
+                    <span data-uvstatcmt="${article.oId}">0</span>
                     <span class="icon-chat"></span>
                 </a>
             <a class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
                href="${servePath}${article.articlePermalink}"
                aria-label="${viewLabel}">
-                <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
+                <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                 <span class="icon-views"></span>
             </a>
             <a rel="nofollow" href="${servePath}/authors/${article.authorId}" class="fn__flex-center">

@@ -50,10 +50,10 @@
                 ${article.articleUpdateDate?string("yyyy-MM-dd")}
                 </time> &nbsp;•&nbsp;
                 <a href="${servePath}${article.articlePermalink}#b3logsolocomments" class="ft-gray">
-                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
+                    <span data-uvstatcmt="${article.oId}">0</span> ${commentLabel}
                 </a> &nbsp;•&nbsp;
                 <a href="${servePath}${article.articlePermalink}" class="ft-gray">
-                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
                 </a>
             </div>
         </header>

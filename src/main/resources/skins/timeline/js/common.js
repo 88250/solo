@@ -304,10 +304,9 @@ window.timeline = {
             + '<a rel="author" href="' + Label.servePath + '/authors/' + article.authorId + '">'
             + article.authorName + '</a></span>&nbsp;<span class="ico-comment ico" title="'
             + Label.commentLabel + '"><a rel="nofollow" href="' + Label.servePath + article.articlePermalink
-            + '#b3logsolocomments" data-uvstatcmt="' + article.oId + '">' + article.articleCommentCount
-            + '</a></span>&nbsp;<span class="ico-view ico" title="' + Label.viewLabel + '">'
+            + '#b3logsolocomments" data-uvstatcmt="' + article.oId + '">0</a></span>&nbsp;<span class="ico-view ico" title="' + Label.viewLabel + '">'
             + '<a rel="nofollow" href="${servePath}${article.articlePermalink}">'
-            + '<span data-uvstaturl="' + Label.servePath + article.articlePermalink + '">' +  article.articleViewCount + '</span>'
+            + '<span data-uvstaturl="' + Label.servePath + article.articlePermalink + '">0</span>'
             + '</a></span></div></article>';
         }
 

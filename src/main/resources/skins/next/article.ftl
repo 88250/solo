@@ -56,10 +56,10 @@
                         <span class="post-comments-count">
                                 &nbsp; | &nbsp;
                                 <a href="${servePath}${article.articlePermalink}#b3logsolocomments">
-                                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${cmtLabel}</a>
+                                    <span data-uvstatcmt="${article.oId}">0</span> ${cmtLabel}</a>
                         </span>
                         &nbsp; | &nbsp; ${viewsLabel}
-                        <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>°C
+                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>°C
                     </div>
                 </header>
 

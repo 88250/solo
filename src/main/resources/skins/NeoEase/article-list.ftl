@@ -48,10 +48,10 @@
     </div>
     <div class="right article-element">
         <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
-            <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>&nbsp;&nbsp;${commentLabel}
+            <span data-uvstatcmt="${article.oId}">0</span>&nbsp;&nbsp;${commentLabel}
         </a>&nbsp;&nbsp;
         <a rel="nofollow" href="${servePath}${article.articlePermalink}">
-            <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>&nbsp;&nbsp;${viewLabel}
+            <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>&nbsp;&nbsp;${viewLabel}
         </a>
     </div>
     <div class="clear"></div>

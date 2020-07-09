@@ -70,7 +70,7 @@
                     ${article.articleUpdateDate?string("yyyy-MM-dd")} •
                     </time>
                     <a class="post__view" href="${servePath}${article.articlePermalink}">
-                        <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}</a>
+                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}</a>
                     <div class="fn-right">
                     <span class="vditor-tooltipped vditor-tooltipped__n post__share-icon ft-green"
                           onclick="$('#comment').focus()"
@@ -78,7 +78,7 @@
                         <svg>
                             <use xlink:href="#icon-comment"></use>
                         </svg>
-                    <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>  &nbsp; &nbsp;
+                    <span data-uvstatcmt="${article.oId}">0</span>  &nbsp; &nbsp;
                     </span>
 
                         <span id="articleShare">
@@ -119,7 +119,7 @@
         <div class="article__toolbar">
             <div class="wrapper">
                 <a class="post__view" href="${servePath}${article.articlePermalink}">
-                    <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span> ${viewLabel}
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
                 </a>
                 <div class="fn-right">
                 <span class="vditor-tooltipped vditor-tooltipped__n post__share-icon ft-green"
@@ -128,7 +128,7 @@
                     <svg>
                         <use xlink:href="#icon-comment"></use>
                     </svg>
-                <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>  &nbsp; &nbsp;
+                <span data-uvstatcmt="${article.oId}">0</span>  &nbsp; &nbsp;
                 </span>
                     <span id="articleBottomShare">
                     <span class="post__share-icon" data-type="wechat">
@@ -164,7 +164,7 @@
         <span class="vditor-tooltipped vditor-tooltipped__e post__share-icon ft-green"
               onclick="$('#comment').focus()"
               aria-label="${commentLabel}">
-            <span class="ft-gray" data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
+            <span class="ft-gray" data-uvstatcmt="${article.oId}">0</span>
             <svg>
                 <use xlink:href="#icon-comment"></use>
             </svg>

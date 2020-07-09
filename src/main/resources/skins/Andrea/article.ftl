@@ -56,7 +56,7 @@
                                         ${article.authorName}</a>
                                     |
                                     <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments">
-                                        <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span> ${commentLabel}
+                                        <span data-uvstatcmt="${article.oId}">0</span> ${commentLabel}
                                     </a>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                 </span>
                                 </#list>
                                 &nbsp;&nbsp;${viewCount1Label}
-                                <a rel="nofollow" href="${servePath}${article.articlePermalink}" data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
+                                <a rel="nofollow" href="${servePath}${article.articlePermalink}" data-uvstaturl="${servePath}${article.articlePermalink}">0</a>
                             </div>
                             <div class="clear"></div>
                             <div class="marginTop12">
