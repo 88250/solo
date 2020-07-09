@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
  * {@link UserTemplateProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 11, 2018
+ * @version 1.0.0.1, Jul 9, 2020
  * @since 2.9.8
  */
 @Test(suiteName = "processor")
@@ -41,6 +41,6 @@ public class UserTemplateProcessorTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "<title>友情链接 - Solo 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>友链 - Solo 的个人博客</title>"));
     }
 }
