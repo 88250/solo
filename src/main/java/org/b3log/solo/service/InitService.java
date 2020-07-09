@@ -47,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.46, Jul 8, 2020
+ * @version 1.5.2.47, Jul 9, 2020
  * @since 0.4.0
  */
 @Service
@@ -150,11 +150,9 @@ public class InitService {
                 LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser to init Solo");
                 printedInitMsg = true;
             }
-
             return inited;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Check init failed", e);
-
             System.exit(-1);
             return false;
         }
@@ -173,7 +171,6 @@ public class InitService {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Check tables failed, please make sure database existed and database configuration [jdbc.*] in local.props is correct [msg=" + e.getMessage() + "]");
-
             System.exit(-1);
         }
 
@@ -214,13 +211,11 @@ public class InitService {
             initStatistic();
             initOptions(requestJSONObject);
             initAdmin(requestJSONObject);
-            initLink();
             helloWorld();
 
             transaction.commit();
         } catch (final Throwable e) {
             LOGGER.log(Level.ERROR, "Initializes Solo failed", e);
-
             System.exit(-1);
         } finally {
             if (transaction.isActive()) {
@@ -351,14 +346,12 @@ public class InitService {
         for (String tagTitle1 : tagTitles) {
             final String tagTitle = tagTitle1.trim();
             final JSONObject tag = new JSONObject();
-
             LOGGER.log(Level.TRACE, "Found a new tag[title={}] in article[title={}]", tagTitle, article.optString(Article.ARTICLE_TITLE));
             tag.put(Tag.TAG_TITLE, tagTitle);
             final String tagId = tagRepository.add(tag);
             tag.put(Keys.OBJECT_ID, tagId);
             ret.put(tag);
         }
-
         return ret;
     }
 
@@ -377,7 +370,6 @@ public class InitService {
     private void initAdmin(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing admin....");
         final JSONObject admin = new JSONObject();
-
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
         admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
@@ -390,25 +382,6 @@ public class InitService {
     }
 
     /**
-     * Initializes link.
-     *
-     * @throws Exception exception
-     */
-    private void initLink() throws Exception {
-        LOGGER.debug("Initializing link....");
-        final JSONObject link = new JSONObject();
-
-        link.put(Link.LINK_TITLE, "黑客派");
-        link.put(Link.LINK_ADDRESS, "https://hacpai.com");
-        link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
-        link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
-        final int maxOrder = linkRepository.getMaxOrder();
-        link.put(Link.LINK_ORDER, maxOrder + 1);
-        linkRepository.add(link);
-        LOGGER.debug("Initialized link");
-    }
-
-    /**
      * Initializes statistic.
      *
      * @throws RepositoryException repository exception
@@ -416,13 +389,11 @@ public class InitService {
      */
     private void initStatistic() throws RepositoryException, JSONException {
         LOGGER.debug("Initializing statistic....");
-
         final JSONObject statisticBlogViewCountOpt = new JSONObject();
         statisticBlogViewCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
         statisticBlogViewCountOpt.put(Option.OPTION_VALUE, "0");
         statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
         optionRepository.add(statisticBlogViewCountOpt);
-
         LOGGER.debug("Initialized statistic");
     }
 
