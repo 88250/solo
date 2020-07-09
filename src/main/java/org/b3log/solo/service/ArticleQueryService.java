@@ -470,7 +470,6 @@ public class ArticleQueryService {
      *     "articles": [{
      *         "oId": "",
      *         "articleTitle": "",
-     *         "articleCommentCount": int,
      *         "articleCreateTime"; long,
      *         "articleViewCount": int,
      *         "articleTags": "tag1, tag2, ....",

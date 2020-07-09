@@ -379,7 +379,6 @@ public class ArticleMgmtService {
      *                          "articlePermalink": "", // optional
      *                          "articleStatus": int, // 0: published, 1: draft
      *                          "articleSignId": "", // optional
-     *                          "articleCommentable": boolean,
      *                          "articleViewPwd": ""
      *                          }
      *                          }
@@ -475,8 +474,6 @@ public class ArticleMgmtService {
      *                          "articlePermalink": "", // optional
      *                          "postToCommunity": boolean, // optional
      *                          "articleSignId": "" // optional, default is "0",
-     *                          "articleCommentable": boolean,
-     *                          "articleCommentCount": int, // optional, default is 0
      *                          "articleViewPwd": "",
      *                          "oId": "" // optional, generate it if not exists this key
      *                          }

@@ -215,7 +215,6 @@ public class ArticleConsole {
      *     "articles": [{
      *         "oId": "",
      *         "articleTitle": "",
-     *         "articleCommentCount": int,
      *         "articleCreateTime"; long,
      *         "articleViewCount": int,
      *         "articleTags": "tag1, tag2, ....",
@@ -452,7 +451,6 @@ public class ArticleConsole {
      *         "articlePermalink": "", // optional
      *         "articleStatus": int, // 0: published, 1: draft
      *         "articleSignId": "" // optional
-     *         "articleCommentable": boolean,
      *         "articleViewPwd": "",
      *         "postToCommunity": boolean
      *     }
@@ -517,7 +515,6 @@ public class ArticleConsole {
      *         "articleStatus": int, // 0: published, 1: draft
      *         "postToCommunity": boolean,
      *         "articleSignId": "" // optional
-     *         "articleCommentable": boolean,
      *         "articleViewPwd": ""
      *     }
      * }

@@ -72,9 +72,6 @@ admin.article = {
         $('#permalink').val(result.article.articlePermalink)
         $('#viewPwd').val(result.article.articleViewPwd)
 
-        $('#articleCommentable').
-          prop('checked', result.article.articleCommentable)
-
         // signs
         var signs = result.article.signs
         $('.signs button').each(function (i) {
@@ -165,7 +162,6 @@ admin.article = {
           'articleStatus': articleStatus,
           'articleSignId': signId,
           'postToCommunity': $('#postToCommunity').prop('checked'),
-          'articleCommentable': $('#articleCommentable').prop('checked'),
           'articleViewPwd': $('#viewPwd').val(),
         },
       }
@@ -234,7 +230,6 @@ admin.article = {
           'articlePermalink': $('#permalink').val(),
           'articleStatus': articleStatus,
           'articleSignId': signId,
-          'articleCommentable': $('#articleCommentable').prop('checked'),
           'articleViewPwd': $('#viewPwd').val(),
           'postToCommunity': $('#postToCommunity').prop('checked'),
         },

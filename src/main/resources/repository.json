@@ -405,11 +405,6 @@
           "length": 19
         },
         {
-          "name": "articleCommentable",
-          "description": "文章是否可以评论",
-          "type": "boolean"
-        },
-        {
           "name": "articleViewPwd",
           "description": "文章浏览密码，留空为不设置访问密码",
           "type": "String",
