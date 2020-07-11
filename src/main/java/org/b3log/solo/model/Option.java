@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
- * @version 1.8.0.3, Jul 9, 2020
+ * @version 1.8.0.4, Jul 11, 2020
  * @since 0.6.0
  */
 public final class Option {
