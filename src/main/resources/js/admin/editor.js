@@ -14,7 +14,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.1, Apr 30, 2020
+ * @version 1.6.0.2, Jul 11, 2020
  */
 admin.editors = {}
 
@@ -145,7 +145,6 @@ $.extend(SoloEditor.prototype, {
             "export",
             "outline",
             "preview",
-            "format",
             "devtools",
             "info",
             "help",
