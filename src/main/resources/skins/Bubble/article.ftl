@@ -75,6 +75,7 @@
             <#include "../../common-template/toc.ftl"/>
         </div>
     </#if>
+        <div id="gitalk-container"></div>
         <div id="b3logsolocomments"></div>
         <div class="wrapper">
             <div id="vcomment"
