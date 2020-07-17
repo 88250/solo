@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.13, Jul 8, 2020
+ * @version 3.0.1.14, Jul 17, 2020
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -63,7 +63,7 @@ public final class Server extends BaseServer {
     /**
      * Solo version.
      */
-    public static final String VERSION = "4.2.0";
+    public static final String VERSION = "4.3.0";
 
     /**
      * In-Memory tail logger writer.

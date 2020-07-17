@@ -1,3 +1,22 @@
+## v4.3.0 / 2020-07-17
+
+### 引入特性
+
+* [复制粘贴时如果包含图片自动替换为社区图床](https://github.com/88250/solo/issues/114)
+
+### 改进功能
+
+* [优化随机文章算法](https://github.com/88250/solo/issues/156)
+* [开发模式下不走页面静态缓存](https://github.com/88250/solo/issues/159)
+* [彻底移除本地评论系统](https://github.com/88250/solo/issues/161)
+* [重写编辑器分屏预览模式](https://github.com/88250/solo/issues/163)
+
+### 开发重构
+
+* [清理后台无用的配置项](https://github.com/88250/solo/issues/160)
+* [删除 v2.9.9~v3.6.2 升级脚本](https://github.com/88250/solo/issues/164)
+* [移除默认的黑客派导航](https://github.com/88250/solo/issues/165)
+
 ## v4.2.0 / 2020-06-28
 
 ### 引入特性

@@ -1,3 +1,54 @@
+## v4.3.0 / 2020-07-17
+
+### 引入特性
+
+* [复制粘贴时如果包含图片自动替换为社区图床](https://github.com/88250/solo/issues/114)
+
+### 改进功能
+
+* [优化随机文章算法](https://github.com/88250/solo/issues/156)
+* [开发模式下不走页面静态缓存](https://github.com/88250/solo/issues/159)
+* [彻底移除本地评论系统](https://github.com/88250/solo/issues/161)
+* [重写编辑器分屏预览模式](https://github.com/88250/solo/issues/163)
+
+### 开发重构
+
+* [清理后台无用的配置项](https://github.com/88250/solo/issues/160)
+* [删除 v2.9.9~v3.6.2 升级脚本](https://github.com/88250/solo/issues/164)
+* [移除默认的黑客派导航](https://github.com/88250/solo/issues/165)
+
+## v4.2.0 / 2020-06-28
+
+### 引入特性
+
+* [同步 GitHub solo-blog 仓库功能](https://github.com/88250/solo/issues/125)
+* [支持 Unix domain socket](https://github.com/88250/solo/issues/127)
+* [新增 Markdown zip 导入方式](https://github.com/88250/solo/issues/128)
+
+### 改进功能
+
+* [推送社区需弹框确认](https://github.com/88250/solo/issues/120)
+* [支持 flac 音频格式解析](https://github.com/88250/solo/issues/129)
+* [增加取消选中文本朗读功能开关](https://github.com/88250/solo/issues/141)
+* [Markdown 中文排版段首缩进配置开关](https://github.com/88250/solo/issues/146)
+* [自动生成的文章链接重复问题优化](https://github.com/88250/solo/issues/147)
+* [伺服 /favicon.ico](https://github.com/88250/solo/issues/154)
+* [静态博客页脚的相关阅读、随机阅读不显示文章列表](https://github.com/88250/solo/issues/155)
+
+### 开发重构
+
+* [Repository 查询结果 rslts 使用 List 类型](https://github.com/88250/solo/issues/133)
+* [社区交互接口返回码重构](https://github.com/88250/solo/issues/150)
+* [sc 调整为 code](https://github.com/88250/solo/issues/151)
+
+### 修复缺陷
+
+* [大纲 bug](https://github.com/88250/solo/issues/130)
+* [导航管理自定义链接中的空格替换为短横线](https://github.com/88250/solo/issues/132)
+* [添加导航和文章链接重复](https://github.com/88250/solo/issues/135)
+* [PJAX + 页面缓存导致样式丢失的问题](https://github.com/88250/solo/issues/137)
+* [修复登录验证安全漏洞](https://github.com/88250/solo/issues/138)
+
 ## v4.1.0 / 2020-05-19
 
 ### 引入特性
