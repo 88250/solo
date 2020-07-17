@@ -93,6 +93,7 @@
                                 <div id="externalRelevantArticles" class="article-relative"></div>
                             </div>
                             <div class="line right"></div>
+                                <div style="margin: 88px 100px 0 99px;background-color: #effdff;border-radius: 10px;padding: 10px;" id="gitalk-container"></div>
                                 <div id="b3logsolocomments"></div>
                                 <div id="vcomment"
                                      style="margin: 88px 100px 0 99px;background-color: #effdff;border-radius: 10px;padding: 10px;"

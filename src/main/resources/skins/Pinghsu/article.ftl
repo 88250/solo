@@ -81,6 +81,7 @@
     </div>
     <div class="body--gray post__gray">
         <div class="wrapper comment">
+                <div id="gitalk-container" style="padding: 30px 0;"></div>
                 <div id="b3logsolocomments"></div>
                 <div id="vcomment" style="padding: 30px 0;" data-name="${article.authorName}" data-postId="${article.oId}"></div>
 

@@ -66,6 +66,7 @@
                                 </div>
                             </div>
                         </div>
+                            <div id="gitalk-container"></div>
                             <div id="b3logsolocomments"></div>
                             <div id="vcomment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                     </div>

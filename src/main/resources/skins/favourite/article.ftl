@@ -112,6 +112,8 @@
                             <div id="randomArticles" class="article-relative"></div>
                             <div id="externalRelevantArticles" class="article-relative"></div>
                         </div>
+                            <div id="gitalk-container" class="comments"
+                                 style="padding-top: 15px"></div>
                             <div id="b3logsolocomments"></div>
                             <div id="vcomment"
                                  class="comments"

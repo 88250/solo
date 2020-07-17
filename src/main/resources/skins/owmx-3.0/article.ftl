@@ -95,6 +95,7 @@ ${topBarReplacement}
             <div id="relevantArticles" class="article-relative"></div>
             <div id="randomArticles"></div>
             <div id="externalRelevantArticles"></div>
+                <div id="gitalk-container" class="comments"></div>
                 <div id="b3logsolocomments"></div>
                 <div id="vcomment"
                      class="comments"

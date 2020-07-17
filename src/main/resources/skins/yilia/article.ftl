@@ -114,6 +114,7 @@
         </#if>
         <br>
     </article>
+        <div style="padding: 30px 60px 30px 50px;" id="gitalk-container"></div>
         <div id="b3logsolocomments"></div>
         <div id="vcomment" style="padding: 30px 60px 30px 50px;" data-name="${article.authorName}"
              data-postId="${article.oId}"></div>

@@ -84,6 +84,7 @@
                 <#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
                 <div id="externalRelevantArticles" class="fn-wrap"></div>
                 </#if>
+                    <div id="gitalk-container" style="margin-top: 100px" class="fn-wrap"></div>
                     <div id="b3logsolocomments"></div>
                     <div id="vcomment" style="margin-top: 100px" class="fn-wrap" data-name="${article.authorName}" data-postId="${article.oId}"></div>
             </main>

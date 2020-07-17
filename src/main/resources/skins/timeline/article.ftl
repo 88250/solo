@@ -108,6 +108,7 @@ ${topBarReplacement}
                     <#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
                     <div id="externalRelevantArticles"></div>
                     </#if>
+                        <div id="gitalk-container" class="module"></div>
                         <div id="b3logsolocomments"></div>
                         <div id="vcomment" class="module" data-name="${article.authorName}" data-postId="${article.oId}"></div>
                 </div>

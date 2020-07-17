@@ -97,6 +97,7 @@
                             <div id="externalRelevantArticles"></div>
                         </div>
                     </div>
+                        <div id="gitalk-container" style="margin:15px 5px 0 5px;padding: 10px;background-color: #F5F5F5;box-sizing: border-box"></div>
                         <div id="b3logsolocomments"></div>
                         <div id="vcomment" style="margin:15px 5px 0 5px;padding: 10px;background-color: #F5F5F5;box-sizing: border-box"
                              data-name="${article.authorName}" data-postId="${article.oId}"></div>

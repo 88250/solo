@@ -123,6 +123,8 @@
                     </div>
                 </div>
             </#if>
+                <div id="gitalk-container" class="module__content"
+                     style="border-radius: 5px;margin-bottom: 30px;box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.2);transition: all .3s;"></div>
                 <div id="b3logsolocomments"></div>
                 <div id="vcomment" class="module__content"
                      style="border-radius: 5px;margin-bottom: 30px;box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.2);transition: all .3s;"

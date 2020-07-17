@@ -111,6 +111,7 @@
                     <div class="fn-flex-1" id="relevantArticles"></div>
                     <div class="fn-flex-1" id="randomArticles"></div>
                 </div>
+                    <div id="gitalk-container" class="article__comment"></div>
                     <div id="b3logsolocomments"></div>
                     <div id="vcomment" class="article__comment" data-name="${article.authorName}" data-postId="${article.oId}"></div>
             </div>

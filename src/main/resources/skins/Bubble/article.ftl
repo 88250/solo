@@ -75,7 +75,6 @@
             <#include "../../common-template/toc.ftl"/>
         </div>
     </#if>
-        <div id="b3logsolocomments"></div>
         <div class="wrapper">
             <div id="gitalk-container"></div>
             <div id="vcomment"
@@ -86,6 +85,7 @@
         box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         padding: 20px;"
                  data-name="${article.authorName}" data-postId="${article.oId}"></div>
+            <div id="b3logsolocomments"></div>
         </div>
     <div class="article__bottom">
         <div class="wrapper">
