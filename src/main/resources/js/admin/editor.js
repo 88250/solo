@@ -169,7 +169,6 @@ $.extend(SoloEditor.prototype, {
             'insert-after',
             'fullscreen',
             'preview',
-            'format',
             'info',
             'help',
           ],
