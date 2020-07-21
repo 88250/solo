@@ -45,7 +45,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
- * @version 2.0.0.1, Feb 27, 2020
+ * @version 2.0.1.0, Jul 21, 2020
  * @since 2.0.0
  */
 @Singleton
@@ -143,9 +143,7 @@ public class CategoryConsole {
      * </p>
      *
      * @param context the specified request context
-     * @throws Exception exception
      */
-    @SuppressWarnings("unchecked")
     public void getCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -165,7 +163,9 @@ public class CategoryConsole {
                 }
                 tagBuilder.append(tag.optString(Tag.TAG_TITLE)).append(",");
             }
-            tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+            if (0 < tagBuilder.length()) {
+                tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+            }
             result.put(Category.CATEGORY_T_TAGS, tagBuilder.toString());
 
             renderer.setJSONObject(result);
