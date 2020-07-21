@@ -20,7 +20,7 @@
         <div>
             <#list mostUsedCategories as category>
                 <a class="tag vditor-tooltipped vditor-tooltipped__n"
-                   aria-label="${category.categoryTagCnt} ${cntLabel}${tagsLabel}"
+                   aria-label="${category.categoryPublishedArticleCount} ${articleLabel}"
                    href="${servePath}/category/${category.categoryURI}">${category.categoryTitle}</a>
             </#list>
         </div>

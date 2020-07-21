@@ -29,7 +29,7 @@
             <a href="${servePath}" class="ft__a">${blogTitle}</a> - ${categoryLabel}
         </h2>
         <div class="ft__center">
-            ${categories?size} ${cntLabel}${categoryLabel}
+            ${categories?size} ${categoryLabel}
         </div>
         <div class="articles">
             <br>
@@ -37,7 +37,7 @@
                 <a href="${servePath}/category/${category.categoryURI}"
                    class="other__item">
                     ${category.categoryTitle} -
-                    <b>${category.categoryTagCnt}</b> ${tagsLabel}
+                    <b>${category.categoryPublishedArticleCount}</b> ${articleLabel}
                 </a>
             </#list>
             <br><br>

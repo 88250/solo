@@ -33,7 +33,7 @@
             <ul class="tags">
                 <#list mostUsedCategories as category>
                     <li>
-                        <sup>[${category.categoryTagCnt}]</sup>
+                        <sup>[${category.categoryPublishedArticleCount}]</sup>
                         <a class="tag" href="${servePath}/category/${category.categoryURI}">
                             ${category.categoryTitle}</a>
                     </li>

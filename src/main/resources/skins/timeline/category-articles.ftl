@@ -25,7 +25,7 @@
         <h3 id="category" class="nav-abs">
             ${categoryLabel}:
             ${category.categoryTitle}
-            (${category.categoryTagCnt})<small> ${category.categoryDescription}</small>
+            (${category.categoryPublishedArticleCount})<small> ${category.categoryDescription}</small>
         </h3>
         <#include "article-list.ftl">
         <#include "footer.ftl">

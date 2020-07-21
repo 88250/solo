@@ -34,7 +34,7 @@
                             <header class="post-header">
                                 <h2>
                                     <a class="post-title" href="${servePath}/category/${category.categoryURI}">
-                                        ${category.categoryTitle} (${category.categoryTagCnt})</a>
+                                        ${category.categoryTitle} (${category.categoryPublishedArticleCount})</a>
                                     <small>${category.categoryDescription}</small>
                                 </h2>
                             </header>

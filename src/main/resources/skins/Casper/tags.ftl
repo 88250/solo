@@ -35,7 +35,7 @@
                  <a href="${servePath}/category/${category.categoryURI}">
                      ${category.categoryTitle}
                  </a>
-                 <span>${category.categoryTagCnt} ${tagLabel}</span>
+                 <span>${category.categoryPublishedArticleCount} ${articleLabel}</span>
              </span>
          </#list>
         </div>

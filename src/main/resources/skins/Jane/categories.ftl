@@ -28,14 +28,14 @@
             <i class="icon__category"></i> ${categoryLabel}${articleLabel}
         </h2>
         <div class="ft__gray">
-        ${categories?size} ${cntLabel}${categoryLabel}
+        ${categories?size} ${categoryLabel}
         </div>
         <div class="tags fn__clear">
             <#list categories as category>
                 <a href="${servePath}/category/${category.categoryURI}"
                    class="ft__red">
                     ${category.categoryTitle}
-                    <span class="ft__gray">(${category.categoryTagCnt} ${tagsLabel})</span>
+                    <span class="ft__gray">(${category.categoryPublishedArticleCount} ${articleLabel})</span>
                 </a>
             </#list>
         </div>

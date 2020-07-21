@@ -28,7 +28,7 @@
                 <div class="col-sm-8 site article-list">
                     <h2>
                         ${category.categoryTitle}
-                        (${category.categoryTagCnt})<small> ${category.categoryDescription}</small>
+                        (${category.categoryPublishedArticleCount})<small> ${category.categoryDescription}</small>
                     </h2>
                     <#include "article-list.ftl">
                 </div>

@@ -29,7 +29,7 @@
             <main>
                 <#list mostUsedCategories as category>
                     <a href="${servePath}/category/${category.categoryURI}"
-                       aria-label="${category.categoryTagCnt} ${cntLabel}${tagsLabel}"
+                       aria-label="${category.categoryPublishedArticleCount} ${articleLabel}"
                        class="tag vditor-tooltipped vditor-tooltipped__n">
                         ${category.categoryTitle}</a>
                 </#list>

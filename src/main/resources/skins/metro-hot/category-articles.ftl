@@ -28,7 +28,7 @@
                     <h2>
                         ${categoryLabel}:
                         ${category.categoryTitle}
-                        (${category.categoryTagCnt})<small> ${category.categoryDescription}</small>
+                        (${category.categoryPublishedArticleCount})<small> ${category.categoryDescription}</small>
                     </h2>
                     <#if 0 != paginationPageCount>
                     <div class="pagination">

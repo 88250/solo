@@ -25,7 +25,7 @@
             <h2 class="classify-name">
                 ${categoryLabel}：
                 ${category.categoryTitle}
-                (${category.categoryTagCnt})<small> ${category.categoryDescription}</small>
+                (${category.categoryPublishedArticleCount})<small> ${category.categoryDescription}</small>
             </h2>
             <#include "article-list.ftl">
             <#include "footer.ftl">

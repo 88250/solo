@@ -33,7 +33,7 @@
                         </div>
                         <div class="kind-panel">
                                 ${category.categoryTitle}
-                           (${category.categoryTagCnt})  ${category.categoryDescription}
+                           (${category.categoryPublishedArticleCount})  ${category.categoryDescription}
                         </div>
                         <#include "article-list.ftl">
                     </div>

@@ -32,7 +32,7 @@
                             <h2 class="title">
                                 ${categoryLabel}:
                                 ${category.categoryTitle}
-                                (${category.categoryTagCnt})<small> ${category.categoryDescription}</small>
+                                (${category.categoryPublishedArticleCount})<small> ${category.categoryDescription}</small>
                             </h2>
                             <#include "article-list.ftl">
                         </div>

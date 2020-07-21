@@ -39,7 +39,7 @@
                     <#list mostUsedCategories as category>
                         <li>
                             <a href="${servePath}/category/${category.categoryURI}">
-                                ${category.categoryTitle}</a> (${category.categoryTagCnt})
+                                ${category.categoryTitle}</a> (${category.categoryPublishedArticleCount})
                         </li>
                     </#list>
                 </ul>

@@ -28,7 +28,7 @@
             <i class="icon__link"></i> ${linkLabel}
         </h2>
         <div class="ft__gray">
-        ${links?size} ${cntLabel}${linkLabel}
+        ${links?size} ${linkLabel}
         </div>
         <div class="tags fn__clear">
             <#list links as link>

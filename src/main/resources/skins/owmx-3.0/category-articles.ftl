@@ -28,7 +28,7 @@
                     <cite>${categoryLabel}</cite>
                     <blockquote>
                             ${category.categoryTitle}
-                        (${category.categoryTagCnt}) ${category.categoryDescription}
+                        (${category.categoryPublishedArticleCount}) ${category.categoryDescription}
                     </blockquote>
                     <#include "article-list.ftl">
                 </article>
