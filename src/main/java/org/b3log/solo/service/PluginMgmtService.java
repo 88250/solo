@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
@@ -33,6 +27,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.repository.PluginRepository;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +38,7 @@ import java.util.Map;
  * Plugin management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 27, 2018
+ * @version 1.0.0.2, Jun 19, 2020
  * @since 0.4.0
  */
 @Service
@@ -156,33 +151,25 @@ public class PluginMgmtService {
      * @return for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
      */
     public JSONObject setPluginStatus(final String pluginId, final String status) {
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
-
         final JSONObject ret = new JSONObject();
-
         for (final AbstractPlugin plugin : plugins) {
             if (plugin.getId().equals(pluginId)) {
                 final Transaction transaction = pluginRepository.beginTransaction();
-
                 try {
                     plugin.setStatus(PluginStatus.valueOf(status));
                     pluginRepository.update(pluginId, plugin.toJSONObject());
-
                     transaction.commit();
-
                     plugin.changeStatus();
-
-                    ret.put(Keys.STATUS_CODE, true);
+                    ret.put(Keys.CODE, StatusCodes.SUCC);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));
-
                     return ret;
                 } catch (final Exception e) {
                     if (transaction.isActive()) {
@@ -190,18 +177,15 @@ public class PluginMgmtService {
                     }
 
                     LOGGER.log(Level.ERROR, "Set plugin status error", e);
-
-                    ret.put(Keys.STATUS_CODE, false);
+                    ret.put(Keys.CODE, StatusCodes.ERR);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
-
                     return ret;
                 }
             }
         }
 
-        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
-
         return ret;
     }
 
@@ -214,7 +198,6 @@ public class PluginMgmtService {
      */
     public JSONObject updatePluginSetting(final String pluginId, final String setting) {
         final JSONObject ret = new JSONObject();
-
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
         for (final AbstractPlugin plugin : plugins) {
@@ -225,29 +208,24 @@ public class PluginMgmtService {
                     final JSONObject pluginJson = plugin.toJSONObject();
                     pluginJson.put(Plugin.PLUGIN_SETTING, setting);
                     pluginRepository.update(pluginId, pluginJson);
-
                     transaction.commit();
-
-                    ret.put(Keys.STATUS_CODE, true);
+                    ret.put(Keys.CODE, StatusCodes.SUCC);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));
-
                     return ret;
                 } catch (final Exception e) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
                     LOGGER.log(Level.ERROR, "Set plugin status error", e);
-                    ret.put(Keys.STATUS_CODE, false);
+                    ret.put(Keys.CODE, StatusCodes.ERR);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
-
                     return ret;
                 }
             }
         }
 
-        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.CODE, StatusCodes.ERR);
         ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
-
         return ret;
 
     }

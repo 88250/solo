@@ -2,25 +2,19 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 /**
  * @fileoverview article for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.0, Dec 15, 2019
+ * @version 1.6.1.1, Jun 24, 2020
  */
 admin.article = {
   // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -53,7 +47,7 @@ admin.article = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -78,9 +72,6 @@ admin.article = {
         $('#permalink').val(result.article.articlePermalink)
         $('#viewPwd').val(result.article.articleViewPwd)
 
-        $('#articleCommentable').
-          prop('checked', result.article.articleCommentable)
-
         // signs
         var signs = result.article.signs
         $('.signs button').each(function (i) {
@@ -104,9 +95,7 @@ admin.article = {
    * @param {String} title 文章标题
    */
   del: function (id, fromId, title) {
-    var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' +
-      htmlDecode(title) + '"?')
-    if (isDelete) {
+    if (confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + htmlDecode(title) + '"?')) {
       $('#loadMsg').text(Label.loadingLabel)
       $('#tipMsg').text('')
 
@@ -116,7 +105,7 @@ admin.article = {
         cache: false,
         success: function (result, textStatus) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#loadMsg').text('')
             return
           }
@@ -173,7 +162,6 @@ admin.article = {
           'articleStatus': articleStatus,
           'articleSignId': signId,
           'postToCommunity': $('#postToCommunity').prop('checked'),
-          'articleCommentable': $('#articleCommentable').prop('checked'),
           'articleViewPwd': $('#viewPwd').val(),
         },
       }
@@ -185,7 +173,7 @@ admin.article = {
         data: JSON.stringify(requestJSONObject),
         success: function (result) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             return
           }
 
@@ -242,7 +230,6 @@ admin.article = {
           'articlePermalink': $('#permalink').val(),
           'articleStatus': articleStatus,
           'articleSignId': signId,
-          'articleCommentable': $('#articleCommentable').prop('checked'),
           'articleViewPwd': $('#viewPwd').val(),
           'postToCommunity': $('#postToCommunity').prop('checked'),
         },
@@ -255,7 +242,7 @@ admin.article = {
         data: JSON.stringify(requestJSONObject),
         success: function (result, textStatus) {
           $('#tipMsg').text(result.msg)
-          if (!result.sc) {
+          if (0 !== result.code) {
             return
           }
 
@@ -287,7 +274,7 @@ admin.article = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -379,7 +366,7 @@ admin.article = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -422,6 +409,7 @@ admin.article = {
 
     // editor
     admin.editors.articleEditor = new SoloEditor({
+      outline: true,
       id: 'articleContent',
       height: 500,
       fun: fun,
@@ -445,7 +433,7 @@ admin.article = {
         type: 'GET',
         cache: false,
         success: function (result, textStatus) {
-          if (!result.sc) {
+          if (0 !== result.code) {
             $('#loadMsg').text(result.msg)
             return
           }
@@ -486,7 +474,7 @@ admin.article = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           return
         }
 
@@ -540,7 +528,7 @@ admin.article = {
     $('#loadMsg').text('')
   },
   /**
-   * @description: 仿重复提交，点击一次后，按钮设置为 disabled
+   * @description: 防重复提交，点击一次后，按钮设置为 disabled
    */
   _addDisabled: function () {
     $('#unSubmitArticle').attr('disabled', 'disabled')
@@ -548,7 +536,7 @@ admin.article = {
     $('#submitArticle').attr('disabled', 'disabled')
   },
   /**
-   * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
+   * @description: 防重复提交，当后台有数据返回后，按钮移除 disabled 状态
    */
   _removeDisabled: function () {
     $('#unSubmitArticle').removeAttr('disabled')

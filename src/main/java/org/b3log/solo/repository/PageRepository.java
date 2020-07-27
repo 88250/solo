@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.repository;
 
@@ -23,7 +17,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.cache.PageCache;
 import org.b3log.solo.model.Page;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -92,13 +85,7 @@ public class PageRepository extends AbstractRepository {
      */
     public JSONObject getByPermalink(final String permalink) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_PERMALINK, FilterOperator.EQUAL, permalink)).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -109,13 +96,11 @@ public class PageRepository extends AbstractRepository {
      */
     public int getMaxOrder() throws RepositoryException {
         final Query query = new Query().addSort(Page.PAGE_ORDER, SortDirection.DESCENDING).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        final JSONObject result = getFirst(query);
+        if (null == result) {
             return -1;
         }
-
-        return array.optJSONObject(0).optInt(Page.PAGE_ORDER);
+        return result.optInt(Page.PAGE_ORDER);
     }
 
     /**
@@ -133,13 +118,7 @@ public class PageRepository extends AbstractRepository {
 
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.LESS_THAN, page.optInt(Page.PAGE_ORDER))).
                 addSort(Page.PAGE_ORDER, SortDirection.DESCENDING).setPage(1, 1).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (1 != array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -157,13 +136,7 @@ public class PageRepository extends AbstractRepository {
 
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.GREATER_THAN, page.optInt(Page.PAGE_ORDER))).
                 addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPage(1, 1).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (1 != array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -175,13 +148,7 @@ public class PageRepository extends AbstractRepository {
      */
     public JSONObject getByOrder(final int order) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order)).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        return getFirst(query);
     }
 
     /**
@@ -192,7 +159,6 @@ public class PageRepository extends AbstractRepository {
      */
     public List<JSONObject> getPages() throws RepositoryException {
         final Query query = new Query().addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(1);
-
         return getList(query);
     }
 }

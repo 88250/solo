@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
@@ -34,6 +28,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.Server;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
@@ -46,8 +41,8 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
- * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.19, Jun 6, 2019
+ * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
+ * @version 1.1.0.20, Mar 17, 2020
  * @since 0.4.0
  */
 @Service
@@ -113,6 +108,15 @@ public class UserMgmtService {
             final JSONObject requestJSON = new JSONObject().
                     put(User.USER_NAME, admin.optString(User.USER_NAME)).
                     put(UserExt.USER_B3_KEY, admin.optString(UserExt.USER_B3_KEY));
+            final JSONObject preference = optionQueryService.getPreference();
+            final JSONObject client = new JSONObject().
+                    put("clientTitle", preference.getString(Option.ID_C_BLOG_TITLE)).
+                    put("clientHost", Latkes.getServePath()).
+                    put("clientName", "Solo").
+                    put("clientVersion", Server.VERSION).
+                    put("userName", admin.optString(User.USER_NAME)).
+                    put("userB3Key", admin.optString(UserExt.USER_B3_KEY));
+            requestJSON.put("client", client);
             final HttpResponse res = HttpRequest.post("https://hacpai.com/user/usite").trustAllCerts(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).
                     body(requestJSON.toString()).send();
@@ -121,13 +125,12 @@ public class UserMgmtService {
             }
             res.charset("UTF-8");
             final JSONObject result = new JSONObject(res.bodyText());
-            if (0 != result.optInt(Keys.STATUS_CODE)) {
+            if (0 != result.optInt(Keys.CODE)) {
                 return;
             }
             usite = result.optJSONObject(Common.DATA);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets usite failed", e);
-
             return;
         }
 
@@ -142,8 +145,6 @@ public class UserMgmtService {
             optionMgmtService.addOrUpdateOption(usiteOpt);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates usite option failed", e);
-
-            return;
         }
     }
 

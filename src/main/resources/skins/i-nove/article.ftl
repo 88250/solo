@@ -3,22 +3,15 @@
     Solo - A small and beautiful blogging system written in Java.
     Copyright (c) 2010-present, b3log.org
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    Solo is licensed under Mulan PSL v2.
+    You can use this software according to the terms and conditions of the Mulan PSL v2.
+    You may obtain a copy of Mulan PSL v2 at:
+            http://license.coscl.org.cn/MulanPSL2
+    THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+    See the Mulan PSL v2 for more details.
 
 -->
 <#include "../../common-template/macro-common_head.ftl">
-<#include "macro-comments.ftl">
 <#include "../../common-template/macro-comment_script.ftl">
 <!DOCTYPE html>
 <html>
@@ -60,14 +53,12 @@
                                         <span class="dateIcon left"></span>
                                         ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
                                     </div>
-                                    <#if commentable>
                                     <div class="right">
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}#b3logsolocomments" class="left">
                                             <span class="left articles-commentIcon" title="${commentLabel}"></span>
-                                            <span data-uvstatcmt="${article.oId}">${article.articleCommentCount}</span>
+                                            <span data-uvstatcmt="${article.oId}">0</span>
                                         </a>
                                     </div>
-                                    </#if>
                                     <div class="clear"></div>
                                 </div>
                                 <div class="vditor-reset vditor-reset--article">
@@ -81,7 +72,7 @@
                                 <div class="margin5">
                                     <a rel="nofollow" class="left" href="${servePath}${article.articlePermalink}">
                                         <span title="${viewLabel}" class="left article-browserIcon"></span>
-                                        <span data-uvstaturl="${servePath}${article.articlePermalink}">${article.articleViewCount}</span>
+                                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                                     </a>
                                     <div class="left">
                                         <span title="${tagLabel}" class="tagsIcon"></span>
@@ -112,17 +103,11 @@
                                 <div id="randomArticles" class="article-relative"></div>
                                 <div id="externalRelevantArticles" class="article-relative"></div>
                             </div>
-                            <#if commentable>
+                                <div id="gitalk-container" class="comments" style="padding-top: 15px"></div>
                                 <div id="b3logsolocomments"></div>
                                 <div id="vcomment" class="comments"
                                  style="padding-top: 15px"
                                  data-name="${article.authorName}" data-postId="${article.oId}"></div>
-                                <#if !staticSite>
-                                <div id="soloComments" style="display: none;">
-                                    <@comments commentList=articleComments article=article></@comments>
-                                </div>
-                                </#if>
-                            </#if>
                         </div>
                         <div class="right">
                             <#include "side.ftl">
@@ -134,7 +119,7 @@
                     </div>
                 </div>
             </div>
-            <@comment_script oId=article.oId commentable=article.commentable>
+            <@comment_script oId=article.oId>
             page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
             <#if 0 != randomArticlesDisplayCount>
             page.loadRandomArticles();

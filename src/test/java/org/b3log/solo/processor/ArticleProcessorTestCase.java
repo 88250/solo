@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor;
 
@@ -34,24 +28,16 @@ import org.testng.annotations.Test;
  * {@link ArticleProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 22, 2019
+ * @version 1.0.1.5, Jun 28, 2020
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
 public class ArticleProcessorTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * getArchivesArticlesByPage.
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void getArchivesArticlesByPage() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/articles/archives/" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM"));
@@ -60,7 +46,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "{\"code\":0"));
     }
 
     /**
@@ -68,9 +54,9 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void getArticleContent() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
@@ -86,7 +72,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
     /**
      * getArticlesByPage.
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void getArticlesByPage() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/articles");
@@ -95,7 +81,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "{\"code\":0"));
     }
 
     /**
@@ -103,7 +89,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void getAuthorsArticlesByPage() throws Exception {
         final JSONObject admin = getUserRepository().getAdmin();
         final String userId = admin.optString(Keys.OBJECT_ID);
@@ -115,17 +101,17 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "{\"code\":0"));
     }
 
     /**
      * getRandomArticles.
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void getRandomArticles() {
         final MockRequest request = mockRequest();
-        request.setRequestURI("/articles/random");
-        request.setMethod("POST");
+        request.setRequestURI("/articles/random.json");
+        request.setMethod("GET");
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
@@ -138,13 +124,13 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void getRelevantArticles() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
-        request.setRequestURI("/article/id/" + articleId + "/relevant/articles");
+        request.setRequestURI("/article/relevant/" + articleId + ".json");
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
@@ -155,7 +141,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
     /**
      * getTagArticlesByPage.
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void getTagArticlesByPage() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/articles/tags/Solo");
@@ -164,18 +150,18 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "{\"code\":0"));
     }
 
     /**
      * showArchiveArticles.
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void showArchiveArticles() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/archives/" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM"));
         request.setParameter("p", "1");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
@@ -188,14 +174,14 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void showArticle() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
 
         final MockRequest request = mockRequest();
         request.setRequestURI("/article");
         request.setAttribute(Article.ARTICLE, article);
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
@@ -208,15 +194,15 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
+    @Test
     public void showArticlePwdForm() throws Exception {
-        final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
+        final JSONObject article = getArticleRepository().getFirst(new Query());
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/article-pwd");
         request.setParameter("articleId", articleId);
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 

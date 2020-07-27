@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.model.rss;
 
@@ -77,7 +71,7 @@ public final class Item {
     /**
      * Categories.
      */
-    private Set<Category> categories = new HashSet<>();
+    private final Set<Category> categories = new HashSet<>();
 
     /**
      * Start guid element.
@@ -249,35 +243,15 @@ public final class Item {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("<item>").append(START_TITLE_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(title));
-        stringBuilder.append(END_TITLE_ELEMENT);
-
-        stringBuilder.append(START_LINK_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(link));
-        stringBuilder.append(END_LINK_ELEMENT);
-
-        stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append("<![CDATA[" + description + "]]>");
-        stringBuilder.append(END_DESCRIPTION_ELEMENT);
-
-        stringBuilder.append(START_AUTHOR_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(author));
-        stringBuilder.append(END_AUTHOR_ELEMENT);
-
-        stringBuilder.append(START_GUID_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(guid));
-        stringBuilder.append(END_GUID_ELEMENT);
-
+        stringBuilder.append("<item>").append(START_TITLE_ELEMENT).append(StringEscapeUtils.escapeXml(title)).append(END_TITLE_ELEMENT);
+        stringBuilder.append(START_LINK_ELEMENT).append(StringEscapeUtils.escapeXml(link)).append(END_LINK_ELEMENT);
+        stringBuilder.append(START_DESCRIPTION_ELEMENT).append("<![CDATA[" + description + "]]>").append(END_DESCRIPTION_ELEMENT);
+        stringBuilder.append(START_AUTHOR_ELEMENT).append(StringEscapeUtils.escapeXml(author)).append(END_AUTHOR_ELEMENT);
+        stringBuilder.append(START_GUID_ELEMENT).append(StringEscapeUtils.escapeXml(guid)).append(END_GUID_ELEMENT);
         for (final Category category : categories) {
             stringBuilder.append(category.toString());
         }
-
-        stringBuilder.append(START_PUB_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.format(pubDate, "EEE, dd MMM yyyy HH:mm:ss Z", Locale.US));
-        stringBuilder.append(END_PUB_DATE_ELEMENT).append("</item>");
-
+        stringBuilder.append(START_PUB_DATE_ELEMENT).append(DateFormatUtils.format(pubDate, "EEE, dd MMM yyyy HH:mm:ss Z", Locale.US)).append(END_PUB_DATE_ELEMENT).append("</item>");
         return stringBuilder.toString();
     }
 }

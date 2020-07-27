@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.event;
 
@@ -41,14 +35,14 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for sending article to B3log Rhythm. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
+ * This listener is responsible for sending article to B3log Rhythm. Sees <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  * <p>
  * API spec: https://hacpai.com/article/1457158841475
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.25, Jan 12, 2020
+ * @version 1.0.2.26, Jan 22, 2020
  * @since 0.3.1
  */
 @Singleton
@@ -79,19 +73,16 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             final String title = originalArticle.getString(Article.ARTICLE_TITLE);
             if (Article.ARTICLE_STATUS_C_PUBLISHED != originalArticle.optInt(Article.ARTICLE_STATUS)) {
                 LOGGER.log(Level.INFO, "Ignored push a draft [title={}] to Rhy", title);
-
                 return;
             }
 
             if (StringUtils.isNotBlank(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
                 LOGGER.log(Level.INFO, "Article [title={}] is a password article, ignored push to Rhy", title);
-
                 return;
             }
 
             if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)) {
                 LOGGER.log(Level.INFO, "Article [title={}] push flag [postToCommunity] is [false], ignored push to Rhy", title);
-
                 return;
             }
 
@@ -109,6 +100,8 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             final JSONObject author = articleQueryService.getAuthor(originalArticle);
             final JSONObject client = new JSONObject().
                     put("title", preference.getString(Option.ID_C_BLOG_TITLE)).
+                    put("subTitle", preference.optString(Option.ID_C_BLOG_SUBTITLE)).
+                    put("favicon", preference.optString(Option.ID_C_FAVICON_URL)).
                     put("host", Latkes.getServePath()).
                     put("name", "Solo").
                     put("ver", Server.VERSION).

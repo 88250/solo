@@ -2,32 +2,32 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tika.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.*;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.http.renderer.BinaryRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -40,24 +40,25 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Index processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
- * @author <a href="https://vanessa.b3log.org">Vanessa</a>
- * @version 1.2.4.18, Jan 7, 2020
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
+ * @version 2.0.0.4, Jun 25, 2020
  * @since 0.3.1
  */
-@RequestProcessor
+@Singleton
 public class IndexProcessor {
 
     /**
@@ -84,12 +85,6 @@ public class IndexProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
-
-    /**
      * Initialization service.
      */
     @Inject
@@ -99,39 +94,15 @@ public class IndexProcessor {
      * Shows index with the specified context.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = {"", "/", "/index.html"}, method = HttpMethod.GET)
     public void showIndex(final RequestContext context) {
         final Request request = context.getRequest();
-        final Response response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         try {
             final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = optionQueryService.getPreference();
-
-            // 前台皮肤切换 https://github.com/b3log/solo/issues/12060
-            String specifiedSkin = Skins.getSkinDirName(context);
-            if (StringUtils.isBlank(specifiedSkin)) {
-                final JSONObject skinOpt = optionQueryService.getSkin();
-                specifiedSkin = Solos.isMobile(request) ?
-                        skinOpt.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME) :
-                        skinOpt.optString(Option.ID_C_SKIN_DIR_NAME);
-            }
-            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
-
-            Cookie cookie;
-            if (!Solos.isMobile(request)) {
-                cookie = new Cookie(Common.COOKIE_NAME_SKIN, specifiedSkin);
-            } else {
-                cookie = new Cookie(Common.COOKIE_NAME_MOBILE_SKIN, specifiedSkin);
-            }
-            cookie.setMaxAge(60 * 60); // 1 hour
-            cookie.setPath("/");
-            response.addCookie(cookie);
-
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMPLATE_DIR_NAME), dataModel);
 
             dataModelService.fillIndexArticles(context, dataModel, currentPageNum, preference);
             dataModelService.fillCommon(context, dataModel, preference);
@@ -141,18 +112,64 @@ public class IndexProcessor {
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
             dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, previousPageNum);
-
             final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
             final int nextPageNum = currentPageNum + 1 > pageCount ? pageCount : currentPageNum + 1;
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
             dataModel.put(Common.PATH, "");
-
-            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             context.sendError(404);
         }
+    }
+
+    /**
+     * Favicon bytes cache. &lt;"/favicon.ico", bytes&gt;
+     */
+    private static final Cache<String, Object> FAVICON_CACHE = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build();
+
+    /**
+     * Shows favicon with the specified context.
+     *
+     * @param context the specified context
+     */
+    public void showFavicon(final RequestContext context) {
+        final BinaryRenderer binaryRenderer = new BinaryRenderer("image/x-icon");
+        context.setRenderer(binaryRenderer);
+        final String key = "/favicon.ico";
+        byte[] bytes = (byte[]) FAVICON_CACHE.getIfPresent(key);
+        if (null != bytes) {
+            binaryRenderer.setData(bytes);
+            return;
+        }
+
+        final JSONObject preference = optionQueryService.getPreference();
+        String faviconURL;
+        if (null == preference) {
+            faviconURL = Option.DefaultPreference.DEFAULT_FAVICON_URL;
+        } else {
+            faviconURL = preference.optString(Option.ID_C_FAVICON_URL);
+        }
+
+        try {
+            final HttpResponse response = HttpRequest.get(faviconURL).header("User-Agent", Solos.USER_AGENT).connectionTimeout(3000).timeout(7000).send();
+            if (200 == response.statusCode()) {
+                bytes = response.bodyBytes();
+            } else {
+                throw new Exception();
+            }
+            binaryRenderer.setData(bytes);
+        } catch (final Exception e) {
+            try (final InputStream resourceAsStream = IndexProcessor.class.getResourceAsStream("/images/favicon.ico")) {
+                bytes = IOUtils.toByteArray(resourceAsStream);
+                binaryRenderer.setData(bytes);
+            } catch (final Exception ex) {
+                LOGGER.log(Level.ERROR, "Loads default favicon.ico failed", e);
+                context.sendError(500);
+                return;
+            }
+        }
+
+        FAVICON_CACHE.put(key, bytes);
     }
 
     /**
@@ -160,11 +177,9 @@ public class IndexProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/start", method = HttpMethod.GET)
     public void showStart(final RequestContext context) {
-        if (initService.isInited() && null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) {
+        if (initService.isInited() && null != Solos.getCurrentUser(context)) {
             context.sendRedirect(Latkes.getServePath());
-
             return;
         }
 
@@ -196,12 +211,9 @@ public class IndexProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
     public void logout(final RequestContext context) {
         final Request request = context.getRequest();
-
         Solos.logout(request, context.getResponse());
-
         Solos.addGoogleNoIndex(context);
         context.sendRedirect(Latkes.getServePath());
     }
@@ -211,7 +223,6 @@ public class IndexProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/kill-browser", method = HttpMethod.GET)
     public void showKillBrowser(final RequestContext context) {
         final Request request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "common-template/kill-browser.ftl");
@@ -227,7 +238,6 @@ public class IndexProcessor {
             Keys.fillRuntime(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
             context.sendError(404);
         }
     }

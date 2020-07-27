@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
@@ -26,14 +20,11 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.CategoryRepository;
-import org.b3log.solo.repository.CategoryTagRepository;
-import org.b3log.solo.repository.TagRepository;
-import org.json.JSONArray;
+import org.b3log.solo.repository.*;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -45,7 +36,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
- * @version 1.0.1.4, Sep 1, 2019
+ * @version 1.1.0.0, Mar 29, 2020
  * @since 2.0.0
  */
 @Service
@@ -63,6 +54,18 @@ public class CategoryQueryService {
     private CategoryRepository categoryRepository;
 
     /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Tag-Article repository.
+     */
+    @Inject
+    private TagArticleRepository tagArticleRepository;
+
+    /**
      * Tag repository.
      */
     @Inject
@@ -73,6 +76,48 @@ public class CategoryQueryService {
      */
     @Inject
     private CategoryTagRepository categoryTagRepository;
+
+    /**
+     * Gets published article count of a category specified by the given category id.
+     *
+     * @param categoryId the given category id
+     * @return article count, returns {@code -1} if occurred an exception
+     */
+    public int getPublishedArticleCount(final String categoryId) {
+        try {
+            final List<JSONObject> categoryTags = (List<JSONObject>) categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+            if (categoryTags.isEmpty()) {
+                return 0;
+            }
+
+            final List<String> tagIds = new ArrayList<>();
+            for (JSONObject categoryTag : categoryTags) {
+                tagIds.add(categoryTag.optString(Tag.TAG + "_" + Keys.OBJECT_ID));
+            }
+
+            final StringBuilder queryCount = new StringBuilder("SELECT count(DISTINCT(article.oId)) as `C` FROM ");
+            final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " AS article,").
+                    append(tagArticleRepository.getName() + " AS tag_article").
+                    append(" WHERE article.oId=tag_article.article_oId ").
+                    append(" AND article.").append(Article.ARTICLE_STATUS).append("=?").
+                    append(" AND ").append("tag_article.tag_oId").append(" IN (");
+            for (int i = 0; i < tagIds.size(); i++) {
+                queryStr.append(" ").append(tagIds.get(i));
+                if (i < (tagIds.size() - 1)) {
+                    queryStr.append(",");
+                }
+            }
+            queryStr.append(") ORDER BY `C` DESC");
+            final List<JSONObject> tagArticlesCountResult = articleRepository.
+                    select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_STATUS_C_PUBLISHED);
+
+            return tagArticlesCountResult == null ? 0 : tagArticlesCountResult.get(0).optInt("C");
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets article count failed", e);
+
+            return -1;
+        }
+    }
 
     /**
      * Gets most tag category.
@@ -204,7 +249,6 @@ public class CategoryQueryService {
                 addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
                 addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         if (requestJSONObject.has(Category.CATEGORY_TITLE)) {
             query.setFilter(new PropertyFilter(Category.CATEGORY_TITLE, FilterOperator.EQUAL,
                     requestJSONObject.optString(Category.CATEGORY_TITLE)));
@@ -215,23 +259,16 @@ public class CategoryQueryService {
             result = categoryRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets categories failed", e);
-
             throw new ServiceException(e);
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> categories = CollectionUtils.jsonArrayToList(data);
-
-        ret.put(Category.CATEGORIES, categories);
-
+        ret.put(Category.CATEGORIES, result.opt(Keys.RESULTS));
         return ret;
     }
 

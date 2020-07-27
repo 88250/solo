@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.model.rss;
 
@@ -159,7 +153,7 @@ public final class Channel {
     /**
      * Items.
      */
-    private List<Item> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
 
     /**
      * Gets the atom link.
@@ -299,41 +293,18 @@ public final class Channel {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-
         stringBuilder.append(START);
-
-        stringBuilder.append(START_TITLE_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(title));
-        stringBuilder.append(END_TITLE_ELEMENT);
-
-        stringBuilder.append(START_LINK_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(link));
-        stringBuilder.append(END_LINK_ELEMENT);
-
+        stringBuilder.append(START_TITLE_ELEMENT).append(StringEscapeUtils.escapeXml(title)).append(END_TITLE_ELEMENT);
+        stringBuilder.append(START_LINK_ELEMENT).append(StringEscapeUtils.escapeXml(link)).append(END_LINK_ELEMENT);
         stringBuilder.append(ATOM_LINK_ELEMENT.replace(ATOM_LINK_VARIABLE, atomLink));
-
-        stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(description));
-        stringBuilder.append(END_DESCRIPTION_ELEMENT);
-
-        stringBuilder.append(START_GENERATOR_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(generator));
-        stringBuilder.append(END_GENERATOR_ELEMENT);
-
-        stringBuilder.append(START_LAST_BUILD_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.SMTP_DATETIME_FORMAT.format(lastBuildDate));
-        stringBuilder.append(END_LAST_BUILD_DATE_ELEMENT);
-
-        stringBuilder.append(START_LANGUAGE_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(language));
-        stringBuilder.append(END_LANGUAGE_ELEMENT);
-
+        stringBuilder.append(START_DESCRIPTION_ELEMENT).append(StringEscapeUtils.escapeXml(description)).append(END_DESCRIPTION_ELEMENT);
+        stringBuilder.append(START_GENERATOR_ELEMENT).append(StringEscapeUtils.escapeXml(generator)).append(END_GENERATOR_ELEMENT);
+        stringBuilder.append(START_LAST_BUILD_DATE_ELEMENT).append(DateFormatUtils.SMTP_DATETIME_FORMAT.format(lastBuildDate)).append(END_LAST_BUILD_DATE_ELEMENT);
+        stringBuilder.append(START_LANGUAGE_ELEMENT).append(StringEscapeUtils.escapeXml(language)).append(END_LANGUAGE_ELEMENT);
         for (final Item item : items) {
             stringBuilder.append(item.toString());
         }
-
         stringBuilder.append(END);
-
         return XMLs.format(stringBuilder.toString());
     }
 }

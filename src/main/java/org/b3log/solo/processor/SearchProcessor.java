@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor;
 
@@ -23,14 +17,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.http.renderer.TextXmlRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Paginator;
@@ -57,10 +49,10 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.1.3, Mar 19, 2019
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 2.4.0
  */
-@RequestProcessor
+@Singleton
 public class SearchProcessor {
 
     /**
@@ -103,7 +95,6 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/opensearch.xml", method = HttpMethod.GET)
     public void showOpensearchXML(final RequestContext context) {
         final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
@@ -127,7 +118,6 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/search", method = HttpMethod.GET)
     public void search(final RequestContext context) {
         final Request request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "common-template/search.ftl");

@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor.console;
 
@@ -22,23 +16,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessor;
-import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.Server;
 import org.b3log.solo.service.ArchiveDateMgmtService;
 import org.b3log.solo.service.TagMgmtService;
-import org.json.JSONObject;
+import org.b3log.solo.util.StatusCodes;
 
 /**
  * Other console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 20, 2019
+ * @version 2.1.0.1, Jun 19, 2020
  * @since 3.4.0
  */
-@RequestProcessor
+@Singleton
 public class OtherConsole {
 
     /**
@@ -65,6 +58,26 @@ public class OtherConsole {
     private LangPropsService langPropsService;
 
     /**
+     * Get log.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "code": int,
+     *     "log": "log lines"
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified request context
+     */
+    public void getLog(final RequestContext context) {
+        context.renderJSON(StatusCodes.SUCC);
+        final String content = Server.TAIL_LOGGER_WRITER.toString();
+        context.renderJSONValue("log", content);
+    }
+
+    /**
      * Removes all unused archives.
      * <p>
      * Renders the response with a json object, for example,
@@ -77,22 +90,15 @@ public class OtherConsole {
      *
      * @param context the specified request context
      */
-    @Before(ConsoleAdminAuthAdvice.class)
     public void removeUnusedArchives(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject jsonObject = new JSONObject();
-        renderer.setJSONObject(jsonObject);
-
+        context.renderJSON(StatusCodes.ERR);
         try {
             archiveDateMgmtService.removeUnusedArchiveDates();
-
-            jsonObject.put(Keys.STATUS_CODE, true);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC).
+                    renderMsg(langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused archives failed", e);
-
-            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+            context.renderMsg(langPropsService.get("removeFailLabel"));
         }
     }
 
@@ -109,22 +115,15 @@ public class OtherConsole {
      *
      * @param context the specified request context
      */
-    @Before(ConsoleAdminAuthAdvice.class)
     public void removeUnusedTags(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject jsonObject = new JSONObject();
-        renderer.setJSONObject(jsonObject);
-
+        context.renderJSON(StatusCodes.ERR);
         try {
             tagMgmtService.removeUnusedTags();
-
-            jsonObject.put(Keys.STATUS_CODE, true);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC).
+                    renderMsg(langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
-
-            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+            context.renderMsg(langPropsService.get("removeFailLabel"));
         }
     }
 }

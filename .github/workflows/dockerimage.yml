@@ -11,5 +11,5 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login --username=${{ secrets.DOCKER_HUB_USER }} --password=${{ secrets.DOCKER_HUB_PWD }}
-        docker build -t b3log/solo:latest .
+        docker build --build-arg git_commit=$(git rev-parse --short HEAD) -t b3log/solo:latest .
         docker push b3log/solo

@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.util;
 
@@ -23,6 +17,9 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Image utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Dec 28, 2019
+ * @version 1.2.0.1, May 15, 2020
  * @since 2.7.0
  */
 public final class Images {
@@ -45,30 +42,40 @@ public final class Images {
     /**
      * Community file service URL.
      */
-    public static String COMMUNITY_FILE_URL = "https://img.hacpai.com";
+    public static String COMMUNITY_FILE_URL = "https://b3logfile.com";
+
+    /**
+     * Checks whether the specified URL has uploaded.
+     *
+     * @param url the specified URL
+     * @return {@code true} if it has uploaded, returns {@code false} otherwise
+     */
+    public static boolean uploaded(final String url) {
+        return StringUtils.startsWith(url, COMMUNITY_FILE_URL) || StringUtils.startsWith(url, "https://img.hacpai.com");
+    }
 
     /**
      * Qiniu image processing.
      *
-     * @param html the specified content HTML
-     * @return processed content
+     * @param doc the specified doc
      */
-    public static String qiniuImgProcessing(final String html) {
-        String ret = html;
-        final String[] imgSrcs = StringUtils.substringsBetween(html, "<img src=\"", "\"");
-        if (null == imgSrcs) {
-            return ret;
+    public static void qiniuImgProcessing(final Document doc) {
+        final Elements imgs = doc.select("img");
+        if (imgs.isEmpty()) {
+            return;
         }
 
-        for (final String imgSrc : imgSrcs) {
-            if (StringUtils.contains(imgSrc, ".gif") || StringUtils.containsIgnoreCase(imgSrc, "imageView")) {
+        for (final Element img : imgs) {
+            String imgSrc = img.attr("src");
+            if (!uploaded(imgSrc) ||
+                    StringUtils.contains(imgSrc, ".gif") || StringUtils.containsIgnoreCase(imgSrc, "imageView") ||
+                    StringUtils.containsIgnoreCase(imgSrc, "data:")) {
                 continue;
             }
 
-            ret = StringUtils.replace(ret, imgSrc, imgSrc + "?imageView2/2/w/1280/format/jpg/interlace/1/q/100");
+            imgSrc += "?imageView2/2/w/1280/format/jpg/interlace/1/q/100";
+            img.attr("src", imgSrc);
         }
-
-        return ret;
     }
 
     /**
@@ -98,11 +105,9 @@ public final class Images {
             final long max = System.currentTimeMillis();
             final long delta = max - min;
             final long time = ThreadLocalRandom.current().nextLong(0, delta) + min;
-
             return COMMUNITY_FILE_URL + "/bing/" + DateFormatUtils.format(time, "yyyyMMdd") + ".jpg";
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates random image URL failed", e);
-
             return COMMUNITY_FILE_URL + "/bing/20171104.jpg";
         }
     }
@@ -115,7 +120,6 @@ public final class Images {
      */
     public static List<String> randomImages(final int n) {
         final List<String> ret = new ArrayList<>();
-
         int i = 0;
         while (i < n * 5) {
             final String url = randImage();

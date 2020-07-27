@@ -1,6 +1,6 @@
 {
   "name": "solo",
-  "version": "3.8.0",
+  "version": "4.3.0",
   "description": " 一款小而美的博客系统，专为程序员设计。",
   "homepage": "https://github.com/88250/solo",
   "repository": {
@@ -10,45 +10,51 @@
   "bugs": {
     "url": "https://github.com/88250/solo/issues"
   },
-  "license": "AGPLv3",
+  "license": "MulanPSL2",
   "private": true,
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack"
   },
-  "author": "Daniel <dl882509@gmail.com> (http://88250.b3log.org) & Vanessa <v@b3log.org> (http://vanessa.b3log.org)",
+  "author": {
+    "name": "B3log 开源社区",
+    "email": "os@b3log.org",
+    "url": "https://b3log.org"
+  },
   "maintainers": [
     {
-      "name": "Daniel",
-      "email": "d@b3log.org"
+      "name": "Liang Ding",
+      "email": "d@b3log.org",
+      "url": "http://88250.b3log.org"
     },
     {
-      "name": "Vanessa",
-      "email": "v@b3log.org"
+      "name": "Liyuan Li",
+      "email": "v@b3log.org",
+      "url": "http://vanessa.b3log.org"
     }
   ],
   "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "autoprefixer": "^9.7.4",
-    "babel-loader": "^8.0.6",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "autoprefixer": "^9.8.5",
+    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.4.2",
-    "extract-loader": "^3.1.0",
-    "file-loader": "^5.0.2",
-    "node-sass": "^4.13.1",
+    "css-loader": "^3.6.0",
+    "extract-loader": "^3.2.0",
+    "file-loader": "^5.1.0",
+    "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.2",
-    "terser-webpack-plugin": "^2.3.2",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "terser-webpack-plugin": "^2.3.7",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
     "nprogress": "^0.2.0",
     "uvstat": "^1.0.7",
-    "vcmt": "^1.1.0",
-    "vditor": "^2.1.5"
+    "vcmt": "^1.2.7",
+    "vditor": "^3.3.11"
   }
 }

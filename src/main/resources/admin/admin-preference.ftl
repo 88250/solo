@@ -3,18 +3,12 @@
     Solo - A small and beautiful blogging system written in Java.
     Copyright (c) 2010-present, b3log.org
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    Solo is licensed under Mulan PSL v2.
+    You can use this software according to the terms and conditions of the Mulan PSL v2.
+    You may obtain a copy of Mulan PSL v2 at:
+            http://license.coscl.org.cn/MulanPSL2
+    THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+    See the Mulan PSL v2 for more details.
 
 -->
 <div id="tabPreference" class="sub-tabs fn__clear">
@@ -44,8 +38,7 @@
 <div id="tabPreferencePanel" class="sub-tabs-main">
     <div id="tabPreferencePanel_config" class="form">
         <div class="fn__clear">
-            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">前往配置 GitHub，Twitter
-                等站点链接</a>
+            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">${configSiteLabel}</a>
             <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
         </div>
         <div class="fn__clear"></div>
@@ -64,8 +57,7 @@
         <label for="footerContent">${footerContent1Label}</label>
         <textarea rows="2" id="footerContent"></textarea><br><br>
         <div class="fn__clear">
-            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">前往配置 GitHub，Twitter
-                等站点链接</a>
+            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">${configSiteLabel}</a>
             <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
         </div>
     </div>
@@ -153,40 +145,24 @@
                     <input id="customVars" class="normalInput" type="text"/>
                 </label>
                 <label>
-                    <div class="fn__flex-inline">
-                        ${enableArticleUpdateHint1Label}
-                        <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
-                    </div>
+                    ${githubPATLabel}
+                    <input id="githubPAT" class="normalInput" type="text"/>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${allowVisitDraftViaPermalink1Label}
-                        <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${enableArticleUpdateHint1Label}</span>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${allowComment1Label}
-                        <input id="commentable" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${allowVisitDraftViaPermalink1Label}</span>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${syncGitHubLabel}
-                        <input id="syncGitHub" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="syncGitHub" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${syncGitHubLabel}</span>
                 </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${pullGitHubLabel}
-                        <input id="pullGitHub" type="checkbox" class="normalInput"/>
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        ${showCodeBlockLnLabel}
-                        <input id="showCodeBlockLn" type="checkbox" class="normalInput"/>
-                    </div>
+                <label class="checkbox">
+                    <input id="pullGitHub" type="checkbox" class="normalInput"/>
+                    <span>&nbsp;${pullGitHubLabel}</span>
                 </label>
             </div>
             <div class="fn__margin12"></div>
@@ -194,18 +170,6 @@
                 <label>
                     ${indexTagDisplayCnt1Label}
                     <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
-                </label>
-                <label>
-                    ${indexRecentCommentDisplayCnt1Label}
-                    <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
-                </label>
-                <label>
-                    ${indexMostCommentArticleDisplayCnt1Label}
-                    <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
-                </label>
-                <label>
-                    ${indexMostViewArticleDisplayCnt1Label}
-                    <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
                 </label>
                 <label>
                     ${randomArticlesDisplayCnt1Label}
@@ -249,52 +213,63 @@
         <div class="fn__clear"></div>
     </div>
     <div id="tabPreferencePanel_markdown" class="fn__none form">
-        <#if !luteAvailable>
-        <div class="fn__clear">
-            ${luteHTTPLabel}
-        </div>
-        </#if>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
-        <div class="fn__flex">
-            <div class="fn__flex-1">
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="footnotes" type="checkbox" class="normalInput"/>
-                        &nbsp;${supportFootnotesLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="showToC" type="checkbox" class="normalInput"/>
-                        &nbsp;${supportToCLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="autoSpace" type="checkbox" class="normalInput"/>
-                        &nbsp;${autoSpaceLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="fixTermTypo" type="checkbox" class="normalInput"/>
-                        &nbsp;${fixTermTypoLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="chinesePunct" type="checkbox" class="normalInput"/>
-                        &nbsp;${chinesePunctLabel}
-                    </div>
-                </label>
-                <label>
-                    <div class="fn__flex-inline">
-                        <input id="inlineMathAllowDigitAfterOpenMarker" type="checkbox" class="normalInput"/>
-                        &nbsp;${inlineMathAllowDigitAfterOpenMarkerLabel}
-                    </div>
-                </label>
-            </div>
-        </div>
+        <div class="fn__clear"></div>
+        ${editorModeLabel}
+        <span class="fn__flex">
+            <label class="fn__flex-1 checkbox">
+                <input name="editorMode" type="radio" value="wysiwyg" checked>
+                <span>&nbsp;${editorModeWYSIWYGLabel}</span>
+            </label>
+            <label class="fn__flex-1 checkbox">
+                <input name="editorMode" type="radio" value="ir">
+                <span>&nbsp;${editorModeIRLabel}</span>
+            </label>
+            <label class="fn__flex-1 checkbox">
+                <input name="editorMode" type="radio" value="sv">
+                <span>&nbsp;${editorModeSVLabel}</span>
+            </label>
+        </span>
+        <label class="checkbox">
+            <input id="showCodeBlockLn" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${showCodeBlockLnLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="speech" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${speechSelectedLabel}</span>
+        </label>
+        <#if !luteAvailable>
+            <br><br>
+            ${luteHTTPLabel}
+        </#if>
+        <label class="checkbox">
+            <input id="paragraphBeginningSpace" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${paragraphBeginningSpaceLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="footnotes" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${supportFootnotesLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="showToC" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${supportToCLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="autoSpace" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${autoSpaceLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="fixTermTypo" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${fixTermTypoLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="chinesePunct" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${chinesePunctLabel}</span>
+        </label>
+        <label class="checkbox">
+            <input id="inlineMathAllowDigitAfterOpenMarker" type="checkbox" class="normalInput"/>
+            <span>&nbsp;${inlineMathAllowDigitAfterOpenMarkerLabel}</span>
+        </label>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
     </div>

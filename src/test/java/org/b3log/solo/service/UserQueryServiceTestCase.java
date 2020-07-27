@@ -2,35 +2,32 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
-import junit.framework.Assert;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
+import org.b3log.latke.util.URLs;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * {@link UserQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.0.0.3, Feb 11, 2019
+ * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
+ * @version 1.0.0.4, May 9, 2020
  */
 @Test(suiteName = "service")
 public class UserQueryServiceTestCase extends AbstractTestCase {
@@ -86,8 +83,8 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
         final JSONObject paginationRequest = Solos.buildPaginationRequest("1/20/10");
         final JSONObject result = userQueryService.getUsers(paginationRequest);
-        final JSONArray users = result.getJSONArray(User.USERS);
-        Assert.assertEquals(1, users.length());
+        final List<JSONObject> users = (List<JSONObject>) result.opt(User.USERS);
+        Assert.assertEquals(users.size(), 2);
     }
 
     /**
@@ -95,9 +92,10 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
      */
     public void getLoginURL() {
         final UserQueryService userQueryService = getUserQueryService();
-        final String loginURL = userQueryService.getLoginURL("redirectURL");
+        final String redirectURI = "/redirectURI";
+        final String loginURL = userQueryService.getLoginURL(redirectURI);
 
-        Assert.assertEquals(loginURL, "/start?referer=http%3A%2F%2Flocalhost%3A8080redirectURL");
+        Assert.assertEquals(loginURL, "/start?referer=" + URLs.encode(Latkes.getServePath() + redirectURI));
     }
 
     /**
@@ -107,6 +105,6 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
         final UserQueryService userQueryService = getUserQueryService();
         final String logoutURL = userQueryService.getLogoutURL();
 
-        Assert.assertEquals(logoutURL, "/logout?referer=http%3A%2F%2Flocalhost%3A8080");
+        Assert.assertEquals(logoutURL, "/logout?referer=" + URLs.encode(Latkes.getServePath()));
     }
 }

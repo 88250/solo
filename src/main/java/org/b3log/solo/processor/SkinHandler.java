@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor;
 
@@ -26,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.http.function.Handler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.OptionQueryService;
@@ -39,7 +33,7 @@ import org.json.JSONObject;
  * Skin handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 3, 2019
+ * @version 1.0.0.1, Apr 30, 2020
  * @since 3.6.7
  */
 public class SkinHandler implements Handler {
@@ -68,11 +62,12 @@ public class SkinHandler implements Handler {
     /**
      * Resolve skin (template) for the specified HTTP request.
      * 前台皮肤切换 https://github.com/b3log/solo/issues/12060
+     * 调整前台动态皮肤预览逻辑 https://github.com/88250/solo/issues/116
      *
      * @param request the specified HTTP request
      */
     private void resolveSkinDir(final Request request) {
-        String skin = Skins.getSkinDirNameFromCookie(request);
+        String skin = Skins.getQuerySkin(request);
         if (StringUtils.isBlank(skin)) {
             final BeanManager beanManager = BeanManager.getInstance();
             final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
@@ -91,8 +86,7 @@ public class SkinHandler implements Handler {
                 }
             }
         }
-
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, skin);
     }
 
     private static void fillBotAttrs(final Request request) {

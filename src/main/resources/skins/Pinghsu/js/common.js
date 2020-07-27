@@ -2,24 +2,18 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 /**
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.0, Jan 18, 2019
+ * @version 1.0.1.0, Apr 11, 2020
  */
 
 import '../../../js/common'
@@ -83,8 +77,12 @@ window.Skin = {
     $('.post__toc').
       css('left', $('.post').offset().left + $('.post').outerWidth())
 
-    var $articleTocs = $('.vditor-reset [id^=toc_h]'),
-      $articleToc = $('.article__toc')
+    var $articleTocs = $('.post .vditor-reset').
+      children().
+      filter((index, item) => {
+        return item.tagName.indexOf('H') === 0 && item.id
+      })
+    var $articleToc = $('.article__toc')
 
     $(window).unbind('scroll').scroll(function (event) {
       if ($('.article__toc li').length === 0) {

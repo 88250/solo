@@ -1,9 +1,15 @@
 /*
- * Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
- * Copyright (C) 2012-present, b3log.org
+ * Solo - A small and beautiful blogging system written in Java.
+ * Copyright (c) 2010-present, b3log.org
  *
- * 本文件属于 Sym 商业版的一部分，请仔细阅读项目根文件夹的 LICENSE 并严格遵守相关约定
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
+
 /**
  * @fileoverview webpack ipfs.
  *
@@ -52,7 +58,6 @@ module.exports = (env, argv) => {
         './src/main/resources/js/admin/editor.js',
         './src/main/resources/js/admin/tablePaginate.js',
         './src/main/resources/js/admin/article.js',
-        './src/main/resources/js/admin/comment.js',
         './src/main/resources/js/admin/articleList.js',
         './src/main/resources/js/admin/draftList.js',
         './src/main/resources/js/admin/pageList.js',
@@ -64,7 +69,6 @@ module.exports = (env, argv) => {
         './src/main/resources/js/admin/pluginList.js',
         './src/main/resources/js/admin/userList.js',
         './src/main/resources/js/admin/categoryList.js',
-        './src/main/resources/js/admin/commentList.js',
         './src/main/resources/js/admin/plugin.js',
         './src/main/resources/js/admin/main.js',
         './src/main/resources/js/admin/about.js'],

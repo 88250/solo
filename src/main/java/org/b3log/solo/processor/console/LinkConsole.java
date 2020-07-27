@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor.console;
 
@@ -24,28 +18,28 @@ import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Link console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Dec 11, 2018
+ * @version 2.0.0.0, Feb 9, 2020
  * @since 0.4.0
  */
-@RequestProcessor
-@Before(ConsoleAdminAuthAdvice.class)
+@Singleton
 public class LinkConsole {
 
     /**
@@ -77,7 +71,7 @@ public class LinkConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -95,12 +89,11 @@ public class LinkConsole {
             final String linkId = context.pathVar("id");
             linkMgmtService.removeLink(linkId);
 
-            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.CODE, StatusCodes.SUCC);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.CODE, StatusCodes.ERR);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
@@ -124,7 +117,7 @@ public class LinkConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -136,18 +129,16 @@ public class LinkConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
         try {
             final JSONObject requestJSON = context.requestJSON();
             linkMgmtService.updateLink(requestJSON);
 
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -168,7 +159,7 @@ public class LinkConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -188,13 +179,12 @@ public class LinkConsole {
 
             linkMgmtService.changeOrder(linkId, direction);
 
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -217,7 +207,7 @@ public class LinkConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "oId": "", // Generated link id
      *     "msg": ""
      * }
@@ -237,12 +227,11 @@ public class LinkConsole {
 
             ret.put(Keys.OBJECT_ID, linkId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
-            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.CODE, StatusCodes.SUCC);
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }
@@ -259,7 +248,7 @@ public class LinkConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "pagination": {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
@@ -285,20 +274,18 @@ public class LinkConsole {
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/links/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = linkQueryService.getLinks(requestJSONObject);
-            result.put(Keys.STATUS_CODE, true);
+            result.put(Keys.CODE, StatusCodes.SUCC);
             renderer.setJSONObject(result);
 
-            final JSONArray links = result.optJSONArray(Link.LINKS);
-            for (int i = 0; i < links.length(); i++) {
-                final JSONObject link = links.optJSONObject(i);
+            final List<JSONObject> links = (List<JSONObject>) result.opt(Link.LINKS);
+            for (final JSONObject link : links) {
                 String title = link.optString(Link.LINK_TITLE);
                 title = StringEscapeUtils.escapeXml(title);
                 link.put(Link.LINK_TITLE, title);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -310,7 +297,7 @@ public class LinkConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "link": {
      *         "oId": "",
      *         "linkTitle": "",
@@ -331,17 +318,15 @@ public class LinkConsole {
             final String linkId = context.pathVar("id");
             final JSONObject result = linkQueryService.getLink(linkId);
             if (null == result) {
-                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
+                renderer.setJSONObject(new JSONObject().put(Keys.CODE, StatusCodes.ERR));
                 return;
             }
 
             renderer.setJSONObject(result);
-            result.put(Keys.STATUS_CODE, true);
+            result.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

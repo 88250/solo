@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor;
 
@@ -24,12 +18,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.TextXmlRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -46,17 +38,18 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Sitemap processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.6, Jan 15, 2019
+ * @version 2.0.0.1, Mar 31, 2020
  * @since 0.3.1
  */
-@RequestProcessor
+@Singleton
 public class SitemapProcessor {
 
     /**
@@ -93,7 +86,6 @@ public class SitemapProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/sitemap.xml", method = HttpMethod.GET)
     public void sitemap(final RequestContext context) {
         final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
@@ -111,7 +103,6 @@ public class SitemapProcessor {
             renderer.setContent(content);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates sitemap failed", e);
-
             context.sendError(500);
         }
     }
@@ -128,18 +119,14 @@ public class SitemapProcessor {
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
                 select(Article.ARTICLE_PERMALINK, Article.ARTICLE_UPDATED);
         final JSONObject articleResult = articleRepository.get(query);
-        final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
-
-        for (int i = 0; i < articles.length(); i++) {
-            final JSONObject article = articles.getJSONObject(i);
+        final List<JSONObject> articles = (List<JSONObject>) articleResult.opt(Keys.RESULTS);
+        for (final JSONObject article : articles) {
             final String permalink = article.getString(Article.ARTICLE_PERMALINK);
-
             final URL url = new URL();
             url.setLoc(StringEscapeUtils.escapeXml(Latkes.getServePath() + permalink));
             final long updated = article.getLong(Article.ARTICLE_UPDATED);
             final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updated);
             url.setLastMod(lastMod);
-
             sitemap.addURL(url);
         }
     }
@@ -152,14 +139,10 @@ public class SitemapProcessor {
      */
     private void addNavigations(final Sitemap sitemap) throws Exception {
         final JSONObject result = pageRepository.get(new Query());
-        final JSONArray pages = result.getJSONArray(Keys.RESULTS);
-
-        for (int i = 0; i < pages.length(); i++) {
-            final JSONObject page = pages.getJSONObject(i);
+        final List<JSONObject> pages = (List<JSONObject>) result.get(Keys.RESULTS);
+        for (final JSONObject page : pages) {
             final String permalink = page.getString(Page.PAGE_PERMALINK);
-
             final URL url = new URL();
-
             // The navigation maybe a page or a link
             // Just filters for user mistakes tolerance
             if (!permalink.contains("://")) {
@@ -167,7 +150,6 @@ public class SitemapProcessor {
             } else {
                 url.setLoc(permalink);
             }
-
             sitemap.addURL(url);
         }
     }
@@ -180,22 +162,16 @@ public class SitemapProcessor {
      */
     private void addTags(final Sitemap sitemap) throws Exception {
         final JSONObject result = tagRepository.get(new Query());
-        final JSONArray tags = result.getJSONArray(Keys.RESULTS);
-
-        for (int i = 0; i < tags.length(); i++) {
-            final JSONObject tag = tags.getJSONObject(i);
+        final List<JSONObject> tags = (List<JSONObject>) result.opt(Keys.RESULTS);
+        for (final JSONObject tag : tags) {
             final String link = URLs.encode(tag.getString(Tag.TAG_TITLE));
-
             final URL url = new URL();
-
             url.setLoc(Latkes.getServePath() + "/tags/" + link);
-
             sitemap.addURL(url);
         }
 
         // Tags wall
         final URL url = new URL();
-
         url.setLoc(Latkes.getServePath() + "/tags.html");
         sitemap.addURL(url);
     }
@@ -208,17 +184,12 @@ public class SitemapProcessor {
      */
     private void addArchives(final Sitemap sitemap) throws Exception {
         final JSONObject result = archiveDateRepository.get(new Query());
-        final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
-
-        for (int i = 0; i < archiveDates.length(); i++) {
-            final JSONObject archiveDate = archiveDates.getJSONObject(i);
+        final List<JSONObject> archiveDates = (List<JSONObject>) result.opt(Keys.RESULTS);
+        for (final JSONObject archiveDate : archiveDates) {
             final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
             final String dateString = DateFormatUtils.format(time, "yyyy/MM");
-
             final URL url = new URL();
-
             url.setLoc(Latkes.getServePath() + "/archives/" + dateString);
-
             sitemap.addURL(url);
         }
     }

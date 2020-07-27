@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
@@ -37,7 +31,7 @@ import java.util.List;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Jun 20, 2019
+ * @version 1.2.0.0, Mar 31, 2020
  * @since 0.4.0
  */
 @Service
@@ -131,7 +125,6 @@ public class TagQueryService {
     public List<JSONObject> getTags() throws ServiceException {
         try {
             final Query query = new Query().setPageCount(1);
-
             final List<JSONObject> ret = tagRepository.getList(query);
             for (final JSONObject tag : ret) {
                 final String tagId = tag.optString(Keys.OBJECT_ID);
@@ -145,5 +138,18 @@ public class TagQueryService {
 
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Gets tags of the published articles.
+     *
+     * @return tags list
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getTagsOfPublishedArticles() throws ServiceException {
+        final List<JSONObject> ret = getTags();
+        ret.removeIf(tag -> tagArticleRepository.getPublishedArticleCount(tag.optString(Keys.OBJECT_ID)) < 1);
+
+        return ret;
     }
 }

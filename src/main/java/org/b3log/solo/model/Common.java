@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.model;
 
@@ -22,20 +16,10 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.8, Jan 18, 2020
+ * @version 1.7.0.10, Jul 8, 2020
  * @since 0.3.1
  */
 public final class Common {
-
-    /**
-     * Key of skin cookie name.
-     */
-    public static final String COOKIE_NAME_SKIN = "skin";
-
-    /**
-     * Key of mobile skin cookie name.
-     */
-    public static final String COOKIE_NAME_MOBILE_SKIN = "mobile-skin";
 
     /**
      * Key of favicon URL.
@@ -203,11 +187,6 @@ public final class Common {
     public static final String AUTHOR_ROLE = "authorRole";
 
     /**
-     * Key of current user.
-     */
-    public static final String CURRENT_USER = "currentUser";
-
-    /**
      * Key of admin user.
      */
     public static final String ADMIN_USER = "adminUser";
@@ -263,11 +242,6 @@ public final class Common {
     public static final String MONTH_NAME = "monthName";
 
     /**
-     * Key of comment title (article/page).
-     */
-    public static final String COMMENT_TITLE = "commentTitle";
-
-    /**
      * /admin-index.do#main.
      */
     public static final String ADMIN_INDEX_URI = "/admin-index.do#main";
@@ -278,24 +252,9 @@ public final class Common {
     public static final String TYPE = "type";
 
     /**
-     * Article comment type.
-     */
-    public static final String ARTICLE_COMMENT_TYPE = "articleComment";
-
-    /**
-     * Page comment type.
-     */
-    public static final String PAGE_COMMENT_TYPE = "pageComment";
-
-    /**
      * Key of top bar replacement flag.
      */
     public static final String TOP_BAR = "topBarReplacement";
-
-    /**
-     * Key of unused tags.
-     */
-    public static final String UNUSED_TAGS = "unusedTags";
 
     /**
      * Key of online visitor count.
@@ -311,11 +270,6 @@ public final class Common {
      * Key of permalink.
      */
     public static final String PERMALINK = "permalink";
-
-    /**
-     * Key of commentable.
-     */
-    public static final String COMMENTABLE = "commentable";
 
     /**
      * Key of articles view password.

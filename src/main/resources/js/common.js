@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 import $ from 'jquery'
 import NProgress from 'nprogress'
@@ -29,7 +23,7 @@ window.Vcomment = Vcomment
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.0, Jan 19, 2020
+ * @version 2.3.2.0, Jun 19, 2020
  */
 
 /**
@@ -116,10 +110,17 @@ window.Util = {
         },
         callback: function () {
           Util.parseMarkdown()
+          if (typeof Util.uvstat === 'undefined') {
+            Util.uvstat = new Uvstat()
+          }
           Util.uvstat.addStat()
           Util.uvstat.renderStat()
           Util.uvstat.renderCmtStat(
             window.utilOptions && window.utilOptions.cmtCountCB)
+          // 看板娘背景
+          if (typeof soloKanbanniang !== 'undefined') {
+            soloKanbanniang.bgChange && soloKanbanniang.bgChange()
+          }
           cb && cb()
         },
       })
@@ -173,6 +174,7 @@ window.Util = {
       lineNumber: Label.showCodeBlockLn,
       hljsEnable: !Label.luteAvailable,
       hljsStyle: Label.hljsStyle,
+      speech: Label.speech
     })
   },
   /**
@@ -302,16 +304,50 @@ window.Util = {
       return valA.localeCompare(valB)
     }))
   },
+  loadVditor: function (cb) {
+    $.ajax({
+      method: 'GET',
+      url: 'https://cdn.jsdelivr.net/npm/vditor@3.3.11/dist/index.min.js',
+      dataType: 'script',
+      cache: true,
+      success: () => {
+        Util.init(window.utilOptions)
+        if (cb) {
+          cb()
+        }
+      },
+    })
+  },
+  skinPreview: () => {
+    if (location.pathname === '/admin-index.do') {
+      return
+    }
+    const skinParam = location.search.split('skin=')
+    let skin = ''
+    let urlHasSkin = false
+    if (skinParam.length === 2) {
+      skin = skinParam[1].split('=')[0]
+      urlHasSkin = true
+    }
+    if (skin) {
+      sessionStorage.setItem('skin', skin)
+    } else {
+      skin = sessionStorage.getItem('skin')
+    }
+    if (!skin) {
+      return
+    }
+    if (!urlHasSkin) {
+      location.search = location.search
+        ? location.search + '&skin=' + skin
+        : '?skin=' + skin
+    }
+  },
 };
 
 (() => {
-  $.ajax({
-    method: 'GET',
-    url: 'https://cdn.jsdelivr.net/npm/vditor@2.1.5/dist/index.min.js',
-    dataType: 'script',
-    cache: true,
-    success: () => {
-      Util.init(window.utilOptions)
-    },
-  })
+  Util.skinPreview()
+  if (typeof Vditor === 'undefined') {
+    Util.loadVditor()
+  }
 })()

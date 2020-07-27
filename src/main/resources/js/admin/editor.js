@@ -2,24 +2,19 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 /**
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.4.0.0, Jan 18, 2020
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.6.0.2, Jul 11, 2020
  */
 admin.editors = {}
 
@@ -40,9 +35,34 @@ $.extend(SoloEditor.prototype, {
    * @description 初始化编辑器
    */
   init: function () {
-    const options = {
-      typewriterMode: this.conf.typewriterMode,
+
+    // 编辑器常用表情使用社区端的设置
+    $.ajax({
+      url: 'https://hacpai.com/apis/vcomment/users/emotions',
+      type: 'GET',
       cache: true,
+      async: false,
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: function (result) {
+        Label.emoji = {}
+        if (Array.isArray(result.data)) {
+          result.data.forEach(item => {
+            const key = Object.keys(item)[0]
+            Label.emoji[key] = item[key]
+          })
+        }
+      },
+    })
+
+    const options = {
+      outline: this.conf.outline || false,
+      mode: Label.editorMode,
+      typewriterMode: this.conf.typewriterMode,
+      cache: {
+        enable: true,
+      },
       tab: '\t',
       preview: {
         delay: 500,
@@ -52,7 +72,7 @@ $.extend(SoloEditor.prototype, {
           enable: !Label.luteAvailable,
           style: Label.hljsStyle,
         },
-        parse: function(element) {
+        parse: function (element) {
           if (element.style.display === 'none') {
             return
           }
@@ -62,42 +82,108 @@ $.extend(SoloEditor.prototype, {
       upload: {
         max: 10 * 1024 * 1024,
         url: Label.uploadURL,
+        linkToImgUrl: Label.servePath + '/upload/fetch',
         token: Label.uploadToken,
         filename: function (name) {
-          return  name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
+          return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
             replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
             replace('/\\s/g', '')
-        }
+        },
       },
       height: this.conf.height,
-      counter: 102400,
+      counter: {
+        enable: true,
+        max: 102400,
+      },
       resize: {
         enable: this.conf.resize,
       },
       lang: Label.localeString,
+      hint: {
+        emojiTail: `<a href="https://hacpai.com/settings/function" target="_blank">设置常用表情</a>`,
+        emoji: Label.emoji,
+      },
+      toolbarConfig: {
+        pin: true,
+      },
+      toolbar:[
+        "emoji",
+        "headings",
+        "bold",
+        "link",
+        "|",
+        "list",
+        "ordered-list",
+        "check",
+        "outdent",
+        "indent",
+        "|",
+        "quote",
+        "code",
+        "insert-before",
+        "insert-after",
+        "|",
+        "upload",
+        "record",
+        "table",
+        "|",
+        "undo",
+        "redo",
+        "|",
+        "fullscreen",
+        "edit-mode",
+        {
+          name: "more",
+          toolbar: [
+            "italic",
+            "strike",
+            "line",
+            "inline-code",
+            "both",
+            "code-theme",
+            "content-theme",
+            "export",
+            "outline",
+            "preview",
+            "devtools",
+            "info",
+            "help",
+          ],
+        }],
+      after: () => {
+        if (typeof this.conf.fun === 'function') {
+          this.conf.fun()
+        }
+      },
     }
 
     if ($(window).width() < 768) {
       options.toolbar = [
         'emoji',
-        'bold',
-        'italic',
         'link',
-        'list',
-        'check',
         'upload',
-        'wysiwyg',
-        'preview',
-        'fullscreen',
-        'help',
+        'edit-mode',
+        {
+          name: 'more',
+          toolbar: [
+            'insert-after',
+            'fullscreen',
+            'preview',
+            'info',
+            'help',
+          ],
+        },
       ]
       options.resize.enable = false
+      options.toolbarConfig.pin = true
     }
 
-    this.editor = new Vditor(this.conf.id, options)
-
-    if (typeof this.conf.fun === 'function') {
-      this.conf.fun()
+    if (typeof Vditor === 'undefined') {
+      Util.loadVditor(() => {
+        this.editor = new Vditor(this.conf.id, options)
+      })
+    } else {
+      this.editor = new Vditor(this.conf.id, options)
     }
   },
   /*

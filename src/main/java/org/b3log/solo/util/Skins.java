@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.util;
 
@@ -26,7 +20,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.Cookie;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
@@ -34,7 +27,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 
 import java.io.File;
@@ -49,7 +41,7 @@ import java.util.stream.Stream;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.7.0, Jan 14, 2020
+ * @version 1.2.0.1, Jun 20, 2020
  * @since 0.3.1
  */
 public final class Skins {
@@ -65,7 +57,7 @@ public final class Skins {
     public static final Configuration TEMPLATE_CFG;
 
     static {
-        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_29);
+        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_30);
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
         try {
             String path = Skins.class.getResource("/").getPath();
@@ -119,7 +111,7 @@ public final class Skins {
      * @return template, returns {@code null} if not found
      */
     public static Template getSkinTemplate(final RequestContext context, final String templateName) {
-        String templateDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+        String templateDirName = (String) context.attr(Keys.TEMPLATE_DIR_NAME);
         if (StringUtils.isBlank(templateDirName)) {
             templateDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         }
@@ -238,62 +230,19 @@ public final class Skins {
 
     /**
      * Gets skin directory name from the specified request.
-     * Refers to <a href="https://github.com/b3log/solo/issues/12060">前台皮肤切换</a> for more details.
-     *
-     * @param context the specified request context
-     * @return directory name, or {@code null} if not found
-     */
-    public static String getSkinDirName(final RequestContext context) {
-        // 1. Get skin from query
-        final String specifiedSkin = context.param(Option.CATEGORY_C_SKIN);
-        if (StringUtils.isNotBlank(specifiedSkin)) {
-            final Set<String> skinDirNames = Skins.getSkinDirNames();
-            if (skinDirNames.contains(specifiedSkin)) {
-                return specifiedSkin;
-            } else {
-                return null;
-            }
-        }
-
-        // 2. Get skin from cookie
-        return getSkinDirNameFromCookie(context.getRequest());
-    }
-
-    /**
-     * Gets skin directory name from the specified request's cookie.
+     * Refers to <a href="https://github.com/b3log/solo/issues/12060">前台皮肤切换</a> and
+     * <a href="https://github.com/88250/solo/issues/116">调整前台动态皮肤预览逻辑</a> for more details.
      *
      * @param request the specified request
      * @return directory name, or {@code null} if not found
      */
-    public static String getSkinDirNameFromCookie(final Request request) {
-        final Set<String> skinDirNames = Skins.getSkinDirNames();
-        boolean isMobile = Solos.isMobile(request);
-        String skin = null, mobileSkin = null;
-        final Set<Cookie> cookies = request.getCookies();
-        if (!cookies.isEmpty()) {
-            for (final Cookie cookie : cookies) {
-                if (Common.COOKIE_NAME_SKIN.equals(cookie.getName()) && !isMobile) {
-                    final String s = cookie.getValue();
-                    if (skinDirNames.contains(s)) {
-                        skin = s;
-                        break;
-                    }
-                }
-                if (Common.COOKIE_NAME_MOBILE_SKIN.equals(cookie.getName()) && isMobile) {
-                    final String s = cookie.getValue();
-                    if (skinDirNames.contains(s)) {
-                        mobileSkin = s;
-                        break;
-                    }
-                }
+    public static String getQuerySkin(final Request request) {
+        final String specifiedSkin = request.getParameter(Option.CATEGORY_C_SKIN);
+        if (StringUtils.isNotBlank(specifiedSkin)) {
+            final Set<String> skinDirNames = Skins.getSkinDirNames();
+            if (skinDirNames.contains(specifiedSkin)) {
+                return specifiedSkin;
             }
-        }
-
-        if (StringUtils.isNotBlank(skin)) {
-            return skin;
-        }
-        if (StringUtils.isNotBlank(mobileSkin)) {
-            return mobileSkin;
         }
 
         return null;

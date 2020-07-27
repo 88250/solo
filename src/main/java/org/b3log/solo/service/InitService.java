@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
@@ -53,7 +47,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.38, Jan 24, 2020
+ * @version 1.5.2.48, Jul 11, 2020
  * @since 0.4.0
  */
 @Service
@@ -107,12 +101,6 @@ public class InitService {
     private ArticleRepository articleRepository;
 
     /**
-     * Comment repository.
-     */
-    @Inject
-    private CommentRepository commentRepository;
-
-    /**
      * Link repository.
      */
     @Inject
@@ -139,7 +127,7 @@ public class InitService {
     /**
      * Flag of init status.
      */
-    private static boolean inited;
+    public static boolean inited;
 
     /**
      * Flag of printed init prompt.
@@ -162,11 +150,9 @@ public class InitService {
                 LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser to init Solo");
                 printedInitMsg = true;
             }
-
             return inited;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Check init failed", e);
-
             System.exit(-1);
             return false;
         }
@@ -185,7 +171,6 @@ public class InitService {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Check tables failed, please make sure database existed and database configuration [jdbc.*] in local.props is correct [msg=" + e.getMessage() + "]");
-
             System.exit(-1);
         }
 
@@ -226,13 +211,11 @@ public class InitService {
             initStatistic();
             initOptions(requestJSONObject);
             initAdmin(requestJSONObject);
-            initLink();
             helloWorld();
 
             transaction.commit();
         } catch (final Throwable e) {
             LOGGER.log(Level.ERROR, "Initializes Solo failed", e);
-
             System.exit(-1);
         } finally {
             if (transaction.isActive()) {
@@ -244,7 +227,7 @@ public class InitService {
     }
 
     /**
-     * Publishes the first article "Hello World" and the first comment with the specified locale.
+     * Publishes the first article "Hello World".
      *
      * @throws Exception exception
      */
@@ -262,8 +245,6 @@ public class InitService {
         article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENT_COUNT, 1);
-        article.put(Article.ARTICLE_VIEW_COUNT, 0);
         final JSONObject admin = userRepository.getAdmin();
         final long now = System.currentTimeMillis();
         article.put(Article.ARTICLE_CREATED, now);
@@ -271,31 +252,10 @@ public class InitService {
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
         final String articleImg1URL = Article.getArticleImg1URL(article);
         article.put(Article.ARTICLE_IMG1_URL, articleImg1URL);
-
-        final String articleId = addHelloWorldArticle(article);
-
-        final JSONObject comment = new JSONObject();
-        comment.put(Keys.OBJECT_ID, articleId);
-        comment.put(Comment.COMMENT_NAME, "88250");
-        comment.put(Comment.COMMENT_URL, "https://hacpai.com/member/88250");
-        comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
-        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
-        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-        comment.put(Comment.COMMENT_THUMBNAIL_URL, Images.COMMUNITY_FILE_URL + "/avatar/1353745196354_1535379434567.png?imageView2/1/w/64/h/64/q/100");
-        comment.put(Comment.COMMENT_CREATED, now);
-        comment.put(Comment.COMMENT_ON_ID, articleId);
-        final String commentId = Ids.genTimeMillisId();
-        comment.put(Keys.OBJECT_ID, commentId);
-        final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
-        comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
-
-        commentRepository.add(comment);
-
-        LOGGER.info("Hello World!");
+        addHelloWorldArticle(article);
     }
 
     /**
@@ -319,10 +279,8 @@ public class InitService {
             articleRepository.add(article);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds an article failed", e);
-
             throw new RepositoryException(e);
         }
-
         return ret;
     }
 
@@ -388,14 +346,12 @@ public class InitService {
         for (String tagTitle1 : tagTitles) {
             final String tagTitle = tagTitle1.trim();
             final JSONObject tag = new JSONObject();
-
             LOGGER.log(Level.TRACE, "Found a new tag[title={}] in article[title={}]", tagTitle, article.optString(Article.ARTICLE_TITLE));
             tag.put(Tag.TAG_TITLE, tagTitle);
             final String tagId = tagRepository.add(tag);
             tag.put(Keys.OBJECT_ID, tagId);
             ret.put(tag);
         }
-
         return ret;
     }
 
@@ -414,7 +370,6 @@ public class InitService {
     private void initAdmin(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing admin....");
         final JSONObject admin = new JSONObject();
-
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
         admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
@@ -423,26 +378,7 @@ public class InitService {
         admin.put(UserExt.USER_GITHUB_ID, requestJSONObject.optString(UserExt.USER_GITHUB_ID));
         userRepository.add(admin);
 
-        LOGGER.info("Initialized admin");
-    }
-
-    /**
-     * Initializes link.
-     *
-     * @throws Exception exception
-     */
-    private void initLink() throws Exception {
-        LOGGER.debug("Initializing link....");
-        final JSONObject link = new JSONObject();
-
-        link.put(Link.LINK_TITLE, "黑客派");
-        link.put(Link.LINK_ADDRESS, "https://hacpai.com");
-        link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
-        link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
-        final int maxOrder = linkRepository.getMaxOrder();
-        link.put(Link.LINK_ORDER, maxOrder + 1);
-        linkRepository.add(link);
-        LOGGER.info("Initialized link");
+        LOGGER.debug("Initialized admin");
     }
 
     /**
@@ -453,14 +389,12 @@ public class InitService {
      */
     private void initStatistic() throws RepositoryException, JSONException {
         LOGGER.debug("Initializing statistic....");
-
         final JSONObject statisticBlogViewCountOpt = new JSONObject();
         statisticBlogViewCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
         statisticBlogViewCountOpt.put(Option.OPTION_VALUE, "0");
         statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
         optionRepository.add(statisticBlogViewCountOpt);
-
-        LOGGER.info("Initialized statistic");
+        LOGGER.debug("Initialized statistic");
     }
 
     /**
@@ -471,6 +405,24 @@ public class InitService {
      */
     private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject speechOpt = new JSONObject();
+        speechOpt.put(Keys.OBJECT_ID, Option.ID_C_SPEECH);
+        speechOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        speechOpt.put(Option.OPTION_VALUE, "true");
+        optionRepository.add(speechOpt);
+
+        final JSONObject paragraphBeginningSpaceOpt = new JSONObject();
+        paragraphBeginningSpaceOpt.put(Keys.OBJECT_ID, Option.ID_C_PARAGRAPH_BEGINNING_SPACE);
+        paragraphBeginningSpaceOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        paragraphBeginningSpaceOpt.put(Option.OPTION_VALUE, "false");
+        optionRepository.add(paragraphBeginningSpaceOpt);
+
+        final JSONObject editorModeOpt = new JSONObject();
+        editorModeOpt.put(Keys.OBJECT_ID, Option.ID_C_EDITOR_MODE);
+        editorModeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        editorModeOpt.put(Option.OPTION_VALUE, "ir");
+        optionRepository.add(editorModeOpt);
 
         final JSONObject IMADAOMOpt = new JSONObject();
         IMADAOMOpt.put(Keys.OBJECT_ID, Option.ID_C_IMADAOM);
@@ -525,6 +477,12 @@ public class InitService {
         syncGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         syncGitHubOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_SYNC_GITHUB);
         optionRepository.add(syncGitHubOpt);
+
+        final JSONObject githubPATOpt = new JSONObject();
+        githubPATOpt.put(Keys.OBJECT_ID, Option.ID_C_GITHUB_PAT);
+        githubPATOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        githubPATOpt.put(Option.OPTION_VALUE, "");
+        optionRepository.add(githubPATOpt);
 
         final JSONObject pullGitHubOpt = new JSONObject();
         pullGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_PULL_GITHUB);
@@ -586,12 +544,6 @@ public class InitService {
         externalRelevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
         optionRepository.add(externalRelevantArticlesDisplayCountOpt);
 
-        final JSONObject mostViewArticleDisplayCountOpt = new JSONObject();
-        mostViewArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-        mostViewArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        mostViewArticleDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
-        optionRepository.add(mostViewArticleDisplayCountOpt);
-
         final JSONObject articleListDisplayCountOpt = new JSONObject();
         articleListDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
         articleListDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
@@ -610,23 +562,11 @@ public class InitService {
         mostUsedTagDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
         optionRepository.add(mostUsedTagDisplayCountOpt);
 
-        final JSONObject mostCommentArticleDisplayCountOpt = new JSONObject();
-        mostCommentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-        mostCommentArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        mostCommentArticleDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
-        optionRepository.add(mostCommentArticleDisplayCountOpt);
-
         final JSONObject recentArticleDisplayCountOpt = new JSONObject();
         recentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT);
         recentArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         recentArticleDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
         optionRepository.add(recentArticleDisplayCountOpt);
-
-        final JSONObject recentCommentDisplayCountOpt = new JSONObject();
-        recentCommentDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-        recentCommentDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        recentCommentDisplayCountOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
-        optionRepository.add(recentCommentDisplayCountOpt);
 
         final JSONObject blogTitleOpt = new JSONObject();
         blogTitleOpt.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
@@ -670,12 +610,6 @@ public class InitService {
         allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         optionRepository.add(allowVisitDraftViaPermalinkOpt);
 
-        final JSONObject commentableOpt = new JSONObject();
-        commentableOpt.put(Keys.OBJECT_ID, Option.ID_C_COMMENTABLE);
-        commentableOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        commentableOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_COMMENTABLE);
-        optionRepository.add(commentableOpt);
-
         final JSONObject versionOpt = new JSONObject();
         versionOpt.put(Keys.OBJECT_ID, Option.ID_C_VERSION);
         versionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
@@ -718,6 +652,6 @@ public class InitService {
         mobileSkinDirNameOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
         optionRepository.add(mobileSkinDirNameOpt);
 
-        LOGGER.info("Initialized preference");
+        LOGGER.debug("Initialized preference");
     }
 }

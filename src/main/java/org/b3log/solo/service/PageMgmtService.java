@@ -2,21 +2,16 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,9 +23,8 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.json.JSONException;
+import org.b3log.solo.util.Statics;
 import org.json.JSONObject;
 
 /**
@@ -38,7 +32,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.0.19, Jun 6, 2019
+ * @version 1.1.2.1, Jul 8, 2020
  * @since 0.4.0
  */
 @Service
@@ -54,12 +48,6 @@ public class PageMgmtService {
      */
     @Inject
     private PageRepository pageRepository;
-
-    /**
-     * Comment repository.
-     */
-    @Inject
-    private CommentRepository commentRepository;
 
     /**
      * User query service.
@@ -127,12 +115,15 @@ public class PageMgmtService {
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
-            final String permalink = page.optString(Page.PAGE_PERMALINK).trim();
+            String permalink = page.optString(Page.PAGE_PERMALINK).trim();
+            permalink = StringUtils.replace(permalink, " ", "-");
             newPage.put(Page.PAGE_PERMALINK, permalink);
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
 
             pageRepository.update(pageId, newPage);
             transaction.commit();
+
+            Statics.clear();
 
             LOGGER.log(Level.DEBUG, "Updated a page[id={}]", pageId);
         } catch (final Exception e) {
@@ -155,15 +146,15 @@ public class PageMgmtService {
         final Transaction transaction = pageRepository.beginTransaction();
         try {
             pageRepository.remove(pageId);
-            commentRepository.removeComments(pageId);
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
             LOGGER.log(Level.ERROR, "Removes a page[id=" + pageId + "] failed", e);
-
             throw new ServiceException(e);
         }
     }
@@ -191,34 +182,21 @@ public class PageMgmtService {
             final int maxOrder = pageRepository.getMaxOrder();
             page.put(Page.PAGE_ORDER, maxOrder + 1);
 
-            final String permalink = page.optString(Page.PAGE_PERMALINK);
-            if (permalinkQueryService.exist(permalink)) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
-            }
-
+            String permalink = page.optString(Page.PAGE_PERMALINK);
+            permalink = StringUtils.replace(permalink, " ", "-");
             page.put(Page.PAGE_PERMALINK, permalink);
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
             final String ret = pageRepository.add(page);
             transaction.commit();
 
-            return ret;
-        } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
+            Statics.clear();
 
-            throw new ServiceException(e);
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-
             throw new ServiceException(e);
         }
     }
@@ -258,13 +236,14 @@ public class PageMgmtService {
             pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage, Page.PAGE_ORDER);
             pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage, Page.PAGE_ORDER);
             transaction.commit();
+
+            Statics.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
             LOGGER.log(Level.ERROR, "Changes page's order failed", e);
-
             throw new ServiceException(e);
         }
     }

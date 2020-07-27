@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.plugin;
 
@@ -47,7 +41,7 @@ import java.util.Map;
  */
 public class ToCPlugin extends NotInteractivePlugin {
 
-    private ToCEventHandler handler = new ToCEventHandler();
+    private final ToCEventHandler handler = new ToCEventHandler();
 
     @Override
     public void changeStatus() {
@@ -77,7 +71,7 @@ public class ToCPlugin extends NotInteractivePlugin {
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.annpeter.cn">Ann Peter</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 2.0.0.1, Jan 24, 2020
+ * @version 2.0.0.3, Mar 8, 2020
  * @since 0.6.7
  */
 class ToCEventHandler extends AbstractEventListener<JSONObject> {
@@ -96,12 +90,17 @@ class ToCEventHandler extends AbstractEventListener<JSONObject> {
         doc.outputSettings().prettyPrint(false);
 
         final List<JSONObject> toc = new ArrayList<>();
-        final Elements hs = doc.select("h1, h2, h3, h4, h5");
+        final Elements hs = doc.select("body>h1, body>h2, body>h3, body>h4, body>h5, body>h6");
         for (int i = 0; i < hs.size(); i++) {
             final Element element = hs.get(i);
             final String tagName = element.tagName().toLowerCase();
             final String text = element.text();
-            final String id = "toc_" + tagName + "_" + i;
+            String id = element.attr("id");
+            if (StringUtils.isBlank(id)) {
+                id = "toc_" + tagName + "_" + i;
+            } else if (StringUtils.startsWith(id, "#")) {
+                id = StringUtils.substringAfter(id, "#");
+            }
             element.attr("id", id);
             final JSONObject li = new JSONObject().
                     put("className", "toc__" + tagName).

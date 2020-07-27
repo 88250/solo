@@ -2,23 +2,18 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.util;
 
 import io.netty.handler.codec.http.*;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.Response;
@@ -31,7 +26,7 @@ import java.util.Map;
  * Mock utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 7, 2020
+ * @version 1.0.0.1, Feb 28, 2020
  * @since 3.9.0
  */
 public final class Mocks {
@@ -39,10 +34,8 @@ public final class Mocks {
     private Mocks() {
     }
 
-    public static String mockRequest(final String uri) {
-        final Mocks.MockRequest request = Mocks.mockRequest();
-        request.setRequestURI(uri);
-
+    public static String mockRequest(final String uri, final String scheme, final String host) {
+        final Mocks.MockRequest request = Mocks.mockRequest0(uri, scheme, host);
         if (StringUtils.contains(uri, "?")) {
             final Map<String, String> params = new LinkedHashMap<>();
             final String query = StringUtils.substringAfter(uri, "?");
@@ -64,8 +57,17 @@ public final class Mocks {
         new MockDispatcher().handle(request, response);
     }
 
-    private static MockRequest mockRequest() {
-        final FullHttpRequest req = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/a");
+    private static MockRequest mockRequest0(final String uri, final String scheme, final String host) {
+        final FullHttpRequest req = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, uri);
+        Latkes.setScheme(scheme);
+        if (StringUtils.contains(host, ":")) {
+            Latkes.setHost(host.split(":")[0]);
+            Latkes.setPort(host.split(":")[1]);
+        } else {
+            Latkes.setHost(host);
+            Latkes.setPort("");
+        }
+
         return new MockRequest(req);
     }
 

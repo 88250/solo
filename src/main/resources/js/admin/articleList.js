@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 import { TablePaginate } from './tablePaginate'
 /**
@@ -21,7 +15,7 @@ import { TablePaginate } from './tablePaginate'
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Jan 10, 2020
+ * @version 1.3.0.3, Jun 24, 2020
  */
 
 /* article-list 相关操作 */
@@ -29,7 +23,7 @@ admin.articleList = {
   tablePagination: new TablePaginate('article'),
 
   /*
-   * 初始化 table, pagination, comments dialog
+   * 初始化 table, pagination
    */
   init: function (page) {
     this.tablePagination.buildTable([
@@ -60,7 +54,6 @@ admin.articleList = {
         style: 'padding-left: 12px;',
       }])
     this.tablePagination.initPagination()
-    this.tablePagination.initCommentsDialog()
     this.getList(page)
 
     var that = this
@@ -79,12 +72,17 @@ admin.articleList = {
    * @param id 文章 id
    */
   syncToHacpai: function (id) {
+    const licenseConfirm = '文章推送社区后将以 署名-相同方式共享 4.0 国际 (CC BY-SA 4.0) (https://creativecommons.org/licenses/by-sa/4.0/deed.zh) 许可协议发布，请确认是否推送？'
+    if (!confirm(licenseConfirm)) {
+      return;
+    }
+
     $.ajax({
       url: Label.servePath + '/console/article/push2rhy?id=' + id,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
-        $('#tipMsg').text(Label.pushSuccLabel)
+        $('#tipMsg').html(Label.pushSuccLabel)
       },
     })
   },
@@ -104,7 +102,7 @@ admin.articleList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -119,10 +117,9 @@ admin.articleList = {
             + articles[i].articleTitle + '</a><span class=\'table-tag\'>' +
             articles[i].articleTags + '</span>'
           articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime)
-          articleData[i].comments = `<span data-uvstatcmt="${articles[i].oId}">${articles[i].articleCommentCount}</span>`
+          articleData[i].comments = `<span data-uvstatcmt="${articles[i].oId}">0</span>`
           articleData[i].articleViewCount = '<span data-uvstaturl="' +
-            Label.servePath + articles[i].articlePermalink + '">' +
-            articles[i].articleViewCount + '</span>'
+            Label.servePath + articles[i].articlePermalink + '">0</span>'
           articleData[i].author = articles[i].authorName
 
           var topClass = articles[i].articlePutTop
@@ -137,9 +134,7 @@ admin.articleList = {
                                 <a href=\'javascript:void(0)\' onclick="admin.articleList.syncToHacpai(\'' +
             articles[i].oId + '\')">' + Label.pushToHacpaiLabel + '</a>  \
                                 <a href=\'javascript:void(0)\' onclick="admin.articleList.popTop(this, \'' +
-            articles[i].oId + '\')">' + topClass + '</a>  \
-                                <a href=\'javascript:void(0)\' onclick="admin.comment.open(\'' +
-            articles[i].oId + '\', \'article\')">' + Label.commentLabel + '</a>'
+            articles[i].oId + '\')">' + topClass + '</a>'
         }
 
         that.tablePagination.updateTablePagination(articleData, pageNum,
@@ -177,7 +172,7 @@ admin.articleList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }

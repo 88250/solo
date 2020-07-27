@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.model;
 
@@ -25,8 +19,8 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.6.0.5, Jan 25, 2020
+ * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
+ * @version 1.8.0.4, Jul 11, 2020
  * @since 0.6.0
  */
 public final class Option {
@@ -52,6 +46,27 @@ public final class Option {
     public static final String OPTION_CATEGORY = "optionCategory";
 
     // oId constants
+
+    /**
+     * Key of speech flag. 增加取消选中文本朗读功能开关 https://github.com/88250/solo/issues/141
+     */
+    public static final String ID_C_SPEECH = "speech";
+
+    /**
+     * Key of paragraph beginning space flag. Markdown 中文排版段首缩进配置开关 https://github.com/88250/solo/issues/146
+     */
+    public static final String ID_C_PARAGRAPH_BEGINNING_SPACE = "paragraphBeginningSpace";
+
+    /**
+     * Key of editor mode. 支持配置编辑器模式 https://github.com/88250/solo/issues/95
+     * <ul>
+     *     <li>wysiwyg：所见即所得</li>
+     *     <li>ir：即时渲染</li>
+     *     <li>sv：分屏预览</li>
+     * </ul>
+     * 模式细节介绍详见 <a href="https://github.com/Vanessa219/vditor">Vditor</a> 编辑器文档。
+     */
+    public static final String ID_C_EDITOR_MODE = "editorMode";
 
     /**
      * Key of inline math allow digit after open marker flag. 内联数学公式是否允许起始 $ 后紧跟数字 https://github.com/88250/solo/issues/54
@@ -97,6 +112,11 @@ public final class Option {
      * Key of enable backup public articles to HacPai. 备份公开文章到社区 https://hacpai.com/article/1557238327458
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
+
+    /**
+     * Key of GitHub PAT (personal access token).
+     */
+    public static final String ID_C_GITHUB_PAT = "githubPAT";
 
     /**
      * Key of enable sync (pull) GitHub. 拉取并展示仓库 https://hacpai.com/article/1557238327458
@@ -145,24 +165,9 @@ public final class Option {
     public static final String ID_C_RECENT_ARTICLE_DISPLAY_CNT = "recentArticleDisplayCount";
 
     /**
-     * Key of recent comment display count.
-     */
-    public static final String ID_C_RECENT_COMMENT_DISPLAY_CNT = "recentCommentDisplayCount";
-
-    /**
      * Key of most used tag display count.
      */
     public static final String ID_C_MOST_USED_TAG_DISPLAY_CNT = "mostUsedTagDisplayCount";
-
-    /**
-     * Key of most comment article display count.
-     */
-    public static final String ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT = "mostCommentArticleDisplayCount";
-
-    /**
-     * Key of most view article display count.
-     */
-    public static final String ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT = "mostViewArticleDisplayCount";
 
     /**
      * Key of article list display count.
@@ -236,11 +241,6 @@ public final class Option {
      * </p>
      */
     public static final String ID_C_ARTICLE_LIST_STYLE = "articleListStyle";
-
-    /**
-     * Key of article/page comment-able.
-     */
-    public static final String ID_C_COMMENTABLE = "commentable";
 
     /**
      * Key of feed (Atom/RSS) output mode.
@@ -322,11 +322,6 @@ public final class Option {
     public static final String ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT = "statisticPublishedBlogArticleCount";
 
     /**
-     * Key of statistic blog comment(published article) count.
-     */
-    public static final String ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT = "statisticPublishedBlogCommentCount";
-
-    /**
      * Private constructor.
      */
     private Option() {
@@ -336,7 +331,7 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.3.0.6, Jan 25, 2020
+     * @version 2.3.0.7, Jul 5, 2020
      * @since 0.3.1
      */
     public static final class DefaultPreference {
@@ -364,7 +359,7 @@ public final class Option {
         /**
          * Default favicon URL.
          */
-        public static final String DEFAULT_FAVICON_URL = "https://static.b3log.org/images/brand/solo-32.png";
+        public static final String DEFAULT_FAVICON_URL = "https://static.b3log.org/images/brand/solo-128.png";
 
         /**
          * Default custom vars.
@@ -375,11 +370,6 @@ public final class Option {
          * Default recent article display count.
          */
         public static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
-
-        /**
-         * Default recent comment display count.
-         */
-        public static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
 
         /**
          * Default most used tag display count.
@@ -395,11 +385,6 @@ public final class Option {
          * Default article list pagination window size.
          */
         public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE = 15;
-
-        /**
-         * Default most comment article display count.
-         */
-        public static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
 
         /**
          * Default blog subtitle.
@@ -474,11 +459,6 @@ public final class Option {
         public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT = 0;
 
         /**
-         * Most view articles display count.
-         */
-        public static final int DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT = 5;
-
-        /**
          * Default signs.
          */
         public static final String DEFAULT_SIGNS;
@@ -487,11 +467,6 @@ public final class Option {
          * Default allow visit draft via permalink.
          */
         public static final String DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "false";
-
-        /**
-         * Default allow comment article/page.
-         */
-        public static final String DEFAULT_COMMENTABLE = "true";
 
         /**
          * Default article list display style.

@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo;
 
@@ -25,7 +19,6 @@ import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.ioc.Discoverer;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
@@ -46,13 +39,12 @@ import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.util.Collection;
 
 /**
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.3, Nov 6, 2019
+ * @version 4.0.0.3, Jul 8, 2020
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -61,6 +53,11 @@ public abstract class AbstractTestCase {
      * Bean manager.
      */
     private BeanManager beanManager;
+
+    static {
+        Latkes.init();
+        Server.routeProcessors();
+    }
 
     /**
      * Before class.
@@ -73,10 +70,6 @@ public abstract class AbstractTestCase {
      */
     @BeforeClass
     public void beforeClass() throws Exception {
-        Latkes.init();
-
-        final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
-        BeanManager.start(classes);
         beanManager = BeanManager.getInstance();
 
         final Connection connection = Connections.getConnection();
@@ -84,6 +77,9 @@ public abstract class AbstractTestCase {
         connection.close();
 
         JdbcRepositories.initAllTables();
+        InitService.inited = false;
+
+        initSolo();
     }
 
     @BeforeMethod
@@ -101,29 +97,22 @@ public abstract class AbstractTestCase {
     public void afterClass() {
         final ArticleCache articleCache = beanManager.getReference(ArticleCache.class);
         articleCache.clear();
-        final CommentCache commentCache = beanManager.getReference(CommentCache.class);
-        commentCache.clear();
         final OptionCache optionCache = beanManager.getReference(OptionCache.class);
         optionCache.clear();
         final PageCache pageCache = beanManager.getReference(PageCache.class);
         pageCache.clear();
-        final StatisticCache statisticCache = beanManager.getReference(StatisticCache.class);
-        statisticCache.clear();
         final UserCache userCache = beanManager.getReference(UserCache.class);
         userCache.clear();
     }
 
-    /**
-     * Init solo in test.
-     */
-    public void init() {
+    private void initSolo() {
         final InitService initService = getInitService();
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "Solo");
         requestJSONObject.put(UserExt.USER_B3_KEY, "pass");
         initService.init(requestJSONObject);
         final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
-        Dispatcher.get("/error/{statusCode}", errorProcessor::showErrorPage);
+        Dispatcher.error("/error/{statusCode}", errorProcessor::showErrorPage);
         final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByName("Solo"));
     }
@@ -142,7 +131,7 @@ public abstract class AbstractTestCase {
         cookieJSONObject.put(Keys.TOKEN, "pass:" + random);
         final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
         request.addCookie(Solos.COOKIE_NAME, cookieValue);
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setAttribute(Keys.TEMPLATE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
     }
 
     /**
@@ -154,8 +143,6 @@ public abstract class AbstractTestCase {
      */
     public MockDispatcher mockDispatcher(final Request request, final Response response) {
         final MockDispatcher ret = new MockDispatcher();
-        ret.init();
-        Server.routeConsoleProcessors();
         ret.handle(request, response);
 
         return ret;
@@ -253,15 +240,6 @@ public abstract class AbstractTestCase {
      */
     public PageRepository getPageRepository() {
         return beanManager.getReference(PageRepository.class);
-    }
-
-    /**
-     * Gets comment repository.
-     *
-     * @return comment repository
-     */
-    public CommentRepository getCommentRepository() {
-        return beanManager.getReference(CommentRepository.class);
     }
 
     /**
@@ -424,24 +402,6 @@ public abstract class AbstractTestCase {
      */
     public TagMgmtService getTagMgmtService() {
         return beanManager.getReference(TagMgmtService.class);
-    }
-
-    /**
-     * Gets comment query service.
-     *
-     * @return comment query service
-     */
-    public CommentQueryService getCommentQueryService() {
-        return beanManager.getReference(CommentQueryService.class);
-    }
-
-    /**
-     * Gets comment management service.
-     *
-     * @return comment management service
-     */
-    public CommentMgmtService getCommentMgmtService() {
-        return beanManager.getReference(CommentMgmtService.class);
     }
 
     /**

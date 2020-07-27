@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 import { TablePaginate } from './tablePaginate'
 /**
@@ -60,7 +54,6 @@ admin.draftList = {
         style: 'padding-left: 12px;',
       }])
     this.tablePagination.initPagination()
-    this.tablePagination.initCommentsDialog()
     this.getList(page)
   },
 
@@ -79,7 +72,7 @@ admin.draftList = {
       cache: false,
       success: function (result, textStatus) {
         $('#tipMsg').text(result.msg)
-        if (!result.sc) {
+        if (0 !== result.code) {
           $('#loadMsg').text('')
           return
         }
@@ -91,10 +84,9 @@ admin.draftList = {
           articleData[i].tags = articles[i].articleTags
           articleData[i].date = $.bowknot.getDate(
             articles[i].articleCreateTime)
-          articleData[i].comments = `<span data-uvstatcmt="${articles[i].oId}">${articles[i].articleCommentCount}</span>`
+          articleData[i].comments = `<span data-uvstatcmt="${articles[i].oId}">0</span>`
           articleData[i].articleViewCount = '<span data-uvstaturl="' +
-            Label.servePath + articles[i].articlePermalink + '">' +
-            articles[i].articleViewCount + '</span>'
+            Label.servePath + articles[i].articlePermalink + '">0</span>'
           articleData[i].author = articles[i].authorName
           articleData[i].title = '<a class=\'no-underline\' href=\'' +
             Label.servePath +
@@ -106,9 +98,7 @@ admin.draftList = {
                                 <a href=\'javascript:void(0)\' onclick="admin.article.del(\'' +
             articles[i].oId + '\', \'draft\', \'' +
             encodeURIComponent(articles[i].articleTitle) + '\')">' +
-            Label.removeLabel + '</a>  \
-                                <a href=\'javascript:void(0)\' onclick="admin.comment.open(\'' +
-            articles[i].oId + '\', \'draft\')">' + Label.commentLabel + '</a>'
+            Label.removeLabel + '</a>'
         }
 
         that.tablePagination.updateTablePagination(articleData, pageNum,

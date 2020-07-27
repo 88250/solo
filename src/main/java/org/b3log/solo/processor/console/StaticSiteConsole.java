@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor.console;
 
@@ -24,21 +18,19 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.*;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Mocks;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -52,11 +44,10 @@ import java.util.List;
  * Static site console request processing. HTML 静态站点生成 https://github.com/88250/solo/issues/19
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 14, 2020
+ * @version 2.0.1.2, Mar 29, 2020
  * @since 3.9.0
  */
-@RequestProcessor
-@Before(ConsoleAdminAuthAdvice.class)
+@Singleton
 public class StaticSiteConsole {
 
     /**
@@ -71,26 +62,33 @@ public class StaticSiteConsole {
     private LangPropsService langPropsService;
 
     /**
+     * Mock request scheme.
+     */
+    private static String scheme;
+
+    /**
+     * Mock request host.
+     */
+    private static String host;
+
+    /**
      * Generates static site.
      *
      * @param context the specified request context
      */
-    @RequestProcessing(value = "/console/staticsite", method = HttpMethod.PUT)
     public synchronized void genSite(final RequestContext context) {
         try {
             final JSONObject requestJSONObject = context.requestJSON();
             final String url = requestJSONObject.optString(Common.URL);
             if (!Strings.isURL(url)) {
-                context.renderJSON(-1);
+                context.renderJSON(StatusCodes.ERR);
                 context.renderMsg("Invalid site URL");
-
                 return;
             }
 
             if (Latkes.isInJar()) {
-                context.renderJSON(-1);
+                context.renderJSON(StatusCodes.ERR);
                 context.renderMsg("Do not support this feature while running in Jar");
-
                 return;
             }
 
@@ -98,18 +96,10 @@ public class StaticSiteConsole {
             FileUtils.forceMkdir(new File(staticSitePath));
 
             final URL u = new URL(url);
-
-            final String curScheme = Latkes.getServerScheme();
-            final String curHost = Latkes.getServerHost();
-            final String curPort = Latkes.getServerPort();
-
-            // 切换至静态站点生成模式
-            Latkes.setServerScheme(u.getProtocol());
-            Latkes.setServerHost(u.getHost());
+            scheme = u.getProtocol();
+            host = u.getHost();
             if (-1 != u.getPort()) {
-                Latkes.setServerPort(String.valueOf(u.getPort()));
-            } else {
-                Latkes.setServerPort("");
+                host += ":" + u.getPort();
             }
             Solos.GEN_STATIC_SITE = true;
 
@@ -121,6 +111,7 @@ public class StaticSiteConsole {
             genURI("/blog/info");
             genURI("/manifest.json");
             genURI("/rss.xml");
+            genURI("/articles/random.json");
 
             genArticles();
             genTags();
@@ -134,22 +125,18 @@ public class StaticSiteConsole {
             genFile("robots.txt");
             genFile("CHANGE_LOGS.md");
 
-            // 恢复之前的动态运行模式
-            Latkes.setServerScheme(curScheme);
-            Latkes.setServerHost(curHost);
-            Latkes.setServerPort(curPort);
             Solos.GEN_STATIC_SITE = false;
 
             LOGGER.log(Level.INFO, "Static site generated [dir=" + staticSitePath + "]");
 
             String siteGenedLabel = langPropsService.get("siteGenedLabel");
             siteGenedLabel = siteGenedLabel.replace("{dir}", staticSitePath);
-            context.renderJSON(0);
+            context.renderJSON(StatusCodes.SUCC);
             context.renderMsg(siteGenedLabel);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates static site failed", e);
 
-            context.renderJSON(-1);
+            context.renderJSON(StatusCodes.ERR);
             context.renderMsg(langPropsService.get("updateFailLabel"));
         }
     }
@@ -169,21 +156,30 @@ public class StaticSiteConsole {
         if (!Latkes.isInJar()) {
             rootPath = StaticSiteConsole.class.getResource("/repository.json").getPath();
             rootPath = StringUtils.substringBeforeLast(rootPath, "/repository.json");
-            staticSitePath = StaticSiteConsole.class.getResource("/").getPath() + "static-site";
+            staticSitePath = rootPath + "/static-site";
         } else {
             LOGGER.log(Level.INFO, "Do not support export static site when running in jar");
         }
     }
 
-    private static void genCategories() throws Exception {
+    private static void genCategories() {
         final BeanManager beanManager = BeanManager.getInstance();
         final CategoryQueryService categoryQueryService = beanManager.getReference(CategoryQueryService.class);
         final List<JSONObject> categories = categoryQueryService.getMostTagCategory(Integer.MAX_VALUE);
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
         categories.parallelStream().forEach(category -> {
             final String categoryURI = category.optString(Category.CATEGORY_URI);
             try {
-                genPage("/category/" + categoryURI);
+                final int articleCount = categoryQueryService.getPublishedArticleCount(category.optString(Keys.OBJECT_ID));
+                final int pageCount = (int) Math.ceil((double) articleCount / pageSize);
+                int count = 0;
+                while (count++ < pageCount) {
+                    genPage("/category/" + categoryURI);
+                    genPage("/category/" + categoryURI + "?p=" + count);
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Generates a category [uri=" + categoryURI + "] failed", e);
             }
@@ -194,12 +190,21 @@ public class StaticSiteConsole {
         final BeanManager beanManager = BeanManager.getInstance();
         final ArchiveDateQueryService archiveDateQueryService = beanManager.getReference(ArchiveDateQueryService.class);
         final List<JSONObject> archiveDates = archiveDateQueryService.getArchiveDates();
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
         archiveDates.parallelStream().forEach(archiveDate -> {
             final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
             final String dateString = DateFormatUtils.format(time, "yyyy/MM");
             try {
-                genPage("/archives/" + dateString);
+                final int articleCount = archiveDateQueryService.getArchiveDatePublishedArticleCount(archiveDate.optString(Keys.OBJECT_ID));
+                final int pageCount = (int) Math.ceil((double) articleCount / pageSize);
+                int count = 0;
+                while (count++ < pageCount) {
+                    genPage("/archives/" + dateString);
+                    genPage("/archives/" + dateString + "?p=" + count);
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Generates an archive [date=" + archiveDate + "] failed", e);
             }
@@ -210,11 +215,20 @@ public class StaticSiteConsole {
         final BeanManager beanManager = BeanManager.getInstance();
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
         final List<JSONObject> tags = tagQueryService.getTags();
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
         tags.parallelStream().forEach(tag -> {
             final String tagTitle = tag.optString(Tag.TAG_TITLE);
             try {
-                genPage("/tags/" + tagTitle);
+                final int articleCount = tagQueryService.getArticleCount(tag.optString(Keys.OBJECT_ID));
+                final int pageCount = (int) Math.ceil((double) articleCount / pageSize);
+                int count = 0;
+                while (count++ < pageCount) {
+                    genPage("/tags/" + tagTitle);
+                    genPage("/tags/" + tagTitle + "?p=" + count);
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Generates a tag [title=" + tagTitle + "] failed", e);
             }
@@ -234,7 +248,7 @@ public class StaticSiteConsole {
         while (count++ < maxPage) {
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(String.valueOf(currentPageNum) + '/' + pageSize + '/' + windowSize);
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
+            final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
             if (articles.isEmpty()) {
                 break;
             }
@@ -245,6 +259,7 @@ public class StaticSiteConsole {
                 final String permalink = article.optString(Article.ARTICLE_PERMALINK);
                 try {
                     genArticle(permalink);
+                    genURI("/article/relevant/" + article.optString(Keys.OBJECT_ID) + ".json");
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Generates an article [uri=" + permalink + "] failed", e);
                 }
@@ -260,7 +275,7 @@ public class StaticSiteConsole {
         filePath = StringUtils.replace(filePath, "=", "/");
         FileUtils.forceMkdir(new File(staticSitePath + filePath));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + filePath + "/index.html");
-        String html = Mocks.mockRequest(uri);
+        String html = Mocks.mockRequest(uri, scheme, host);
         IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
         outputStream.close();
         LOGGER.log(Level.INFO, "Generated a page [" + uri + "]");
@@ -269,7 +284,7 @@ public class StaticSiteConsole {
     private static void genURI(final String uri) throws Exception {
         FileUtils.forceMkdirParent(new File(staticSitePath + uri));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + uri);
-        String html = Mocks.mockRequest(uri);
+        String html = Mocks.mockRequest(uri, scheme, host);
         IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
         outputStream.close();
         LOGGER.log(Level.INFO, "Generated a file [" + uri + "]");
@@ -278,13 +293,13 @@ public class StaticSiteConsole {
     private static void genArticle(final String permalink) throws Exception {
         if (!StringUtils.endsWithIgnoreCase(permalink, ".html") && !StringUtils.endsWithIgnoreCase(permalink, ".htm")) {
             FileUtils.forceMkdir(new File(staticSitePath + permalink));
-            final String html = Mocks.mockRequest(permalink);
+            final String html = Mocks.mockRequest(permalink, scheme, host);
             final OutputStream outputStream = new FileOutputStream(staticSitePath + permalink + "/index.html");
             IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
             outputStream.close();
         } else {
             FileUtils.forceMkdirParent(new File(staticSitePath + permalink));
-            final String html = Mocks.mockRequest(permalink);
+            final String html = Mocks.mockRequest(permalink, scheme, host);
             final OutputStream outputStream = new FileOutputStream(staticSitePath + permalink);
             IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
             outputStream.close();

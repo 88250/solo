@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
@@ -22,7 +16,6 @@ import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -39,19 +32,10 @@ import java.util.List;
 public class ArticleMgmtServiceTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * Add Article.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -71,7 +55,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
@@ -84,7 +67,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void addArticleWithoutPermalink() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -103,7 +85,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
@@ -116,7 +97,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void updateArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -136,7 +116,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
@@ -159,7 +138,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void removeArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -179,7 +157,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
@@ -203,10 +180,10 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
-        final JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
+        final List<JSONObject> articles = (List<JSONObject>) articleQueryService.getArticles(paginationRequest).opt(Article.ARTICLES);
 
-        Assert.assertNotEquals(articles.length(), 0);
-        final JSONObject article = articles.getJSONObject(0);
+        Assert.assertNotEquals(articles.size(), 0);
+        final JSONObject article = articles.get(0);
 
         final String articleId = article.getString(Keys.OBJECT_ID);
         articleMgmtService.topArticle(articleId, true);
@@ -218,7 +195,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
     public void cancelPublishArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
 
@@ -238,7 +214,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
-        article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
@@ -247,14 +222,14 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
 
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
-        JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
+        List<JSONObject> articles = (List<JSONObject>) articleQueryService.getArticles(paginationRequest).opt(Article.ARTICLES);
 
-        int articleCount = articles.length();
+        int articleCount = articles.size();
         Assert.assertNotEquals(articleCount, 0);
 
         articleMgmtService.cancelPublishArticle(articleId);
-        articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
-        Assert.assertEquals(articles.length(), articleCount - 1);
+        articles = (List<JSONObject>) articleQueryService.getArticles(paginationRequest).opt(Article.ARTICLES);
+        Assert.assertEquals(articles.size(), articleCount - 1);
     }
 
     /**

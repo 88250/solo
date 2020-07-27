@@ -2,29 +2,23 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 /**
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 3.3.0.1, Jan 14, 2020
+* @version 3.4.1.0, Jun 19, 2020
 */
 @import "reset";
 @import "function";
-@import "vditor/src/assets/scss/classic";
+@import "vditor/src/assets/scss/index";
 
 body {
   color: #767676;
@@ -310,6 +304,7 @@ a[class*=" icon-"]:hover {
   top: 0;
   background-color: #32323a;
   overflow: auto;
+  z-index: 1;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -425,12 +420,12 @@ a[class*=" icon-"]:hover {
 .form label {
   margin-bottom: 10px;
   display: inline-block;
+  line-height: 20px;
 }
 
 .form label.checkbox {
   display: inline-flex;
   align-items: center;
-  margin: 11px 0;
 }
 
 .form label.checkbox input {
@@ -568,6 +563,10 @@ button#submitArticle {
 button#submitArticle:hover {
   background-color: #ec6459;
   border-color: #ec6459;
+}
+
+.article-commentable__panel label {
+  margin-bottom: 0;
 }
 
 /* end article */
@@ -965,6 +964,10 @@ button#submitArticle:hover {
   border-radius: 0 0 3px 3px;
 }
 
+.solo-kanbanniang {
+  z-index: 1;
+}
+
 @media (max-width: 768px) {
   #top > a {
     display: none;
@@ -1013,8 +1016,7 @@ button#submitArticle:hover {
     margin-bottom: 10px !important;
   }
 
-  .viewpwd__panel,
-  .article-commentable__panel {
+  .viewpwd__panel {
     float: none;
   }
 

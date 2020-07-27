@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 @charset "utf-8";
 /*
@@ -21,12 +15,12 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.0.0, Aug 2, 2019
+ * @version 2.6.0.1, Feb 9, 2020
  */
 @import "../../../scss/toc";
 @import "../../../scss/usite";
 @import "../../../scss/function";
-@import "vditor/src/assets/scss/classic";
+@import "vditor/src/assets/scss/index";
 
 .vditor-reset::-webkit-scrollbar {
   display: none;
@@ -59,7 +53,7 @@ html {
 body {
   height: 100%;
   max-height: 100%;
-  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   letter-spacing: 0.01rem;
   font-size: 100%;
   line-height: 1.75em;
@@ -95,7 +89,7 @@ h4, h5, h6 {
   -o-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
   color: #666;
   line-height: 1.15em;
-  font-family: "Open Sans", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   text-rendering: geometricPrecision;
 }
 
@@ -200,7 +194,7 @@ mark {
 
 code, tt {
   padding: 1px 3px;
-  font-family: Inconsolata, monospace, "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+  font-family: Inconsolata, monospace, "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   font-size: 0.85em;
   white-space: pre-wrap;
   border: #E3EDF3 1px solid;
@@ -358,7 +352,7 @@ pre code, pre tt {
   box-sizing: border-box;
   font-size: 14px;
   outline: none;
-  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
 }
 
 .form textarea {

@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor.console;
 
@@ -23,15 +17,16 @@ import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.Before;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.Statics;
+import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -41,11 +36,10 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
- * @version 1.1.0.5, Dec 11, 2018
+ * @version 2.0.0.2, Jun 19, 2020
  * @since 0.4.0
  */
-@RequestProcessor
-@Before(ConsoleAdminAuthAdvice.class)
+@Singleton
 public class PluginConsole {
 
     /**
@@ -77,7 +71,7 @@ public class PluginConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "msg": ""
      * }
      * </pre>
@@ -88,13 +82,12 @@ public class PluginConsole {
     public void setPluginStatus(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject requestJSONObject = context.requestJSON();
         final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
         final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
         final JSONObject result = pluginMgmtService.setPluginStatus(pluginId, status);
-
         renderer.setJSONObject(result);
+        Statics.clear();
     }
 
     /**
@@ -108,7 +101,7 @@ public class PluginConsole {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "sc": boolean,
+     *     "code": int,
      *     "pagination": {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
@@ -129,19 +122,16 @@ public class PluginConsole {
     public void getPlugins(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/plugins/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = pluginQueryService.getPlugins(requestJSONObject);
-
             renderer.setJSONObject(result);
-            result.put(Keys.STATUS_CODE, true);
+            result.put(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -155,7 +145,6 @@ public class PluginConsole {
     public void toSetting(final RequestContext context) {
         final ConsoleRenderer renderer = new ConsoleRenderer(context, "admin-plugin-setting.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         try {
             final JSONObject requestJSONObject = context.requestJSON();
             final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -165,8 +154,7 @@ public class PluginConsole {
             dataModel.put(Keys.OBJECT_ID, pluginId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            final JSONObject jsonObject = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
             final JsonRenderer JsonRenderer = new JsonRenderer();
             JsonRenderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
@@ -181,12 +169,10 @@ public class PluginConsole {
     public void updateSetting(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject requestJSONObject = context.requestJSON();
         final String pluginoId = requestJSONObject.optString(Keys.OBJECT_ID);
         final String settings = requestJSONObject.optString(Plugin.PLUGIN_SETTING);
         final JSONObject ret = pluginMgmtService.updatePluginSetting(pluginoId, settings);
-
         renderer.setJSONObject(ret);
     }
 }

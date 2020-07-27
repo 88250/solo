@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.processor.console;
 
@@ -32,27 +26,16 @@ import org.testng.annotations.Test;
  * {@link CategoryConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Dec 10, 2018
+ * @version 1.1.0.1, Feb 27, 2020
  * @since 2.1.0
  */
 @Test(suiteName = "processor")
 public class CategoryConsoleTestCase extends AbstractTestCase {
 
     /**
-     * Init.
-     */
-    @Test
-    public void init() {
-        super.init();
-    }
-
-    /**
      * addCategory.
-     *
-     * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
-    public void addCategory() throws Exception {
+    public void addCategory() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/category/");
         request.setMethod("POST");
@@ -67,7 +50,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 
     /**
@@ -89,7 +72,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 
     /**
@@ -107,6 +90,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         JSONObject category = getCategoryQueryService().getByTitle("分类1");
         requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
         requestJSON.put(Category.CATEGORY_TITLE, "新的分类1");
+        requestJSON.put(Category.CATEGORY_URI, "new-cate-1");
         request.setJSON(requestJSON);
 
         mockAdminLogin(request);
@@ -115,7 +99,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
 
         category = getCategoryQueryService().getByTitle("分类1");
         Assert.assertNull(category);
@@ -127,11 +111,9 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
 
     /**
      * getCategories.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "updateCategory")
-    public void getCategories() throws Exception {
+    public void getCategories() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/categories/1/10/20");
         request.setMethod("GET");
@@ -142,7 +124,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 
     /**
@@ -168,7 +150,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 
     /**
@@ -190,6 +172,6 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockDispatcher(request, response);
 
         final String content = response.getString();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "code\":0"));
     }
 }

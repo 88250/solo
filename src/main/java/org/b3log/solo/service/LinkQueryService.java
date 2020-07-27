@@ -2,18 +2,12 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.service;
 
@@ -30,7 +24,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -84,27 +77,20 @@ public class LinkQueryService {
      */
     public JSONObject getLinks(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
-
         try {
             final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
-
             final Query query = new Query().setPage(currentPageNum, pageSize).addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
             final JSONObject result = linkRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
-
             final JSONObject pagination = new JSONObject();
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            final JSONArray links = result.getJSONArray(Keys.RESULTS);
-
+            final List<JSONObject> links = (List<JSONObject>) result.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION, pagination);
-            ret.put(Link.LINKS, links);
-
+            ret.put(Link.LINKS, (Object) links);
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets links failed", e);

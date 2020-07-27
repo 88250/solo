@@ -2,29 +2,22 @@
  * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-present, b3log.org
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
  */
 package org.b3log.solo.repository;
 
-import junit.framework.Assert;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
-import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -80,8 +73,8 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
     public void getByTagId() throws Exception {
         final TagArticleRepository tagArticleRepository = getTagArticleRepository();
 
-        final JSONArray results = tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).getJSONArray(Keys.RESULTS);
-        Assert.assertEquals(1, results.length());
+        final List<JSONObject> results = (List<JSONObject>) tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).opt(Keys.RESULTS);
+        Assert.assertEquals(1, results.size());
     }
 
     /**
@@ -95,6 +88,6 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
 
         final List<JSONObject> mostUsedTags = tagArticleRepository.getMostUsedTags(3);
         Assert.assertNotNull(mostUsedTags);
-        Assert.assertEquals(1, mostUsedTags.size());
+        Assert.assertEquals(2, mostUsedTags.size());
     }
 }
