@@ -14,7 +14,7 @@
  * skin metro-hot style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.3.1.0, Mar 19, 2020
+ * @version 2.3.2.0, Jul 30, 2020
  */
 @import "../../../scss/toc";
 @import "../../../scss/usite";
@@ -738,6 +738,7 @@ textarea {
 }
 
 .vditor-reset {
+  color: #d1d2d1;
   margin-bottom: 30px;
   overflow: hidden;
   padding: 10px;
