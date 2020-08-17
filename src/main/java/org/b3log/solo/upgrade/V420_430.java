@@ -29,7 +29,7 @@ import java.sql.Statement;
  * Upgrade script from v4.2.0 to v4.3.0.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 5, 2020
+ * @version 1.0.1.0, Aug 17, 2020
  * @since 4.3.0
  */
 public final class V420_430 {
@@ -57,7 +57,9 @@ public final class V420_430 {
             final Connection connection = Connections.getConnection();
             final Statement statement = connection.createStatement();
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCommentCount`, DROP COLUMN `articleViewCount`, DROP COLUMN `articleCommentable`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCommentCount`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleViewCount`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCommentable`");
             statement.close();
             connection.commit();
             connection.close();
