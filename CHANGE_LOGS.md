@@ -15,7 +15,7 @@
 
 * [清理后台无用的配置项](https://github.com/88250/solo/issues/160)
 * [删除 v2.9.9~v3.6.2 升级脚本](https://github.com/88250/solo/issues/164)
-* [移除默认的黑客派导航](https://github.com/88250/solo/issues/165)
+* [移除默认的社区导航](https://github.com/88250/solo/issues/165)
 
 ## v4.2.0 / 2020-06-28
 

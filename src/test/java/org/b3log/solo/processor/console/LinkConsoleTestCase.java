@@ -43,7 +43,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         final JSONObject requestJSON = new JSONObject();
         final JSONObject link = new JSONObject();
         requestJSON.put(Link.LINK, link);
-        link.put(Link.LINK_TITLE, "黑客派");
+        link.put(Link.LINK_TITLE, "链滴");
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
         link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
@@ -75,7 +75,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         final JSONObject link = new JSONObject();
         requestJSON.put(Link.LINK, link);
         link.put(Keys.OBJECT_ID, linkId);
-        link.put(Link.LINK_TITLE, "黑客派");
+        link.put(Link.LINK_TITLE, "链滴");
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "B3log 开源社区线上论坛");
         link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
