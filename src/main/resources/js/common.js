@@ -262,7 +262,7 @@ window.Util = {
    */
   initDebugInfo: function () {
     console.log(
-      '%cSolo%c\n  🎸一款小而美的博客系统，专为程序员设计。\n\n  solo.b3log.org v' +
+      '%cSolo%c\n  🎸一款小而美的博客系统，专为程序员设计。\n\n  https://b3log.org/solo v' +
       Label.version + '\n  Copyright © 2010-present',
       'font-size:96px;color:#3b3e43', 'font-size:12px;color:#4285f4;')
   },

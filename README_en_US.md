@@ -31,7 +31,7 @@ Small and beautiful blog system, designed for programmers
 
 ## 💡 Introduction
 
-[Solo](https://solo.b3log.org) is a small and beautiful open source blog system, designed for programmers. Solo has a very active [community](https://hacpai.com), which can push articles as posts to the community, and replies from the community will be linked as blog comments (for details, please visit [B3log Ideas - Distributed Community Network](https://hacpai.com/article/1546941897596)).
+[Solo](https://b3log.org/solo) is a small and beautiful open source blog system, designed for programmers. Solo has a very active [community](https://hacpai.com), which can push articles as posts to the community, and replies from the community will be linked as blog comments (for details, please visit [B3log Ideas - Distributed Community Network](https://hacpai.com/article/1546941897596)).
 
 > This is a brand new online community experience, so that you who love recording and sharing no longer feel lonely!
 
@@ -50,7 +50,7 @@ https://hacpai.com/top/solo
 * Custom article permanent link / Signature column
 * Configure site SEO parameters / Announcement / Footer
 * Code syntax highlighting / Mathematical formulas / Flow charts / Staves
-* [Multi-skin, multi-end adaptation](https://solo.b3log.org/#themes)
+* [Multi-skin, multi-end adaptation](https://b3log.org/solo/#themes)
 * Multilingual / International
 * Friendly Link Management
 * Multi-user writing, team blog

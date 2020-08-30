@@ -176,7 +176,7 @@ public class FeedProcessor {
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/rss.xml");
-            channel.setGenerator("Solo, v" + Server.VERSION + ", https://solo.b3log.org");
+            channel.setGenerator("Solo, v" + Server.VERSION + ", https://b3log.org/solo");
             final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();

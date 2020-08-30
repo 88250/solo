@@ -31,7 +31,7 @@
 
 ## 💡 简介
 
-[Solo](https://solo.b3log.org) 是一款小而美的开源博客系统，专为程序员设计。Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖子推送到社区，来自社区的回帖将作为博客评论进行联动（具体细节请浏览 [B3log 构思 - 分布式社区网络](https://hacpai.com/article/1546941897596)）。
+[Solo](https://b3log.org/solo) 是一款小而美的开源博客系统，专为程序员设计。Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖子推送到社区，来自社区的回帖将作为博客评论进行联动（具体细节请浏览 [B3log 构思 - 分布式社区网络](https://hacpai.com/article/1546941897596)）。
 
 > 这是一种全新的网络社区体验，让热爱记录和分享的你不再感到孤单！
 
@@ -52,7 +52,7 @@ https://hacpai.com/top/solo
 * 自定义文章永久链接 / 签名档
 * 配置站点 SEO 参数 / 公告 / 页脚
 * 代码高亮 / 数学公式 / 流程图 / 五线谱
-* [多皮肤，多端适配](https://solo.b3log.org/#themes)
+* [多皮肤，多端适配](https://b3log.org/solo/#themes)
 * 多语言 / 国际化
 * 友情链接管理
 * 多用户写作，团队博客

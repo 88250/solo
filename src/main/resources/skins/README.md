@@ -13,7 +13,7 @@ Solo 官方皮肤中有很大一部分是其他博客系统皮肤的仿款，为
 
 ## 皮肤
 
-预览及下载可参见 [Solo 主题](https://solo.b3log.org/#themes)。
+预览及下载可参见 [Solo 主题](https://b3log.org/solo/#themes)。
 
 ## 文档
 
