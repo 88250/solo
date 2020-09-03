@@ -31,22 +31,22 @@
 
 ## 💡 简介
 
-[Solo](https://b3log.org/solo) 是一款小而美的开源博客系统，专为程序员设计。Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖子推送到社区，来自社区的回帖将作为博客评论进行联动（具体细节请浏览 [B3log 构思 - 分布式社区网络](https://hacpai.com/article/1546941897596)）。
+[Solo](https://b3log.org/solo) 是一款小而美的开源博客系统，专为程序员设计。Solo 有着非常活跃的[社区](https://ld246.com)，可将文章作为帖子推送到社区，来自社区的回帖将作为博客评论进行联动（具体细节请浏览 [B3log 构思 - 分布式社区网络](https://hacpai.com/article/1546941897596)）。
 
 > 这是一种全新的网络社区体验，让热爱记录和分享的你不再感到孤单！
 
-欢迎到 [Solo 官方讨论区](https://hacpai.com/tag/solo)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
+欢迎到 [Solo 官方讨论区](https://ld246.com/tag/solo)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
 
 ![b3logos.jpg](https://b3logfile.com/file/2020/08/b3logos-032af045.jpg)
 
 ## 🗃 案例
 
-https://hacpai.com/top/solo
+https://ld246.com/top/solo
 
 ## ✨ 功能
 
 * [Markdown 编辑器](https://github.com/Vanessa219/vditor)支持三种编辑模式：所见即所得 / 即时渲染 / 分屏预览
-* [标签聚合分类](https://hacpai.com/article/1558320086126)
+* [标签聚合分类](https://ld246.com/article/1558320086126)
 * 自定义导航链接
 * 随机文章 / 相关文章 / 置顶 / 更新提醒
 * 自定义文章永久链接 / 签名档
@@ -56,45 +56,45 @@ https://hacpai.com/top/solo
 * 多语言 / 国际化
 * 友情链接管理
 * 多用户写作，团队博客
-* [Hexo / Jekyll / Markdown 导入](https://hacpai.com/article/1498490209748)
+* [Hexo / Jekyll / Markdown 导入](https://ld246.com/article/1498490209748)
 * SQL / JSON / Markdown 导出
 * Atom / RSS / Sitemap
 * CDN 静态资源分离，可配置 jsDelivr CDN 分发
-* [拉取 GitHub 仓库和自动备份](https://hacpai.com/article/1557238327458)
-* [内置 HTTPS+CDN 文件存储](https://hacpai.com/article/1559928188793)
-* [支持生成导出静态站点](https://hacpai.com/article/1579053576274)，用于发布 GitHub Pages
+* [拉取 GitHub 仓库和自动备份](https://ld246.com/article/1557238327458)
+* [内置 HTTPS+CDN 文件存储](https://ld246.com/article/1559928188793)
+* [支持生成导出静态站点](https://ld246.com/article/1579053576274)，用于发布 GitHub Pages
 
 ## 🎨 界面
 
 ### 开始使用
 
-![start.png](https://img.hacpai.com/file/2020/03/start-6fec3c72.png)
+![start.png](https://b3logfile.com/file/2020/03/start-6fec3c72.png)
 
 ### 后台首页
 
-![console.png](https://img.hacpai.com/file/2020/03/console-ff45ec74.png)
+![console.png](https://b3logfile.com/file/2020/03/console-ff45ec74.png)
 
 ### 编辑文章
 
-![post.png](https://img.hacpai.com/file/2020/03/post-acb91edb.png)
+![post.png](https://b3logfile.com/file/2020/03/post-acb91edb.png)
 
 ### 选择皮肤
 
-![skins.png](https://img.hacpai.com/file/2019/08/61179517afd61b00a63611e987d5ddea6d6a0fc9-0d368d02.png)
+![skins.png](https://b3logfile.com/file/2019/08/61179517afd61b00a63611e987d5ddea6d6a0fc9-0d368d02.png)
 
 ### 前台界面
 
-![pinghsu.png](https://img.hacpai.com/file/2020/03/pinghsu-91c48743.png)
+![pinghsu.png](https://b3logfile.com/file/2020/03/pinghsu-91c48743.png)
 
-![Bubble.png](https://img.hacpai.com/file/2020/03/Bubble-84bee365.png)
+![Bubble.png](https://b3logfile.com/file/2020/03/Bubble-84bee365.png)
 
-![nijigen.png](https://img.hacpai.com/file/2020/03/nijigen-30de3aaa.png)
+![nijigen.png](https://b3logfile.com/file/2020/03/nijigen-30de3aaa.png)
 
-![timeline.png](https://img.hacpai.com/file/2020/03/timeline-094af4c3.png)
+![timeline.png](https://b3logfile.com/file/2020/03/timeline-094af4c3.png)
 
-![Casper.png](https://img.hacpai.com/file/2020/03/Casper-2d5ed59d.png)
+![Casper.png](https://b3logfile.com/file/2020/03/Casper-2d5ed59d.png)
 
-![Jane.png](https://img.hacpai.com/file/2020/03/Jane-55b0414c.png)
+![Jane.png](https://b3logfile.com/file/2020/03/Jane-55b0414c.png)
 
 ## 🍱 皮肤
 
@@ -140,7 +140,7 @@ Solo 支持“动静两用”：
 
 ### 本地运行
 
-本地运行主要用于试用或者生成静态站点，生成静态站点的用法请参考[这里](https://hacpai.com/article/1579053576274)。
+本地运行主要用于试用或者生成静态站点，生成静态站点的用法请参考[这里](https://ld246.com/article/1579053576274)。
 
 （视频演示教程请看[这里](https://www.bilibili.com/video/BV1tK411n7R3)）
 
@@ -149,7 +149,7 @@ Solo 支持“动静两用”：
 * Windows: `java -cp "lib/*;." org.b3log.solo.Server`
 * Unix-like： `java -cp "lib/*:." org.b3log.solo.Server`
 
-如果你有 Java 开发环境，可参考[这里](https://hacpai.com/article/1493822943172)通过源码构建运行（视频演示教程请看[这里](https://www.bilibili.com/video/BV1jD4y1S7Ez)）。
+如果你有 Java 开发环境，可参考[这里](https://ld246.com/article/1493822943172)通过源码构建运行（视频演示教程请看[这里](https://www.bilibili.com/video/BV1jD4y1S7Ez)）。
 
 ### Docker 部署
 
@@ -272,16 +272,16 @@ proxy_set_header  X-Real-IP $remote_addr;
 
 ## 📜 文档
 
-* [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
-* [从零开始安装 Solo 博客](https://hacpai.com/article/1565021959471)（感谢 @InkDP 分享）
-* [Solo 用户指南](https://hacpai.com/article/1492881378588)
-* [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
-* [Solo 皮肤开发指南](https://hacpai.com/article/1493814851007)
+* [《提问的智慧》精读注解版](https://ld246.com/article/1536377163156)
+* [从零开始安装 Solo 博客](https://ld246.com/article/1565021959471)（感谢 @InkDP 分享）
+* [Solo 用户指南](https://ld246.com/article/1492881378588)
+* [Solo 从设计到实现](https://ld246.com/article/1537690756242)
+* [Solo 皮肤开发指南](https://ld246.com/article/1493814851007)
 * [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
 ## 🏘️ 社区
 
-* [讨论区](https://hacpai.com/tag/solo)
+* [讨论区](https://ld246.com/tag/solo)
 * [报告问题](https://github.com/88250/solo/issues/new/choose)
 
 ## 📄 授权
@@ -327,7 +327,7 @@ Solo 使用 [木兰宽松许可证, 第2版](http://license.coscl.org.cn/MulanPS
 
 ## 导入 Markdown
 
-请参考 [Solo 支持 Hexo/Jekyll 数据导入](https://hacpai.com/article/1498490209748)。
+请参考 [Solo 支持 Hexo/Jekyll 数据导入](https://ld246.com/article/1498490209748)。
 
 ## 备份
 
@@ -340,11 +340,11 @@ Solo 使用 [木兰宽松许可证, 第2版](http://license.coscl.org.cn/MulanPS
 
 ### 社区端备份
 
-可在工具 - 偏好设定 - 参数设置中勾选“备份所有文章到社区”，开启后将每隔 24 小时自动备份所有文章（包括草稿和加密文章）到社区，具体细节请参考 [Solo 拉取 GitHub 仓库和自动备份](https://hacpai.com/article/1557238327458)。
+可在工具 - 偏好设定 - 参数设置中勾选“备份所有文章到社区”，开启后将每隔 24 小时自动备份所有文章（包括草稿和加密文章）到社区，具体细节请参考 [Solo 拉取 GitHub 仓库和自动备份](https://ld246.com/article/1557238327458)。
 
 ### GitHub 备份
 
-可在工具 - 偏好设定 - 参数设置中填写 GitHub token，填写后将每隔 24 小时自动备份公开文章（不包括草稿和加密文章）到你的 GitHub  仓库 `solo-blog`，具体细节请参考 [solo-blog 仓库同步功能回来了](https://hacpai.com/article/1589995001682)。
+可在工具 - 偏好设定 - 参数设置中填写 GitHub token，填写后将每隔 24 小时自动备份公开文章（不包括草稿和加密文章）到你的 GitHub  仓库 `solo-blog`，具体细节请参考 [solo-blog 仓库同步功能回来了](https://ld246.com/article/1589995001682)。
 
 ## 其他一些特性
 
@@ -379,13 +379,13 @@ Solo 使用 [木兰宽松许可证, 第2版](http://license.coscl.org.cn/MulanPS
 
 “站外相关文章”指的是其他人使用 Solo 发布的文章，该文章含有与你的文章相同的标签。该功能主要是为了加强各个 Solo 博客之间的互动性，让博客访问者可以更有效地访问到相关的内容。
 
-这是 [B3log 构思](https://hacpai.com/b3log)的一部分实现，请大家积极参与进来 🙏
+这是 [B3log 构思](https://ld246.com/b3log)的一部分实现，请大家积极参与进来 🙏
 
 ## FAQ
 
 ### 为什么要“捆绑”登录链滴社区账号？
 
-Solo 和 Pipe 的定位是 B3log 分布式社区的博客端节点，并不是通常意义上的独立博客，所以账号体系需要进行统一，否则带来的问题会很多，这也是一路下来探索的，具体经历细节请看[这里](https://hacpai.com/article/1576294445994)。
+Solo 和 Pipe 的定位是 B3log 分布式社区的博客端节点，并不是通常意义上的独立博客，所以账号体系需要进行统一，否则带来的问题会很多，这也是一路下来探索的，具体经历细节请看[这里](https://ld246.com/article/1576294445994)。
 
 在 Solo v3 之前一直是独立账号体系，但经过长时间验证效果并不理想：
 
@@ -415,7 +415,7 @@ Solo 和 Pipe 的定位是 B3log 分布式社区的博客端节点，并不是�
 
 ### 获取社区文件存储服务上传凭证异常？
 
-请参考[这里](https://hacpai.com/article/1550393688505)进行配置。
+请参考[这里](https://ld246.com/article/1550393688505)进行配置。
 
 ### 如何引入自定义静态资源，比如 .mp3？
 
@@ -423,7 +423,7 @@ Solo 和 Pipe 的定位是 B3log 分布式社区的博客端节点，并不是�
 
 ### 如何获得更好的 Markdown 渲染效果？
 
-Solo 默认是使用内建的 [flexmark](https://github.com/vsch/flexmark-java) 进行 md 渲染，可能对有的场景下的渲染效果不是很好。如果你想要获得更好的 md 渲染效果请参考[这里](https://hacpai.com/article/1569240189601)。
+Solo 默认是使用内建的 [flexmark](https://github.com/vsch/flexmark-java) 进行 md 渲染，可能对有的场景下的渲染效果不是很好。如果你想要获得更好的 md 渲染效果请参考[这里](https://ld246.com/article/1569240189601)。
 
 ### 为什么在线访问计数一直都是 1？
 
@@ -462,4 +462,4 @@ Solo 从第一版开始就支持平滑升级，从 v3.0.0 开始支持跨版本�
 
 ## 结语
 
-如果你在使用 Solo 过程中碰到问题或者有需求要提，欢迎跟帖，我们会在第一时间回复；如果你对 Solo 开发方面感兴趣，请参考 [Solo 从设计到实现](https://hacpai.com/article/1537690756242)。
+如果你在使用 Solo 过程中碰到问题或者有需求要提，欢迎跟帖，我们会在第一时间回复；如果你对 Solo 开发方面感兴趣，请参考 [Solo 从设计到实现](https://ld246.com/article/1537690756242)。

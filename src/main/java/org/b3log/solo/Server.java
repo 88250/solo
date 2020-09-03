@@ -169,7 +169,7 @@ public final class Server extends BaseServer {
             Latkes.setScanPath("org.b3log.solo");
             Latkes.init();
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Latke init failed, please configure latke.props or run with args, visit https://hacpai.com/article/1492881378588 for more details");
+            LOGGER.log(Level.ERROR, "Latke init failed, please configure latke.props or run with args, visit https://ld246.com/article/1492881378588 for more details");
 
             System.exit(-1);
         }

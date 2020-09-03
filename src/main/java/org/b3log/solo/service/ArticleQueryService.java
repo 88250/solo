@@ -43,8 +43,8 @@ import java.util.*;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
+ * @author <a href="https://ld246.com/member/armstrong">ArmstrongCN</a>
+ * @author <a href="https://ld246.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.3.6.2, Jul 8, 2020
  * @since 0.3.5

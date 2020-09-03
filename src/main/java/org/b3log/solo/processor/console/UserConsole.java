@@ -36,7 +36,7 @@ import java.util.List;
  * User console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
+ * @author <a href="https://ld246.com/member/DASHU">DASHU</a>
  * @version 2.0.0.0, Feb 9, 2020
  * @since 0.4.0
  */

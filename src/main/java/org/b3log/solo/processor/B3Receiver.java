@@ -32,7 +32,7 @@ import org.b3log.solo.service.UserMgmtService;
 import org.json.JSONObject;
 
 /**
- * Receiving articles from B3log community. Visits <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
+ * Receiving articles from B3log community. Visits <a href="https://ld246.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 3.0.0.5, Jul 8, 2020

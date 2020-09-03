@@ -20,9 +20,9 @@ import org.b3log.latke.ioc.Singleton;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for updating article to B3log Rhythm. Sees <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
+ * This listener is responsible for updating article to B3log Rhythm. Sees <a href="https://ld246.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  * <p>
- * API spec: https://hacpai.com/article/1457158841475
+ * API spec: https://ld246.com/article/1457158841475
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>

@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
+ * @author <a href="https://ld246.com/member/hzchendou">hzchendou</a>
  * @version 2.0.0.2, Jul 4, 2020
  * @since 0.4.0
  */

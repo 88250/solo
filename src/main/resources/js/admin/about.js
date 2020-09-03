@@ -50,7 +50,7 @@ admin.about = {
         for (var i = 0; i < payments.length; i++) {
           var userName = '<b>匿名好心人</b>'
           if (payments[i].paymentUserName) {
-            userName = '<a href="https://hacpai.com/member/' +
+            userName = '<a href="https://ld246.com/member/' +
               payments[i].paymentUserName + '"><b>' + payments[i].paymentUserName +
               '</b></a>'
           }

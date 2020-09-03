@@ -35,13 +35,13 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for sending article to B3log Rhythm. Sees <a href="https://hacpai.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
+ * This listener is responsible for sending article to B3log Rhythm. Sees <a href="https://ld246.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
  * <p>
- * API spec: https://hacpai.com/article/1457158841475
+ * API spec: https://ld246.com/article/1457158841475
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
+ * @author <a href="https://ld246.com/member/armstrong">ArmstrongCN</a>
  * @version 1.0.2.27, Sep 3, 2020
  * @since 0.3.1
  */

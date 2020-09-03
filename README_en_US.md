@@ -31,20 +31,20 @@ Small and beautiful blog system, designed for programmers
 
 ## 💡 Introduction
 
-[Solo](https://b3log.org/solo) is a small and beautiful open source blog system, designed for programmers. Solo has a very active [community](https://hacpai.com), which can push articles as posts to the community, and replies from the community will be linked as blog comments (for details, please visit [B3log Ideas - Distributed Community Network](https://hacpai.com/article/1546941897596)).
+[Solo](https://b3log.org/solo) is a small and beautiful open source blog system, designed for programmers. Solo has a very active [community](https://ld246.com), which can push articles as posts to the community, and replies from the community will be linked as blog comments (for details, please visit [B3log Ideas - Distributed Community Network](https://hacpai.com/article/1546941897596)).
 
 > This is a brand new online community experience, so that you who love recording and sharing no longer feel lonely!
 
-Welcome to [Solo Official Discussion Forum](https://hacpai.com/tag/solo) to learn more.
+Welcome to [Solo Official Discussion Forum](https://ld246.com/tag/solo) to learn more.
 
 ## 🗃 Showcases
 
-https://hacpai.com/top/solo
+https://ld246.com/top/solo
 
 ## ✨ Features
 
 * [Markdown Editor](https://github.com/Vanessa219/vditor) supports three editing modes: WYSIWYG/Instant Rendering/Split View
-* [Tag aggregation classification](https://hacpai.com/article/1558320086126)
+* [Tag aggregation classification](https://ld246.com/article/1558320086126)
 * Custom navigation links
 * Random articles / Related articles / Pin articles / Update reminder
 * Custom article permanent link / Signature column
@@ -54,45 +54,45 @@ https://hacpai.com/top/solo
 * Multilingual / International
 * Friendly Link Management
 * Multi-user writing, team blog
-* [Hexo / Jekyll / Markdown import](https://hacpai.com/article/1498490209748)
+* [Hexo / Jekyll / Markdown import](https://ld246.com/article/1498490209748)
 * SQL / JSON / Markdown export
 * Atom / RSS / Sitemap
 * CDN static resource separation, configurable jsDelivr CDN distribution
-* [Pull GitHub repository and automatic backup](https://hacpai.com/article/1557238327458)
-* [Built-in HTTPS + CDN file storage](https://hacpai.com/article/1559928188793)
-* [Support to generate and export static sites](https://hacpai.com/article/1579053576274) for publishing GitHub Pages
+* [Pull GitHub repository and automatic backup](https://ld246.com/article/1557238327458)
+* [Built-in HTTPS + CDN file storage](https://ld246.com/article/1559928188793)
+* [Support to generate and export static sites](https://ld246.com/article/1579053576274) for publishing GitHub Pages
 
 ## 🎨 Screenshots
 
 ### Start
 
-![start.png](https://img.hacpai.com/file/2020/03/start-6fec3c72.png)
+![start.png](https://b3logfile.com/file/2020/03/start-6fec3c72.png)
 
 ### Console
 
-![console.png](https://img.hacpai.com/file/2020/03/console-ff45ec74.png)
+![console.png](https://b3logfile.com/file/2020/03/console-ff45ec74.png)
 
 ### Post
 
-![post.png](https://img.hacpai.com/file/2020/03/post-acb91edb.png)
+![post.png](https://b3logfile.com/file/2020/03/post-acb91edb.png)
 
 ### Skin
 
-![skins.png](https://img.hacpai.com/file/2019/08/61179517afd61b00a63611e987d5ddea6d6a0fc9-0d368d02.png)
+![skins.png](https://b3logfile.com/file/2019/08/61179517afd61b00a63611e987d5ddea6d6a0fc9-0d368d02.png)
 
 ### Front
 
-![pinghsu.png](https://img.hacpai.com/file/2020/03/pinghsu-91c48743.png)
+![pinghsu.png](https://b3logfile.com/file/2020/03/pinghsu-91c48743.png)
 
-![Bubble.png](https://img.hacpai.com/file/2020/03/Bubble-84bee365.png)
+![Bubble.png](https://b3logfile.com/file/2020/03/Bubble-84bee365.png)
 
-![nijigen.png](https://img.hacpai.com/file/2020/03/nijigen-30de3aaa.png)
+![nijigen.png](https://b3logfile.com/file/2020/03/nijigen-30de3aaa.png)
 
-![timeline.png](https://img.hacpai.com/file/2020/03/timeline-094af4c3.png)
+![timeline.png](https://b3logfile.com/file/2020/03/timeline-094af4c3.png)
 
-![Casper.png](https://img.hacpai.com/file/2020/03/Casper-2d5ed59d.png)
+![Casper.png](https://b3logfile.com/file/2020/03/Casper-2d5ed59d.png)
 
-![Jane.png](https://img.hacpai.com/file/2020/03/Jane-55b0414c.png)
+![Jane.png](https://b3logfile.com/file/2020/03/Jane-55b0414c.png)
 
 ## 🍱 Skins
 
@@ -138,7 +138,7 @@ More video tutorials are being produced successively, welcome to follow me on Bi
 
 ### Run locally
 
-Local operation is mainly used for trial or static site generation, please refer to [here](https://hacpai.com/article/1579053576274) for usage of static site generation.
+Local operation is mainly used for trial or static site generation, please refer to [here](https://ld246.com/article/1579053576274) for usage of static site generation.
 
 (Video demo tutorial please see [here](https://www.bilibili.com/video/BV1tK411n7R3))
 
@@ -147,7 +147,7 @@ Local operation is mainly used for trial or static site generation, please refer
 * Windows: `java -cp "lib/*;." org.b3log.solo.Server`
 * Unix-like: `java -cp "lib/*:." org.b3log.solo.Server`
 
-If you have a Java development environment, you can refer to [here](https://hacpai.com/article/1493822943172) to build and run through the source code (Video demo tutorial please see [here](https://www.bilibili.com/video/BV1jD4y1S7Ez)).
+If you have a Java development environment, you can refer to [here](https://ld246.com/article/1493822943172) to build and run through the source code (Video demo tutorial please see [here](https://www.bilibili.com/video/BV1jD4y1S7Ez)).
 
 ### Docker
 
@@ -267,15 +267,15 @@ Otherwise, "Latke configuration error" or abnormal style may appear on the acces
 
 ## 📜 Documentation
 
-* [Install Solo Blog from scratch](https://hacpai.com/article/1565021959471) (thanks @InkDP for sharing)
-* [Solo User Guide](https://hacpai.com/article/1492881378588)
-* [Solo from design to implementation](https://hacpai.com/article/1537690756242)
-* [Solo Skin Development Guide](https://hacpai.com/article/1493814851007)
+* [Install Solo Blog from scratch](https://ld246.com/article/1565021959471) (thanks @InkDP for sharing)
+* [Solo User Guide](https://ld246.com/article/1492881378588)
+* [Solo from design to implementation](https://ld246.com/article/1537690756242)
+* [Solo Skin Development Guide](https://ld246.com/article/1493814851007)
 * [Plugin development](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
 ## 🏘️ Community
 
-* [Forum](https://hacpai.com/tag/solo)
+* [Forum](https://ld246.com/tag/solo)
 * [Issues](https://github.com/88250/solo/issues/new/choose)
 
 ## 📄 License

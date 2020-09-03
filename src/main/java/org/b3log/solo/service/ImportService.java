@@ -65,7 +65,7 @@ public class ImportService {
     private UserQueryService userQueryService;
 
     /**
-     * Imports markdown files as articles. See <a href="https://hacpai.com/article/1498490209748">Solo 支持 Hexo/Jekyll 数据导入</a> for more details.
+     * Imports markdown files as articles. See <a href="https://ld246.com/article/1498490209748">Solo 支持 Hexo/Jekyll 数据导入</a> for more details.
      */
     public void importMarkdowns() {
         new Thread(() -> {

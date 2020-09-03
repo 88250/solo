@@ -54,7 +54,7 @@ import java.util.*;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
+ * @author <a href="https://ld246.com/member/ZephyrJung">Zephyr</a>
  * @version 2.0.0.3, Jul 8, 2020
  * @since 0.3.1
  */

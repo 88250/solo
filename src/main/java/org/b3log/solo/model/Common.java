@@ -15,7 +15,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
+ * @author <a href="https://ld246.com/member/e">Dongxu Wang</a>
  * @version 1.7.0.10, Jul 8, 2020
  * @since 0.3.1
  */

@@ -19,7 +19,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/hzchendou">hzchendou</a>
+ * @author <a href="https://ld246.com/member/hzchendou">hzchendou</a>
  * @version 1.8.0.4, Jul 11, 2020
  * @since 0.6.0
  */
@@ -109,7 +109,7 @@ public final class Option {
     public static final String ID_C_HLJS_THEME = "hljsTheme";
 
     /**
-     * Key of enable backup public articles to HacPai. 备份公开文章到社区 https://hacpai.com/article/1557238327458
+     * Key of enable backup public articles to HacPai. 备份公开文章到社区 https://ld246.com/article/1557238327458
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
 
@@ -119,7 +119,7 @@ public final class Option {
     public static final String ID_C_GITHUB_PAT = "githubPAT";
 
     /**
-     * Key of enable sync (pull) GitHub. 拉取并展示仓库 https://hacpai.com/article/1557238327458
+     * Key of enable sync (pull) GitHub. 拉取并展示仓库 https://ld246.com/article/1557238327458
      * https://github.com/b3log/solo/issues/12825
      */
     public static final String ID_C_PULL_GITHUB = "pullGitHub";

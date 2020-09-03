@@ -26,7 +26,7 @@ import java.util.List;
  * {@link UserQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
+ * @author <a href="https://ld246.com/member/nanolikeyou">nanolikeyou</a>
  * @version 1.0.0.4, May 9, 2020
  */
 @Test(suiteName = "service")

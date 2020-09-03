@@ -35,7 +35,7 @@ import java.util.Map;
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
+ * @author <a href="https://ld246.com/member/mainlove">Love Yao</a>
  * @version 2.0.0.2, Jun 19, 2020
  * @since 0.4.0
  */

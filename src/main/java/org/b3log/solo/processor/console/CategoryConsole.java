@@ -44,7 +44,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
+ * @author <a href="https://ld246.com/member/lzh984294471">lzh984294471</a>
  * @version 2.0.1.0, Jul 21, 2020
  * @since 2.0.0
  */

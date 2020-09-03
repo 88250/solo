@@ -17,8 +17,8 @@ Solo 官方皮肤中有很大一部分是其他博客系统皮肤的仿款，为
 
 ## 文档
 
-* [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
-* [用户指南](https://hacpai.com/article/1492881378588)
-* [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
-* [皮肤开发](https://hacpai.com/article/1493814851007)
+* [《提问的智慧》精读注解版](https://ld246.com/article/1536377163156)
+* [用户指南](https://ld246.com/article/1492881378588)
+* [Solo 从设计到实现](https://ld246.com/article/1537690756242)
+* [皮肤开发](https://ld246.com/article/1493814851007)
 * [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)

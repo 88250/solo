@@ -35,7 +35,7 @@ import java.util.List;
  * Category query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
+ * @author <a href="https://ld246.com/member/lzh984294471">lzh984294471</a>
  * @version 1.1.0.0, Mar 29, 2020
  * @since 2.0.0
  */

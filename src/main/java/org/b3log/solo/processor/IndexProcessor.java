@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
  * Index processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
+ * @author <a href="https://ld246.com/member/DASHU">DASHU</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
  * @version 2.0.0.4, Jun 25, 2020
  * @since 0.3.1

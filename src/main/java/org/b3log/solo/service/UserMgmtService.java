@@ -40,8 +40,8 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
- * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
+ * @author <a href="https://ld246.com/member/DASHU">DASHU</a>
+ * @author <a href="https://ld246.com/member/nanolikeyou">nanolikeyou</a>
  * @version 1.1.0.21, Sep 3, 2020
  * @since 0.4.0
  */
