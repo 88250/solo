@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Jul 8, 2020
+ * @version 1.2.0.3, Sep 3, 2020
  * @since 2.5.0
  */
 @Service
@@ -378,7 +378,7 @@ public class ExportService {
             stat.put("mobileSkin", optionQueryService.getOptionById(Option.ID_C_MOBILE_SKIN_DIR_NAME).optString(Option.OPTION_VALUE));
 
             final HttpResponse response = HttpRequest.post("https://hacpai.com/github/repos").
-                    connectionTimeout(7000).timeout(60000).trustAllCerts(true).header("User-Agent", Solos.USER_AGENT).
+                    connectionTimeout(7000).timeout(60000).trustAllCerts(true).followRedirects(true).header("User-Agent", Solos.USER_AGENT).
                     form("userName", userName,
                             "userB3Key", userB3Key,
                             "clientName", "Solo",

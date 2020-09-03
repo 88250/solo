@@ -46,7 +46,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.0, Jun 10, 2020
+ * @version 1.11.0.1, Sep 3, 2020
  * @since 2.8.0
  */
 public final class Solos {
@@ -126,7 +126,7 @@ public final class Solos {
     public static JSONObject getUserInfo(final String accessToken) {
         try {
             final HttpResponse res = HttpRequest.post("https://hacpai.com/user/ak").
-                    form("access_token", accessToken).trustAllCerts(true).
+                    form("access_token", accessToken).trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (200 != res.statusCode()) {
                 return null;
@@ -153,7 +153,8 @@ public final class Solos {
      */
     public static void reloadBlacklistIPs() {
         try {
-            final HttpResponse res = HttpRequest.get("https://hacpai.com/apis/blacklist/ip").trustAllCerts(true).
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/apis/blacklist/ip").
+                    trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (200 != res.statusCode()) {
                 return;
@@ -241,7 +242,7 @@ public final class Solos {
             }
 
             final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_B3_KEY, userB3Key);
-            final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).
+            final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).followRedirects(true).
                     body(requestJSON.toString()).connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             uploadTokenCheckTime = now;
             if (200 != res.statusCode()) {

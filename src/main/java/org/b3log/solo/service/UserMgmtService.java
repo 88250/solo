@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://hacpai.com/member/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.20, Mar 17, 2020
+ * @version 1.1.0.21, Sep 3, 2020
  * @since 0.4.0
  */
 @Service
@@ -117,7 +117,7 @@ public class UserMgmtService {
                     put("userName", admin.optString(User.USER_NAME)).
                     put("userB3Key", admin.optString(UserExt.USER_B3_KEY));
             requestJSON.put("client", client);
-            final HttpResponse res = HttpRequest.post("https://hacpai.com/user/usite").trustAllCerts(true).
+            final HttpResponse res = HttpRequest.post("https://hacpai.com/user/usite").trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).
                     body(requestJSON.toString()).send();
             if (200 != res.statusCode()) {

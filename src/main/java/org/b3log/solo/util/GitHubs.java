@@ -28,7 +28,7 @@ import java.util.Base64;
  * GitHub utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, May 20, 2020
+ * @version 1.1.0.1, Sep 3, 2020
  * @since 3.0.0
  */
 public final class GitHubs {
@@ -46,7 +46,8 @@ public final class GitHubs {
      */
     public static JSONArray getGitHubRepos(final String githubUserId) {
         try {
-            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).trustAllCerts(true).
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).
+                    trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (200 != res.statusCode()) {
                 return null;
