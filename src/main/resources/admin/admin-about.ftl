@@ -35,9 +35,9 @@
             ${aboutContentLabel}
             <br/>
             <ul class="about-list">
-                <li><a target="_blank" href="https://hacpai.com/article/1492881378588">用户指南</a></li>
-                <li><a target="_blank" href="https://hacpai.com/article/1537690756242">Solo 从设计到实现</a></li>
-                <li><a target="_blank" href="https://hacpai.com/article/1493814851007">皮肤开发指南</a></li>
+                <li><a target="_blank" href="https://ld246.com/article/1492881378588">用户指南</a></li>
+                <li><a target="_blank" href="https://ld246.com/article/1537690756242">Solo 从设计到实现</a></li>
+                <li><a target="_blank" href="https://ld246.com/article/1493814851007">皮肤开发指南</a></li>
             </ul>
         </div>
         <span class="fn__clear" /> <br/><br/>

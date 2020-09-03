@@ -31,7 +31,7 @@ Small and beautiful blog system, designed for programmers
 
 ## 💡 Introduction
 
-[Solo](https://b3log.org/solo) is a small and beautiful open source blog system, designed for programmers. Solo has a very active [community](https://ld246.com), which can push articles as posts to the community, and replies from the community will be linked as blog comments (for details, please visit [B3log Ideas - Distributed Community Network](https://hacpai.com/article/1546941897596)).
+[Solo](https://b3log.org/solo) is a small and beautiful open source blog system, designed for programmers. Solo has a very active [community](https://ld246.com), which can push articles as posts to the community, and replies from the community will be linked as blog comments (for details, please visit [B3log Ideas - Distributed Community Network](https://ld246.com/article/1546941897596)).
 
 > This is a brand new online community experience, so that you who love recording and sharing no longer feel lonely!
 
