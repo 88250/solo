@@ -177,13 +177,7 @@ $.extend(SoloEditor.prototype, {
       options.toolbarConfig.pin = true
     }
 
-    if (typeof Vditor === 'undefined') {
-      Util.loadVditor(() => {
-        this.editor = new Vditor(this.conf.id, options)
-      })
-    } else {
-      this.editor = new Vditor(this.conf.id, options)
-    }
+    this.editor = new Vditor(this.conf.id, options)
   },
   /*
    * @description 获取编辑器值
