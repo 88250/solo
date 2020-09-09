@@ -14,6 +14,7 @@
 * [H2Database 升级 v4.3.0 问题](https://github.com/88250/solo/issues/170)
 * [SV 模式粘贴时自动拉取图片问题](https://github.com/88250/solo/issues/171)
 * [metro-hot 文章中字的颜色看不清](https://github.com/88250/solo/issues/174)
+* [编辑器在预览状态下发布文章会丢失代码块](https://github.com/88250/solo/issues/182)
 
 ## v4.3.0 / 2020-07-17
 
