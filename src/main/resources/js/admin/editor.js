@@ -76,7 +76,6 @@ $.extend(SoloEditor.prototype, {
           if (element.style.display === 'none') {
             return
           }
-          Util.parseMarkdown()
         },
       },
       upload: {
