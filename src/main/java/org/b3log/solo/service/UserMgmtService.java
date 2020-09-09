@@ -117,7 +117,7 @@ public class UserMgmtService {
                     put("userName", admin.optString(User.USER_NAME)).
                     put("userB3Key", admin.optString(UserExt.USER_B3_KEY));
             requestJSON.put("client", client);
-            final HttpResponse res = HttpRequest.post("https://hacpai.com/user/usite").trustAllCerts(true).followRedirects(true).
+            final HttpResponse res = HttpRequest.post("https://ld246.com/user/usite").trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).
                     body(requestJSON.toString()).send();
             if (200 != res.statusCode()) {

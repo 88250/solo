@@ -62,7 +62,7 @@
         等一系列开源项目和产品。随着项目规模的增长，我们需要相应的资金支持才能持续维护和开发，请帮助我们！
         <br/> <br/>
         <div class="ft__center">
-            <button class="fn__flex-inline" onclick="window.open('https://hacpai.com/sponsor')">
+            <button class="fn__flex-inline" onclick="window.open('https://ld246.com/sponsor')">
                 <svg viewBox="0 0 32 32" width="100%" height="100%"
                      className={classes.svg}>
                     <path

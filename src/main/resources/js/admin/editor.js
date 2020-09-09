@@ -38,7 +38,7 @@ $.extend(SoloEditor.prototype, {
 
     // 编辑器常用表情使用社区端的设置
     $.ajax({
-      url: 'https://hacpai.com/apis/vcomment/users/emotions',
+      url: 'https://ld246.com/apis/vcomment/users/emotions',
       type: 'GET',
       cache: true,
       async: false,
@@ -100,7 +100,7 @@ $.extend(SoloEditor.prototype, {
       },
       lang: Label.localeString,
       hint: {
-        emojiTail: `<a href="https://hacpai.com/settings/function" target="_blank">设置常用表情</a>`,
+        emojiTail: `<a href="https://ld246.com/settings/function" target="_blank">设置常用表情</a>`,
         emoji: Label.emoji,
       },
       toolbarConfig: {

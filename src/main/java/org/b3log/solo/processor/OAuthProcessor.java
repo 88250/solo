@@ -110,7 +110,7 @@ public class OAuthProcessor {
         final String state = RandomStringUtils.randomAlphanumeric(16);
         STATES.put(state, referer);
 
-        final String loginAuthURL = "https://hacpai.com/login?goto=" + Latkes.getServePath() + "/login/callback";
+        final String loginAuthURL = "https://ld246.com/login?goto=" + Latkes.getServePath() + "/login/callback";
         final String path = loginAuthURL + "&state=" + state + "&v=" + Server.VERSION;
         context.sendRedirect(path);
     }

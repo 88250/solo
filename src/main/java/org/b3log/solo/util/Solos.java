@@ -125,7 +125,7 @@ public final class Solos {
      */
     public static JSONObject getUserInfo(final String accessToken) {
         try {
-            final HttpResponse res = HttpRequest.post("https://hacpai.com/user/ak").
+            final HttpResponse res = HttpRequest.post("https://ld246.com/user/ak").
                     form("access_token", accessToken).trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (200 != res.statusCode()) {
@@ -153,7 +153,7 @@ public final class Solos {
      */
     public static void reloadBlacklistIPs() {
         try {
-            final HttpResponse res = HttpRequest.get("https://hacpai.com/apis/blacklist/ip").
+            final HttpResponse res = HttpRequest.get("https://ld246.com/apis/blacklist/ip").
                     trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (200 != res.statusCode()) {
@@ -204,7 +204,7 @@ public final class Solos {
     private static long uploadTokenCheckTime;
     private static long uploadTokenTime;
     private static String uploadToken = "";
-    private static String uploadURL = "https://hacpai.com/upload/client";
+    private static String uploadURL = "https://ld246.com/upload/client";
     private static String uploadMsg = "";
 
     /**
@@ -242,7 +242,7 @@ public final class Solos {
             }
 
             final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_B3_KEY, userB3Key);
-            final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).followRedirects(true).
+            final HttpResponse res = HttpRequest.post("https://ld246.com/apis/upload/token").trustAllCerts(true).followRedirects(true).
                     body(requestJSON.toString()).connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             uploadTokenCheckTime = now;
             if (200 != res.statusCode()) {

@@ -46,7 +46,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "链滴");
         link.put(Link.LINK_ADDRESS, "https://ld246.com");
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
-        link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
+        link.put(Link.LINK_ICON, "https://static.ld246.com/images/favicon.png");
         request.setJSON(requestJSON);
 
         mockAdminLogin(request);
@@ -78,7 +78,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "链滴");
         link.put(Link.LINK_ADDRESS, "https://ld246.com");
         link.put(Link.LINK_DESCRIPTION, "B3log 开源社区线上论坛");
-        link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
+        link.put(Link.LINK_ICON, "https://static.ld246.com/images/favicon.png");
         request.setJSON(requestJSON);
 
         mockAdminLogin(request);

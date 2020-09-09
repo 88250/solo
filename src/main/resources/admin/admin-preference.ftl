@@ -38,7 +38,7 @@
 <div id="tabPreferencePanel" class="sub-tabs-main">
     <div id="tabPreferencePanel_config" class="form">
         <div class="fn__clear">
-            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">${configSiteLabel}</a>
+            <a style="line-height: 32px" href="https://ld246.com/settings" target="_blank">${configSiteLabel}</a>
             <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
         </div>
         <div class="fn__clear"></div>
@@ -57,7 +57,7 @@
         <label for="footerContent">${footerContent1Label}</label>
         <textarea rows="2" id="footerContent"></textarea><br><br>
         <div class="fn__clear">
-            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">${configSiteLabel}</a>
+            <a style="line-height: 32px" href="https://ld246.com/settings" target="_blank">${configSiteLabel}</a>
             <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
         </div>
     </div>

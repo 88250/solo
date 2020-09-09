@@ -40,7 +40,7 @@ admin.about = {
     })
 
     $.ajax({
-      url: 'https://hacpai.com/apis/sponsors',
+      url: 'https://ld246.com/apis/sponsors',
       type: 'GET',
       dataType: 'jsonp',
       jsonp: 'callback',

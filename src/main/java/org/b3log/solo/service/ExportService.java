@@ -377,7 +377,7 @@ public class ExportService {
             stat.put("skin", optionQueryService.getOptionById(Option.ID_C_SKIN_DIR_NAME).optString(Option.OPTION_VALUE));
             stat.put("mobileSkin", optionQueryService.getOptionById(Option.ID_C_MOBILE_SKIN_DIR_NAME).optString(Option.OPTION_VALUE));
 
-            final HttpResponse response = HttpRequest.post("https://hacpai.com/github/repos").
+            final HttpResponse response = HttpRequest.post("https://ld246.com/github/repos").
                     connectionTimeout(7000).timeout(60000).trustAllCerts(true).followRedirects(true).header("User-Agent", Solos.USER_AGENT).
                     form("userName", userName,
                             "userB3Key", userB3Key,

@@ -32,7 +32,7 @@ $.extend(Page.prototype, {
     const vcomment = new Vcomment({
       id: 'vcomment',
       postId: $vcomment.data('postid'),
-      url: 'https://hacpai.com',
+      url: 'https://ld246.com',
       userName: $vcomment.data('name'),
       currentPage: 1,
       vditor: {

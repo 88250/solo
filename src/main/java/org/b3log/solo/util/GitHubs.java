@@ -46,7 +46,7 @@ public final class GitHubs {
      */
     public static JSONArray getGitHubRepos(final String githubUserId) {
         try {
-            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).
+            final HttpResponse res = HttpRequest.get("https://ld246.com/github/repos?id=" + githubUserId).
                     trustAllCerts(true).followRedirects(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (200 != res.statusCode()) {

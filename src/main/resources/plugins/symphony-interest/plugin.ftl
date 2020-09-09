@@ -32,7 +32,7 @@
               "url(${staticServePath}/images/loader.gif) no-repeat scroll center center transparent")
 
       $.ajax({
-        url: 'https://hacpai.com/apis/articles?',
+        url: 'https://ld246.com/apis/articles?',
         type: 'GET',
         dataType: 'jsonp',
         jsonp: 'callback',
