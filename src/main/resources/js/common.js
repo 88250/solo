@@ -249,13 +249,12 @@ window.Util = {
   /**
    * @description 页面初始化执行的函数
    */
-  init: function (options) {
+  init: function () {
     Util.killIE()
     Util.parseMarkdown()
     Util.initSW()
     Util.previewImg()
     Util.initDebugInfo()
-    Util.initViewCnt(options && options.cmtCountCB)
   },
   /**
    * 调试区域文案
@@ -307,11 +306,11 @@ window.Util = {
   loadVditor: function (cb) {
     $.ajax({
       method: 'GET',
-      url: 'https://cdn.jsdelivr.net/npm/vditor@3.5.1/dist/index.min.js',
+      url: 'https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/index.min.js',
       dataType: 'script',
       cache: true,
       success: () => {
-        Util.init(window.utilOptions)
+        Util.init()
         if (cb) {
           cb()
         }
@@ -347,7 +346,8 @@ window.Util = {
 
 (() => {
   Util.skinPreview()
-  if (typeof Vditor === 'undefined') {
+  Util.initViewCnt(window.utilOptions)
+  if (typeof Vditor === 'undefined' && location.pathname !== "/admin-index.do") {
     Util.loadVditor()
   }
 })()
