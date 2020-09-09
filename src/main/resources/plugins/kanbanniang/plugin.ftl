@@ -11,8 +11,8 @@
     See the Mulan PSL v2 for more details.
 
 -->
-<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.9/index.css"/>
-<script async src="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.9/index.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.10/index.css"/>
+<script async src="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.10/index.js"></script>
 <div class="solo-kanbanniang">
     <div class="solo-kanbanniang__tip"></div>
     <canvas id="soloKanbanniang" width="280" height="250"></canvas>
