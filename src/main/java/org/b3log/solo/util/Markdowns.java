@@ -257,7 +257,7 @@ public final class Markdowns {
             doc.outputSettings().prettyPrint(false);
             Images.qiniuImgProcessing(doc);
 
-            String ret = doc.html();
+            String ret = doc.body().html();
             ret = StringUtils.trim(ret);
 
             // cache it
