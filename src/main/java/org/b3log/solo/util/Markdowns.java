@@ -160,10 +160,12 @@ public final class Markdowns {
         final Whitelist whitelist = Whitelist.relaxed();
         // 允许代码块语言高亮信息
         whitelist.addAttributes("pre", "class").
-                addAttributes("div", "class").
+                addAttributes("div", "class", "data-code").
                 addAttributes("span", "class").
                 addAttributes("code", "class");
-        return Jsoup.clean(html, whitelist);
+        final Document.OutputSettings outputSettings = new Document.OutputSettings();
+        outputSettings.prettyPrint(false);
+        return Jsoup.clean(html, Latkes.getServePath(), whitelist, outputSettings);
     }
 
     /**
@@ -204,7 +206,7 @@ public final class Markdowns {
                 html = toHtmlByFlexmark(markdownText);
             }
 
-            final Document doc = Jsoup.parse(html);
+            final Document doc = Jsoup.parseBodyFragment(html);
             doc.select("a").forEach(a -> {
                 final String src = a.attr("href");
                 if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath()) && !StringUtils.startsWithIgnoreCase(src, "#")) {
@@ -255,7 +257,7 @@ public final class Markdowns {
             doc.outputSettings().prettyPrint(false);
             Images.qiniuImgProcessing(doc);
 
-            String ret = doc.select("body").html();
+            String ret = doc.html();
             ret = StringUtils.trim(ret);
 
             // cache it
