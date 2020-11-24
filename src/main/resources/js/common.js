@@ -347,7 +347,7 @@ window.Util = {
 (() => {
   Util.skinPreview()
   Util.initViewCnt(window.utilOptions)
-  if (typeof Vditor === 'undefined' && location.pathname !== "/admin-index.do") {
+  if (typeof Vditor !== 'function' && location.pathname !== "/admin-index.do") {
     Util.loadVditor()
   }
 })()
