@@ -12,7 +12,7 @@
 <a title="Releases" target="_blank" href="https://github.com/88250/solo/releases"><img src="https://img.shields.io/github/release/88250/solo.svg?style=flat-square&color=CC6666"></a>
 <a title="Release Date" target="_blank" href="https://github.com/88250/solo/releases"><img src="https://img.shields.io/github/release-date/88250/solo.svg?style=flat-square&color=99CCFF"></a>
 <a title="Downloads" target="_blank" href="https://github.com/88250/solo/releases"><img src="https://img.shields.io/github/downloads/88250/solo/total.svg?style=flat-square&color=99CC99"></a>
-<a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/88250/solo"><img src="https://img.shields.io/docker/pulls/88250/solo.svg?style=flat-square&color=blueviolet"></a>
+<a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/b3log/solo"><img src="https://img.shields.io/docker/pulls/b3log/solo.svg?style=flat-square&color=blueviolet"></a>
 <br>
 <a title="GitHub Commits" target="_blank" href="https://github.com/88250/solo/commits/master"><img src="https://img.shields.io/github/commit-activity/m/88250/solo.svg?style=flat-square"></a>
 <a title="Last Commit" target="_blank" href="https://github.com/88250/solo/commits/master"><img src="https://img.shields.io/github/last-commit/88250/solo.svg?style=flat-square&color=FF9900"></a>
