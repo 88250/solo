@@ -55,7 +55,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.17, Jun 16, 2020
+ * @version 2.3.1.18, Jan 28, 2020
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -300,6 +300,7 @@ public final class Markdowns {
         conn.setRequestProperty("X-ChinesePunct", String.valueOf(Markdowns.CHINESE_PUNCT));
         conn.setRequestProperty("X-IMADAOM", String.valueOf(Markdowns.IMADAOM));
         conn.setRequestProperty("X-ParagraphBeginningSpace", String.valueOf(Markdowns.PARAGRAPH_BEGINNING_SPACE));
+        conn.setRequestProperty("X-HeadingID", "true");
         conn.setConnectTimeout(100);
         conn.setReadTimeout(3000);
         conn.setDoOutput(true);
