@@ -359,7 +359,7 @@ public final class Option {
         /**
          * Default favicon URL.
          */
-        public static final String DEFAULT_FAVICON_URL = "https://static.b3log.org/images/brand/solo-128.png";
+        public static final String DEFAULT_FAVICON_URL = "https://b3log.org/images/brand/solo-128.png";
 
         /**
          * Default custom vars.

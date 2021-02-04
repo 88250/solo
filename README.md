@@ -1,5 +1,5 @@
 <p align = "center">
-<img alt="Solo" src="https://static.b3log.org/images/brand/solo-128.png">
+<img alt="Solo" src="https://b3log.org/images/brand/solo-128.png">
 <br><br>
 小而美的博客系统，专为程序员设计
 <br><br>
