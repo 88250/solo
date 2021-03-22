@@ -104,7 +104,7 @@ public final class Server extends BaseServer {
      * @param args the specified arguments
      */
     public static void main(final String[] args) {
-        System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
+        System.setProperty("https.protocols", "TLSv1.2");
         initInMemoryLogger();
         Stopwatchs.start("Booting");
 
