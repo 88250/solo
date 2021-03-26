@@ -21,6 +21,6 @@
     <ShortName>${blogTitle}</ShortName>
     <Description>${blogSubtitle}</Description>
     <InputEncoding>UTF-8</InputEncoding>
-    <Image width="32" height="32" type="image/x-icon">https://static.b3log.org/images/brand/solo-32.png</Image>
+    <Image width="32" height="32" type="image/x-icon">https://b3log.org/images/brand/solo-32.png</Image>
     <Url type="text/html" method="get" template="${servePath}/search?keyword={searchTerms}"></Url>
 </OpenSearchDescription>
