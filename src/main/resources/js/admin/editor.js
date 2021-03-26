@@ -57,7 +57,7 @@ $.extend(SoloEditor.prototype, {
     })
 
     const options = {
-      outline: this.conf.outline || false,
+      outline: this.conf.outline || { enable: false },
       mode: Label.editorMode,
       typewriterMode: this.conf.typewriterMode,
       cache: {

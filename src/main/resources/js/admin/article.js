@@ -409,7 +409,7 @@ admin.article = {
 
     // editor
     admin.editors.articleEditor = new SoloEditor({
-      outline: true,
+      outline: { enable: true, position: "left" },
       id: 'articleContent',
       height: 500,
       fun: fun,
