@@ -306,7 +306,7 @@ window.Util = {
   loadVditor: function (cb) {
     $.ajax({
       method: 'GET',
-      url: 'https://cdn.jsdelivr.net/npm/vditor@3.6.6/dist/index.min.js',
+      url: 'https://cdn.jsdelivr.net/npm/vditor@3.8.4/dist/index.min.js',
       dataType: 'script',
       cache: true,
       success: () => {
