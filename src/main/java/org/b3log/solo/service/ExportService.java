@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Sep 3, 2020
+ * @version 1.2.0.4, Mar 28, 2021
  * @since 2.5.0
  */
 @Service
@@ -187,9 +187,9 @@ public class ExportService {
 
             try {
                 if (StringUtils.isNotBlank(dbPwd)) {
-                    sql = Execs.exec("mysqldump -u" + dbUser + " -p" + dbPwd + " --databases " + db, 60 * 1000 * 5);
+                    sql = Execs.exec(new String[]{"mysqldump", "-u" + dbUser, "-p" + dbPwd, "--databases", db}, 60 * 1000 * 5);
                 } else {
-                    sql = Execs.exec("mysqldump -u" + dbUser + " --databases " + db, 60 * 1000 * 5);
+                    sql = Execs.exec(new String[]{"mysqldump", "-u" + dbUser, "--databases", db}, 60 * 1000 * 5);
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Export failed", e);
