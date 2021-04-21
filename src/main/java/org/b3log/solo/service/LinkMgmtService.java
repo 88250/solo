@@ -11,6 +11,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +29,7 @@ import org.json.JSONObject;
  * Link management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Apr 15, 2020
+ * @version 1.0.0.4, Apr 21, 2021
  * @since 0.4.0
  */
 @Service
@@ -87,6 +88,11 @@ public class LinkMgmtService {
 
         try {
             final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
+            String icon = StringUtils.trim(link.optString(Link.LINK_ICON));
+            if (StringUtils.isBlank(icon)) {
+                icon = "https://b3log.org/images/brand/solo-32.png";
+            }
+            link.put(Link.LINK_ICON, icon);
             final String linkId = link.getString(Keys.OBJECT_ID);
             final JSONObject oldLink = linkRepository.get(linkId);
             link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
@@ -176,6 +182,11 @@ public class LinkMgmtService {
         final Transaction transaction = linkRepository.beginTransaction();
         try {
             final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
+            String icon = StringUtils.trim(link.optString(Link.LINK_ICON));
+            if (StringUtils.isBlank(icon)) {
+                icon = "https://b3log.org/images/brand/solo-32.png";
+            }
+            link.put(Link.LINK_ICON, icon);
             final int maxOrder = linkRepository.getMaxOrder();
             link.put(Link.LINK_ORDER, maxOrder + 1);
             final String ret = linkRepository.add(link);

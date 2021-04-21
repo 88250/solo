@@ -36,7 +36,7 @@ import java.util.List;
  * Link console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Apr 21, 2021
  * @since 0.4.0
  */
 @Singleton
@@ -108,7 +108,8 @@ public class LinkConsole {
      *         "oId": "",
      *         "linkTitle": "",
      *         "linkAddress": "",
-     *         "linkDescription": ""
+     *         "linkDescription": "",
+     *         "linkIcon": ""
      *     }
      * }
      * </pre>
