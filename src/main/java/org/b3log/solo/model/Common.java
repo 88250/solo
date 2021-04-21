@@ -16,7 +16,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://ld246.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.10, Jul 8, 2020
+ * @version 1.7.0.11, Apr 21, 2021
  * @since 0.3.1
  */
 public final class Common {
@@ -195,11 +195,6 @@ public final class Common {
      * Key of is logged in.
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
-
-    /**
-     * Key of favicon API.
-     */
-    public static final String FAVICON_API = "faviconAPI";
 
     /**
      * Key of is mobile request.

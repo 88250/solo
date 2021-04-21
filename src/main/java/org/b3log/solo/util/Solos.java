@@ -37,8 +37,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -46,7 +44,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.1, Sep 3, 2020
+ * @version 1.11.0.2, Apr 21, 2021
  * @since 2.8.0
  */
 public final class Solos {
@@ -55,11 +53,6 @@ public final class Solos {
      * Logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(Solos.class);
-
-    /**
-     * Favicon API.
-     */
-    public static final String FAVICON_API;
 
     /**
      * Solo User-Agent.
@@ -85,17 +78,6 @@ public final class Solos {
      * Indicates generating a static site.
      */
     public static boolean GEN_STATIC_SITE = false;
-
-    static {
-        ResourceBundle solo;
-        try {
-            solo = ResourceBundle.getBundle("solo");
-        } catch (final MissingResourceException e) {
-            solo = ResourceBundle.getBundle("b3log"); // 2.8.0 向后兼容
-        }
-
-        FAVICON_API = solo.getString("faviconAPI");
-    }
 
     static {
         String cookieNameConf = Latkes.getLatkeProperty("cookieName");

@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.1.2, Jul 8, 2020
+ * @version 1.7.1.3, Apr 21, 2021
  * @since 0.3.1
  */
 @Service
@@ -617,7 +617,6 @@ public class DataModelService {
             dataModel.put(Option.ID_C_META_DESCRIPTION, metaDescription);
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != Solos.getCurrentUser(context));
-            dataModel.put(Common.FAVICON_API, Solos.FAVICON_API);
             final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
             dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
             // 皮肤不显示访客用户 https://github.com/b3log/solo/issues/12752
