@@ -68,7 +68,7 @@
                 <li>
                     <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         <img alt="${link.linkTitle}"
-                             src="${faviconAPI}<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>"
+                             src="${link.linkIcon}"
                              width="16" height="16"/></a>
                     <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}"
                        target="_blank">${link.linkTitle}
