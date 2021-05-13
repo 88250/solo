@@ -37,20 +37,24 @@
       }
     }
 
-    &.toc__h3 a {
+    &.toc__h2 a {
       padding-left: 20px;
     }
 
-    &.toc__h4 a {
+    &.toc__h3 a {
       padding-left: 30px;
     }
 
-    &.toc__h5 a {
+    &.toc__h4 a {
       padding-left: 40px;
     }
 
-    &.toc__h6 a {
+    &.toc__h5 a {
       padding-left: 50px;
+    }
+
+    &.toc__h6 a {
+      padding-left: 60px;
     }
   }
 }
