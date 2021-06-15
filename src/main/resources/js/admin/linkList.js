@@ -334,7 +334,7 @@ admin.linkList = {
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
 
-                // Refershes the link list
+                // Refreshes the link list
                 admin.linkList.getList(admin.linkList.pageInfo.currentPage);
 
                 $("#loadMsg").text("");

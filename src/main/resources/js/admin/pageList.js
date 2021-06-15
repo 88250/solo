@@ -330,7 +330,7 @@ admin.pageList = {
             success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
 
-                // Refershes the page list
+                // Refreshes the page list
                 admin.pageList.getList(admin.pageList.pageInfo.currentPage);
 
                 $("#loadMsg").text("");
