@@ -312,7 +312,7 @@ admin.categoryList = {
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
 
-                // Refershes the link list
+                // Refreshes the link list
                 admin.categoryList.getList(admin.categoryList.pageInfo.currentPage);
 
                 $("#loadMsg").text("");
