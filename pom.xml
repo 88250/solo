@@ -81,7 +81,7 @@
         <emoji-java.version>5.1.0</emoji-java.version>
         <jodd.version>5.0.13</jodd.version>
         <owasp.version>1.2.2</owasp.version>
-        <snakeyaml.version>1.18</snakeyaml.version>
+        <snakeyaml.version>1.26</snakeyaml.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
 
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
