@@ -12,7 +12,7 @@
 package org.b3log.solo;
 
 import io.netty.handler.codec.http.*;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.Dispatcher;

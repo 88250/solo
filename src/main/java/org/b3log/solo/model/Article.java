@@ -11,7 +11,7 @@
  */
 package org.b3log.solo.model;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.solo.util.Images;
 import org.b3log.solo.util.Markdowns;
 import org.json.JSONObject;

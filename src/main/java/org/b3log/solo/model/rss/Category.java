@@ -11,7 +11,7 @@
  */
 package org.b3log.solo.model.rss;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Category.

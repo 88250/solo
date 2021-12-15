@@ -11,8 +11,8 @@
  */
 package org.b3log.solo.model.sitemap;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Sitemap URL.

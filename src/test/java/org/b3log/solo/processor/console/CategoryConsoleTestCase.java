@@ -11,7 +11,7 @@
  */
 package org.b3log.solo.processor.console;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockRequest;

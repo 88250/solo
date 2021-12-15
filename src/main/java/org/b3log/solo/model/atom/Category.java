@@ -12,7 +12,7 @@
 package org.b3log.solo.model.atom;
 
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Category.

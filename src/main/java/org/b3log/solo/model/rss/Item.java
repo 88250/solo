@@ -11,8 +11,8 @@
  */
 package org.b3log.solo.model.rss;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.util.Date;
 import java.util.HashSet;
