@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.16, Mar 22, 2021
+ * @version 3.0.1.17, Jan 6, 2022
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -105,6 +105,7 @@ public final class Server extends BaseServer {
      */
     public static void main(final String[] args) {
         System.setProperty("https.protocols", "TLSv1.2");
+        System.setProperty("jdk.tls.client.protocols", "TLSv1.2");
         initInMemoryLogger();
         Stopwatchs.start("Booting");
 
