@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.109, Dec 20, 2021
+    Version: 3.18.3.110, Jan 11, 2022
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -79,7 +79,7 @@
         <flexmark.version>0.50.40</flexmark.version>
         <commons-cli.version>1.3.1</commons-cli.version>
         <emoji-java.version>5.1.0</emoji-java.version>
-        <jodd.version>5.0.13</jodd.version>
+        <jodd.version>6.0.7</jodd.version>
         <owasp.version>1.2.2</owasp.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>

@@ -11,6 +11,8 @@
  */
 package org.b3log.solo;
 
+import jodd.http.HttpConnectionProvider;
+import jodd.http.net.SocketHttpConnectionProvider;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -50,7 +52,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.1.17, Jan 6, 2022
+ * @version 3.0.1.18, Jan 11, 2022
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -106,6 +108,8 @@ public final class Server extends BaseServer {
     public static void main(final String[] args) {
         System.setProperty("https.protocols", "TLSv1.2");
         System.setProperty("jdk.tls.client.protocols", "TLSv1.2");
+        HttpConnectionProvider.Implementation.set(new SocketHttpConnectionProvider().setSslProtocol("TLSv1.2"));
+
         initInMemoryLogger();
         Stopwatchs.start("Booting");
 
