@@ -138,7 +138,7 @@ public class UserMgmtService {
         if (null == usiteOpt) {
             usiteOpt = new JSONObject();
             usiteOpt.put(Keys.OBJECT_ID, Option.ID_C_USITE);
-            usiteOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_HACPAI);
+            usiteOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_LIANDI);
         }
         usiteOpt.put(Option.OPTION_VALUE, usite.toString());
         try {

@@ -106,7 +106,7 @@ public class CronMgmtService {
             try {
                 articleMgmtService.refreshGitHub();
                 userMgmtService.refreshUSite();
-                exportService.exportHacPai();
+                exportService.exportLianDi();
                 exportService.exportGitHub();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Executes cron failed", e);

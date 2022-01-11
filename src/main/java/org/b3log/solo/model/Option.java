@@ -109,7 +109,7 @@ public final class Option {
     public static final String ID_C_HLJS_THEME = "hljsTheme";
 
     /**
-     * Key of enable backup public articles to HacPai. 备份公开文章到社区 https://ld246.com/article/1557238327458
+     * Key of enable backup public articles to LianDi. 备份公开文章到社区 https://ld246.com/article/1557238327458
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
 
@@ -306,9 +306,9 @@ public final class Option {
     public static final String CATEGORY_C_GITHUB = "github";
 
     /**
-     * Category - HacPai.
+     * Category - LianDi.
      */
-    public static final String CATEGORY_C_HACPAI = "hacpai";
+    public static final String CATEGORY_C_LIANDI = "hacpai";
 
     /**
      * Category - Skin.

@@ -309,7 +309,7 @@ public class ArticleMgmtService {
             final JSONObject data = new JSONObject().put(ARTICLE, article);
             B3ArticleSender.pushArticleToRhy(data);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Pushes an article [id=" + articleId + "] to HacPai failed", e);
+            LOGGER.log(Level.ERROR, "Pushes an article [id=" + articleId + "] to LianDi failed", e);
         }
     }
 

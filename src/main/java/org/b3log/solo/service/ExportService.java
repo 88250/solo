@@ -322,9 +322,9 @@ public class ExportService {
     }
 
     /**
-     * Exports all articles to admin's HacPai account.
+     * Exports all articles to admin's LianDi account.
      */
-    public void exportHacPai() {
+    public void exportLianDi() {
         try {
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
@@ -335,7 +335,7 @@ public class ExportService {
                 return;
             }
 
-            LOGGER.log(Level.INFO, "Backup all articles to HacPai....");
+            LOGGER.log(Level.INFO, "Backup all articles to LianDi....");
 
             final JSONObject mds = exportHexoMDs();
             final List<JSONObject> posts = (List<JSONObject>) mds.opt("posts");
@@ -391,9 +391,9 @@ public class ExportService {
                             "file", zipData).send();
             response.close();
             response.charset("UTF-8");
-            LOGGER.info("Backup all articles to HacPai completed: " + response.bodyText());
+            LOGGER.info("Backup all articles to LianDi completed: " + response.bodyText());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Exports articles to HacPai failed:" + e.getMessage());
+            LOGGER.log(Level.ERROR, "Exports articles to LianDi failed:" + e.getMessage());
         }
     }
 

@@ -39,7 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * OAuth processor.
  * <ul>
- * <li>Redirects to HacPai auth page (/login/redirect), GET</li>
+ * <li>Redirects to LianDi auth page (/login/redirect), GET</li>
  * <li>OAuth callback (/login/callback), GET</li>
  * </ul>
  *
@@ -97,7 +97,7 @@ public class OAuthProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Redirects to HacPai auth page.
+     * Redirects to LianDi auth page.
      *
      * @param context the specified context
      */
