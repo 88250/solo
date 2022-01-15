@@ -1,11 +1,11 @@
-FROM maven:3-jdk-8-alpine as MVN_BUILD
+FROM maven:3.8.4-openjdk-11 as MVN_BUILD
 
 WORKDIR /opt/solo/
 ADD . /tmp
 RUN cd /tmp && mvn package -DskipTests -Pci -q && mv target/solo/* /opt/solo/ \
 && cp -f /tmp/src/main/resources/docker/* /opt/solo/
 
-FROM openjdk:8-alpine
+FROM openjdk:11-alpine
 LABEL maintainer="Liang Ding<845765@qq.com>"
 
 WORKDIR /opt/solo/
