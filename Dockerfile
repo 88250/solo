@@ -5,7 +5,7 @@ ADD . /tmp
 RUN cd /tmp && mvn package -DskipTests -Pci -q && mv target/solo/* /opt/solo/ \
 && cp -f /tmp/src/main/resources/docker/* /opt/solo/
 
-FROM openjdk:11-alpine
+FROM openjdk:18-alpine
 LABEL maintainer="Liang Ding<845765@qq.com>"
 
 WORKDIR /opt/solo/
