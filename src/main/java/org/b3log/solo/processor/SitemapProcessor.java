@@ -148,6 +148,10 @@ public class SitemapProcessor {
             if (!permalink.contains("://")) {
                 url.setLoc(Latkes.getServePath() + permalink);
             } else {
+                if (!permalink.startsWith(Latkes.getServePath())) {
+                    // Non-station link
+                    continue;
+                }
                 url.setLoc(permalink);
             }
             sitemap.addURL(url);
