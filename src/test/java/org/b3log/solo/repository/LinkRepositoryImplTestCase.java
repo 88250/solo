@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
  * {@link LinkRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jul 9, 2020
+ * @version 1.0.0.3, Jan 18, 2022
  */
 @Test(suiteName = "repository")
 public final class LinkRepositoryImplTestCase extends AbstractTestCase {
@@ -59,6 +59,7 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
         link2.put(Link.LINK_TITLE, "link title");
         link2.put(Link.LINK_DESCRIPTION, "link description");
         link2.put(Link.LINK_ADDRESS, "link address");
+        link2.put(Link.LINK_ICON, "link icon");
         link2.put(Link.LINK_ORDER, link2Order);
 
         transaction = linkRepository.beginTransaction();
@@ -71,6 +72,7 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
         link3.put(Link.LINK_TITLE, "link title");
         link3.put(Link.LINK_DESCRIPTION, "link description");
         link3.put(Link.LINK_ADDRESS, "link address");
+        link3.put(Link.LINK_ICON, "link icon");
         link3.put(Link.LINK_ORDER, link3Order);
         transaction = linkRepository.beginTransaction();
         linkRepository.add(link3);
