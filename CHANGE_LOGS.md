@@ -1,3 +1,27 @@
+## v4.4.0 / 2022-01-22
+
+### 改进皮肤
+
+* [9IPHP 皮肤优化](https://github.com/88250/solo/issues/177)
+
+### 改进功能
+
+* [关闭看板娘后关闭数据请求](https://github.com/88250/solo/issues/157)
+* [升级编辑器](https://github.com/88250/solo/issues/191)
+* [友链图标统一使用 `linkIcon` 字段](https://github.com/88250/solo/issues/203)
+
+### 开发重构
+
+* [Tip Msg 样式优化](https://github.com/88250/solo/issues/153)
+* [使用 TLS v1.2](https://github.com/88250/solo/issues/230)
+* [升级到 JDK 11](https://github.com/88250/solo/issues/231)
+
+### 修复缺陷
+
+* [后台评论数/访问数偶尔为 0](https://github.com/88250/solo/issues/183)
+* [Solo 文章推送到社区报错](https://github.com/88250/solo/issues/199)
+* [升级 H2Database](https://github.com/88250/solo/issues/233)
+
 ## v4.3.1 / 2020-09-09
 
 ### 引入特性
