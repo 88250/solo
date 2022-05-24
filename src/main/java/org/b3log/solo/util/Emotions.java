@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.1.2, Apr 4, 2020
+ * @version 1.1.2.0, May 24, 2022
  * @since 1.4.0
  */
 public final class Emotions {
@@ -44,7 +44,7 @@ public final class Emotions {
 
         ret = toUnicode(ret);
         for (final String emojiCode : EMOJIS) {
-            String repl = "<img alt=\"" + emojiCode + "\" class=\"emoji\" src=\"https://cdn.jsdelivr.net/npm/vditor/dist/images/emoji/" + emojiCode;
+            String repl = "<img alt=\"" + emojiCode + "\" class=\"emoji\" src=\"https://unpkg.com/vditor/dist/images/emoji/" + emojiCode;
             final String suffix = "huaji".equals(emojiCode) ? ".gif" : ".png";
             repl += suffix + "\" title=\"" + emojiCode + "\" />";
             ret = ret.replace(":" + emojiCode + ":", repl);
