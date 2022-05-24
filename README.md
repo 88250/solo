@@ -452,7 +452,10 @@ proxy_set_header  X-Real-IP  $remote_addr;
 --static_path=/gh/88250/solo/src/main/resources
 ```
 
-请注意，以上配置仅支持内置皮肤，如果挂载了第三方皮肤的话请按需调整。
+请注意：
+
+* 以上配置仅支持内置皮肤，如果挂载了第三方皮肤的话请按需调整
+* 中国大陆地区可能无法访问 jsDelivr CDN
 
 ### Solo 会一直维护下去么？
 
