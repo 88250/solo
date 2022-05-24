@@ -12,8 +12,8 @@
 package org.b3log.solo.service;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +27,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import java.io.File;
 import java.net.URI;
@@ -36,7 +37,7 @@ import java.util.*;
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.8, Jun 16, 2020
+ * @version 1.0.2.0, May 24, 2022
  * @since 2.2.0
  */
 @Service
@@ -166,7 +167,7 @@ public class ImportService {
         }
 
         final JSONObject ret = new JSONObject();
-        final Yaml yaml = new Yaml();
+        final Yaml yaml = new Yaml(new SafeConstructor());
         Map elems;
 
         try {
