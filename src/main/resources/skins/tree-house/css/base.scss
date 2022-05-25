@@ -16,11 +16,11 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 2.3.0.1, Feb 9, 2020
  */
-@import "../../../less/_reset";
-@import "../../../less/_toc";
-@import "../../../less/_usite";
-@import "../../../less/_function";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/toc";
+@import "../../../scss/usite";
+@import "../../../scss/function";
+@import "vditor/src/assets/scss/index";
 
 .user__site {
   margin-left: 5px;

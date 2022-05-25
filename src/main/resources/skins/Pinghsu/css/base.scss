@@ -15,19 +15,19 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 0.4.0.1, Feb 9, 2020
 */
-@import "../../../less/_reset";
-@import "../../../less/_function";
-@import "../../../less/_nprogress";
-@import "../../../less/_toc";
-@import "_icon";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/function";
+@import "../../../scss/nprogress";
+@import "../../../scss/toc";
+@import "icon";
+@import "vditor/src/assets/scss/index";
 
-@red: #eb5055;
-@black: #313131;
-@fade: rgba(0, 0, 0, .38);
-@gray: #5f5f5f;
-@gray-lighter: #e0e0e0;
-@gray-lightest: #f7f7f7;
+$red: #eb5055 !default;
+$black: #313131 !default;
+$fade: rgba(0, 0, 0, .38) !default;
+$gray: #5f5f5f !default;
+$gray-lighter: #e0e0e0 !default;
+$gray-lightest: #f7f7f7 !default;
 
 .user__site {
   display: inline-block;
@@ -42,37 +42,37 @@ body {
 }
 
 .body--gray {
-  background-color: @gray-lightest;
+  background-color: $gray-lightest;
 }
 
 a {
   text-decoration: none;
-  color: @black;
+  color: $black;
   outline: 0;
   transition: all .3s;
 }
 
 a:active, a:focus, a:hover {
-  color: @red;
+  color: $red;
   outline: 0;
   text-decoration: none;
 }
 
 ::selection {
   color: #fff;
-  background-color: @red;
+  background-color: $red;
 }
 
 .vditor-reset {
   font-size: 14px;
 
   a {
-    color: @black;
-    border-bottom: 1px solid @gray-lighter;
+    color: $black;
+    border-bottom: 1px solid $gray-lighter;
 
     &:hover {
-      color: @red;
-      border-bottom: 1px solid @red;
+      color: $red;
+      border-bottom: 1px solid $red;
     }
   }
 
@@ -82,15 +82,15 @@ a:active, a:focus, a:hover {
 }
 
 .ft__fade {
-  color: @fade;
+  color: $fade;
 }
 
 .ft__red {
-  color: @red;
+  color: $red;
 }
 
 .ft__link {
-  color: @gray;
+  color: $gray;
 
   &:hover {
     color: #000;
@@ -110,8 +110,8 @@ a:active, a:focus, a:hover {
   margin-left: 10px;
 
   &:hover {
-    color: @gray;
-    background: @gray-lighter;
+    color: $gray;
+    background: $gray-lighter;
   }
 
   &--1 {
@@ -123,7 +123,7 @@ a:active, a:focus, a:hover {
   }
 
   &--3 {
-    background: @red;
+    background: $red;
   }
 
   &--4 {
@@ -195,7 +195,7 @@ a:active, a:focus, a:hover {
       margin: 0 15px;
 
       &.current {
-        color: @red;
+        color: $red;
       }
 
       &.search {
@@ -279,7 +279,7 @@ a:active, a:focus, a:hover {
   &__copyright {
     font-size: 12px;
     text-align: center;
-    color: @fade;
+    color: $fade;
   }
 
   .wrapper {
@@ -397,7 +397,7 @@ a:active, a:focus, a:hover {
 
     &__tag {
       float: right;
-      color: @gray;
+      color: $gray;
       margin: 12px 10px;
     }
 
@@ -429,11 +429,11 @@ a:active, a:focus, a:hover {
   margin: 25px 0 40px;
 
   &__item {
-    color: @gray;
+    color: $gray;
     padding: 0 15px;
 
     &--current {
-      color: @red;
+      color: $red;
     }
   }
 }
@@ -451,7 +451,7 @@ a:active, a:focus, a:hover {
     bottom: 0;
     left: 0;
     height: 48px;
-    border-top: 1px solid @gray-lighter;
+    border-top: 1px solid $gray-lighter;
     background-color: #fff;
     animation-duration: .5s;
     animation-fill-mode: both;
@@ -518,7 +518,7 @@ a:active, a:focus, a:hover {
 
       sup {
         font-weight: normal;
-        color: @red;
+        color: $red;
       }
     }
 
@@ -528,7 +528,7 @@ a:active, a:focus, a:hover {
     }
 
     &__tags {
-      border-bottom: 1px solid @gray-lighter;
+      border-bottom: 1px solid $gray-lighter;
       margin-bottom: 15px;
 
       .tag {
@@ -547,7 +547,7 @@ a:active, a:focus, a:hover {
     h3 {
       font-size: 14px;
       padding-bottom: 10px;
-      color: @fade;
+      color: $fade;
       font-weight: normal;
     }
 
@@ -562,7 +562,7 @@ a:active, a:focus, a:hover {
     }
 
     a {
-      color: @gray;
+      color: $gray;
 
       &:hover {
         color: #000;
@@ -585,13 +585,13 @@ a:active, a:focus, a:hover {
 
     .article__toc {
       overflow: initial;
-      border-left: 1px solid @gray-lighter;
+      border-left: 1px solid $gray-lighter;
       margin: 0;
       font-size: 14px;
       line-height: 24px;
 
       li.current a {
-        color: @red;
+        color: $red;
       }
 
       a {
@@ -613,7 +613,7 @@ a:active, a:focus, a:hover {
       }
 
       &.current:before {
-        background-color: @red;
+        background-color: $red;
       }
     }
   }
@@ -635,7 +635,7 @@ a:active, a:focus, a:hover {
 
   &__title {
     padding: 30px 20px;
-    color: @gray;
+    color: $gray;
   }
 
   .item {
@@ -648,7 +648,7 @@ a:active, a:focus, a:hover {
     padding: 20px;
 
     &__meta {
-      color: @gray;
+      color: $gray;
       font-size: 12px;
     }
 
@@ -657,14 +657,14 @@ a:active, a:focus, a:hover {
       height: 40px;
       width: 40px;
       border-radius: 20px;
-      border: 1px solid @gray-lighter;
+      border: 1px solid $gray-lighter;
       margin: 0 20px 20px 0;
       background-size: cover;
       background-position: center center;
     }
 
     &__name {
-      color: @gray;
+      color: $gray;
       float: left;
       line-height: 40px;
     }
@@ -672,7 +672,7 @@ a:active, a:focus, a:hover {
     &:hover {
       .item__reply {
         display: block;
-        color: @red;
+        color: $red;
       }
     }
   }
@@ -700,7 +700,7 @@ a:active, a:focus, a:hover {
   &__title {
     margin: 10px 0;
     padding: 0 15px;
-    color: @gray;
+    color: $gray;
   }
 
   &__content {
@@ -794,7 +794,7 @@ a:active, a:focus, a:hover {
     margin-top: 6px;
   }
   .header__menu {
-    background-color: @gray-lightest;
+    background-color: $gray-lightest;
     position: absolute;
     top: 70px;
     width: 100%;

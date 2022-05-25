@@ -15,17 +15,17 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 0.4.1.1, Feb 9, 2020
  */
-@import "../../../less/_reset";
-@import "../../../less/_usite";
-@import "../../../less/_toc";
-@import "../../../less/_function";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/usite";
+@import "../../../scss/toc";
+@import "../../../scss/function";
+@import "vditor/src/assets/scss/index";
 
-@fade-lighter: rgba(255, 255, 255, .8);
-@gray: #738a94;
-@black: #15171a;
-@black-bg: #232323;
-@link: rgb(119, 182, 255);
+$fade-lighter: rgba(255, 255, 255, .8) !default;
+$gray: #738a94 !default;
+$black: #15171a !default;
+$black-bg: #232323 !default;
+$link: rgb(119, 182, 255) !default;
 
 body {
   background-color: #f4f8fb;
@@ -37,7 +37,7 @@ body {
 }
 
 a {
-  color: @link;
+  color: $link;
 }
 
 .vditor-reset::-webkit-scrollbar {
@@ -45,10 +45,10 @@ a {
 }
 
 .ft__a {
-  color: @gray;
+  color: $gray;
 
   &:hover {
-    color: rgba(@gray, .8);
+    color: rgba($gray, .8);
   }
 }
 
@@ -65,7 +65,7 @@ a {
   z-index: 3;
 
   &::-webkit-progress-value {
-    background-color: @link;
+    background-color: $link;
     transition: width 0.2s ease 0s, opacity 0.6s ease 0s;
   }
 
@@ -204,14 +204,14 @@ a {
 
       &:hover {
         text-decoration: none;
-        color: @fade-lighter;
+        color: $fade-lighter;
       }
     }
   }
 
   &__desc {
     margin-top: 10px;
-    color: @fade-lighter;
+    color: $fade-lighter;
     line-height: 24px;
     text-shadow: 0 3px 6px rgba(0, 0, 0, .3);
     animation: fade-in-down .9s both;
@@ -225,7 +225,7 @@ a {
 
   &__down {
     animation: bounce 4s 2s infinite;
-    color: @fade-lighter;
+    color: $fade-lighter;
     height: 34px;
     width: 34px;
     position: absolute;
@@ -451,7 +451,7 @@ a {
 .footer {
   font-size: 12px;
   padding: 20px 0;
-  background-color: @black-bg;
+  background-color: $black-bg;
   color: #888;
   margin-top: 200px;
   line-height: 24px;
@@ -486,7 +486,7 @@ a {
   }
 
   a {
-    color: @fade-lighter;
+    color: $fade-lighter;
 
     &:hover {
       text-decoration: none;
@@ -500,7 +500,7 @@ a {
   box-shadow: 8px 14px 38px rgba(39, 44, 49, .06), 1px 3px 8px rgba(39, 44, 49, .03);
   background-color: rgba(255, 255, 255, .9);
   border-radius: 5px;
-  color: @gray;
+  color: $gray;
 
   .item {
     border-bottom: 1px solid #f0f2f7;
@@ -512,23 +512,23 @@ a {
 
     &__title {
       & > a {
-        color: @black;
+        color: $black;
         font-size: 24px;
         line-height: 24px;
 
         &:hover {
           text-decoration: none;
-          color: rgba(@black, 0.8);
+          color: rgba($black, 0.8);
         }
       }
 
       sup {
         font-size: 12px;
         font-weight: normal;
-        color: rgba(@gray, 0.8);
+        color: rgba($gray, 0.8);
 
         a {
-          color: rgba(@gray, 0.8);
+          color: rgba($gray, 0.8);
           cursor: text;
 
           &:hover {
@@ -545,19 +545,19 @@ a {
     &__abstract {
       display: block;
       line-height: 24px;
-      color: @black;
+      color: $black;
       font-size: 16px;
       margin: 10px 0;
 
       &:hover {
         text-decoration: none;
-        color: rgba(@black, 0.8);
+        color: rgba($black, 0.8);
       }
     }
 
     &__tag {
       display: inline-block;
-      color: @gray;
+      color: $gray;
       line-height: 14px;
       font-weight: 500;
       letter-spacing: .5px;
@@ -565,7 +565,7 @@ a {
 
       &:hover {
         text-decoration: none;
-        color: rgba(@gray, 0.8);
+        color: rgba($gray, 0.8);
       }
     }
   }
@@ -578,7 +578,7 @@ a {
   &__item {
     width: 30px;
     height: 30px;
-    background: @black;
+    background: $black;
     border-radius: 50%;
     display: inline-block;
     color: #fff;
@@ -594,7 +594,7 @@ a {
 
     &--omit {
       background-color: transparent;
-      color: @black;
+      color: $black;
     }
   }
 }
@@ -612,7 +612,7 @@ a {
     margin: 20px 35px 0 35px;
     white-space: nowrap;
     display: block;
-    color: @gray;
+    color: $gray;
     word-break: break-all;
 
     &--archive {
@@ -666,7 +666,7 @@ a {
 
       a {
         display: block;
-        border-bottom: 1px solid rgba(@gray, .8);
+        border-bottom: 1px solid rgba($gray, .8);
         padding: 10px 0;
         color: #fff;
         margin: 0 20px;
@@ -702,10 +702,10 @@ a {
   &__meta {
     padding-top: 40px;
     text-transform: uppercase;
-    color: rgba(@gray, .8);
+    color: rgba($gray, .8);
 
     a {
-      color: @gray;
+      color: $gray;
     }
   }
 
@@ -716,7 +716,7 @@ a {
     sup {
       font-size: 14px;
       font-weight: normal;
-      color: rgba(@gray, .8);
+      color: rgba($gray, .8);
     }
   }
 
@@ -785,20 +785,20 @@ a {
 
   .article__toc {
     overflow: initial;
-    border-left: 1px solid rgba(@gray, 0.28);
+    border-left: 1px solid rgba($gray, 0.28);
     margin: 0;
     font-size: 14px;
     line-height: 24px;
 
     li.current a,
     a:hover {
-      color: @link;
+      color: $link;
     }
 
     a {
       display: block;
       margin-top: -24px;
-      color: @gray;
+      color: $gray;
     }
   }
 
@@ -815,7 +815,7 @@ a {
     }
 
     &.current:before {
-      background-color: @link;
+      background-color: $link;
     }
   }
 }
@@ -830,7 +830,7 @@ a {
   &__title {
     text-align: center;
     padding: 40px 0;
-    color: @gray;
+    color: $gray;
   }
 
   #comments {
@@ -839,7 +839,7 @@ a {
 
   .item {
     margin-bottom: 40px;
-    border: 1px solid @fade-lighter;
+    border: 1px solid $fade-lighter;
     border-radius: 5px;
     background: rgba(255, 255, 255, .9);
     box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
@@ -847,7 +847,7 @@ a {
     padding: 20px;
 
     &__meta {
-      color: rgba(@gray, .8);
+      color: rgba($gray, .8);
       font-size: 12px;
     }
 
@@ -863,15 +863,15 @@ a {
     }
 
     &__name {
-      color: rgba(@gray, .8);
+      color: rgba($gray, .8);
       float: left;
       line-height: 40px;
 
       a {
-        color: @gray;
+        color: $gray;
 
         &:hover {
-          color: rgba(@gray, .8);
+          color: rgba($gray, .8);
         }
       }
     }

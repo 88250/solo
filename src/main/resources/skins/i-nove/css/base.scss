@@ -16,10 +16,10 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 2.3.0.1, Feb 9, 2020
  */
-@import "../../../less/_toc";
-@import "../../../less/_reset";
-@import "../../../less/_usite";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/toc";
+@import "../../../scss/reset";
+@import "../../../scss/usite";
+@import "vditor/src/assets/scss/index";
 
 #tags li {
   list-style: none;

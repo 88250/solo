@@ -25,8 +25,8 @@ Update: 	Dongxu Wang 2011-02-24
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 2.4.0.1, Feb 9, 2020
  */
-@import "../../../less/_toc";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/toc";
+@import "vditor/src/assets/scss/index";
 
 .vditor-reset--article {
   padding-bottom: 10px;

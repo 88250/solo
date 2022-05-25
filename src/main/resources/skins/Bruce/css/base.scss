@@ -17,11 +17,11 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 2.2.0.1, Feb 9, 2020
  */
-@import "_bootstrap";
-@import "../../../less/_usite";
-@import "../../../less/_toc";
-@import "../../../less/_function";
-@import "vditor/src/assets/less/index";
+@import "bootstrap";
+@import "../../../scss/usite";
+@import "../../../scss/toc";
+@import "../../../scss/function";
+@import "vditor/src/assets/scss/index";
 
 .vditor-reset--article {
   padding-bottom: 10px;

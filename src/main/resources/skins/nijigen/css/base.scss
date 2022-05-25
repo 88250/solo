@@ -15,24 +15,24 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 0.6.0.1, Feb 9, 2020
 */
-@import "../../../less/_reset";
-@import "../../../less/_function";
-@import "../../../less/_nprogress";
-@import "../../../less/_toc";
-@import "../../../less/_usite";
-@import "_icon";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/function";
+@import "../../../scss/nprogress";
+@import "../../../scss/toc";
+@import "../../../scss/usite";
+@import "icon";
+@import "vditor/src/assets/scss/index";
 
-@purple: #7266BA;
-@purple-dark: #6658b8;
-@red: #b94a48;
-@black: #3d4450;
+$purple: #7266BA !default;
+$purple-dark: #6658b8 !default;
+$red: #b94a48 !default;
+$black: #3d4450 !default;
 
 .user__site {
   color: rgba(10, 10, 0, 0.7);
 
   &:hover {
-    color: @red;
+    color: $red;
   }
 }
 
@@ -58,7 +58,7 @@ a {
 }
 
 .ft__red {
-  color: @red;
+  color: $red;
 }
 
 // module
@@ -85,7 +85,7 @@ a {
   &__content {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 15px;
-    color: @black;
+    color: $black;
     display: block;
 
     &:hover {
@@ -120,11 +120,11 @@ a {
       a {
         padding: 15px 15px;
         display: block;
-        color: @black;
+        color: $black;
 
         &:hover {
           text-decoration: none;
-          color: @red;
+          color: $red;
           background-color: #fff;
         }
       }
@@ -137,7 +137,7 @@ a {
   position: relative;
 
   &__input {
-    border: 1px solid @purple;
+    border: 1px solid $purple;
     height: 30px;
     line-height: 30px;
     padding: 0 15px;
@@ -235,7 +235,7 @@ a {
     &.current,
     &:hover {
       text-decoration: none;
-      background-color: rgba(@purple-dark, 0.8);
+      background-color: rgba($purple-dark, 0.8);
     }
   }
 
@@ -306,7 +306,7 @@ a {
 
     &:hover {
       transform: rotate(360deg) scale(1.2);
-      border: 5px solid rgba(@purple, 0.36);
+      border: 5px solid rgba($purple, 0.36);
       margin-top: 0;
     }
   }
@@ -331,17 +331,17 @@ a {
   }
 
   &:hover {
-    background-color: @red;
+    background-color: $red;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
     text-decoration: none;
   }
 }
 
 .breadcrumb {
-  color: @purple !important;
+  color: $purple !important;
 
   &:hover {
-    color: @black !important;
+    color: $black !important;
   }
 }
 
@@ -353,7 +353,7 @@ a {
   margin-bottom: 30px;
 
   a {
-    color: @purple;
+    color: $purple;
   }
 }
 
@@ -399,18 +399,18 @@ a {
         &:hover {
           color: #fff;
           text-decoration: none;
-          background-color: @purple-dark;
+          background-color: $purple-dark;
         }
       }
 
       & > sup {
-        color: @red;
+        color: $red;
       }
     }
 
     &__date {
       position: absolute;
-      background-color: @purple;
+      background-color: $purple;
       color: #fff;
       height: 70px;
       width: 70px;
@@ -439,21 +439,21 @@ a {
     line-height: 24px;
     display: inline-block;
     margin: 0 0 10px 10px;
-    background-color: rgba(@purple, 0.58);
+    background-color: rgba($purple, 0.58);
 
     &--text {
       background-color: rgba(255, 255, 255, 0.8);
-      color: @purple;
+      color: $purple;
     }
 
     &--current {
-      background-color: @purple-dark;
+      background-color: $purple-dark;
     }
   }
 
   a.pagination__item:hover {
     text-decoration: none;
-    background-color: @purple-dark;
+    background-color: $purple-dark;
   }
 }
 
@@ -497,15 +497,15 @@ a {
     line-height: 37px;
     padding-left: 45px;
     background: rgba(217, 237, 247, 0.6);
-    color: @black;
+    color: $black;
     padding-right: 15px;
 
     a {
       font-weight: 700;
-      color: @black;
+      color: $black;
 
       &:hover {
-        color: @red;
+        color: $red;
       }
     }
 
@@ -610,7 +610,7 @@ a {
   bottom: 30px;
   right: 30px;
   color: #fff;
-  background-color: rgba(@purple, 0.8);
+  background-color: rgba($purple, 0.8);
   height: 30px;
   width: 30px;
   line-height: 28px;
@@ -620,7 +620,7 @@ a {
   text-align: center;
 
   &:hover {
-    background-color: @purple-dark;
+    background-color: $purple-dark;
   }
 }
 
@@ -665,7 +665,7 @@ a {
       &__date--m {
         text-align: center;
         margin-bottom: 10px;
-        color: @black;
+        color: $black;
         display: block;
       }
 
@@ -685,7 +685,7 @@ a {
     margin: 0 15px 15px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 5px;
-    color: @black;
+    color: $black;
     line-height: 20px;
 
     a {

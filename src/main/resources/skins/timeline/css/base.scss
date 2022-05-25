@@ -15,9 +15,9 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 2.3.0.1, Feb 9, 2020
  */
-@import "../../../less/_usite";
-@import "../../../less/_toc";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/usite";
+@import "../../../scss/toc";
+@import "vditor/src/assets/scss/index";
 
 .vditor-reset::-webkit-scrollbar {
   display: none;

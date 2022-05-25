@@ -16,10 +16,10 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 2.4.0.1, Feb 9, 2020
  */
-@import "../../../less/_reset";
-@import "../../../less/_toc";
-@import "../../../less/_usite";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/toc";
+@import "../../../scss/usite";
+@import "vditor/src/assets/scss/index";
 
 .left {
   float: left;

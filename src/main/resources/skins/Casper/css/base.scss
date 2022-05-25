@@ -15,18 +15,18 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 0.3.1.0, Apr 18, 2020
  */
-@import "../../../less/_reset";
-@import "../../../less/_usite";
-@import "../../../less/_toc";
-@import "../../../less/_function";
-@import "../../../less/_nprogress";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/usite";
+@import "../../../scss/toc";
+@import "../../../scss/function";
+@import "../../../scss/nprogress";
+@import "vditor/src/assets/scss/index";
 
-@fade-lighter: rgba(255, 255, 255, .8);
-@gray: #738a94;
-@black: #15171a;
-@black-bg: #090a0b;
-@link: #26a8ed;
+$fade-lighter: rgba(255, 255, 255, .8) !default;
+$gray: #738a94 !default;
+$black: #15171a !default;
+$black-bg: #090a0b !default;
+$link: #26a8ed !default;
 
 body {
   background-color: #f4f8fb;
@@ -38,14 +38,14 @@ body {
 }
 
 a {
-  color: @link;
+  color: $link;
 }
 
 .ft__a {
-  color: @gray;
+  color: $gray;
 
   &:hover {
-    color: rgba(@gray, .8);
+    color: rgba($gray, .8);
   }
 }
 
@@ -73,7 +73,7 @@ a {
   }
 
   &--article {
-    background-color: @black-bg;
+    background-color: $black-bg;
     height: 64px;
 
     .header__title {
@@ -131,7 +131,7 @@ a {
 
       &:hover {
         text-decoration: none;
-        color: @fade-lighter;
+        color: $fade-lighter;
       }
     }
   }
@@ -140,7 +140,7 @@ a {
     font-size: 20px;
     font-weight: 300;
     margin: 5px 0 70px;
-    color: @fade-lighter;
+    color: $fade-lighter;
     line-height: 24px;
   }
 
@@ -151,7 +151,7 @@ a {
       font-size: 13px;
       float: left;
       line-height: 24px;
-      color: @fade-lighter;
+      color: $fade-lighter;
       margin: 0 20px 90px 0;
 
       &:hover {
@@ -175,11 +175,11 @@ a {
 .footer {
   font-size: 13px;
   padding: 20px 0;
-  background-color: @black-bg;
+  background-color: $black-bg;
   color: #fff;
 
   a {
-    color: @fade-lighter;
+    color: $fade-lighter;
 
     &:hover {
       text-decoration: none;
@@ -250,7 +250,7 @@ a {
     &__tag {
       display: inline-block;
       margin-bottom: 4px;
-      color: @gray;
+      color: $gray;
       font-size: 12px;
       line-height: 14px;
       font-weight: 500;
@@ -259,7 +259,7 @@ a {
 
       &:hover {
         text-decoration: none;
-        color: rgba(@gray, 0.8);
+        color: rgba($gray, 0.8);
       }
     }
 
@@ -267,27 +267,27 @@ a {
       margin-bottom: 10px;
 
       & > a {
-        color: @black;
+        color: $black;
         font-size: 18px;
         line-height: 24px;
 
         &:hover {
           text-decoration: none;
-          color: rgba(@black, 0.8);
+          color: rgba($black, 0.8);
         }
       }
 
       sup {
         font-size: 12px;
         font-weight: normal;
-        color: rgba(@gray, 0.8);
+        color: rgba($gray, 0.8);
 
         a {
-          color: rgba(@gray, 0.8);
+          color: rgba($gray, 0.8);
           cursor: text;
 
           &:hover {
-            color: rgba(@gray, 0.8);
+            color: rgba($gray, 0.8);
             text-decoration: none;
           }
 
@@ -300,23 +300,23 @@ a {
 
     &__abstract {
       line-height: 24px;
-      color: @black;
+      color: $black;
       flex: 1;
 
       &:hover {
         text-decoration: none;
-        color: rgba(@black, 0.8);
+        color: rgba($black, 0.8);
       }
     }
 
     &__meta {
       float: right;
       margin-top: 18px;
-      color: @gray;
+      color: $gray;
 
       &:hover {
         text-decoration: none;
-        color: rgba(@gray, 0.8);
+        color: rgba($gray, 0.8);
       }
     }
 
@@ -340,7 +340,7 @@ a {
   &__item {
     width: 30px;
     height: 30px;
-    background: @black;
+    background: $black;
     border-radius: 50%;
     display: inline-block;
     color: #fff;
@@ -356,7 +356,7 @@ a {
 
     &--omit {
       background-color: transparent;
-      color: @black;
+      color: $black;
     }
   }
 }
@@ -410,7 +410,7 @@ a {
 
       a {
         display: block;
-        border-bottom: 1px solid rgba(@gray, .8);
+        border-bottom: 1px solid rgba($gray, .8);
         padding: 10px 0;
         color: #fff;
         margin: 0 20px;
@@ -423,7 +423,7 @@ a {
     width: 100%;
     top: -61px;
     background-color: rgba(255, 255, 255, 0.9);
-    border-bottom: 1px solid rgba(@gray, 0.1);
+    border-bottom: 1px solid rgba($gray, 0.1);
     height: 60px;
     transition: all .3s ease;
     z-index: 1;
@@ -508,7 +508,7 @@ a {
     -webkit-appearance: none;
 
     &::-webkit-progress-value {
-      background-color: @link;
+      background-color: $link;
     }
 
     &::-webkit-progress-bar {
@@ -521,10 +521,10 @@ a {
       padding-top: 76px;
       font-size: 14px;
       text-transform: uppercase;
-      color: rgba(@gray, .8);
+      color: rgba($gray, .8);
 
       a {
-        color: @gray;
+        color: $gray;
       }
     }
 
@@ -535,7 +535,7 @@ a {
       sup {
         font-size: 14px;
         font-weight: normal;
-        color: rgba(@gray, .8);
+        color: rgba($gray, .8);
       }
     }
 
@@ -598,20 +598,20 @@ a {
 
   .article__toc {
     overflow: initial;
-    border-left: 1px solid rgba(@gray, 0.28);
+    border-left: 1px solid rgba($gray, 0.28);
     margin: 0;
     font-size: 14px;
     line-height: 24px;
 
     li.current a,
     a:hover {
-      color: @link;
+      color: $link;
     }
 
     a {
       display: block;
       margin-top: -24px;
-      color: @gray;
+      color: $gray;
     }
   }
 
@@ -628,7 +628,7 @@ a {
     }
 
     &.current:before {
-      background-color: @link;
+      background-color: $link;
     }
   }
 }
@@ -652,12 +652,12 @@ a {
   &__title {
     text-align: center;
     padding: 40px 0;
-    color: @gray;
+    color: $gray;
   }
 
   .item {
     margin-bottom: 40px;
-    border: 1px solid @fade-lighter;
+    border: 1px solid $fade-lighter;
     border-radius: 5px;
     background: #fff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
@@ -665,7 +665,7 @@ a {
     padding: 20px;
 
     &__meta {
-      color: rgba(@gray, .8);
+      color: rgba($gray, .8);
       font-size: 12px;
     }
 
@@ -681,15 +681,15 @@ a {
     }
 
     &__name {
-      color: rgba(@gray, .8);
+      color: rgba($gray, .8);
       float: left;
       line-height: 40px;
 
       a {
-        color: @gray;
+        color: $gray;
 
         &:hover {
-          color: rgba(@gray, .8);
+          color: rgba($gray, .8);
         }
       }
     }
@@ -761,7 +761,7 @@ a {
     }
 
     span, div {
-      color: @gray;
+      color: $gray;
       font-size: 12px;
       word-break: break-all;
       white-space: normal;

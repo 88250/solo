@@ -15,16 +15,16 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 0.5.0.1, Feb 9, 2020
 */
-@import "../../../less/_reset";
-@import "../../../less/_function";
-@import "../../../less/_nprogress";
-@import "../../../less/_usite";
-@import "../../../less/_toc";
-@import "_icon";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/function";
+@import "../../../scss/nprogress";
+@import "../../../scss/usite";
+@import "../../../scss/toc";
+@import "icon";
+@import "vditor/src/assets/scss/index";
 
-@red: #991a1a;
-@gray: #999;
+$red: #991a1a !default;
+$gray: #999 !default;
 
 .user__sites {
   padding-top: 30px;
@@ -33,11 +33,11 @@
 
 .user__site {
   display: inline-block;
-  color: @gray !important;
+  color: $gray !important;
   margin: 0 5px 20px 0;
 
   &:hover {
-    color: @red !important;
+    color: $red !important;
   }
 }
 
@@ -74,11 +74,11 @@ a {
 }
 
 .ft__red {
-  color: @red;
+  color: $red;
 }
 
 .ft__gray {
-  color: @gray;
+  color: $gray;
 }
 
 .vditor-reset {
@@ -91,7 +91,7 @@ a {
   }
 
   a {
-    color: @red;
+    color: $red;
   }
 
   blockquote {
@@ -99,7 +99,7 @@ a {
     background: #f7f7f7;
     margin: 20px 0;
     padding: 10px 20px;
-    border-left: 4px solid @red;
+    border-left: 4px solid $red;
   }
 
   pre > code {
@@ -139,7 +139,7 @@ a {
     &.current,
     &:hover {
       text-decoration: none;
-      color: @gray;
+      color: $gray;
     }
   }
 }
@@ -155,13 +155,13 @@ a {
 
 // footer
 .footer {
-  color: @gray;
+  color: $gray;
   margin: 30px auto;
   line-height: 1.6em;
   font-size: 0.85em;
 
   a {
-    color: @red;
+    color: $red;
   }
 }
 
@@ -188,13 +188,13 @@ a {
       transition: color 0.2s;
 
       &:hover {
-        color: @red;
+        color: $red;
       }
     }
 
     sup {
       font-weight: normal;
-      color: @gray;
+      color: $gray;
       font-size: 12px;
       top: -10px;
 
@@ -225,7 +225,7 @@ a {
   &__more {
     margin-bottom: 70px;
     text-decoration: none;
-    color: @red;
+    color: $red;
     display: block;
   }
 
@@ -254,7 +254,7 @@ a {
     a {
       font-size: 12px;
       line-height: 1.6em;
-      color: @gray;
+      color: $gray;
       padding: 0 20px;
 
       &:hover {
@@ -284,7 +284,7 @@ a {
 
   &__item {
     padding: 10px 10px;
-    color: @gray;
+    color: $gray;
     display: inline-block;
 
     &--current {
@@ -295,7 +295,7 @@ a {
 
   a.pagination__item:hover {
     text-decoration: none;
-    background: @red;
+    background: $red;
     color: #fff;
   }
 }

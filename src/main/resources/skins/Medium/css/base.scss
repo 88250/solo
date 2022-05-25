@@ -15,11 +15,11 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 2.3.0.1, Feb 9, 2020
  */
-@import "../../../less/_reset";
-@import "../../../less/_usite";
-@import "../../../less/_toc";
-@import "../../../less/_nprogress";
-@import "vditor/src/assets/less/index";
+@import "../../../scss/reset";
+@import "../../../scss/usite";
+@import "../../../scss/toc";
+@import "../../../scss/nprogress";
+@import "vditor/src/assets/scss/index";
 
 .fn-flex {
   display: flex
