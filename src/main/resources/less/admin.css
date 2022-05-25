@@ -189,8 +189,7 @@ blockquote {
   display: flex;
 }
 .fn__flex-center {
-  -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
 }
 .fn__flex-inline {
   display: inline-flex;
@@ -302,14 +301,6 @@ blockquote {
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 0.1.0.0, Jan 25, 2019
  */
-@-webkit-keyframes tooltip-appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 @keyframes tooltip-appear {
   from {
     opacity: 0;
@@ -367,14 +358,10 @@ blockquote {
 .vditor-tooltipped:focus::after {
   display: inline-block;
   text-decoration: none;
-  -webkit-animation-name: tooltip-appear;
-          animation-name: tooltip-appear;
-  -webkit-animation-duration: 0.15s;
-          animation-duration: 0.15s;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-  -webkit-animation-timing-function: ease-in;
-          animation-timing-function: ease-in;
+  animation-name: tooltip-appear;
+  animation-duration: 0.15s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
 }
 .vditor-tooltipped__s::after,
 .vditor-tooltipped__se::after,
@@ -466,16 +453,6 @@ blockquote {
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.0.0, Jan 22, 2020
  */
-@-webkit-keyframes scale-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 @keyframes scale-in {
   0% {
     opacity: 0;
@@ -495,24 +472,17 @@ blockquote {
   z-index: 3;
   font-size: 14px;
   display: none;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   max-width: 320px;
   min-width: 80px;
-  -webkit-animation-duration: 0.15s;
-          animation-duration: 0.15s;
-  -webkit-animation-name: scale-in;
-          animation-name: scale-in;
-  -webkit-animation-timing-function: cubic-bezier(0.2, 0, 0.13, 1.5);
-          animation-timing-function: cubic-bezier(0.2, 0, 0.13, 1.5);
+  animation-duration: 0.15s;
+  animation-name: scale-in;
+  animation-timing-function: cubic-bezier(0.2, 0, 0.13, 1.5);
   color: var(--toolbar-icon-color);
 }
 .vditor-panel--none {
   padding: 0;
-  -webkit-animation: none;
-          animation: none;
+  animation: none;
   min-width: auto;
   max-width: none;
   white-space: nowrap;
@@ -580,7 +550,6 @@ blockquote {
   line-height: 1;
 }
 .vditor-toolbar--pin {
-  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1;
@@ -725,15 +694,6 @@ blockquote {
     color: var(--toolbar-icon-hover-color);
   }
 }
-@-webkit-keyframes slideInDown {
-  from {
-    transform: translate3d(0, -100%, 0);
-    visibility: visible;
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
 @keyframes slideInDown {
   from {
     transform: translate3d(0, -100%, 0);
@@ -836,10 +796,7 @@ blockquote {
   background-color: var(--count-background-color);
   border-radius: 3px;
   font-size: 12px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   float: right;
   margin: 8px 3px 0 0;
 }
@@ -850,10 +807,7 @@ blockquote {
 .vditor-resize {
   padding: 3px 0;
   cursor: row-resize;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   position: absolute;
   width: 100%;
 }
@@ -898,17 +852,14 @@ blockquote {
   position: absolute;
   font-size: 12px;
   top: 10px;
-  -webkit-animation-duration: 0.15s;
-          animation-duration: 0.15s;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
+  animation-duration: 0.15s;
+  animation-fill-mode: both;
   left: 50%;
   z-index: 5;
 }
 .vditor-tip--show {
   display: block;
-  -webkit-animation-name: slideInDown;
-          animation-name: slideInDown;
+  animation-name: slideInDown;
 }
 .vditor-tip__content {
   text-align: left;
@@ -966,10 +917,7 @@ blockquote {
   align-items: center;
   cursor: pointer;
   margin-left: 24px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   color: var(--toolbar-icon-color);
 }
 .vditor-img__btn:hover {
@@ -1354,10 +1302,7 @@ blockquote {
   left: 0;
   width: 3em;
   /* works for line-numbers below 1000 lines */
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   counter-reset: linenumber;
 }
 .vditor-linenumber__rows > span {
@@ -1486,10 +1431,7 @@ blockquote {
 }
 .vditor-toc {
   margin-bottom: 16px;
-  -webkit-user-select: text;
-     -moz-user-select: text;
-      -ms-user-select: text;
-          user-select: text;
+  user-select: text;
   color: #4285f4;
 }
 .vditor-toc .vditor-outline__action {
@@ -2080,10 +2022,7 @@ button,
   white-space: nowrap;
   vertical-align: baseline;
   cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   background-image: none;
   border: 1px solid #1fb5ad;
   border-radius: 4px;
@@ -2570,8 +2509,7 @@ button#submitArticle:hover {
 /* start about */
 .about-logo {
   margin: 0 40px 0 20px;
-  -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
 }
 .about-margin {
   font-size: 18px;
