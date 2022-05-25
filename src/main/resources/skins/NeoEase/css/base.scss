@@ -1,0 +1,790 @@
+/*
+ * Solo - A small and beautiful blogging system written in Java.
+ * Copyright (c) 2010-present, b3log.org
+ *
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+/**
+ * skin neoease style
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 2.3.0.1, Feb 9, 2020
+ */
+@import "../../../scss/toc";
+@import "../../../scss/usite";
+@import "vditor/src/assets/scss/index";
+
+.user__site {
+  display: inline-block;
+  margin-right: 15px;
+
+  svg {
+    height: 20px;
+    width: 20px;
+    fill: currentColor;
+  }
+}
+
+/* start base */
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+::selection {
+  background-color: #ccc;
+  color: #fff;
+}
+
+::-moz-selection {
+  background-color: #ccc;
+  color: #fff;
+}
+
+body {
+  font-family: "Lucida Grande", "Verdana", "\5fae\8f6f\96c5\9ed1";
+  font-size: 12px;
+  background-color: #F9F9F9;
+  color: #333;
+}
+
+a:link {
+  outline: none;
+  color: #21759B;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #555777;
+}
+
+a:hover {
+  color: #D54E21;
+}
+
+a:active {
+  color: #333;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: middle;
+  border: 0;
+  height: auto;
+  -ms-interpolation-mode: bicubic
+}
+
+textarea, input {
+  outline: none;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.clear {
+  background-color: transparent;
+  border: 0;
+  clear: both;
+  display: block;
+  font-size: 0;
+  height: 0;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.none {
+  display: none;
+}
+
+.logo {
+  padding: 0 5px;
+  text-shadow: 0 0 1px #EEE;
+}
+
+.tip {
+  color: #D54E21;
+  font-size: 11px;
+
+  &__sup {
+    cursor: text;
+    &:link {
+      color: #D54E21;
+    }
+    &:hover {
+      color: #D54E21;
+    }
+    &:visited {
+      color: #F9F9F9;
+    }
+  }
+}
+
+.em-span {
+  line-height: 24px;
+  float: left;
+}
+
+.em-br {
+  line-height: 24px;
+}
+
+/* end base */
+
+/* start ico */
+.date-ico, .tag-ico, .user-ico, .expand-ico, .collapse-ico, #search,
+.translate-ico, .feed-ico {
+  background-image: url("../../NeoEase/images/icons.png");
+}
+
+.feed-ico {
+  background-position: right -146px;
+  background-repeat: no-repeat;
+  color: #333;
+  padding-right: 24px;
+}
+
+.translate-ico {
+  background-position: 1px -125px;
+  background-repeat: no-repeat;
+  border: 1px solid #999;
+  border-radius: 3px 3px 3px 3px;
+  cursor: pointer;
+  float: right;
+  height: 16px;
+  margin: 6px 0 0 18px;
+  padding: 1px;
+  width: 16px;
+}
+
+.translate-ico:hover {
+  border-color: #D54E21;
+  box-shadow: 0 0 1px #999;
+  background-color: #F2F2F2;
+}
+
+.expand-ico, .collapse-ico {
+  background-position: 54px -84px;
+  cursor: pointer;
+  height: 16px;
+  background-repeat: no-repeat;
+}
+
+.collapse-ico {
+  background-position: 54px -69px;
+}
+
+.date-ico, .tag-ico, .user-ico {
+  background-repeat: no-repeat;
+  height: 16px;
+  display: block;
+  padding-left: 20px;
+}
+
+.tag-ico {
+  margin: 6px 6px 0 0;
+}
+
+.date-ico {
+  float: left;
+  background-position: 0 -16px;
+}
+
+.user-ico {
+  background-position: 0 -32px;
+  float: left;
+  margin-left: 12px;
+}
+
+/* end ico */
+
+/* start frame */
+.wrapper {
+  margin: 0 auto;
+  width: 960px;
+}
+
+.body {
+  border-top: 2px solid #DDD;
+}
+
+.main {
+  float: left;
+  margin: 16px 0 50px;
+  overflow: hidden;
+  width: 667px;
+}
+
+/* end frame */
+
+/* start header */
+.header {
+  background: url("../../NeoEase/images/icons.png") repeat-x scroll 0 -220px #F2F2F2;
+  padding: 20px 0;
+}
+
+.header .title {
+  border-bottom: 1px solid #242424;
+  color: #000;
+  font-size: 26px;
+  font-weight: normal;
+}
+
+.header .sub-title {
+  color: #242424;
+  font-size: 11px;
+}
+
+.nav .page-icon {
+  float: left;
+  height: 14px;
+  width: 14px;
+  margin: 8px 3px 0 0;
+}
+
+#search {
+  background-position: 7px -99px;
+  background-repeat: no-repeat;
+  background-color: #FFF;
+  border: 1px solid #DDD;
+  border-radius: 2px 2px 2px 2px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
+  color: #888;
+  float: right;
+  font-size: 14px;
+  height: 20px;
+  line-height: 145%;
+  padding: 3px 10px 3px 28px;
+  width: 24px;
+  -moz-transition: width 0.4s ease, background 0.4s ease;
+  -webkit-transition: width 0.4s ease, background 0.4s ease;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+#search:focus {
+  background-color: #F9F9F9;
+  width: 196px;
+}
+
+.nav {
+  background-color: #E9E9E9;
+  border-bottom: 1px solid #CCCCCC;
+}
+
+.nav ul {
+  list-style: none;
+  float: left;
+}
+
+.nav li {
+  float: left;
+}
+
+.nav a {
+  color: #666666;
+  display: block;
+  float: left;
+  font-size: 14px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 15px;
+  text-shadow: 0 1px 0 #EEE;
+}
+
+.nav a:hover {
+  color: #D54E21;
+  background-color: #DDD;
+}
+
+.nav .current {
+  background-color: #DDD;
+  margin: -1px 0;
+  padding-right: 2px;
+}
+
+.nav .current a {
+  background-color: #F9F9F9;
+  border-color: #CCCCCC #CCCCCC #F9F9F9;
+  border-style: solid;
+  border-width: 1px 1px 3px;
+  font-weight: 700;
+  height: 33px;
+  line-height: 33px;
+  margin: -2px 0 -3px;
+  color: #333;
+  text-shadow: 1px 1px 1px #C6D9E9;
+}
+
+.nav img {
+  margin-left: 3px;
+}
+
+.nav .right {
+  line-height: 29px;
+}
+
+/* end header */
+
+/* start footer */
+.footer {
+  background-color: #E9E9E9;
+  border-top: 3px solid #DDD;
+  color: #999;
+  font-size: 11px;
+  padding: 12px 0;
+}
+
+.footer a {
+  color: #787878;
+}
+
+.footer a:hover {
+  color: #D54E21;
+}
+
+#goTop {
+  background: url("../../NeoEase/images/icons.png") no-repeat scroll 5px -51px #DDD;
+  border-radius: 2px 2px 0 0;
+  cursor: pointer;
+  font-size: 11px;
+  height: 21px;
+  line-height: 21px;
+  padding: 0 10px 0 23px;
+  position: absolute;
+  right: 56px;
+  display: none;
+}
+
+#goTop:hover {
+  background-color: #EAEAEA;
+}
+
+/* end footer*/
+
+/* start side */
+.side {
+  float: right;
+  width: 278px;
+  margin-bottom: 50px;
+}
+
+.side > div {
+  border-bottom: 1px solid #DEDEDE;
+  padding: 10px 5px 15px;
+}
+
+.side h4 {
+  font-size: 14px;
+  line-height: 32px;
+}
+
+.side ul {
+  list-style: none;
+}
+
+#archiveSide {
+  list-style: square outside none;
+  margin-left: 18px;
+}
+
+#archiveSide .archive-year {
+  color: #D54E21;
+  font-weight: bold;
+  height: 18px;
+  line-height: 18px;
+  list-style: none;
+}
+
+.side a {
+  line-height: 18px;
+  color: #21759B;
+}
+
+.side a:hover {
+  text-decoration: underline;
+}
+
+.side sup {
+  color: #333;
+}
+/* end side */
+
+/* start article list */
+.article {
+  border-bottom: 1px solid #CCC;
+  padding: 0 5px 10px;
+  margin-top: 20px;
+}
+
+.article-element {
+  font-size: 11px;
+  line-height: 16px;
+  margin: 12px 0;
+
+  &--article {
+    margin-top: 0;
+  }
+}
+
+.vditor-reset--article {
+  padding-bottom: 12px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.article-element a {
+  border-bottom: 1px solid #DFDFDF;
+  color: #555;
+  text-decoration: none;
+  padding-bottom: 1px;
+}
+
+.article-element a:hover {
+  color: #D54E21;
+  border-bottom-color: #D54E21;
+}
+
+.article-title {
+  color: #21759B;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.article-title:hover {
+  color: #D54E21;
+}
+
+.article .expand-ico, .article .collapse-ico {
+  float: right;
+  margin-top: 9px;
+  padding-right: 6px;
+  width: 15px;
+  background-position: 0 -86px;
+}
+
+.article .collapse-ico {
+  background-position: 0 -70px;
+}
+
+.pagination {
+  margin-top: 30px;
+  line-height: 21px;
+}
+
+.pagination a {
+  border: 1px solid #C5C3C2;
+  font-size: 10px;
+  margin: 2px;
+  padding: 1px 5px;
+  text-decoration: none;
+  background-color: #F2F2F2;
+}
+
+.pagination a.current {
+  background-color: #FFF;
+  font-weight: bold;
+  padding: 2px 6px;
+  color: #000;
+}
+
+.pagination a:hover {
+  background-color: #F3DEDD;
+  color: #D54E21;
+  border: 1px solid #D54E21;
+}
+
+.page {
+  margin-top: 20px;
+  padding: 0 5px 5px;
+}
+
+/* end article list */
+
+/* start article */
+.article-panel1 {
+  background-color: #F2F2F2;
+  padding: 5px 10px;
+}
+
+.article-panel2 {
+  background-color: #FFF;
+  margin-top: 12px;
+  padding: 5px 10px;
+}
+
+.article-panel2 ul {
+  line-height: 18px;
+  list-style: square outside none;
+  margin-left: 18px;
+}
+
+.share {
+  border-bottom: 1px solid #DEDEDE;
+  margin-top: 15px;
+}
+
+.share-comment {
+  background-color: #DDD;
+  border-radius: 2px 2px 0 0;
+  float: right;
+  font-size: 11px;
+  height: 21px;
+  line-height: 21px;
+  margin-right: 16px;
+  padding: 0 10px;
+}
+
+.share-comment:hover {
+  background-color: #EAEAEA;
+}
+
+#comments {
+  position: relative;
+}
+
+#comments > div {
+  border-bottom: 1px solid #DEDEDE;
+  padding: 10px;
+  width: 647px;
+  background-color: #F5F5F5;
+}
+
+#comments > div:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#comments .comment-panel > .right {
+  -moz-transition: opacity 400ms ease;
+  -webkit-transition: opacity 400ms ease;
+  transition: opacity 400ms ease;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+#comments > div:hover .comment-panel > .right {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.comment-header {
+  height: 50px;
+  width: 50px;
+  float: left;
+  background-color: #FFF;
+  border: 1px solid #DEDEDE;
+  padding: 1px;
+}
+
+.comment-panel {
+  float: left;
+  margin: 0 10px;
+  width: 573px;
+  line-height: 16px;
+}
+
+.comment-panel .vditor-reset {
+  margin-top: 5px;
+}
+
+#comments .comment-body-ref {
+  border-bottom: 0;
+  background-color: #FFF;
+  border-radius: 5px 5px 5px 5px;
+  left: 73px;
+  position: absolute;
+  box-shadow: 1px 0 3px #DEDEDE;
+  width: 560px;
+}
+
+.comment-body-ref .comment-panel {
+  width: 486px;
+}
+
+.comment-body-ref .arrow {
+  border-color: #F5F5F5 #FFF #F5F5F5 #F5F5F5;
+  border-style: solid;
+  border-width: 6px 8px 10px 0;
+  display: block;
+  left: -8px;
+  position: absolute;
+  top: 5px;
+}
+
+.form {
+  margin: 10px;
+}
+
+.form img {
+  cursor: pointer;
+}
+
+.form h4 {
+  margin: 10px 0 5px 5px;
+}
+
+.form th {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.form input[type="text"], .form input[type="password"], .form textarea {
+  border-color: silver #D9D9D9 #D9D9D9;
+  border-style: solid;
+  border-width: 1px;
+  font-family: "Lucida Grande", Verdana, '微软雅黑';
+  font-size: 12px;
+  outline: medium none;
+  padding: 0 3px;
+}
+
+.form input:focus, .form textarea:focus {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+
+.form textarea {
+  overflow: auto;
+  resize: vertical;
+  padding: 3px;
+  width: 634px;
+}
+
+.form input {
+  height: 24px;
+  line-height: 16px;
+  width: 260px;
+}
+
+.form button {
+  background-color: #B4D666;
+  border-color: #B4D666 #81B840 #81B840 #B4D666;
+  border-style: solid;
+  border-width: 1px;
+  color: #2970A6;
+  height: 28px;
+  line-height: 28px;
+  padding: 0 12px;
+}
+
+.form button:hover {
+  background-color: #98C64C;
+  border-color: #76B33A #98C64C #98C64C #76B33A;
+  color: #074A7E;
+}
+
+/* end article*/
+
+/* start tags */
+#tags li {
+  float: left;
+  list-style: none;
+  height: 38px;
+}
+
+#tags a:hover {
+  text-shadow: 0 0 2px;
+}
+
+#tags a {
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 3px #333;
+  float: left;
+  margin: 3px 6px;
+  padding: 3px 12px;
+}
+
+#tagsSide li a {
+  float: left;
+  line-height: 145%;
+  margin-right: 7px;
+  white-space: nowrap;
+}
+
+.tags1 {
+  font-size: 12px;
+  color: #A1A1A1;
+}
+
+.tags2 {
+  font-size: 14px;
+  color: #687F95;
+}
+
+.tags3 {
+  font-size: 16px;
+  color: #4C6E90;
+}
+
+.tags4 {
+  font-size: 18px;
+  color: #258;
+}
+
+.tags5 {
+  font-size: 20px;
+}
+
+#tagsSide .tags2 {
+  font-size: 14px;
+}
+
+#tagsSide .tags3 {
+  font-size: 16px;
+}
+
+#tagsSide .tags4 {
+  font-size: 18px;
+}
+
+#tagsSide .tags5 {
+  font-size: 20px;
+}
+
+/* end tags */
+
+/* start others */
+.main > h2 {
+  margin-top: 16px;
+}
+
+.error {
+  background-image: url("../../NeoEase/images/404.png");
+  float: left;
+  height: 536px;
+  margin: 50px 80px;
+  position: relative;
+  width: 363px;
+}
+
+.error h2 {
+  left: -68px;
+  position: absolute;
+  top: -20px;
+}
+
+.error a {
+  background-color: #9CD941;
+  border: 265px none;
+  bottom: 12px;
+  color: #333555;
+  float: left;
+  padding: 10px 15px;
+  position: absolute;
+  right: -106px;
+}
+
+.error a:hover {
+  background-color: #ADEb51;
+}
+
+/* end others */

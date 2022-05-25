@@ -1,0 +1,602 @@
+/*
+ * Solo - A small and beautiful blogging system written in Java.
+ * Copyright (c) 2010-present, b3log.org
+ *
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+@charset "utf-8";
+/*
+ * skin i-nove style
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 2.3.0.1, Feb 9, 2020
+ */
+@import "../../../scss/toc";
+@import "../../../scss/reset";
+@import "../../../scss/usite";
+@import "vditor/src/assets/scss/index";
+
+#tags li {
+  list-style: none;
+  line-height: 20px;
+}
+
+.user__site {
+  margin-right: 10px;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.clear:before,
+.clear:after {
+  display: table;
+  content: "";
+}
+
+.clear:after {
+  clear: both;
+}
+
+.none {
+  display: none;
+}
+
+.marginLeft12 {
+  margin-left: 12px;
+}
+
+.marginTop12 {
+  margin-top: 12px;
+}
+
+.marginRight12 {
+  margin-right: 12px;
+}
+
+.margin5 {
+  margin: 5px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.bg {
+  background: url("../images/bg.jpg") repeat-x scroll 0 0 #BEC3C6;
+  color: #555555;
+}
+
+a, a:link, a:active, a:visited {
+  color: #2970A6;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 200%;
+}
+
+h4 {
+  font-size: 160%;
+}
+
+h5 {
+  font-size: 12px;
+}
+
+.margin5R {
+  margin-right: 5px;
+}
+
+.margin5 {
+  margin: 5px;
+}
+
+.wrapper {
+  background: url("../images/light.gif") no-repeat scroll 50% 0 transparent;
+  padding: 20px 0;
+}
+
+.content {
+  margin: 0 auto;
+  width: 936px;
+}
+
+.header {
+  background: url("../images/header.jpg") no-repeat scroll 0 0 transparent;
+  border-bottom: 1px solid #A6A6A6;
+  height: 65px;
+  padding: 25px 30px 0;
+}
+
+.body {
+  background: url("../images/sidesep.gif") repeat-y scroll right center #FFFFFF;
+  min-height: 400px;
+}
+
+.side-navi {
+  background: url("../images/sidebar_shadow.gif") repeat-x scroll 50% 0 #F7F7F7;
+  font-size: 95%;
+  line-height: 145%;
+  padding-top: 8px;
+  width: 300px;
+}
+
+.main {
+  background: url("../images/main_shadow.gif") repeat-x scroll center top #FFFFFF;
+  padding: 13px 15px 15px;
+  width: 605px;
+}
+
+.footer {
+  background: url("../images/footer.jpg") no-repeat scroll 0 0 transparent;
+  border-top: 1px solid #CCCCCC;
+  font-size: 11px;
+  height: 88px;
+  line-height: 145%;
+  padding: 0;
+}
+
+#logoTitle {
+  color: #FFFFFF;
+  display: block;
+  font-family: "Trajan Pro";
+  height: 30px;
+  outline: none;
+  text-decoration: none;
+}
+
+.sub-title {
+  border-top: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  font-size: 10px;
+  padding: 0 3px;
+}
+
+#header-navi {
+  background: none repeat scroll 0 0 #FFFFFF;
+  border-bottom: 1px solid #A6A6A6;
+
+  ul {
+    margin: 0;
+  }
+}
+
+#header-navi li {
+  float: left;
+  list-style: none;
+  margin-left: 0px;
+}
+
+#header-navi li a {
+  background: url("../images/menu.gif") no-repeat scroll 0 0 transparent;
+  color: #382E1F;
+  display: block;
+  font-size: 11px;
+  height: 31px;
+  line-height: 31px;
+  margin-left: -10px;
+  outline: none;
+  padding: 0 18px;
+  text-decoration: none;
+}
+
+#header-navi li a:hover {
+  background-position: 0 -31px;
+}
+
+#header-navi li a.home {
+  background-position: 0 -93px;
+  margin-left: 0;
+  padding: 0;
+  text-indent: -999em;
+  width: 45px;
+}
+
+#header-navi li a.home:hover {
+  background-position: 0 -124px;
+}
+
+#header-navi li a.lastNavi:hover {
+  background-position: 0 0;
+}
+
+#header-navi li.selected a {
+  background-position: 0 -62px;
+}
+
+#header-navi li.selected a.home {
+  background-position: 0 -155px;
+}
+
+#header-navi .page-icon {
+  float: left;
+  height: 14px;
+  width: 14px;
+  margin: 8px 3px 0 0;
+}
+
+#statistic {
+  font-size: 11px;
+  line-height: 31px;
+  margin-right: 15px;
+}
+
+.footer .copyright {
+  padding: 12px;
+  width: 857px;
+}
+
+.footer .copyright span {
+  margin: 0px;
+}
+
+.footer .goTop {
+  background: url("../images/icons.gif") no-repeat scroll 0 -304px transparent;
+  color: #2A2A2A;
+  cursor: pointer;
+  line-height: 18px;
+  margin: 5px 17px 0 0;
+  padding-left: 16px;
+  width: 22px;
+  white-space: nowrap;
+}
+
+.article {
+  padding-bottom: 15px;
+  overflow: hidden;
+}
+
+.article-title {
+  border-bottom: 1px solid #CCCCCC;
+  font-size: 16px;
+  margin-top: 10px;
+  padding: 0 5px 3px;
+}
+
+.article-title sup {
+  font-size: 12px;
+
+  a {
+    color: #555555;
+    cursor: text;
+
+    &:hover {
+      color: #555555;
+    }
+
+    &:visited {
+      color: #fff;
+    }
+  }
+}
+
+.article-title a {
+  color: #4C4C4C;
+  text-decoration: none;
+}
+
+.article-title a:hover {
+  color: #2970A6;
+}
+
+.article-abstract {
+  line-height: 145%;
+  margin: 10px 0 10px 5px;
+  word-wrap: break-word;
+}
+
+.tagsIcon, .articles-commentIcon, .dateIcon, .article-browserIcon, .authorIcon {
+  background: url("../images/icons.gif") no-repeat scroll 0 -400px transparent;
+  float: left;
+  height: 16px;
+  margin-right: 6px;
+  width: 16px;
+}
+
+.tagsIcon {
+  background-position: 0 -400px;
+  margin-left: 15px;
+}
+
+.dateIcon {
+  background-position: 0 -48px;
+  margin-left: 15px;
+}
+
+.authorIcon {
+  background-position: 0 0;
+}
+
+.articles-commentIcon {
+  background-position: 0 -96px;
+}
+
+.article-browserIcon {
+  background-position: 0 -480px;
+}
+
+.vditor-reset {
+  line-height: 145%;
+  padding: 5px 0 0 5px;
+
+  &--article {
+    padding-bottom: 7px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.article-footer {
+  margin: 0 5px 10px 5px;
+}
+
+.article-relative {
+  line-height: 22px;
+  margin-top: 24px;
+}
+
+.article-relative h4 {
+  font-size: 12px;
+}
+
+.comments {
+  background: none repeat scroll 0 0 #FCFCFC;
+  border-bottom: 1px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC;
+  margin: 15px -15px;
+  padding: 0 15px 15px;
+  position: relative;
+}
+
+.comment-title {
+  background-color: #E3E9FF;
+  border-top: 1px solid #3366CC;
+  padding: 3px 12px 3px 12px;
+  position: relative;
+}
+
+.comment-body-ref {
+  background-color: #FFFFFF;
+  filter: alpha(opacity=90);
+  left: 217px;
+  opacity: 0.9;
+  padding: 6px;
+  position: absolute;
+  width: 605px;
+  z-index: 10;
+}
+
+.comment-body {
+  margin-top: 15px;
+}
+
+.comment-author {
+  float: left;
+  text-align: center;
+  width: 81px;
+}
+
+.comment-author div {
+  background: url("../images/commentpoint.png") no-repeat scroll 100% 33% transparent;
+  margin-top: 10px;
+  padding-right: 14px;
+}
+
+.comment-author img {
+  border: 1px solid #999999;
+  height: 32px;
+  padding: 1px;
+  width: 32px;
+}
+
+.comment-author a {
+  font-weight: bold;
+  white-space: nowrap;
+  margin-right: 14px;
+}
+
+.comment-info {
+  background: url("../images/comment.gif") no-repeat scroll 0 0 #EDEFF0;
+  font-size: 12px;
+  padding: 10px 15px 0;
+  width: 494px;
+}
+
+.comment-content {
+  background: url("../images/comment.gif") no-repeat scroll 100% 100% transparent;
+  font-size: 12px;
+  line-height: 145%;
+  margin: 0 -15px;
+  overflow: hidden;
+  padding: 9px 15px 10px;
+  word-wrap: break-word;
+}
+
+.comment-form img {
+  cursor: pointer;
+}
+
+.comment-form input, .comment-form textarea {
+  background: url("../images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;
+  border: 1px solid #A6A6A6;
+  color: #555555;
+  font-family: Helvetica, Arial, sans-serif;
+  height: 16px;
+  outline: none;
+  padding: 2px 1px;
+  width: 200px;
+}
+
+.comment-form textarea {
+  font-size: 12px;
+  height: auto;
+  width: 601px;
+}
+
+.comment-form button {
+  background: none repeat scroll 0 0 #B4D666;
+  border-color: #B4D666 #81B840 #81B840 #B4D666;
+  border-radius: 0px;
+  border-style: solid;
+  border-width: 1px;
+  color: #2970A6;
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+  padding: 0px 6px;
+}
+
+.comment-form button:hover {
+  background: none repeat scroll 0 0 #98C64C;
+  border-color: #76B33A #98C64C #98C64C #76B33A;
+  color: #074A7E;
+}
+
+.error-msg {
+  color: #3366CC;
+}
+
+.side-navi ul {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.side-navi .item {
+  padding: 15px;
+}
+
+.side-navi sup {
+  margin-right: 3px;
+  color: #555;
+}
+
+.side-navi a.selected {
+  color: #555555;
+  text-decoration: none;
+}
+
+.side-navi ul.navi-tags li {
+  background-image: none;
+  padding-left: 0px;
+}
+
+.side-navi ul.navi-tags li img {
+  height: 16px;
+  padding-right: 6px;
+  width: 16px;
+}
+
+.side-navi li {
+  background: url("../images/icons.gif") no-repeat scroll 0 -623px transparent;
+  margin: 5px 0 0 0;
+  overflow: hidden;
+  padding-left: 20px;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side-navi li.aboutMe {
+  white-space: normal;
+}
+
+.side-navi .line {
+  background: url("../images/widgetsep.png") no-repeat scroll center bottom transparent;
+  height: 6px;
+  width: 300px;
+}
+
+.pagination {
+  margin: 16px;
+  text-align: center;
+}
+
+.pagination a, .pagination a:visited {
+  color: #4272DB;
+  padding: 0 3px;
+}
+
+.pagination a.selected {
+  color: #000000;
+  font-weight: bold;
+}
+
+#tagsPanel .tagPanel {
+  border: 2px solid;
+  border-radius: 6px;
+  cursor: pointer;
+  float: left;
+  margin: 3px;
+}
+
+#tagsPanel .tagPanel:hover {
+  background-color: #EEEEEE;
+  border: 2px dashed;
+}
+
+#tagsPanel .tagPanel {
+  text-decoration: none;
+}
+
+.error-body {
+  background: url("../images/main_shadow.gif") repeat-x scroll center top #FFFFFF;
+  height: 400px;
+  padding: 12px;
+}
+
+.error-title {
+  line-height: 72px;
+}
+
+.error-panel {
+  margin-left: 35px;
+  width: 201px;
+}
+
+.error-panel a {
+  background-color: #9CD941;
+  border-color: #D0F29D #398A38 #398A38 #D0F29D;
+  border-style: solid;
+  border-width: 1px;
+  color: #000000;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 3px;
+  padding: 10px 15px;
+  text-decoration: none;
+}
+
+.error-panel a:hover {
+  background-color: #ADEb51;
+}
+
+.kind-panel {
+  background: url("../images/box.gif") no-repeat scroll 100% 100% #F4F5F7;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+}
+
+.kind-title {
+  background: url("../images/box.gif") no-repeat scroll 0 0 #E3E4E6;
+  border-bottom: 1px solid #CCCCCC;
+  font-weight: bold;
+  padding: 6px 12px;
+}

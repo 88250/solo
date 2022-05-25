@@ -1,0 +1,501 @@
+/*
+ * Solo - A small and beautiful blogging system written in Java.
+ * Copyright (c) 2010-present, b3log.org
+ *
+ * Solo is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *         http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+/*
+ * skin style
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 0.5.0.1, Feb 9, 2020
+*/
+@import "../../../scss/reset";
+@import "../../../scss/function";
+@import "../../../scss/nprogress";
+@import "../../../scss/usite";
+@import "../../../scss/toc";
+@import "icon";
+@import "vditor/src/assets/scss/index";
+
+$red: #991a1a !default;
+$gray: #999 !default;
+
+.user__sites {
+  padding-top: 30px;
+  border-top: 1px dashed #d9d9d9;
+}
+
+.user__site {
+  display: inline-block;
+  color: $gray !important;
+  margin: 0 5px 20px 0;
+
+  &:hover {
+    color: $red !important;
+  }
+}
+
+.article__toc {
+  position: fixed;
+  right: -200px;
+  background-color: #2a2a2a;
+  top: 0;
+  margin: 0 !important;
+  height: 100vh;
+  overflow: auto;
+  width: 200px;
+  padding: 10px !important;
+  box-sizing: border-box;
+  transition: all 1s ease;
+  opacity: 0;
+  color: #fff;
+  font-size: 14px !important;
+
+  a {
+    color: #fff;
+  }
+}
+
+// reset
+body {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+a {
+  transition: all .3s;
+}
+
+.ft__red {
+  color: $red;
+}
+
+.ft__gray {
+  color: $gray;
+}
+
+.vditor-reset {
+  overflow: hidden;
+  color: #555;
+  font-size: 14px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  a {
+    color: $red;
+  }
+
+  blockquote {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f7f7f7;
+    margin: 20px 0;
+    padding: 10px 20px;
+    border-left: 4px solid $red;
+  }
+
+  pre > code {
+    color: #555;
+    background-color: #f7f7f7;
+    padding: 10px;
+  }
+}
+
+// header
+.header {
+  padding: 10px 0;
+  box-sizing: border-box;
+  top: 0;
+  background-color: #2a2a2a;
+  color: #fff;
+  position: fixed;
+  right: 0;
+  height: 100%;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+
+  a, span {
+    color: #fff;
+    padding: 10px 0;
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+
+    img {
+      height: 17px;
+      width: 17px;
+    }
+
+    &.current,
+    &:hover {
+      text-decoration: none;
+      color: $gray;
+    }
+  }
+}
+
+// framework
+.wrapper {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 0 70px 0 20px;
+  box-sizing: border-box;
+  transition: all 1s ease;
+}
+
+// footer
+.footer {
+  color: $gray;
+  margin: 30px auto;
+  line-height: 1.6em;
+  font-size: 0.85em;
+
+  a {
+    color: $red;
+  }
+}
+
+// article
+.article {
+  &__item {
+    margin: 50px 0;
+    border-bottom: 1px dashed #d9d9d9;
+    text-align: justify;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__title {
+    padding: 20px 0;
+
+    & > a {
+      text-decoration: none;
+      font-size: 25px;
+      font-weight: bold;
+      color: #555;
+      transition: color 0.2s;
+
+      &:hover {
+        color: $red;
+      }
+    }
+
+    sup {
+      font-weight: normal;
+      color: $gray;
+      font-size: 12px;
+      top: -10px;
+
+      a {
+        cursor: text;
+        color: #999;
+
+        &:hover {
+          color: #999;
+          text-decoration: none;
+        }
+
+        &:visited {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  &__content {
+    margin: 20px 0;
+
+    & > p:last-child {
+      margin-bottom: 0
+    }
+  }
+
+  &__more {
+    margin-bottom: 70px;
+    text-decoration: none;
+    color: $red;
+    display: block;
+  }
+
+  &__near {
+    margin: 50px 0 70px;
+    position: relative;
+
+    &--point:before {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -4px;
+      margin-left: -4px;
+      content: "";
+      border-radius: 50%;
+      background: #ddd;
+      box-shadow: 0 1px 2px #fff;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    a {
+      font-size: 12px;
+      line-height: 1.6em;
+      color: $gray;
+      padding: 0 20px;
+
+      &:hover {
+        text-decoration: none;
+        color: #555;
+      }
+
+      &.first {
+        text-align: right;
+      }
+    }
+
+    strong,
+    h4 {
+      margin-bottom: 6px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #ddd;
+      font-weight: bold;
+      display: block;
+    }
+  }
+}
+
+.pagination {
+  margin: 20px 0 40px;
+
+  &__item {
+    padding: 10px 10px;
+    color: $gray;
+    display: inline-block;
+
+    &--current {
+      color: #991a1a;
+      font-weight: bold;
+    }
+  }
+
+  a.pagination__item:hover {
+    text-decoration: none;
+    background: $red;
+    color: #fff;
+  }
+}
+
+// other page
+.tags {
+  line-height: 32px;
+  margin: 20px 0 70px;
+
+  &--align a {
+    width: 180px;
+    margin-right: 0 !important;
+  }
+
+  a {
+    margin-right: 20px;
+    float: left;
+  }
+}
+
+// comments
+
+#comments {
+  position: relative;
+}
+
+.comment-body-ref {
+  position: absolute;
+  width: 80%;
+  left: 84px;
+}
+
+.comments {
+  &__title {
+    padding-top: 20px;
+  }
+}
+
+.comment {
+  &__item {
+    list-style: none;
+    margin: 20px 0;
+  }
+
+  &__avatar {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 3px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    margin-right: 20px;
+
+    &:before,
+    &:after {
+      position: absolute;
+      top: 11px;
+      left: 49px;
+      display: block;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+      content: "";
+      border-color: transparent;
+      border-style: solid solid outset;
+      border-width: 8px;
+      border-right-color: #CFD8DC;
+    }
+
+    &:after {
+      margin-top: 1px;
+      margin-left: 2px;
+      border-width: 7px;
+      border-right-color: #fff;
+    }
+  }
+
+  &__main {
+    border: 1px solid #CFD8DC;
+    border-radius: 0;
+    padding: 20px;
+    background-color: #fff;
+  }
+
+  &__btn {
+    cursor: pointer;
+    color: #666;
+
+    &:hover {
+      color: #333;
+    }
+  }
+
+  &__content {
+    margin-top: 20px;
+
+    & > p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.form {
+  width: 100%;
+  padding: 0 0 0 64px;
+
+  #commentErrorTip,
+  #commentErrorTipReply {
+    line-height: 37px;
+  }
+
+  #captcha,
+  #captchaReply {
+    height: 32px;
+    display: inline-block;
+    vertical-align: inherit;
+  }
+
+  input,
+  textarea,
+  button {
+    background-color: #fff;
+    padding: 7px 8px;
+    border: 1px solid #CFD8DC;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline: none;
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+  }
+
+  button {
+    width: auto;
+    vertical-align: bottom;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  button:hover {
+    background-color: #2a2a2a;
+    color: #FFF;
+    border-color: #2a2a2a;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #2a2a2a;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    position: inherit;
+    width: 100%;
+    flex-direction: row;
+    padding-right: 10px;
+
+    a, span {
+      float: left;
+      width: auto;
+      padding: 0;
+      line-height: 25px;
+      margin-left: 10px;
+    }
+  }
+
+  .wrapper {
+    padding-right: 20px;
+  }
+
+  .article {
+    &__item {
+      margin: 20px 0;
+
+      .tag {
+        display: none;
+      }
+    }
+
+    &__more {
+      margin-bottom: 40px;
+    }
+  }
+
+  .footer {
+    text-align: right;
+  }
+
+  .icon__up {
+    display: none;
+  }
+
+  .pagination > .ft__center {
+    visibility: hidden;
+    height: 36px;
+  }
+
+  .mobile__none {
+    display: none;
+  }
+}

@@ -16,8 +16,8 @@
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
 * @version 2.1.0.1, Feb 9, 2020
 */
-@import "_reset";
-@import "vditor/src/assets/less/index";
+@import "reset";
+@import "vditor/src/assets/scss/index";
 
 /* reset */
 button,
@@ -174,7 +174,7 @@ input[type=text]:focus {
     width: 210px;
     margin: 0 auto 20px;
     color: #3b3e43;
-    transition: @transition;
+    transition: $transition;
     padding-right: 24px;
 
     &:hover {
