@@ -21,7 +21,7 @@
     </#if>
     <@head title="${title} - ${blogTitle}">
         <link type="text/css" rel="stylesheet"
-        href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
+        href="${staticServePath}/less/start.css?${staticResourceVersion}" charset="utf-8"/>
         <meta name="robots" content="none"/>
     </@head>
 </head>

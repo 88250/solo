@@ -21,7 +21,7 @@ const path = require('path')
 const fs = require('fs')
 const TerserPlugin = require('terser-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const genSkinsEntries = () => {
   const entries = {}
@@ -34,8 +34,8 @@ const genSkinsEntries = () => {
     }
 
     try {
-      fs.statSync(`${jsPath}/css/base.scss`)
-      entries[`dist/${file}/base`] = `${jsPath}/css/base.scss`
+      fs.statSync(`${jsPath}/css/base.less`)
+      entries[`dist/${file}/css/base`] = `${jsPath}/css/base.less`
     } catch (e) {
     }
   })
@@ -74,9 +74,9 @@ module.exports = (env, argv) => {
         './src/main/resources/js/admin/about.js'],
       'js/common': './src/main/resources/js/common.js',
       'js/page': './src/main/resources/js/page.js',
-      'dist/admin': './src/main/resources/scss/admin.scss',
-      'dist/base': './src/main/resources/scss/base.scss',
-      'dist/start': './src/main/resources/scss/start.scss',
+      'dist/admin': './src/main/resources/less/admin.less',
+      'dist/base': './src/main/resources/less/base.less',
+      'dist/start': './src/main/resources/less/start.less',
     }),
     module: {
       rules: [
@@ -84,7 +84,7 @@ module.exports = (env, argv) => {
           test: /\.js/,
           include: [
             path.resolve(__dirname, './src/main/resources/js'),
-            path.resolve(__dirname, './src/main/resources/templates/skins'),
+            path.resolve(__dirname, './src/main/resources/skins'),
           ],
           use: {
             loader: 'babel-loader',
@@ -94,10 +94,8 @@ module.exports = (env, argv) => {
           },
         },
         {
-          test: /\.scss$/,
-          include: [
-            path.resolve(__dirname, './src/main/resources'),
-          ],
+          test: /\.less$/,
+          include: [path.resolve(__dirname, './src/main/resources')],
           use: [
             {
               loader: 'file-loader',
@@ -107,7 +105,7 @@ module.exports = (env, argv) => {
                   if (skins.length === 2) {
                     return `skins/${skins[1].split(path.sep)[1]}/css/[name].css`
                   } else {
-                    return 'scss/[name].css'
+                    return 'less/[name].css'
                   }
                 },
               },
@@ -118,6 +116,7 @@ module.exports = (env, argv) => {
                 url: false,
               },
             },
+            // MiniCssExtractPlugin.loader,
             {
               loader: 'css-loader', // translates CSS into CommonJS
               options: {
@@ -127,14 +126,15 @@ module.exports = (env, argv) => {
             {
               loader: 'postcss-loader',
               options: {
-                ident: 'postcss',
-                plugins: () => [
-                  require('autoprefixer')({grid: true, remove: false}),
-                ],
+                postcssOptions: {
+                  plugins: [
+                    ['autoprefixer', {grid: true, remove: false}],
+                  ],
+                },
               },
             },
             {
-              loader: 'sass-loader', // compiles Sass to CSS
+              loader: 'less-loader', // compiles Less to CSS
             },
           ],
         },
@@ -153,7 +153,6 @@ module.exports = (env, argv) => {
           sourceMap: false,
           extractComments: false,
         }),
-        new OptimizeCSSAssetsPlugin({}),
       ],
     },
     plugins: [
@@ -161,6 +160,7 @@ module.exports = (env, argv) => {
         cleanOnceBeforeBuildPatterns: [
           path.join(__dirname, 'src/main/resources/dist')],
       }),
+      new MiniCssExtractPlugin(),
     ],
   }
 }
