@@ -17,7 +17,7 @@
 <head>
     <@head title="${searchLabel} - ${blogTitle}${searchLabel}">
         <link type="text/css" rel="stylesheet"
-              href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
+              href="${staticServePath}/less/start.css?${staticResourceVersion}" charset="utf-8"/>
     </@head>
 </head>
 <body class="search__body">
