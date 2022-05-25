@@ -21,6 +21,7 @@ const path = require('path')
 const fs = require('fs')
 const TerserPlugin = require('terser-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const genSkinsEntries = () => {
   const entries = {}
@@ -51,8 +52,7 @@ module.exports = (env, argv) => {
       filename: '[name].min.js',
       path: path.resolve(__dirname, './src/main/resources'),
     },
-    entry:
-    Object.assign(genSkinsEntries(), {
+    entry: Object.assign(genSkinsEntries(), {
       'js/admin/admin': [
         './src/main/resources/js/admin/admin.js',
         './src/main/resources/js/admin/editor.js',
@@ -116,10 +116,21 @@ module.exports = (env, argv) => {
                 url: false,
               },
             },
+            // MiniCssExtractPlugin.loader,
             {
               loader: 'css-loader', // translates CSS into CommonJS
               options: {
                 url: false,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  plugins: [
+                    ['autoprefixer', {grid: true, remove: false}],
+                  ],
+                },
               },
             },
             {
@@ -149,6 +160,7 @@ module.exports = (env, argv) => {
         cleanOnceBeforeBuildPatterns: [
           path.join(__dirname, 'src/main/resources/dist')],
       }),
+      new MiniCssExtractPlugin(),
     ],
   }
 }
