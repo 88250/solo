@@ -79,7 +79,7 @@
         <flexmark.version>0.64.0</flexmark.version>
         <commons-cli.version>1.5.0</commons-cli.version>
         <emoji-java.version>5.1.1</emoji-java.version>
-        <jodd.version>6.2.0</jodd.version>
+        <jodd.version>6.2.1</jodd.version>
         <owasp.version>1.2.3</owasp.version>
         <snakeyaml.version>1.30</snakeyaml.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
