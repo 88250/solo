@@ -75,7 +75,7 @@
     <properties>
         <org.b3log.latke.version>3.4.26</org.b3log.latke.version>
 
-        <jsoup.version>1.14.3</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <flexmark.version>0.64.0</flexmark.version>
         <commons-cli.version>1.5.0</commons-cli.version>
         <emoji-java.version>5.1.1</emoji-java.version>
