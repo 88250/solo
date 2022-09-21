@@ -16,13 +16,13 @@ import org.b3log.solo.util.Images;
 import org.b3log.solo.util.Markdowns;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 /**
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.4, Jul 8, 2020
+ * @version 1.5.0.5, Sep 21, 2022
  * @since 0.3.1
  */
 public final class Article {
@@ -213,7 +213,7 @@ public final class Article {
      * @return the abstract plain text
      */
     public static String getAbstractText(final String content) {
-        final String ret = Jsoup.clean(Markdowns.toHTML(content), Whitelist.none());
+        final String ret = Jsoup.clean(Markdowns.toHTML(content), Safelist.none());
         if (ret.length() > ARTICLE_ABSTRACT_LENGTH) {
             return ret.substring(0, ARTICLE_ABSTRACT_LENGTH) + "....";
         }

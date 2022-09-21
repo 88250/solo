@@ -36,7 +36,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.parser.Parser;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.jsoup.select.NodeVisitor;
 
 import java.io.InputStream;
@@ -55,7 +55,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.18, Jan 28, 2020
+ * @version 2.3.1.19, Sep 21, 2022
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -157,7 +157,7 @@ public final class Markdowns {
      * @return html
      */
     public static String clean(final String html) {
-        final Whitelist whitelist = Whitelist.relaxed();
+        final Safelist whitelist = Safelist.relaxed();
         // 允许代码块语言高亮信息
         whitelist.addAttributes("pre", "class").
                 addAttributes("div", "class", "data-code").

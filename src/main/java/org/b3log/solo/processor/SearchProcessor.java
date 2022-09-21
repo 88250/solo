@@ -35,7 +35,7 @@ import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.owasp.encoder.Encode;
 
 import java.io.InputStream;
@@ -49,7 +49,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 2.0.0.0, Feb 9, 2020
+ * @version 2.0.0.1, Sep 21, 2022
  * @since 2.4.0
  */
 @Singleton
@@ -103,8 +103,8 @@ public class SearchProcessor {
             final InputStream resourceAsStream = SearchProcessor.class.getResourceAsStream("/opensearch.xml");
             String content = IOUtils.toString(resourceAsStream, StandardCharsets.UTF_8);
             final JSONObject preference = optionQueryService.getPreference();
-            content = StringUtils.replace(content, "${blogTitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_TITLE), Whitelist.none()));
-            content = StringUtils.replace(content, "${blogSubtitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_SUBTITLE), Whitelist.none()));
+            content = StringUtils.replace(content, "${blogTitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_TITLE), Safelist.none()));
+            content = StringUtils.replace(content, "${blogSubtitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_SUBTITLE), Safelist.none()));
             content = StringUtils.replace(content, "${servePath}", Latkes.getServePath());
 
             renderer.setContent(content);
