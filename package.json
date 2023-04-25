@@ -46,7 +46,7 @@
     "file-loader": "^5.1.0",
     "mini-css-extract-plugin": "^2.6.0",
     "postcss": "^8.4.12",
-    "postcss-loader": "^5.2.0",
+    "postcss-loader": "^7.2.4",
     "terser-webpack-plugin": "^2.3.8",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2"
