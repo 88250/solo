@@ -3,8 +3,8 @@
 <br><br>
 小而美的博客系统，专为程序员设计
 <br><br>
-<a title="Build Status" target="_blank" href="https://github.com/88250/solo/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/88250/solo/Build%20Test?style=flat-square"></a>
-<a title="Docker Image CI" target="_blank" href="https://github.com/88250/solo/actions"><img src="https://img.shields.io/github/workflow/status/88250/solo/Docker%20Image%20CI?color=blue&label=Actions&logo=github&style=flat-square"></a>
+<a title="Build Status" target="_blank" href="https://github.com/88250/solo/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/88250/solo/ci.yml?style=flat-square"></a>
+<a title="Docker Image CI" target="_blank" href="https://github.com/88250/solo/actions"><img src="https://img.shields.io/github/actions/workflow/status/88250/solo/dockerimage.yml?color=blue&label=Actions&logo=github&style=flat-square"></a>
 <a title="Coverage Status" target="_blank" href="https://coveralls.io/github/88250/solo"><img src="https://img.shields.io/coveralls/github/88250/solo.svg?style=flat-square&color=CC9933"></a>
 <a title="Code Size" target="_blank" href="https://github.com/88250/solo"><img src="https://img.shields.io/github/languages/code-size/88250/solo.svg?style=flat-square&color=6699FF"></a>
 <a title="MulanPSL2" target="_blank" href="https://license.coscl.org.cn/MulanPSL2"><img src="http://img.shields.io/badge/license-MulanPSL2-orange.svg?style=flat-square"></a>
@@ -13,6 +13,7 @@
 <a title="Release Date" target="_blank" href="https://github.com/88250/solo/releases"><img src="https://img.shields.io/github/release-date/88250/solo.svg?style=flat-square&color=99CCFF"></a>
 <a title="Downloads" target="_blank" href="https://github.com/88250/solo/releases"><img src="https://img.shields.io/github/downloads/88250/solo/total.svg?style=flat-square&color=99CC99"></a>
 <a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/b3log/solo"><img src="https://img.shields.io/docker/pulls/b3log/solo.svg?style=flat-square&color=blueviolet"></a>
+<a title="Docker Image Size" target="_blank" href="https://hub.docker.com/r/b3log/solo"><img src="https://img.shields.io/docker/image-size/b3log/solo.svg?style=flat-square&color=ff96b4"></a>
 <br>
 <a title="GitHub Commits" target="_blank" href="https://github.com/88250/solo/commits/master"><img src="https://img.shields.io/github/commit-activity/m/88250/solo.svg?style=flat-square"></a>
 <a title="Last Commit" target="_blank" href="https://github.com/88250/solo/commits/master"><img src="https://img.shields.io/github/last-commit/88250/solo.svg?style=flat-square&color=FF9900"></a>
