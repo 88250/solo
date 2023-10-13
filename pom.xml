@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.118, Jan 9, 2023
+    Version: 3.18.3.119, Oct 13, 2023
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -73,7 +73,7 @@
     </scm>
 
     <properties>
-        <org.b3log.latke.version>3.4.28</org.b3log.latke.version>
+        <org.b3log.latke.version>3.4.30</org.b3log.latke.version>
 
         <jsoup.version>1.15.3</jsoup.version>
         <flexmark.version>0.64.0</flexmark.version>
