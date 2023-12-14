@@ -15,8 +15,8 @@ dependencies:
     specifier: ^1.0.8
     version: 1.0.8
   vcmt:
-    specifier: ^1.3.1
-    version: 1.3.1
+    specifier: ^1.3.2
+    version: 1.3.2
   vditor:
     specifier: ^3.8.15
     version: 3.8.15
@@ -4069,8 +4069,8 @@ packages:
     resolution: {integrity: sha512-NyguBQTNGriww/tmqC/uE5D0f4EUvSlU9Aakhr0c3fbAGeBAYi2KtAVt7RwgA04zzZUBQhiyahuro6TeiFA2tQ==}
     dev: false
 
-  /vcmt@1.3.1:
-    resolution: {integrity: sha512-wA0p8QIhiCZTjoy1zLkolViIJnlm/VKuGfQCJReojaWFYA94h6D1MWeKGaLpEXuWiXLJtF1JPV4j7gOwtxdA7A==}
+  /vcmt@1.3.2:
+    resolution: {integrity: sha512-7VXJOedjvGlcuMmYFKxe2Tg062QoDPGQp1aAsY7uve+f1PMZFaZuSJwWX+TnPPsLhIoX/hPKGNaWpiJVusOK2Q==}
     dependencies:
       jquery: 3.6.0
     dev: false
