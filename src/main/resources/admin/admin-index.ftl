@@ -159,7 +159,7 @@
     </div>
 </div>
 <#include "admin-label.ftl">
-<script src="https://cdn.jsdelivr.net/npm/vditor@3.9.7/dist/index.min.js"></script>
+<script src="${staticServePath}/js/lib/vditor/dist/index.min.js?v=3.9.7"></script>
 <script src="${staticServePath}/js/admin/admin.min.js?${staticResourceVersion}"></script>
 ${plugins}
 <script>
