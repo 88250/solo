@@ -1,0 +1,54 @@
+{
+  "model": "model/HyperdimensionNeptunia/noir_santa/model.moc",
+  "textures": [
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/noir/textures.1024/00.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/noir/textures.1024/01.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/noir_santa/textures.1024/02.png"
+  ],
+  "physics": "model/HyperdimensionNeptunia/noir/physics.json",
+  "pose": "model/HyperdimensionNeptunia/general/pose.json",
+  "layout": {
+    "center_x": 0,
+    "center_y": -0.9,
+    "width": 3
+  },
+  "hit_areas_custom": {
+    "head_x": [
+      -0.35,
+      0.6
+    ],
+    "head_y": [
+      0.19,
+      -0.2
+    ],
+    "body_x": [
+      -0.3,
+      -0.25
+    ],
+    "body_y": [
+      0.3,
+      -0.9
+    ]
+  },
+  "motions": {
+    "idle": [
+      {
+        "file": "model/HyperdimensionNeptunia/general/mtn/idle_00.mtn",
+        "fade_in": 2000,
+        "fade_out": 2000
+      },
+      {
+        "file": "model/HyperdimensionNeptunia/general/mtn/idle_01.mtn",
+        "fade_in": 2000,
+        "fade_out": 2000
+      }
+    ],
+    "flick_head": [
+      {
+        "file": "model/HyperdimensionNeptunia/general/mtn/idle_02.mtn",
+        "fade_in": 2000,
+        "fade_out": 2000
+      }
+    ]
+  }
+}

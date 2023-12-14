@@ -43,6 +43,7 @@
     <include path="/js/**/*.svg"/>
     <include path="/js/**/*.ttf"/>
     <include path="/js/**/*.woff"/>
+    <include path="/js/**/*.json"/>
 
     <include path="/skins/**.css"/>
     <include path="/skins/**/*.css"/>

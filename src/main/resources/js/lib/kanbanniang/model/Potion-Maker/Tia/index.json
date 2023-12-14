@@ -1,0 +1,133 @@
+{
+	"model": "model/Potion-Maker/Tia/model.moc",
+	"textures": [],
+	"layout": {
+		"center_x": 0.0,
+		"center_y": -0.05,
+		"width": 2.0
+	},
+	"hit_areas_custom": {
+		"head_x": [
+			-0.35,
+			0.6
+		],
+		"head_y": [
+			0.19,
+			-0.2
+		],
+		"body_x": [
+			-0.3,
+			-0.25
+		],
+		"body_y": [
+			0.3,
+			-0.9
+		]
+	},
+	"motions": {
+		"idle": [
+			{
+				"file": "model/Potion-Maker/Tia/motions/Breath1.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Breath2.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Breath3.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Breath4.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Breath5.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Breath6.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Breath7.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Breath8.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Breath9.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Breath Dere1.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Breath Dere2.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Breath Dere3.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Sleeping.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Fail.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Success.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/WakeUp.mtn"
+			}
+		],
+		"sleepy": [
+			{
+				"file": "model/Potion-Maker/Pio/motions/Sleeping.mtn"
+			}
+		],
+		"flick_head": [
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch Dere1.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch Dere2.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Touch Dere3.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch Dere4.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Touch Dere5.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Touch Dere6.mtn"
+			}
+		],
+		"tap_body": [
+			{
+				"file": "model/Potion-Maker/Tia/motions/Sukebei1.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Sukebei2.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Sukebei3.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch1.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Tia/motions/Touch2.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch3.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch4.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch5.mtn"
+			},
+			{
+				"file": "model/Potion-Maker/Pio/motions/Touch6.mtn"
+			}
+		]
+	}
+}

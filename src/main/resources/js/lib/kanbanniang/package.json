@@ -1,0 +1,20 @@
+{
+  "name": "kanbanniang",
+  "version": "0.2.12",
+  "description": "kanbanniang model",
+  "author": " Vanessa <v@b3log.org> (http://vanessa.b3log.org)",
+  "homepage": "https://github.com/vanessa219/kanbanniang",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vanessa219/kanbanniang"
+  },
+  "bugs": {
+    "url": "https://github.com/vanessa219/kanbanniang/issues"
+  },
+  "keywords": [
+    "kanbanniang",
+    "live2d",
+    "b3log"
+  ]
+}
