@@ -16,7 +16,6 @@
 <html>
 <head>
     <@head title="${adminConsoleLabel} - ${blogTitle}">
-
         <link type="text/css" rel="stylesheet" href="${staticServePath}/less/admin.css?${staticResourceVersion}"/>
         <meta name="robots" content="fn__none"/>
     </@head>
@@ -160,7 +159,7 @@
     </div>
 </div>
 <#include "admin-label.ftl">
-<script src="https://unpkg.com/vditor@3.8.15/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vditor@3.9.7/dist/index.min.js"></script>
 <script src="${staticServePath}/js/admin/admin.min.js?${staticResourceVersion}"></script>
 ${plugins}
 <script>
