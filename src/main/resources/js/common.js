@@ -175,7 +175,8 @@ window.Util = {
       lineNumber: Label.showCodeBlockLn,
       hljsEnable: !Label.luteAvailable,
       hljsStyle: Label.hljsStyle,
-      speech: Label.speech
+      speech: Label.speech,
+      theme: {}
     })
   },
   /**
@@ -305,18 +306,25 @@ window.Util = {
     }))
   },
   loadVditor: function (cb) {
-    $.ajax({
-      method: 'GET',
-      url: `${Label.staticServePath}/js/lib/vditor/dist/index.min.js?v=3.9.7`,
-      dataType: 'script',
-      cache: true,
-      success: () => {
-        Util.init()
-        if (cb) {
-          cb()
-        }
-      },
-    })
+    if (typeof Vditor === "undefined") {
+      $.ajax({
+        method: 'GET',
+        url: `${Label.staticServePath}/js/lib/vditor/dist/index.min.js?v=3.9.7`,
+        dataType: 'script',
+        cache: true,
+        success: () => {
+          Util.init()
+          if (cb) {
+            cb()
+          }
+        },
+      })
+    } else {
+      Util.init()
+      if (cb) {
+        cb()
+      }
+    }
   },
   skinPreview: () => {
     if (location.pathname === '/admin-index.do') {

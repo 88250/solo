@@ -29,23 +29,49 @@ $.extend(Page.prototype, {
     if ($vcomment.length === 0) {
       return
     }
-    const vcomment = new Vcomment({
-      id: 'vcomment',
-      postId: $vcomment.data('postid'),
-      url: 'https://ld246.com',
-      userName: $vcomment.data('name'),
-      currentPage: 1,
-      vditor: {
-        lineNumber: Label.showCodeBlockLn,
-        hljsEnable: !Label.luteAvailable,
-        hljsStyle: Label.hljsStyle,
-      },
-      error () {
-        $vcomment.remove()
-      },
-    })
-
-    vcomment.render()
+    if (typeof Vditor === "undefined") {
+        $.ajax({
+            method: 'GET',
+            url: `${Label.staticServePath}/js/lib/vditor/dist/index.min.js?v=3.9.7`,
+            dataType: 'script',
+            cache: true,
+            success: () => {
+                const vcomment = new Vcomment({
+                    id: 'vcomment',
+                    postId: $vcomment.data('postid'),
+                    url: 'https://ld246.com',
+                    userName: $vcomment.data('name'),
+                    currentPage: 1,
+                    vditor: {
+                        lineNumber: Label.showCodeBlockLn,
+                        hljsEnable: !Label.luteAvailable,
+                        hljsStyle: Label.hljsStyle,
+                    },
+                    error () {
+                        $vcomment.remove()
+                    },
+                })
+                vcomment.render()
+            },
+        })
+    } else {
+        const vcomment = new Vcomment({
+            id: 'vcomment',
+            postId: $vcomment.data('postid'),
+            url: 'https://ld246.com',
+            userName: $vcomment.data('name'),
+            currentPage: 1,
+            vditor: {
+                lineNumber: Label.showCodeBlockLn,
+                hljsEnable: !Label.luteAvailable,
+                hljsStyle: Label.hljsStyle,
+            },
+            error () {
+                $vcomment.remove()
+            },
+        })
+        vcomment.render()
+    }
   },
   /**
    * 分享
