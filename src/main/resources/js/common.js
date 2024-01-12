@@ -170,6 +170,7 @@ window.Util = {
    */
   parseMarkdown: function () {
     Vcomment.parseMarkdown({
+      cdn: Label.staticServePath + "/js/lib/vditor",
       lang: Label.langLabel,
       lineNumber: Label.showCodeBlockLn,
       hljsEnable: !Label.luteAvailable,
