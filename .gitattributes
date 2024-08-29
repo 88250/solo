@@ -1,2 +1,3 @@
 *.min.js linguist-vendored
 *.scss linguist-vendored
+src/main/resources/skins/** linguist-vendored
