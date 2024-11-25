@@ -29,6 +29,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -150,7 +151,7 @@ public class TagProcessor {
                                 final int pageCount, final int currentPageNum,
                                 final List<JSONObject> articles,
                                 final List<Integer> pageNums) {
-        final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+        final String previousPageNum = Solos.getPreviousPageNum(currentPageNum);
 
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page

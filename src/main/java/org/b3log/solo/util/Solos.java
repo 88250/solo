@@ -523,6 +523,16 @@ public final class Solos {
     }
 
     /**
+     * Gets the previous page number according to current page number.
+     *
+     * @param currentPageNum the page number of current page
+     * @return String format of the previous page number, 0 if current page is the first page
+     */
+    public static String getPreviousPageNum(final int currentPageNum) {
+        return Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+    }
+
+    /**
      * Default page size.
      */
     private static final int DEFAULT_PAGE_SIZE = 15;

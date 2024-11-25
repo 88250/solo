@@ -737,7 +737,7 @@ public class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-        final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+        final String previousPageNum = Solos.getPreviousPageNum(currentPageNum);
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
@@ -780,7 +780,7 @@ public class ArticleProcessor {
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
         dataModel.put(Article.ARTICLES, articles);
-        final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+        final String previousPageNum = Solos.getPreviousPageNum(currentPageNum);
 
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
