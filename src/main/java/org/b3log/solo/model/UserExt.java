@@ -71,7 +71,11 @@ public final class UserExt {
         char c;
         for (int i = 0; i < length; i++) {
             c = name.charAt(i);
-            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || ('0' <= c && c <= '9') || '-' == c) {
+            final boolean isLowerCaseLetter = ('a' <= c && c <= 'z');
+            final boolean isUpperCaseLetter = ('A' <= c && c <= 'Z');
+            final boolean isNumber = ('0' <= c && c <= '9');
+            final boolean isDash = '-' == c;
+            if (isLowerCaseLetter || isUpperCaseLetter || isNumber || isDash) {
                 continue;
             }
 
