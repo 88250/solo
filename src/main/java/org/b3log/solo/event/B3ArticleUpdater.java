@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Feb 8, 2019
+ * @version 1.0.1.7, Nov 27, 2024
  * @since 0.6.0
  */
 @Singleton
@@ -42,7 +42,7 @@ public class B3ArticleUpdater extends AbstractEventListener<JSONObject> {
         LOGGER.log(Level.DEBUG, "Processing an event [type={}, data={}] in listener [className={}]",
                 event.getType(), data, B3ArticleUpdater.class.getName());
 
-        B3ArticleSender.pushArticleToRhy(data);
+        B3ArticlePusher.pushArticleToRhy(data);
     }
 
     /**

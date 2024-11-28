@@ -27,7 +27,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.solo.event.B3ArticleSender;
+import org.b3log.solo.event.B3ArticlePusher;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
@@ -48,7 +48,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.2, Jul 8, 2020
+ * @version 1.3.4.3, Nov 27, 2024
  * @since 0.3.5
  */
 @Service
@@ -307,7 +307,7 @@ public class ArticleMgmtService {
 
             article.put(Common.POST_TO_COMMUNITY, true);
             final JSONObject data = new JSONObject().put(ARTICLE, article);
-            B3ArticleSender.pushArticleToRhy(data);
+            B3ArticlePusher.pushArticleToRhy(data);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Pushes an article [id=" + articleId + "] to LianDi failed", e);
         }
