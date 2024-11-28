@@ -484,7 +484,7 @@ public class ExportService {
         final List<JSONObject> drafts = new ArrayList<>();
         ret.put("drafts", (Object) drafts);
 
-        final JSONArray articles = getJSONs(articleRepository);
+        final JSONArray articles = getDataFromRepository(articleRepository);
         for (int i = 0; i < articles.length(); i++) {
             final JSONObject article = articles.optJSONObject(i);
             final Map<String, Object> front = new LinkedHashMap<>();
@@ -520,47 +520,47 @@ public class ExportService {
     /**
      * Gets all data as JSON format.
      */
-    public JSONObject getJSONs() {
+    public JSONObject exportData() {
         final JSONObject ret = new JSONObject();
-        final JSONArray archiveDates = getJSONs(archiveDateRepository);
+        final JSONArray archiveDates = getDataFromRepository(archiveDateRepository);
         ret.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
 
-        final JSONArray archiveDateArticles = getJSONs(archiveDateArticleRepository);
+        final JSONArray archiveDateArticles = getDataFromRepository(archiveDateArticleRepository);
         ret.put(ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE, archiveDateArticles);
 
-        final JSONArray articles = getJSONs(articleRepository);
+        final JSONArray articles = getDataFromRepository(articleRepository);
         ret.put(Article.ARTICLES, articles);
 
-        final JSONArray categories = getJSONs(categoryRepository);
+        final JSONArray categories = getDataFromRepository(categoryRepository);
         ret.put(Category.CATEGORIES, categories);
 
-        final JSONArray categoryTags = getJSONs(categoryTagRepository);
+        final JSONArray categoryTags = getDataFromRepository(categoryTagRepository);
         ret.put(Category.CATEGORY + "_" + Tag.TAG, categoryTags);
 
-        final JSONArray links = getJSONs(linkRepository);
+        final JSONArray links = getDataFromRepository(linkRepository);
         ret.put(Link.LINKS, links);
 
-        final JSONArray options = getJSONs(optionRepository);
+        final JSONArray options = getDataFromRepository(optionRepository);
         ret.put(Option.OPTIONS, options);
 
-        final JSONArray pages = getJSONs(pageRepository);
+        final JSONArray pages = getDataFromRepository(pageRepository);
         ret.put(Page.PAGES, pages);
 
-        final JSONArray plugins = getJSONs(pluginRepository);
+        final JSONArray plugins = getDataFromRepository(pluginRepository);
         ret.put(Plugin.PLUGINS, plugins);
 
-        final JSONArray tags = getJSONs(tagRepository);
+        final JSONArray tags = getDataFromRepository(tagRepository);
         ret.put(Tag.TAGS, tags);
 
-        final JSONArray tagArticles = getJSONs(tagArticleRepository);
+        final JSONArray tagArticles = getDataFromRepository(tagArticleRepository);
         ret.put(Tag.TAG + "_" + Article.ARTICLES, tagArticles);
 
-        final JSONArray users = getJSONs(userRepository);
+        final JSONArray users = getDataFromRepository(userRepository);
         ret.put(User.USERS, users);
         return ret;
     }
 
-    private JSONArray getJSONs(final Repository repository) {
+    private JSONArray getDataFromRepository(final Repository repository) {
         try {
             final List<JSONObject> list = repository.getList(new Query());
             return new JSONArray(list);

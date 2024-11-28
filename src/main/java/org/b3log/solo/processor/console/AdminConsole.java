@@ -55,7 +55,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, May 21, 2020
+ * @version 2.0.0.2, Nov 27, 2024
  * @since 0.4.1
  */
 @Singleton
@@ -333,7 +333,7 @@ public class AdminConsole {
         final File localFile = new File(localFilePath);
 
         try {
-            final JSONObject json = exportService.getJSONs();
+            final JSONObject json = exportService.exportData();
             final byte[] data = json.toString(4).getBytes(StandardCharsets.UTF_8);
 
             try (final OutputStream output = new FileOutputStream(localFile)) {
