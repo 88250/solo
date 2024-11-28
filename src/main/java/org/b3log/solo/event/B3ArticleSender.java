@@ -11,13 +11,7 @@
  */
 package org.b3log.solo.event;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.b3log.latke.event.AbstractEventListener;
-import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.Singleton;
-import org.json.JSONObject;
 
 /**
  * This listener is responsible for sending article to B3log Rhythm. Sees <a href="https://ld246.com/article/1546941897596">B3log 构思 - 分布式社区网络</a> for more details.
@@ -27,25 +21,11 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://ld246.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.28, Nov 27, 2024
+ * @version 1.0.2.29, Nov 27, 2024
  * @since 0.3.1
  */
 @Singleton
-public class B3ArticleSender extends AbstractEventListener<JSONObject> {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LogManager.getLogger(B3ArticleSender.class);
-
-    @Override
-    public void action(final Event<JSONObject> event) {
-        final JSONObject data = event.getData();
-        LOGGER.log(Level.DEBUG, "Processing an event [type={}, data={}] in listener [className={}]",
-                event.getType(), data, B3ArticleSender.class.getName());
-
-        B3ArticlePusher.pushArticleToRhy(data);
-    }
+public class B3ArticleSender extends AbstractB3EventListener {
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
