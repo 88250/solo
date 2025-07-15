@@ -10,7 +10,7 @@ LABEL maintainer="Liang Ding<845765@qq.com>"
 
 WORKDIR /opt/solo/
 COPY --from=MVN_BUILD /opt/solo/ /opt/solo/
-RUN apk add --no-cache ca-certificates tzdata
+RUN apt-get update && apt-get install -y ca-certificates tzdata
 
 ENV TZ=Asia/Shanghai
 ARG git_commit=0
