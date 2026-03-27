@@ -63,6 +63,19 @@ public class FetchUploadProcessor {
             return;
         }
 
+        // SSRF protection: block requests to private/internal IPs
+        try {
+            final java.net.URL parsedUrl = new java.net.URL(originalURL);
+            final java.net.InetAddress address = java.net.InetAddress.getByName(parsedUrl.getHost());
+            if (address.isLoopbackAddress() || address.isSiteLocalAddress() || address.isLinkLocalAddress()) {
+                LOGGER.log(Level.WARN, "Blocked SSRF attempt to private IP: " + originalURL);
+                return;
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Failed to resolve URL host: " + originalURL);
+            return;
+        }
+
         if (Images.uploaded(originalURL)) {
             return;
         }
