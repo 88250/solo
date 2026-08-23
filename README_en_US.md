@@ -5,7 +5,6 @@ Small and beautiful blog system, designed for programmers
 <br><br>
 <a title="Build Status" target="_blank" href="https://github.com/88250/solo/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/88250/solo/ci.yml?style=flat-square"></a>
 <a title="Docker Image CI" target="_blank" href="https://github.com/88250/solo/actions"><img src="https://img.shields.io/github/actions/workflow/status/88250/solo/dockerimage.yml?color=blue&label=Actions&logo=github&style=flat-square"></a>
-<a title="Coverage Status" target="_blank" href="https://coveralls.io/github/88250/solo"><img src="https://img.shields.io/coveralls/github/88250/solo.svg?style=flat-square&color=CC9933"></a>
 <a title="Code Size" target="_blank" href="https://github.com/88250/solo"><img src="https://img.shields.io/github/languages/code-size/88250/solo.svg?style=flat-square&color=6699FF"></a>
 <a title="MulanPSL2" target="_blank" href="https://license.coscl.org.cn/MulanPSL2"><img src="http://img.shields.io/badge/license-MulanPSL2-orange.svg?style=flat-square"></a>
 <br>
