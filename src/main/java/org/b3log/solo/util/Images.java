@@ -102,7 +102,8 @@ public final class Images {
     public static String randImage() {
         try {
             final long min = DateUtils.parseDate("20171104", new String[]{"yyyyMMdd"}).getTime();
-            final long max = System.currentTimeMillis();
+            // Bing 归档包含 20231220，随机范围的上界不包含在内。
+            final long max = DateUtils.parseDate("20231221", new String[]{"yyyyMMdd"}).getTime();
             final long delta = max - min;
             final long time = ThreadLocalRandom.current().nextLong(0, delta) + min;
             return COMMUNITY_FILE_URL + "/bing/" + DateFormatUtils.format(time, "yyyyMMdd") + ".jpg";

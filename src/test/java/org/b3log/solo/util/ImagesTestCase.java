@@ -14,6 +14,8 @@ package org.b3log.solo.util;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -30,8 +32,19 @@ public final class ImagesTestCase {
      */
     @Test
     public void randImage() {
-        final String url = Images.randImage();
-        Assert.assertEquals(url.length(), (Images.COMMUNITY_FILE_URL + "/bing/20171104.jpg").length());
+        final String prefix = Images.COMMUNITY_FILE_URL + "/bing/";
+        final LocalDate first = LocalDate.of(2017, 11, 4);
+        final LocalDate last = LocalDate.of(2023, 12, 20);
+        for (int i = 0; i < 10000; i++) {
+            final String url = Images.randImage();
+            Assert.assertTrue(url.startsWith(prefix), url);
+            Assert.assertTrue(url.endsWith(".jpg"), url);
+            Assert.assertEquals(url.length(), prefix.length() + 12, url);
+            final LocalDate date = LocalDate.parse(url.substring(prefix.length(), prefix.length() + 8),
+                    DateTimeFormatter.BASIC_ISO_DATE);
+            Assert.assertFalse(date.isBefore(first), url);
+            Assert.assertFalse(date.isAfter(last), url);
+        }
     }
 
     /**
