@@ -143,14 +143,12 @@ module.exports = (env, argv) => {
     optimization: {
       minimizer: [
         new TerserPlugin({
-          cache: true,
           parallel: true,
           terserOptions: {
             output: {
               comments: false,
             },
           },
-          sourceMap: false,
           extractComments: false,
         }),
       ],
