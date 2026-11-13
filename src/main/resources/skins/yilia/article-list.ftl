@@ -16,7 +16,7 @@
         <header class="fn__flex">
             <h2 class="fn__flex-1">
                 <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                    ${article.articleTitle}
+                    ${article.articleTitle?html}
                 </a>
                 <#if article.articlePutTop>
                     <sup>

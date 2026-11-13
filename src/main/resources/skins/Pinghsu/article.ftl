@@ -16,14 +16,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+    <@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
         <link rel="stylesheet"
               href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
     </@head>
 </head>
@@ -34,7 +34,7 @@
     <div class="post wrapper wrapper--miner">
         <h2 class="item__title">
             <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                ${article.articleTitle}
+                ${article.articleTitle?html}
             </a>
             <#if article.articlePutTop>
                 <sup>
@@ -108,7 +108,7 @@
                 <span class="tag tag--6" data-type="qqz">QZone</span>
                 <span class="post__code tag tag--7"
                       data-type="wechat"
-                      data-title="${article.articleTitle}"
+                      data-title="${article.articleTitle?html}"
                       data-blogtitle="${blogTitle}"
                       data-url="${servePath}${article.articlePermalink}"
                       data-avatar="${article.authorThumbnailURL}">
@@ -120,15 +120,15 @@
                 <#if previousArticlePermalink??>
                     <a href="${servePath}${previousArticlePermalink}" rel="prev"
                        class="vditor-tooltipped__n vditor-tooltipped"
-                       pjax-title="${previousArticleTitle}"
-                       aria-label="${previousArticleLabel}: ${previousArticleTitle}">←</a>
+                       pjax-title="${previousArticleTitle?html}"
+                       aria-label="${previousArticleLabel}: ${previousArticleTitle?html}">←</a>
                 </#if>
 
                 <#if nextArticlePermalink??>
                     <a href="${servePath}${nextArticlePermalink}" rel="next"
                        class="vditor-tooltipped__n vditor-tooltipped"
-                       pjax-title="${nextArticleTitle}"
-                       aria-label="${nextArticleLabel}: ${nextArticleTitle}">→</a>
+                       pjax-title="${nextArticleTitle?html}"
+                       aria-label="${nextArticleLabel}: ${nextArticleTitle?html}">→</a>
                 </#if>
                 <a href="javascript:Util.goTop()" class="vditor-tooltipped__n vditor-tooltipped"
                    aria-label="${goTopLabel}">↑</a>

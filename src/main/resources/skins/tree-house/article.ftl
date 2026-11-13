@@ -16,14 +16,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+        <@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
             <link rel="stylesheet"
                   href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
         </@head>
     </head>
@@ -41,7 +41,7 @@
                                 <div class="article-header">
                                     <h2 class="marginBottom12">
                                         <a class="no-underline" href="${servePath}${article.articlePermalink}">
-                                            ${article.articleTitle}
+                                            ${article.articleTitle?html}
                                             <#if article.articlePutTop>
                                             <sup>
                                                 ${topArticleLabel}
@@ -71,11 +71,11 @@
                                 <div class="article-details-footer">
                                     <div class="left">
                                         <#if nextArticlePermalink??>
-                                        <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                        <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle?html}</a>
                                         <br/>
                                         </#if>
                                         <#if previousArticlePermalink??>
-                                        <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                        <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle?html}</a>
                                         </#if>
                                     </div>
                                     <div class="right">

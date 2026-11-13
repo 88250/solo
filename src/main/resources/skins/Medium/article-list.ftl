@@ -27,7 +27,7 @@
             <div class="article__main">
                 <h2 class="article__title">
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                    ${article.articleTitle}
+                    ${article.articleTitle?html}
                     </a>
                     <#if article.articlePutTop>
                         <sup>

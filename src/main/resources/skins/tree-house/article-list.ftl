@@ -16,7 +16,7 @@
     <div class="article-header">
         <h2>
             <a rel="bookmark" class="no-underline" href="${servePath}${article.articlePermalink}">
-                ${article.articleTitle}
+                ${article.articleTitle?html}
                 <#if article.hasUpdated>
                 <sup>
                     ${updatedLabel}

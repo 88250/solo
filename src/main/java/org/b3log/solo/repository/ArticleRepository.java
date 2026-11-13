@@ -11,6 +11,7 @@
  */
 package org.b3log.solo.repository;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Article repository.
@@ -41,6 +43,11 @@ public class ArticleRepository extends AbstractRepository {
     private static final Logger LOGGER = LogManager.getLogger(ArticleRepository.class);
 
     /**
+     * Valid article property name.
+     */
+    private static final Pattern ARTICLE_PROPERTY_NAME = Pattern.compile("[A-Za-z][A-Za-z0-9_]*");
+
+    /**
      * Article cache.
      */
     @Inject
@@ -51,6 +58,13 @@ public class ArticleRepository extends AbstractRepository {
      */
     public ArticleRepository() {
         super(Article.ARTICLE);
+    }
+
+    @Override
+    public String add(final JSONObject article) throws RepositoryException {
+        validateArticleProperties(article);
+
+        return super.add(article);
     }
 
     @Override
@@ -79,10 +93,27 @@ public class ArticleRepository extends AbstractRepository {
 
     @Override
     public void update(final String id, final JSONObject article, final String... propertyNames) throws RepositoryException {
+        validateArticleProperties(article);
+
         super.update(id, article, propertyNames);
 
         article.put(Keys.OBJECT_ID, id);
         articleCache.putArticle(article);
+    }
+
+    /**
+     * Validates article property names before they are used to build SQL.
+     *
+     * @param article the specified article
+     * @throws RepositoryException repository exception
+     */
+    private void validateArticleProperties(final JSONObject article) throws RepositoryException {
+        for (final String property : article.keySet()) {
+            if (!ARTICLE_PROPERTY_NAME.matcher(property).matches()) {
+                LOGGER.log(Level.WARN, "Rejects an invalid article property name");
+                throw new RepositoryException("Invalid article property name");
+            }
+        }
     }
 
     @Override

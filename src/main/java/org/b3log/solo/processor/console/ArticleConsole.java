@@ -38,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +55,21 @@ public class ArticleConsole {
      * Logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(ArticleConsole.class);
+
+    /**
+     * Article properties that a console client is allowed to specify.
+     */
+    private static final Set<String> CLIENT_ARTICLE_PROPERTIES = Set.of(
+            Keys.OBJECT_ID,
+            Article.ARTICLE_TITLE,
+            Article.ARTICLE_CONTENT,
+            Article.ARTICLE_ABSTRACT,
+            Article.ARTICLE_TAGS_REF,
+            Article.ARTICLE_PERMALINK,
+            Article.ARTICLE_STATUS,
+            Article.ARTICLE_SIGN_ID,
+            Article.ARTICLE_VIEW_PWD,
+            Common.POST_TO_COMMUNITY);
 
     /**
      * Article management service.
@@ -244,6 +260,7 @@ public class ArticleConsole {
             excludes.put(Article.ARTICLE_CREATED);
             excludes.put(Article.ARTICLE_AUTHOR_ID);
             excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
+            excludes.put(Article.ARTICLE_VIEW_PWD);
             requestJSONObject.put(Keys.EXCLUDES, excludes);
 
             final String keyword = StringUtils.trim(context.param("k"));
@@ -437,6 +454,23 @@ public class ArticleConsole {
     }
 
     /**
+     * Copies only client-specifiable article properties.
+     *
+     * @param article the specified article
+     * @return filtered article
+     */
+    private JSONObject filterArticleProperties(final JSONObject article) {
+        final JSONObject ret = new JSONObject();
+        for (final String property : CLIENT_ARTICLE_PROPERTIES) {
+            if (article.has(property)) {
+                ret.put(property, article.get(property));
+            }
+        }
+
+        return ret;
+    }
+
+    /**
      * Updates an article by the specified request json object.
      * <p>
      * The specified request json object, for example,
@@ -475,7 +509,8 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject requestJSONObject = context.requestJSON();
-            final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
+            final JSONObject article = filterArticleProperties(requestJSONObject.getJSONObject(Article.ARTICLE));
+            requestJSONObject.put(Article.ARTICLE, article);
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
 
@@ -539,8 +574,10 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject requestJSONObject = context.requestJSON();
+            final JSONObject article = filterArticleProperties(requestJSONObject.getJSONObject(Article.ARTICLE));
             final JSONObject currentUser = Solos.getCurrentUser(context);
-            requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
+            article.put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
+            requestJSONObject.put(Article.ARTICLE, article);
 
             // 打印请求日志，如果发生特殊情况丢失数据，至少还可以根据日志寻回内容
             LOGGER.log(Level.INFO, "Adds an article request [" + requestJSONObject.toString() + "]");

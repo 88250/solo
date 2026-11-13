@@ -72,7 +72,7 @@
 
                 <#if relevantArticlesDisplayCount??>
                     <#if nextArticlePermalink??>
-                        <a class="next side-tile" title="${nextArticleTitle}"
+                        <a class="next side-tile" title="${nextArticleTitle?html}"
                            href="${servePath}${nextArticlePermalink}">
                             <span data-ico="&#xe107;"></span>
                             <div class="title">
@@ -89,7 +89,7 @@
                     </#if>
 
                     <#if previousArticlePermalink??>
-                        <a class="prev side-tile" title="${previousArticleTitle}" rel="prev"
+                        <a class="prev side-tile" title="${previousArticleTitle?html}" rel="prev"
                            href="${servePath}${previousArticlePermalink}">
                             <span data-ico="&#xe106;"></span>
                             <div class="title">

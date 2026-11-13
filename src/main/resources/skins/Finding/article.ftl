@@ -16,14 +16,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+        <@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
             <link rel="stylesheet"
                   href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
         </@head>
     </head>
@@ -38,7 +38,7 @@
                     <header>
                         <h2 class="post-title">
                             <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                                ${article.articleTitle}
+                                ${article.articleTitle?html}
                             </a>
                             <#if article.articlePutTop>
                             <sup class="post-tip">
@@ -94,7 +94,7 @@
                 <div class="read-next-story " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/next.jpg')"
                      onclick="window.location = '${servePath}${nextArticlePermalink}'">
                     <section class="post">
-                        <h2>${nextArticleTitle}</h2>
+                        <h2>${nextArticleTitle?html}</h2>
                         <p>${nextArticleAbstract}</p>
                     </section>
                 </div>
@@ -103,7 +103,7 @@
                 <div class="read-next-story prev " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/preview.jpg')"
                      onclick="window.location = '${servePath}${previousArticlePermalink}'">
                     <section class="post">
-                        <h2>${previousArticleTitle}</h2>
+                        <h2>${previousArticleTitle?html}</h2>
                         <p>${previousArticleAbstract}</p>
                     </section>
                 </div>

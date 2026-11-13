@@ -15,7 +15,7 @@
 
 <@commonPage "${articleViewPwdLabel}">
 <h2>
-${articleTitle}
+${articleTitle?html}
 </h2>
 <br><br><br>
 <form class="form" method="POST" action="${servePath}/console/article-pwd">

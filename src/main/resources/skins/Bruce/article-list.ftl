@@ -15,7 +15,7 @@
 <div class="row article">
     <h2 class="row article-title">
         <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-            ${article.articleTitle}
+            ${article.articleTitle?html}
         </a>
     </h2>
 

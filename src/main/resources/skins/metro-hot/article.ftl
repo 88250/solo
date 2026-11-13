@@ -17,14 +17,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+        <@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
             <link rel="stylesheet"
                   href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
         </@head>
     </head>
@@ -43,7 +43,7 @@
                             [${topArticleLabel}]
                         </span>
                         </#if>
-                        ${article.articleTitle}
+                        ${article.articleTitle?html}
                     </h2>
                     <div data-ico="&#x003b;" title="${tagLabel}">
                         <#list article.articleTags?split(",") as articleTag>

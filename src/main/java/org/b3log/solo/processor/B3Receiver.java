@@ -19,6 +19,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -120,7 +121,6 @@ public class B3Receiver {
         context.renderJSON(ret);
 
         final JSONObject requestJSONObject = context.requestJSON();
-        LOGGER.log(Level.DEBUG, "Adds an article from Sym [" + requestJSONObject.toString() + "]");
 
         try {
             final JSONObject client = requestJSONObject.optJSONObject("client");
@@ -143,15 +143,27 @@ public class B3Receiver {
                 return;
             }
 
+            final String articleAuthorRole = articleAuthor.optString(User.USER_ROLE);
+            if (!Role.DEFAULT_ROLE.equals(articleAuthorRole) && !Role.ADMIN_ROLE.equals(articleAuthorRole)) {
+                ret.put(Keys.CODE, 1);
+                final String msg = "Forbidden";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, "Rejects article sync for user [{}] with role [{}]", articleAuthorName, articleAuthorRole);
+                return;
+            }
+
             final String b3Key = client.optString(UserExt.USER_B3_KEY);
             final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
-            if (!StringUtils.equals(key, b3Key)) {
+            // 用户名作为密钥属于旧版本的默认值，不能继续用于认证
+            if (StringUtils.isBlank(key) || StringUtils.equals(key, articleAuthorName) || !StringUtils.equals(key, b3Key)) {
                 ret.put(Keys.CODE, 1);
                 final String msg = "Wrong key";
                 ret.put(Keys.MSG, msg);
-                LOGGER.log(Level.WARN, msg);
+                LOGGER.log(Level.WARN, "Rejects article sync with an invalid B3 key [userName={}]", articleAuthorName);
                 return;
             }
+
+            LOGGER.log(Level.DEBUG, "Receives an article from Sym [userName={}]", articleAuthorName);
 
             final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
             if (null == symArticle) {
@@ -182,6 +194,16 @@ public class B3Receiver {
                 final JSONObject addRequest = new JSONObject().put(Article.ARTICLE, article);
                 articleMgmtService.addArticle(addRequest);
                 LOGGER.log(Level.INFO, "Added an article [" + title + "] via Sym");
+                return;
+            }
+
+            if (!Role.ADMIN_ROLE.equals(articleAuthorRole)
+                    && !StringUtils.equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID), articleAuthor.optString(Keys.OBJECT_ID))) {
+                ret.put(Keys.CODE, 1);
+                final String msg = "Forbidden";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, "Rejects updating an article owned by another user [articleId={}, userName={}]",
+                        articleId, articleAuthorName);
                 return;
             }
 

@@ -17,7 +17,7 @@
             <div class="item__container">
                 <div class="item__cover" style="background-image: url(${article.articleImg1URL})"></div>
                 <div rel="bookmark" class="item__abstract">
-                    <a pjax-title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                    <a pjax-title="${article.articleTitle?html}" href="${servePath}${article.articlePermalink}">
                         ${article.articleAbstractText}
                     </a>
                 </div>
@@ -38,7 +38,7 @@
                     </span>
                     <h2 class="item__title">
                         <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                            ${article.articleTitle}
+                            ${article.articleTitle?html}
                         </a>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>

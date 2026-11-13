@@ -12,7 +12,7 @@
 
 -->
 <div class="article__share"
-     data-title="${article.articleTitle}"
+     data-title="${article.articleTitle?html}"
      data-blogtitle="${blogTitle}"
      data-url="${servePath}${article.articlePermalink}"
      data-avatar="${article.authorThumbnailURL}">

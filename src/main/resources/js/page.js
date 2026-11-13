@@ -20,6 +20,18 @@ window.Page = function (tips) {
   this.tips = tips
 }
 
+const escapeHTML = function (text) {
+  return String(text).replace(/[&<>"']/g, function (char) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }[char]
+  })
+}
+
 $.extend(Page.prototype, {
   /**
    * 第三方评论
@@ -157,7 +169,7 @@ $.extend(Page.prototype, {
         var listHtml = ''
         for (var i = 0; i < randomArticles.length; i++) {
           var article = randomArticles[i]
-          var title = article.articleTitle
+          var title = escapeHTML(article.articleTitle)
           var randomArticleLiHtml = '<li>' + '<a rel=\'nofollow\' title=\'' +
             title + '\' href=\'' + Label.servePath +
             article.articlePermalink + '\'>' + title + '</a></li>'
@@ -190,7 +202,7 @@ $.extend(Page.prototype, {
         var listHtml = ''
         for (var i = 0; i < articles.length; i++) {
           var article = articles[i]
-          var title = article.articleTitle
+          var title = escapeHTML(article.articleTitle)
           var articleLiHtml = '<li>'
             + '<a rel=\'nofollow\' title=\'' + title + '\' href=\'' +
             Label.servePath + article.articlePermalink + '\'>'
@@ -235,7 +247,7 @@ $.extend(Page.prototype, {
           var listHtml = ''
           for (var i = 0; i < articles.length; i++) {
             var article = articles[i]
-            var title = article.articleTitle
+            var title = escapeHTML(article.articleTitle)
             var articleLiHtml = '<li>'
               + '<a rel=\'nofollow\' title=\'' + title +
               '\' target=\'_blank\' href=\'' + article.articlePermalink + '\'>'

@@ -26,7 +26,7 @@
                 </time>
                 <h3 class="article-title">
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                        ${article.articleTitle}
+                        ${article.articleTitle?html}
                     </a>
                     <#if article.articlePutTop>
                         <sup>

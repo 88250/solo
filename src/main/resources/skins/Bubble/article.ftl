@@ -16,14 +16,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+    <@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
         <link rel="stylesheet"
               href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
     </@head>
 </head>
@@ -49,7 +49,7 @@
                 </#list>
             </div>
             <h2 class="article__title">
-                ${article.articleTitle}
+                ${article.articleTitle?html}
                 <#if article.articlePutTop>
                     <sup>
                         ${topArticleLabel}

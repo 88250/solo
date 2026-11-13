@@ -44,7 +44,7 @@
             <header>
                 <h1>
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                    ${article.articleTitle}
+                    ${article.articleTitle?html}
                     </a>
                 </h1>
 

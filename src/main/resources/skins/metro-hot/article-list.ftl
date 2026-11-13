@@ -14,7 +14,7 @@
 <div class="article-list fn-clear">
     <#list articles as article>
     <div>
-        <img src="${article.articleImg1URL}" alt="${article.articleTitle}"/>
+        <img src="${article.articleImg1URL}" alt="${article.articleTitle?html}"/>
         <div class="article-abstract article-image">
             <div class="fn-clear">
                 <div class="article-date" data-ico="&#xe200;">
@@ -42,8 +42,8 @@
                         [${updatedLabel}]
                     </span>
                 </#if>
-                <a rel="bookmark" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
-                    ${article.articleTitle}
+                <a rel="bookmark" title="${article.articleTitle?html}" href="${servePath}${article.articlePermalink}">
+                    ${article.articleTitle?html}
                 </a>
             </h2>
             <div class="vditor-reset">

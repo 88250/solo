@@ -16,14 +16,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+<@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
     <link rel="stylesheet"
           href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
 </@head>
 </head>
@@ -41,7 +41,7 @@
             <article class="post">
                 <header>
                     <h2 class="post__title">
-                    ${article.articleTitle}
+                    ${article.articleTitle?html}
                     <#if article.articlePutTop>
                         <sup>
                             ${topArticleLabel}
@@ -95,7 +95,7 @@
                             <svg><use xlink:href="#icon-qqz"></use></svg>
                         </span>
                         <span class="article__code"
-                              data-title="${article.articleTitle}"
+                              data-title="${article.articleTitle?html}"
                               data-blogtitle="${blogTitle}"
                               data-url="${servePath}${article.articlePermalink}"
                               data-avatar="${article.authorThumbnailURL}"></span>
@@ -145,7 +145,7 @@
                         <svg><use xlink:href="#icon-qqz"></use></svg>
                     </span>
                     <span class="article__code"
-                          data-title="${article.articleTitle}"
+                          data-title="${article.articleTitle?html}"
                           data-blogtitle="${blogTitle}"
                           data-url="${servePath}${article.articlePermalink}"
                           data-avatar="${article.authorThumbnailURL}"></span>
@@ -154,7 +154,7 @@
                 <#if nextArticlePermalink??>
                     <a href="${servePath}${nextArticlePermalink}" rel="next" class="article__next">
                         <span class="ft-12 ft-gray">${nextArticleLabel}</span> <br>
-                        ${nextArticleTitle}
+                        ${nextArticleTitle?html}
                     </a>
                 </#if>
                 </div>
@@ -184,7 +184,7 @@
                 <svg><use xlink:href="#icon-qqz"></use></svg>
             </span>
                 <span class="article__code"
-                      data-title="${article.articleTitle}"
+                      data-title="${article.articleTitle?html}"
                       data-blogtitle="${blogTitle}"
                       data-url="${servePath}${article.articlePermalink}"
                       data-avatar="${article.authorThumbnailURL}"></span>

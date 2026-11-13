@@ -15,7 +15,7 @@
 <#list articles as article>
     <article class="item<#if article_index % 6 ==0> item--large</#if>">
         <a href="${servePath}${article.articlePermalink}" class="item__cover"
-           style="background-image: url(${article.articleImg1URL})"> ${article.articleTitle}
+           style="background-image: url(${article.articleImg1URL})"> ${article.articleTitle?html}
         </a>
         <div class="item__main">
             <#list article.articleTags?split(",") as articleTag>
@@ -32,7 +32,7 @@
             </#list>
             <h2 class="item__title">
                 <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                    ${article.articleTitle}
+                    ${article.articleTitle?html}
                 </a>
                 <#if article.articlePutTop>
                     <sup>
@@ -47,7 +47,7 @@
                     </sup>
                 </#if>
             </h2>
-            <a class="item__abstract" pjax-title="${article.articleTitle}"
+            <a class="item__abstract" pjax-title="${article.articleTitle?html}"
                href="${servePath}${article.articlePermalink}">
                 <#if article.articleAbstractText?length gt 80>
                     ${article.articleAbstractText[0..80]}

@@ -811,6 +811,9 @@ public class DataModelService {
             articleQueryService.markdown(article);
 
             fillCategory(article);
+
+            // 前台数据模型不能暴露文章访问密码
+            article.remove(Article.ARTICLE_VIEW_PWD);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sets article extra properties failed", e);
             throw new ServiceException(e);

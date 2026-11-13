@@ -16,14 +16,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+    <@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
         <link rel="stylesheet"
               href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
     </@head>
 </head>
@@ -34,7 +34,7 @@
         <header class="fn__flex">
             <h2 class="fn__flex-1">
                 <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                    ${article.articleTitle}
+                    ${article.articleTitle?html}
                 </a>
                 <#if article.articlePutTop>
                     <sup>
@@ -85,12 +85,12 @@
                     <#if previousArticlePermalink??>
                         <a class="fn__flex-1 fn__flex-inline" rel="prev" href="${servePath}${previousArticlePermalink}">
                             <strong>&lt;</strong>
-                            <span>&nbsp; ${previousArticleTitle}&nbsp;&nbsp;&nbsp;</span>
+                            <span>&nbsp; ${previousArticleTitle?html}&nbsp;&nbsp;&nbsp;</span>
                         </a>
                     </#if>
                     <#if nextArticlePermalink??>
                         <a class="fn__flex-inline" rel="next" href="${servePath}${nextArticlePermalink}">
-                            <span>${nextArticleTitle}&nbsp; </span>
+                            <span>${nextArticleTitle?html}&nbsp; </span>
                             <strong>&gt;</strong>
                         </a>
                     </#if>

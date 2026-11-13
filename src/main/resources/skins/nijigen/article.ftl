@@ -16,14 +16,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <@head title="${article.articleTitle} - ${blogTitle}" description="${article.articleAbstract?html}">
+    <@head title="${article.articleTitle?html} - ${blogTitle}" description="${article.articleAbstract?html}">
         <link rel="stylesheet"
               href="${staticServePath}/skins/${skinDirName}/css/base.css?${staticResourceVersion}"/>
         <#if previousArticlePermalink??>
-            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+            <link rel="prev" title="${previousArticleTitle?html}" href="${servePath}${previousArticlePermalink}">
         </#if>
         <#if nextArticlePermalink??>
-            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+            <link rel="next" title="${nextArticleTitle?html}" href="${servePath}${nextArticlePermalink}">
         </#if>
     </@head>
 </head>
@@ -43,7 +43,7 @@
 
                     <h2 class="item__title">
                         <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                            ${article.articleTitle}
+                            ${article.articleTitle?html}
                         </a>
                         <#if article.articlePutTop>
                             <sup>
@@ -90,13 +90,13 @@
                     <div class="module__content fn__clear">
                         <#if previousArticlePermalink??>
                             <a href="${servePath}${previousArticlePermalink}" rel="prev" class="fn__left breadcrumb">
-                                ${previousArticleLabel}: ${previousArticleTitle}
+                                ${previousArticleLabel}: ${previousArticleTitle?html}
                             </a>
                         </#if>
                         <#if nextArticlePermalink??>
                             <a href="${servePath}${nextArticlePermalink}" rel="next"
                                class="fn__right breadcrumb">
-                                ${nextArticleTitle}: ${nextArticleLabel}
+                                ${nextArticleTitle?html}: ${nextArticleLabel}
                             </a>
                         </#if>
                     </div>
@@ -107,7 +107,7 @@
                 <div class="module mobile__hidden fn__none">
                     <div class="module__content">
                         <a href="${servePath}${previousArticlePermalink}" rel="prev" class="breadcrumb">
-                            ${previousArticleLabel}: ${previousArticleTitle}
+                            ${previousArticleLabel}: ${previousArticleTitle?html}
                         </a>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <div class="module__content">
                         <a href="${servePath}${nextArticlePermalink}" rel="next"
                            class="breadcrumb">
-                            ${nextArticleLabel}: ${nextArticleTitle}
+                            ${nextArticleLabel}: ${nextArticleTitle?html}
                         </a>
                     </div>
                 </div>
