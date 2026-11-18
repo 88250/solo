@@ -31,6 +31,7 @@ import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Link console request processing.
@@ -46,6 +47,17 @@ public class LinkConsole {
      * Logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(LinkConsole.class);
+
+    /**
+     * Link properties that a console client is allowed to specify.
+     */
+    private static final Set<String> CLIENT_LINK_PROPERTIES = Set.of(
+            Keys.OBJECT_ID,
+            Link.LINK_TITLE,
+            Link.LINK_ADDRESS,
+            Link.LINK_DESCRIPTION,
+            Link.LINK_ICON,
+            Link.LINK_ORDER);
 
     /**
      * Link query service.
@@ -126,12 +138,30 @@ public class LinkConsole {
      *
      * @param context the specified request context
      */
+    /**
+     * Copies only client-specifiable link properties.
+     *
+     * @param link the specified link
+     * @return filtered link
+     */
+    private JSONObject filterLinkProperties(final JSONObject link) {
+        final JSONObject ret = new JSONObject();
+        for (final String property : CLIENT_LINK_PROPERTIES) {
+            if (link.has(property)) {
+                ret.put(property, link.get(property));
+            }
+        }
+
+        return ret;
+    }
+
     public void updateLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject requestJSON = context.requestJSON();
+            requestJSON.put(Link.LINK, filterLinkProperties(requestJSON.getJSONObject(Link.LINK)));
             linkMgmtService.updateLink(requestJSON);
 
             ret.put(Keys.CODE, StatusCodes.SUCC);
@@ -224,6 +254,7 @@ public class LinkConsole {
 
         try {
             final JSONObject requestJSON = context.requestJSON();
+            requestJSON.put(Link.LINK, filterLinkProperties(requestJSON.getJSONObject(Link.LINK)));
             final String linkId = linkMgmtService.addLink(requestJSON);
 
             ret.put(Keys.OBJECT_ID, linkId);

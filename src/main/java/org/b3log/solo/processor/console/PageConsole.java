@@ -33,6 +33,7 @@ import org.b3log.solo.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Page console request processing.
@@ -48,6 +49,17 @@ public class PageConsole {
      * Logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(PageConsole.class);
+
+    /**
+     * Page properties that a console client is allowed to specify.
+     */
+    private static final Set<String> CLIENT_PAGE_PROPERTIES = Set.of(
+            Keys.OBJECT_ID,
+            Page.PAGE_TITLE,
+            Page.PAGE_ORDER,
+            Page.PAGE_PERMALINK,
+            Page.PAGE_OPEN_TARGET,
+            Page.PAGE_ICON);
 
     /**
      * User query service.
@@ -102,6 +114,23 @@ public class PageConsole {
      *
      * @param context the specified request context
      */
+    /**
+     * Copies only client-specifiable page properties.
+     *
+     * @param page the specified page
+     * @return filtered page
+     */
+    private JSONObject filterPageProperties(final JSONObject page) {
+        final JSONObject ret = new JSONObject();
+        for (final String property : CLIENT_PAGE_PROPERTIES) {
+            if (page.has(property)) {
+                ret.put(property, page.get(property));
+            }
+        }
+
+        return ret;
+    }
+
     public void updatePage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -109,6 +138,7 @@ public class PageConsole {
 
         try {
             final JSONObject requestJSON = context.requestJSON();
+            requestJSON.put(Page.PAGE, filterPageProperties(requestJSON.getJSONObject(Page.PAGE)));
             pageMgmtService.updatePage(requestJSON);
 
             ret.put(Keys.CODE, StatusCodes.SUCC);
@@ -191,6 +221,7 @@ public class PageConsole {
 
         try {
             final JSONObject requestJSON = context.requestJSON();
+            requestJSON.put(Page.PAGE, filterPageProperties(requestJSON.getJSONObject(Page.PAGE)));
             final String pageId = pageMgmtService.addPage(requestJSON);
 
             ret.put(Keys.OBJECT_ID, pageId);
