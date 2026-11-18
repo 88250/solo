@@ -35,14 +35,17 @@ public class PageConsoleTestCase extends AbstractTestCase {
 
     /**
      * addPage.
+     *
+     * @throws Exception exception
      */
-    public void addPage() {
+    public void addPage() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/page/");
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
         final JSONObject page = new JSONObject();
         requestJSON.put(Page.PAGE, page);
+        page.put("unknownConsoleProperty", "ignored");
         page.put(Page.PAGE_TITLE, "链滴");
         page.put(Page.PAGE_PERMALINK, "https://ld246.com");
         page.put(Page.PAGE_OPEN_TARGET, "");
@@ -56,6 +59,9 @@ public class PageConsoleTestCase extends AbstractTestCase {
 
         final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "code\":0"));
+        final String pageId = new JSONObject(content).getString(Keys.OBJECT_ID);
+        final JSONObject storedPage = getPageRepository().get(pageId);
+        Assert.assertEquals(storedPage.getString(Page.PAGE_TITLE), page.getString(Page.PAGE_TITLE));
     }
 
     /**
@@ -66,6 +72,9 @@ public class PageConsoleTestCase extends AbstractTestCase {
     @Test(dependsOnMethods = "addPage")
     public void updatePage() throws Exception {
         final JSONObject p = getPageRepository().getList(new Query()).get(0);
+        final String pageId = p.getString(Keys.OBJECT_ID);
+        p.put(Page.PAGE_TITLE, "Updated page");
+        p.put("unknownConsoleProperty", "ignored");
 
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/page/");
@@ -81,6 +90,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
 
         final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "code\":0"));
+        Assert.assertEquals(getPageRepository().get(pageId).getString(Page.PAGE_TITLE), "Updated page");
     }
 
     /**

@@ -86,6 +86,23 @@ public class PageConsole {
     private LangPropsService langPropsService;
 
     /**
+     * Copies only client-specifiable page properties.
+     *
+     * @param page the specified page
+     * @return filtered page
+     */
+    private JSONObject filterPageProperties(final JSONObject page) {
+        final JSONObject ret = new JSONObject();
+        for (final String property : CLIENT_PAGE_PROPERTIES) {
+            if (page.has(property)) {
+                ret.put(property, page.get(property));
+            }
+        }
+
+        return ret;
+    }
+
+    /**
      * Updates a page by the specified request.
      * <p>
      * Request json:
@@ -114,23 +131,6 @@ public class PageConsole {
      *
      * @param context the specified request context
      */
-    /**
-     * Copies only client-specifiable page properties.
-     *
-     * @param page the specified page
-     * @return filtered page
-     */
-    private JSONObject filterPageProperties(final JSONObject page) {
-        final JSONObject ret = new JSONObject();
-        for (final String property : CLIENT_PAGE_PROPERTIES) {
-            if (page.has(property)) {
-                ret.put(property, page.get(property));
-            }
-        }
-
-        return ret;
-    }
-
     public void updatePage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

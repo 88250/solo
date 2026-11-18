@@ -111,6 +111,23 @@ public class LinkConsole {
     }
 
     /**
+     * Copies only client-specifiable link properties.
+     *
+     * @param link the specified link
+     * @return filtered link
+     */
+    private JSONObject filterLinkProperties(final JSONObject link) {
+        final JSONObject ret = new JSONObject();
+        for (final String property : CLIENT_LINK_PROPERTIES) {
+            if (link.has(property)) {
+                ret.put(property, link.get(property));
+            }
+        }
+
+        return ret;
+    }
+
+    /**
      * Updates a link by the specified request.
      * <p>
      * Request json:
@@ -138,23 +155,6 @@ public class LinkConsole {
      *
      * @param context the specified request context
      */
-    /**
-     * Copies only client-specifiable link properties.
-     *
-     * @param link the specified link
-     * @return filtered link
-     */
-    private JSONObject filterLinkProperties(final JSONObject link) {
-        final JSONObject ret = new JSONObject();
-        for (final String property : CLIENT_LINK_PROPERTIES) {
-            if (link.has(property)) {
-                ret.put(property, link.get(property));
-            }
-        }
-
-        return ret;
-    }
-
     public void updateLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

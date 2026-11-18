@@ -35,14 +35,17 @@ public class LinkConsoleTestCase extends AbstractTestCase {
 
     /**
      * addLink.
+     *
+     * @throws Exception exception
      */
-    public void addLink() {
+    public void addLink() throws Exception {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/link/");
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
         final JSONObject link = new JSONObject();
         requestJSON.put(Link.LINK, link);
+        link.put("unknownConsoleProperty", "ignored");
         link.put(Link.LINK_TITLE, "链滴");
         link.put(Link.LINK_ADDRESS, "https://ld246.com");
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
@@ -56,6 +59,9 @@ public class LinkConsoleTestCase extends AbstractTestCase {
 
         final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "code\":0"));
+        final String linkId = new JSONObject(content).getString(Keys.OBJECT_ID);
+        final JSONObject storedLink = getLinkRepository().get(linkId);
+        Assert.assertEquals(storedLink.getString(Link.LINK_TITLE), link.getString(Link.LINK_TITLE));
     }
 
     /**
@@ -75,6 +81,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         final JSONObject link = new JSONObject();
         requestJSON.put(Link.LINK, link);
         link.put(Keys.OBJECT_ID, linkId);
+        link.put("unknownConsoleProperty", "ignored");
         link.put(Link.LINK_TITLE, "链滴");
         link.put(Link.LINK_ADDRESS, "https://ld246.com");
         link.put(Link.LINK_DESCRIPTION, "B3log 开源社区线上论坛");
@@ -88,6 +95,8 @@ public class LinkConsoleTestCase extends AbstractTestCase {
 
         final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "code\":0"));
+        Assert.assertEquals(getLinkRepository().get(linkId).getString(Link.LINK_DESCRIPTION),
+                link.getString(Link.LINK_DESCRIPTION));
     }
 
     /**
